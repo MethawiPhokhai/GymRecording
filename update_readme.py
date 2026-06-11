@@ -1,19 +1,10 @@
 #!/usr/bin/env python3
 import json
 import os
-from datetime import datetime
 
 WORKOUTS_DIR = "workouts"
 README_PATH = "README.md"
-DAYS_TH = {
-    "Monday": "Monday",
-    "Tuesday": "Tuesday",
-    "Wednesday": "Wednesday",
-    "Thursday": "Thursday",
-    "Friday": "Friday",
-    "Saturday": "Saturday",
-    "Sunday": "Sunday",
-}
+
 
 def load_workouts():
     entries = []
@@ -25,25 +16,43 @@ def load_workouts():
         entries.append(data)
     return entries[:10]
 
-def build_table(entries):
-    lines = [
-        "| Date | Day | Type |",
-        "|------|-----|------|",
-    ]
-    for e in entries:
-        date = e.get("date", "-")
-        day = e.get("day", "-")
-        workout_type = e.get("type", "-")
-        lines.append(f"| {date} | {day} | {workout_type} |")
-    return "\n".join(lines)
 
-def update_readme(table):
-    header = "# Gym Recording\n\n## Latest Workouts\n\n"
+def build_exercise_table(exercises):
+    rows = ["| Exercise | Weight | Sets × Reps | Note |",
+            "|----------|--------|-------------|------|"]
+    for e in exercises:
+        name = e.get("name", "-")
+        weight = f"{e['weight_lbs']} lbs" if e.get("weight_lbs") else "-"
+        sets = e.get("sets", "-")
+        reps = e.get("reps", "-")
+        note = e.get("note", "")
+        rows.append(f"| {name} | {weight} | {sets}×{reps} | {note} |")
+    return "\n".join(rows)
+
+
+def build_section(entry):
+    date = entry.get("date", "-")
+    day = entry.get("day", "-")
+    workout_type = entry.get("type", "-")
+    exercises = [e for e in entry.get("exercises", []) if e.get("completed")]
+
+    table = build_exercise_table(exercises)
+    return (
+        f"<details>\n"
+        f"<summary>{date} · {day} · <b>{workout_type}</b></summary>\n\n"
+        f"{table}\n\n"
+        f"</details>\n"
+    )
+
+
+def update_readme(entries):
+    sections = "\n".join(build_section(e) for e in entries)
+    content = f"# Gym Recording\n\n## Latest Workouts\n\n{sections}"
     with open(README_PATH, "w") as f:
-        f.write(header + table + "\n")
+        f.write(content)
+    print("README updated.")
+
 
 if __name__ == "__main__":
     entries = load_workouts()
-    table = build_table(entries)
-    update_readme(table)
-    print("README updated.")
+    update_readme(entries)
