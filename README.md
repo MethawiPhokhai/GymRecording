@@ -1,6 +1,6 @@
 # Gym Recording
 
-## Latest Workouts
+## Latest Workouts 10 days
 
 | Date | Day | Type |
 |------|-----|------|
