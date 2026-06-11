@@ -91,8 +91,29 @@ def build_card_html(entry):
     date = entry.get("date", "-")
     day = entry.get("day", "-")
     workout_type = entry.get("type", "-")
-    exercises = [e for e in entry.get("exercises", []) if e.get("completed")]
     color = TYPE_COLORS.get(workout_type, TYPE_DEFAULT)
+
+    if workout_type == "Class":
+        class_name = entry.get("name", "Class")
+        duration = entry.get("duration_minutes")
+        duration_str = f"{duration} minutes" if duration else ""
+        detail = f"""
+    <div class="class-detail">
+      <span class="class-name">{class_name}</span>
+      {"<span class='class-duration'>· " + duration_str + "</span>" if duration_str else ""}
+    </div>"""
+        summary_right = f'<span class="count">{class_name}</span>'
+        return f"""
+  <details class="card">
+    <summary>
+      <span class="date">{date}</span>
+      <span class="day">{day}</span>
+      <span class="badge" style="background:{color}22;color:{color};border-color:{color}44">{workout_type}</span>
+      {summary_right}
+    </summary>{detail}
+  </details>"""
+
+    exercises = [e for e in entry.get("exercises", []) if e.get("completed")]
     rows = build_exercise_rows_html(exercises)
     count = len(exercises)
     return f"""
@@ -261,6 +282,25 @@ def update_html(entries):
 
     tbody tr:hover td {{
       background: #1c2128;
+    }}
+
+    .class-detail {{
+      padding: .75rem 1.1rem 1rem 2.8rem;
+      border-top: 1px solid #21262d;
+      display: flex;
+      align-items: center;
+      gap: .5rem;
+    }}
+
+    .class-name {{
+      font-size: .95rem;
+      font-weight: 600;
+      color: #e6edf3;
+    }}
+
+    .class-duration {{
+      font-size: .85rem;
+      color: #7d8590;
     }}
 
     footer {{

@@ -3,5 +3,6 @@
   "day": "Monday",
   "type": "Class",
   "name": "Core Body",
+  "duration_minutes": 60,
   "exercises": []
 }
