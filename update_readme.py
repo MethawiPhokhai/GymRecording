@@ -46,14 +46,11 @@ def build_section_md(entry):
     )
 
 
-def update_readme(entries):
-    sections = "\n".join(build_section_md(e) for e in entries)
+def update_readme():
     content = (
         "# Gym Recording\n\n"
         "Personal workout log — tracking sets, reps, and weights over time.\n\n"
-        "> View the full log → [**gymrecording page**](https://methawiphokhai.github.io/GymRecording/)\n\n"
-        "## Latest Workouts 10 days\n\n"
-        f"{sections}"
+        "> View the full log → [**gymrecording page**](https://methawiphokhai.github.io/GymRecording/)\n"
     )
     with open(README_PATH, "w") as f:
         f.write(content)
@@ -333,6 +330,6 @@ def update_html(entries):
 
 if __name__ == "__main__":
     entries = load_workouts()
-    update_readme(entries)
+    update_readme()
     update_html(entries)
     print("README and index.html updated.")
