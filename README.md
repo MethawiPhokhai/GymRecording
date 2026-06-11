@@ -17,3 +17,11 @@ Personal workout log — tracking sets, reps, and weights over time.
 | Bench press (seated) | 55 lbs | 3×15 |  |
 
 </details>
+
+<details>
+<summary>2026-06-09 · Monday · <b>Class</b></summary>
+
+| Exercise | Weight | Sets × Reps | Note |
+|----------|--------|-------------|------|
+
+</details>
