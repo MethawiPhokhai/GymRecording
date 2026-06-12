@@ -6,170 +6,61 @@
   <title>Gym Recording</title>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
     body {
-      background: #0d1117;
-      color: #e6edf3;
+      background: #0d1117; color: #e6edf3;
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      padding: 2rem 1rem;
-      min-height: 100vh;
+      padding: 2rem 1rem; min-height: 100vh;
     }
-
-    .container {
-      max-width: 720px;
-      margin: 0 auto;
-    }
-
-    header {
-      margin-bottom: 2rem;
-    }
-
-    header h1 {
-      font-size: 1.6rem;
-      font-weight: 700;
-      color: #f0f6fc;
-    }
-
-    header p {
-      margin-top: .4rem;
-      color: #7d8590;
-      font-size: .9rem;
-    }
-
+    .container { max-width: 720px; margin: 0 auto; }
+    header { margin-bottom: 2rem; }
+    header h1 { font-size: 1.6rem; font-weight: 700; color: #f0f6fc; }
+    header p { margin-top: .4rem; color: #7d8590; font-size: .9rem; }
     .section-title {
-      font-size: .75rem;
-      font-weight: 600;
-      letter-spacing: .08em;
-      text-transform: uppercase;
-      color: #7d8590;
-      margin-bottom: 1rem;
+      font-size: .75rem; font-weight: 600; letter-spacing: .08em;
+      text-transform: uppercase; color: #7d8590; margin-bottom: 1rem;
     }
-
     .card {
-      background: #161b22;
-      border: 1px solid #30363d;
-      border-radius: 10px;
-      margin-bottom: .75rem;
-      overflow: hidden;
-      transition: border-color .15s;
+      background: #161b22; border: 1px solid #30363d;
+      border-radius: 10px; margin-bottom: .75rem;
+      overflow: hidden; transition: border-color .15s;
     }
-
-    .card:hover {
-      border-color: #484f58;
-    }
-
+    .card:hover { border-color: #484f58; }
     .card summary {
-      display: flex;
-      align-items: center;
-      gap: .75rem;
-      padding: .85rem 1.1rem;
-      cursor: pointer;
-      list-style: none;
-      user-select: none;
+      display: flex; align-items: center; gap: .75rem;
+      padding: .85rem 1.1rem; cursor: pointer;
+      list-style: none; user-select: none;
     }
-
     .card summary::-webkit-details-marker { display: none; }
-
     .card summary::before {
-      content: "›";
-      font-size: 1.1rem;
-      color: #7d8590;
-      transition: transform .2s;
-      flex-shrink: 0;
+      content: "›"; font-size: 1.1rem; color: #7d8590;
+      transition: transform .2s; flex-shrink: 0;
     }
-
-    .card[open] summary::before {
-      transform: rotate(90deg);
-    }
-
-    .date {
-      font-size: .9rem;
-      font-weight: 600;
-      color: #e6edf3;
-      min-width: 100px;
-    }
-
-    .day {
-      font-size: .85rem;
-      color: #7d8590;
-      flex: 1;
-    }
-
+    .card[open] summary::before { transform: rotate(90deg); }
+    .date { font-size: .9rem; font-weight: 600; color: #e6edf3; min-width: 100px; }
+    .day { font-size: .85rem; color: #7d8590; flex: 1; }
     .badge {
-      font-size: .75rem;
-      font-weight: 600;
-      padding: .2rem .6rem;
-      border-radius: 20px;
-      border: 1px solid;
+      font-size: .75rem; font-weight: 600;
+      padding: .2rem .6rem; border-radius: 20px; border: 1px solid;
     }
-
-    .count {
-      font-size: .78rem;
-      color: #7d8590;
-      flex-shrink: 0;
-    }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      font-size: .875rem;
-    }
-
-    thead tr {
-      background: #0d1117;
-    }
-
+    .count { font-size: .78rem; color: #7d8590; flex-shrink: 0; }
+    table { width: 100%; border-collapse: collapse; font-size: .875rem; }
+    thead tr { background: #0d1117; }
     th {
-      text-align: left;
-      padding: .5rem 1.1rem;
-      font-size: .72rem;
-      font-weight: 600;
-      letter-spacing: .05em;
-      text-transform: uppercase;
-      color: #7d8590;
-      border-top: 1px solid #21262d;
+      text-align: left; padding: .5rem 1.1rem;
+      font-size: .72rem; font-weight: 600; letter-spacing: .05em;
+      text-transform: uppercase; color: #7d8590; border-top: 1px solid #21262d;
     }
-
-    td {
-      padding: .55rem 1.1rem;
-      border-top: 1px solid #21262d;
-      color: #c9d1d9;
-    }
-
-    td.note {
-      color: #f7934f;
-      font-size: .82rem;
-    }
-
-    tbody tr:hover td {
-      background: #1c2128;
-    }
-
+    td { padding: .55rem 1.1rem; border-top: 1px solid #21262d; color: #c9d1d9; }
+    td.note { color: #f7934f; font-size: .82rem; }
+    tbody tr:hover td { background: #1c2128; }
     .class-detail {
       padding: .75rem 1.1rem 1rem 2.8rem;
       border-top: 1px solid #21262d;
-      display: flex;
-      align-items: center;
-      gap: .5rem;
+      display: flex; align-items: center; gap: .5rem;
     }
-
-    .class-name {
-      font-size: .95rem;
-      font-weight: 600;
-      color: #e6edf3;
-    }
-
-    .class-duration {
-      font-size: .85rem;
-      color: #7d8590;
-    }
-
-    footer {
-      margin-top: 2.5rem;
-      text-align: center;
-      font-size: .78rem;
-      color: #484f58;
-    }
+    .class-name { font-size: .95rem; font-weight: 600; color: #e6edf3; }
+    .class-duration { font-size: .85rem; color: #7d8590; }
+    footer { margin-top: 2.5rem; text-align: center; font-size: .78rem; color: #484f58; }
   </style>
 </head>
 <body>
@@ -178,9 +69,7 @@
       <h1>Gym Recording</h1>
       <p>Personal workout log — tracking sets, reps, and weights over time.</p>
     </header>
-
     <p class="section-title">Latest 10 Workouts</p>
-
     
   <details class="card">
     <summary>
@@ -190,9 +79,7 @@
       <span class="count">4 exercises</span>
     </summary>
     <table>
-      <thead>
-        <tr><th>Exercise</th><th>Weight</th><th>Sets×Reps</th><th>Note</th></tr>
-      </thead>
+      <thead><tr><th>Exercise</th><th>Weight</th><th>Sets×Reps</th><th>Note</th></tr></thead>
       <tbody>
 <tr><td>Pull up</td><td>60 lbs</td><td>3×15</td><td class='note'></td></tr>
 <tr><td>Shoulder press</td><td>40 lbs</td><td>3×15</td><td class='note'>เจ็บหลังแขน</td></tr>
@@ -214,8 +101,7 @@
       <span class='class-duration'>· 60 minutes</span>
     </div>
   </details>
-
-    <footer>Updated 2026-06-11 07:36</footer>
+    <footer>Updated 2026-06-12 04:59</footer>
   </div>
 </body>
 </html>
