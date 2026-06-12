@@ -62,6 +62,9 @@ def resolve_session(entry, templates):
             duration = pool.get(class_name, {}).get("default_duration_minutes")
         return {**entry, "duration_minutes": duration}
 
+    if workout_type == "Running":
+        return entry
+
     exercises = [e for e in entry.get("exercises", []) if e.get("completed")]
     merged = merge_exercises(exercises, template)
     return {**entry, "exercises": merged}
@@ -126,6 +129,28 @@ def build_card_html(entry):
     day = entry.get("day", "-")
     workout_type = entry.get("type", "-")
     color = TYPE_COLORS.get(workout_type, TYPE_DEFAULT)
+
+    if workout_type == "Running":
+        duration = entry.get("duration_minutes", "-")
+        distance = entry.get("distance_km")
+        note = entry.get("note", "")
+        parts = []
+        if duration: parts.append(f"{duration} min")
+        if distance: parts.append(f"{distance} km")
+        if note:     parts.append(note)
+        detail_str = " · ".join(parts)
+        return f"""
+  <details class="card">
+    <summary>
+      <span class="date">{date}</span>
+      <span class="day">{day}</span>
+      <span class="badge" style="background:{color}22;color:{color};border-color:{color}44">{workout_type}</span>
+      <span class="count">{detail_str}</span>
+    </summary>
+    <div class="class-detail">
+      <span class="class-name">{detail_str}</span>
+    </div>
+  </details>"""
 
     if workout_type == "Class":
         class_name = entry.get("name", "Class")
