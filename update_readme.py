@@ -40,8 +40,9 @@ def merge_exercises(session_exercises, template):
         name = ex["name"]
         base = pool.get(name, {})
         merged.append({
-            "name": name,
+            "name":       name,
             "weight_lbs": ex.get("weight_lbs") or base.get("default_weight_lbs"),
+            "weight_kg":  ex.get("weight_kg"),
             "sets":       ex.get("sets")       or base.get("default_sets"),
             "reps":       ex.get("reps")       or base.get("default_reps"),
             "completed":  ex.get("completed", False),
@@ -173,7 +174,12 @@ def build_card_html(entry):
     exercises = entry.get("exercises", [])
     rows = ""
     for e in exercises:
-        weight = f"{e['weight_lbs']} lbs" if e.get("weight_lbs") else "-"
+        if e.get("weight_kg"):
+            weight = f"{e['weight_kg']} kg"
+        elif e.get("weight_lbs"):
+            weight = f"{e['weight_lbs']} lbs"
+        else:
+            weight = "-"
         rows += (
             f"<tr>"
             f"<td>{e['name']}</td>"
