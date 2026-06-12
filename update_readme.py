@@ -1,7 +1,9 @@
 #!/usr/bin/env python3
 import json
 import os
-from datetime import datetime
+from datetime import datetime, timezone, timedelta
+
+BKK = timezone(timedelta(hours=7))
 
 WORKOUTS_DIR = "workouts"
 TEMPLATES_DIR = "templates"
@@ -207,7 +209,7 @@ def build_card_html(entry):
 
 def update_html(entries):
     cards = "\n".join(build_card_html(e) for e in entries)
-    updated = datetime.now().strftime("%Y-%m-%d %H:%M")
+    updated = datetime.now(BKK).strftime("%Y-%m-%d %H:%M (Bangkok)")
     html = f"""<!DOCTYPE html>
 <html lang="en">
 <head>
