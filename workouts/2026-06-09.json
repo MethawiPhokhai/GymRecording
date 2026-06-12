@@ -3,34 +3,9 @@
   "day": "Monday",
   "type": "Upper",
   "exercises": [
-    {
-      "name": "Pull up",
-      "weight_lbs": 60,
-      "sets": 3,
-      "reps": 15,
-      "completed": true
-    },
-    {
-      "name": "Shoulder press",
-      "weight_lbs": 40,
-      "sets": 3,
-      "reps": 15,
-      "completed": true,
-      "note": "เจ็บหลังแขน"
-    },
-    {
-      "name": "S Bench press",
-      "weight_lbs": 20,
-      "sets": 3,
-      "reps": 10,
-      "completed": true
-    },
-    {
-      "name": "Bench press (seated)",
-      "weight_lbs": 55,
-      "sets": 3,
-      "reps": 15,
-      "completed": true
-    }
+    { "name": "Pull up",              "completed": true },
+    { "name": "Shoulder press",       "completed": true, "note": "เจ็บหลังแขน" },
+    { "name": "S Bench press",        "completed": true },
+    { "name": "Bench press (seated)", "completed": true }
   ]
 }

@@ -1,0 +1,13 @@
+{
+  "type": "Upper",
+  "exercises": [
+    { "name": "Pull up",               "default_weight_lbs": 60, "default_sets": 3, "default_reps": 15 },
+    { "name": "Shoulder press",        "default_weight_lbs": 40, "default_sets": 3, "default_reps": 15 },
+    { "name": "S Bench press",         "default_weight_lbs": 20, "default_sets": 3, "default_reps": 10 },
+    { "name": "Bench press (seated)",  "default_weight_lbs": 55, "default_sets": 3, "default_reps": 15 },
+    { "name": "Seated row",            "default_weight_lbs": 55, "default_sets": 3, "default_reps": 15 },
+    { "name": "Lat pulldown",          "default_weight_lbs": 55, "default_sets": 3, "default_reps": 15 },
+    { "name": "Face pull",             "default_weight_lbs": 35, "default_sets": 3, "default_reps": 15 },
+    { "name": "Bicep curl",            "default_weight_lbs": null, "default_sets": 3, "default_reps": 12 }
+  ]
+}

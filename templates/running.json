@@ -1,0 +1,5 @@
+{
+  "type": "Running",
+  "default_distance_km": null,
+  "default_duration_minutes": null
+}
