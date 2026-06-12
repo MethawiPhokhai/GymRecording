@@ -5,6 +5,7 @@
     { "name": "Yoga",        "default_duration_minutes": 60 },
     { "name": "Zumba",       "default_duration_minutes": 60 },
     { "name": "Body Combat", "default_duration_minutes": 60 },
-    { "name": "Pilates",     "default_duration_minutes": 60 }
+    { "name": "Pilates",     "default_duration_minutes": 60 },
+    { "name": "Hyrox",       "default_duration_minutes": 60 }
   ]
 }
