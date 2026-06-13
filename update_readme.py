@@ -273,9 +273,25 @@ def update_html(entries):
     .class-name {{ font-size: .95rem; font-weight: 600; color: #e6edf3; }}
     .class-duration {{ font-size: .85rem; color: #7d8590; }}
     footer {{ margin-top: 2.5rem; text-align: center; font-size: .78rem; color: #484f58; }}
+
+    #ptr-indicator {{
+      display: flex; align-items: center; justify-content: center;
+      height: 0; overflow: hidden;
+      transition: height .2s;
+      color: #7d8590; font-size: .8rem; gap: .4rem;
+    }}
+    #ptr-indicator.visible {{ height: 48px; }}
+    #ptr-indicator svg {{ animation: spin 1s linear infinite; }}
+    @keyframes spin {{ to {{ transform: rotate(360deg); }} }}
   </style>
 </head>
 <body>
+  <div id="ptr-indicator">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/>
+    </svg>
+    Refreshing…
+  </div>
   <div class="container">
     <header>
       <h1>Gym Recording</h1>
@@ -285,6 +301,27 @@ def update_html(entries):
     {cards}
     <footer>Updated {updated}</footer>
   </div>
+  <script>
+    let startY = 0, pulling = false;
+    const indicator = document.getElementById('ptr-indicator');
+
+    document.addEventListener('touchstart', e => {{
+      if (window.scrollY === 0) startY = e.touches[0].clientY;
+    }}, {{ passive: true }});
+
+    document.addEventListener('touchmove', e => {{
+      if (window.scrollY === 0 && e.touches[0].clientY - startY > 60) {{
+        pulling = true;
+        indicator.classList.add('visible');
+      }}
+    }}, {{ passive: true }});
+
+    document.addEventListener('touchend', () => {{
+      if (pulling) {{ location.reload(); }}
+      pulling = false;
+      indicator.classList.remove('visible');
+    }});
+  </script>
 </body>
 </html>
 """
