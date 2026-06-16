@@ -61,9 +61,25 @@
     .class-name { font-size: .95rem; font-weight: 600; color: #e6edf3; }
     .class-duration { font-size: .85rem; color: #7d8590; }
     footer { margin-top: 2.5rem; text-align: center; font-size: .78rem; color: #484f58; }
+
+    #ptr-indicator {
+      display: flex; align-items: center; justify-content: center;
+      height: 0; overflow: hidden;
+      transition: height .2s;
+      color: #7d8590; font-size: .8rem; gap: .4rem;
+    }
+    #ptr-indicator.visible { height: 48px; }
+    #ptr-indicator svg { animation: spin 1s linear infinite; }
+    @keyframes spin { to { transform: rotate(360deg); } }
   </style>
 </head>
 <body>
+  <div id="ptr-indicator">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/>
+    </svg>
+    Refreshing…
+  </div>
   <div class="container">
     <header>
       <h1>Gym Recording</h1>
@@ -71,6 +87,25 @@
     </header>
     <p class="section-title">Latest 10 Workouts</p>
     
+  <details class="card">
+    <summary>
+      <span class="date">2026-06-16</span>
+      <span class="day">Tuesday</span>
+      <span class="badge" style="background:#4f8ef722;color:#4f8ef7;border-color:#4f8ef744">Upper</span>
+      <span class="count">5 exercises</span>
+    </summary>
+    <table>
+      <thead><tr><th>Exercise</th><th>Weight</th><th>Sets×Reps</th><th>Note</th></tr></thead>
+      <tbody>
+<tr><td>Pull up</td><td>60 lbs</td><td>3×15</td><td class='note'></td></tr>
+<tr><td>S Bench press</td><td>20 lbs</td><td>3×10</td><td class='note'></td></tr>
+<tr><td>Bench press (seated)</td><td>55 lbs</td><td>3×15</td><td class='note'></td></tr>
+<tr><td>Back cable rowing</td><td>55 lbs</td><td>3×15</td><td class='note'></td></tr>
+<tr><td>Lat pulldown</td><td>55 lbs</td><td>3×15</td><td class='note'></td></tr>
+      </tbody>
+    </table>
+  </details>
+
   <details class="card">
     <summary>
       <span class="date">2026-06-13</span>
@@ -149,7 +184,28 @@
       <span class='class-duration'>· 60 minutes</span>
     </div>
   </details>
-    <footer>Updated 2026-06-13 19:00 (Bangkok)</footer>
+    <footer>Updated 2026-06-16 18:47 (Bangkok)</footer>
   </div>
+  <script>
+    let startY = 0, pulling = false;
+    const indicator = document.getElementById('ptr-indicator');
+
+    document.addEventListener('touchstart', e => {
+      if (window.scrollY === 0) startY = e.touches[0].clientY;
+    }, { passive: true });
+
+    document.addEventListener('touchmove', e => {
+      if (window.scrollY === 0 && e.touches[0].clientY - startY > 60) {
+        pulling = true;
+        indicator.classList.add('visible');
+      }
+    }, { passive: true });
+
+    document.addEventListener('touchend', () => {
+      if (pulling) { location.reload(); }
+      pulling = false;
+      indicator.classList.remove('visible');
+    });
+  </script>
 </body>
 </html>
