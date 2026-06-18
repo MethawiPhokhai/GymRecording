@@ -3,13 +3,8 @@
   "day": "Thursday",
   "type": "Upper",
   "exercises": [
-    { "name": "Pull up",              "completed": true },
-    { "name": "S Bench press",        "weight_lbs": 20, "sets": 3, "reps": 10, "completed": true },
-    { "name": "Bench press (seated)", "completed": true },
-    { "name": "Back cable rowing",    "weight_lbs": 55, "sets": 3, "reps": 15, "completed": true },
-    { "name": "Lat pulldown",              "completed": true },
-    { "name": "Dumbbell shoulder press",   "weight_kg": 7.5, "sets": 3, "reps": 15, "completed": true },
-    { "name": "Machine shoulder press",    "weight_lbs": 45, "sets": 3, "reps": 15, "completed": true, "note": "15×1, 10×2" },
-    { "name": "Barbell curl",              "weight_kg": 5,   "sets": 3, "reps": 15, "completed": true }
+    { "name": "Dumbbell shoulder press", "weight_kg": 7.5, "sets": 3, "reps": 15, "completed": true },
+    { "name": "Machine shoulder press",  "weight_lbs": 45, "sets": 3, "reps": 15, "completed": true, "note": "15×1, 10×2" },
+    { "name": "Barbell curl",            "weight_kg": 5,   "sets": 3, "reps": 15, "completed": true }
   ]
 }
