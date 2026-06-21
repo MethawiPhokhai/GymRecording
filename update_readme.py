@@ -134,12 +134,16 @@ def build_card_html(entry):
     color = TYPE_COLORS.get(workout_type, TYPE_DEFAULT)
 
     if workout_type == "Running":
-        duration = entry.get("duration_minutes", "-")
+        duration = entry.get("duration_minutes")
         distance = entry.get("distance_km")
+        pace = entry.get("pace")
         note = entry.get("note", "")
         parts = []
-        if duration: parts.append(f"{duration} min")
+        if duration:
+            h, m = divmod(duration, 60)
+            parts.append(f"{h}h {m}min" if h else f"{m} min")
         if distance: parts.append(f"{distance} km")
+        if pace:     parts.append(f"pace {pace}")
         if note:     parts.append(note)
         detail_str = " · ".join(parts)
         return f"""
