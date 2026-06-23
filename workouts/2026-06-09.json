@@ -5,7 +5,7 @@
   "exercises": [
     { "name": "Pull up",              "completed": true },
     { "name": "Shoulder press",       "completed": true, "note": "เจ็บหลังแขน" },
-    { "name": "S Bench press",        "completed": true },
-    { "name": "Bench press (seated)", "completed": true }
+    { "name": "Supine bench press",   "completed": true },
+    { "name": "Machine Chest press",  "completed": true }
   ]
 }

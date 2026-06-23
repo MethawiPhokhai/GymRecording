@@ -4,8 +4,8 @@
   "type": "Upper",
   "exercises": [
     { "name": "Shoulder press",        "weight_lbs": 40, "sets": 3, "reps": 15, "completed": true },
-    { "name": "S Bench press",         "weight_lbs": 20, "sets": 3, "reps": 10, "completed": true },
-    { "name": "Bench press (seated)",  "completed": true },
+    { "name": "Supine bench press",    "weight_lbs": 20, "sets": 3, "reps": 10, "completed": true },
+    { "name": "Machine Chest press",   "completed": true },
     { "name": "Face pull",             "weight_lbs": 40, "sets": 3, "reps": 15, "completed": true },
     { "name": "Back Hyperextension",   "sets": 3, "reps": 15, "completed": true, "note": "bodyweight" }
   ]
