@@ -7,7 +7,6 @@ BKK = timezone(timedelta(hours=7))
 
 WORKOUTS_DIR = "workouts"
 TEMPLATES_DIR = "templates"
-README_PATH = "README.md"
 HTML_PATH = "index.html"
 
 
@@ -72,51 +71,6 @@ def resolve_session(entry, templates):
     merged = merge_exercises(exercises, template)
     return {**entry, "exercises": merged}
 
-
-# ── Markdown ────────────────────────────────────────────────────────────────
-
-def build_section_md(entry):
-    date = entry.get("date", "-")
-    day = entry.get("day", "-")
-    workout_type = entry.get("type", "-")
-
-    if workout_type == "Class":
-        class_name = entry.get("name", "Class")
-        duration = entry.get("duration_minutes", "")
-        body = f"{class_name} · {duration} minutes" if duration else class_name
-        return (
-            f"<details>\n"
-            f"<summary>{date} · {day} · <b>{workout_type}</b></summary>\n\n"
-            f"{body}\n\n"
-            f"</details>\n"
-        )
-
-    exercises = entry.get("exercises", [])
-    rows = ["| Exercise | Weight | Sets × Reps | Note |",
-            "|----------|--------|-------------|------|"]
-    for e in exercises:
-        weight = f"{e['weight_lbs']} lbs" if e.get("weight_lbs") else "-"
-        rows.append(f"| {e['name']} | {weight} | {e['sets']}×{e['reps']} | {e.get('note','')} |")
-    table = "\n".join(rows)
-    return (
-        f"<details>\n"
-        f"<summary>{date} · {day} · <b>{workout_type}</b></summary>\n\n"
-        f"{table}\n\n"
-        f"</details>\n"
-    )
-
-
-def update_readme():
-    content = (
-        "# Gym Recording\n\n"
-        "Personal workout log — tracking sets, reps, and weights over time.\n\n"
-        "> View the full log → [**gymrecording page**](https://methawiphokhai.github.io/GymRecording/)\n"
-    )
-    with open(README_PATH, "w") as f:
-        f.write(content)
-
-
-# ── HTML ─────────────────────────────────────────────────────────────────────
 
 TYPE_COLORS = {
     "Upper":   "#4f8ef7",
@@ -211,7 +165,7 @@ def build_card_html(entry):
   </details>"""
 
 
-def update_html(entries):
+def build_html(entries):
     cards = "\n".join(build_card_html(e) for e in entries)
     updated = datetime.now(BKK).strftime("%Y-%m-%d %H:%M (Bangkok)")
     html = f"""<!DOCTYPE html>
@@ -277,11 +231,9 @@ def update_html(entries):
     .class-name {{ font-size: .95rem; font-weight: 600; color: #e6edf3; }}
     .class-duration {{ font-size: .85rem; color: #7d8590; }}
     footer {{ margin-top: 2.5rem; text-align: center; font-size: .78rem; color: #484f58; }}
-
     #ptr-indicator {{
       display: flex; align-items: center; justify-content: center;
-      height: 0; overflow: hidden;
-      transition: height .2s;
+      height: 0; overflow: hidden; transition: height .2s;
       color: #7d8590; font-size: .8rem; gap: .4rem;
     }}
     #ptr-indicator.visible {{ height: 48px; }}
@@ -308,18 +260,15 @@ def update_html(entries):
   <script>
     let startY = 0, pulling = false;
     const indicator = document.getElementById('ptr-indicator');
-
     document.addEventListener('touchstart', e => {{
       if (window.scrollY === 0) startY = e.touches[0].clientY;
     }}, {{ passive: true }});
-
     document.addEventListener('touchmove', e => {{
       if (window.scrollY === 0 && e.touches[0].clientY - startY > 60) {{
         pulling = true;
         indicator.classList.add('visible');
       }}
     }}, {{ passive: true }});
-
     document.addEventListener('touchend', () => {{
       if (pulling) {{ location.reload(); }}
       pulling = false;
@@ -337,6 +286,5 @@ if __name__ == "__main__":
     templates = load_templates()
     entries = load_workouts()
     resolved = [resolve_session(e, templates) for e in entries]
-    update_readme()
-    update_html(resolved)
-    print("README and index.html updated.")
+    build_html(resolved)
+    print("index.html updated.")

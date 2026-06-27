@@ -61,11 +61,9 @@
     .class-name { font-size: .95rem; font-weight: 600; color: #e6edf3; }
     .class-duration { font-size: .85rem; color: #7d8590; }
     footer { margin-top: 2.5rem; text-align: center; font-size: .78rem; color: #484f58; }
-
     #ptr-indicator {
       display: flex; align-items: center; justify-content: center;
-      height: 0; overflow: hidden;
-      transition: height .2s;
+      height: 0; overflow: hidden; transition: height .2s;
       color: #7d8590; font-size: .8rem; gap: .4rem;
     }
     #ptr-indicator.visible { height: 48px; }
@@ -236,23 +234,20 @@
       <span class='class-duration'>· 60 minutes</span>
     </div>
   </details>
-    <footer>Updated 2026-06-26 18:53 (Bangkok)</footer>
+    <footer>Updated 2026-06-27 08:58 (Bangkok)</footer>
   </div>
   <script>
     let startY = 0, pulling = false;
     const indicator = document.getElementById('ptr-indicator');
-
     document.addEventListener('touchstart', e => {
       if (window.scrollY === 0) startY = e.touches[0].clientY;
     }, { passive: true });
-
     document.addEventListener('touchmove', e => {
       if (window.scrollY === 0 && e.touches[0].clientY - startY > 60) {
         pulling = true;
         indicator.classList.add('visible');
       }
     }, { passive: true });
-
     document.addEventListener('touchend', () => {
       if (pulling) { location.reload(); }
       pulling = false;
