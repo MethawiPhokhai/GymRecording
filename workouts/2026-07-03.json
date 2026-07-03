@@ -1,0 +1,12 @@
+{
+  "date": "2026-07-03",
+  "day": "Friday",
+  "type": "Lower",
+  "exercises": [
+    { "name": "Squat",             "weight_kg": 20,  "sets": 3, "reps": 10, "completed": true },
+    { "name": "Romanian deadlift", "weight_kg": 15,  "sets": 3, "reps": 15, "completed": true },
+    { "name": "Leg extension",     "weight_lbs": 55, "sets": 3, "reps": 15, "completed": true },
+    { "name": "Calf raise",        "sets": 3, "reps": 8, "completed": true, "note": "เน้น Gastrocnemius" },
+    { "name": "Seated calf raise", "weight_kg": 2, "sets": 3, "reps": 8, "completed": true, "note": "เน้น Soleus" }
+  ]
+}
