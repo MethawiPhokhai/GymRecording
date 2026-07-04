@@ -91,15 +91,22 @@ def build_card_html(entry):
         duration = entry.get("duration_minutes")
         distance = entry.get("distance_km")
         pace = entry.get("pace")
+        hr = entry.get("avg_heart_rate_bpm")
+        calories = entry.get("calories")
         note = entry.get("note", "")
         parts = []
         if duration:
             h, m = divmod(duration, 60)
             parts.append(f"{h}h {m}min" if h else f"{m} min")
-        if distance: parts.append(f"{distance} km")
-        if pace:     parts.append(f"pace {pace}")
-        if note:     parts.append(note)
+        if distance:  parts.append(f"{distance} km")
+        if pace:      parts.append(f"pace {pace}")
+        if note:      parts.append(note)
         detail_str = " · ".join(parts)
+        extra_parts = []
+        if hr:       extra_parts.append(f"❤ {hr} bpm")
+        if calories: extra_parts.append(f"🔥 {calories} kcal")
+        extra_str = " · ".join(extra_parts)
+        detail_body = detail_str + (f"<br><small style='color:#7d8590'>{extra_str}</small>" if extra_str else "")
         return f"""
   <details class="card">
     <summary>
@@ -109,7 +116,7 @@ def build_card_html(entry):
       <span class="count">{detail_str}</span>
     </summary>
     <div class="class-detail">
-      <span class="class-name">{detail_str}</span>
+      <span class="class-name">{detail_body}</span>
     </div>
   </details>"""
 
