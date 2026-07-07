@@ -3,7 +3,7 @@
   "exercises": [
     { "name": "Pull up",                  "default_weight_lbs": 60,   "default_sets": 3, "default_reps": 15 },
     { "name": "Shoulder press",           "default_weight_lbs": 40,   "default_sets": 3, "default_reps": 15 },
-    { "name": "Barbell bench press",      "default_weight_lbs": 20,   "default_sets": 3, "default_reps": 10 },
+    { "name": "Barbell bench press",      "default_weight_lbs": 25,   "default_sets": 3, "default_reps": 10 },
     { "name": "Supine bench press",       "default_weight_lbs": 20,   "default_sets": 3, "default_reps": 10 },
     { "name": "Chest fly",                "default_weight_lbs": 55,   "default_sets": 3, "default_reps": 15 },
     { "name": "Machine Chest press",      "default_weight_lbs": 55,   "default_sets": 3, "default_reps": 15 },
