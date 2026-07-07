@@ -40,10 +40,14 @@ def merge_exercises(session_exercises, template):
     for ex in session_exercises:
         name = ex["name"]
         base = pool.get(name, {})
+        if ex.get("weight_kg") or ex.get("weight_lbs"):
+            weight_kg, weight_lbs = ex.get("weight_kg"), ex.get("weight_lbs")
+        else:
+            weight_kg, weight_lbs = base.get("default_weight_kg"), base.get("default_weight_lbs")
         merged.append({
             "name":       name,
-            "weight_lbs": ex.get("weight_lbs") or base.get("default_weight_lbs"),
-            "weight_kg":  ex.get("weight_kg"),
+            "weight_lbs": weight_lbs,
+            "weight_kg":  weight_kg,
             "sets":       ex.get("sets")       or base.get("default_sets"),
             "reps":       ex.get("reps")       or base.get("default_reps"),
             "completed":  ex.get("completed", False),

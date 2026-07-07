@@ -1,13 +1,14 @@
 {
   "type": "Lower",
   "exercises": [
-    { "name": "Squat",               "default_weight_lbs": null, "default_sets": 3, "default_reps": 12 },
+    { "name": "Squat",               "default_weight_kg": 20,    "default_sets": 3, "default_reps": 10 },
     { "name": "Leg press",           "default_weight_lbs": null, "default_sets": 3, "default_reps": 15 },
-    { "name": "Romanian deadlift",   "default_weight_lbs": null, "default_sets": 3, "default_reps": 12 },
+    { "name": "Romanian deadlift",   "default_weight_kg": 15,    "default_sets": 3, "default_reps": 15 },
+    { "name": "Lateral lunge",       "default_weight_kg": 10,    "default_sets": 3, "default_reps": 10 },
     { "name": "Leg curl",            "default_weight_lbs": null, "default_sets": 3, "default_reps": 15 },
-    { "name": "Leg extension",       "default_weight_lbs": null, "default_sets": 3, "default_reps": 15 },
-    { "name": "Hip thrust",          "default_weight_lbs": null, "default_sets": 3, "default_reps": 15 },
+    { "name": "Leg extension",       "default_weight_lbs": 55,   "default_sets": 3, "default_reps": 15 },
+    { "name": "Hip thrust",          "default_weight_kg": 10,    "default_sets": 3, "default_reps": 15 },
     { "name": "Calf raise",          "default_weight_lbs": null, "default_sets": 3, "default_reps": 8 },
-    { "name": "Seated calf raise",   "default_weight_lbs": null, "default_sets": 3, "default_reps": 8 }
+    { "name": "Seated calf raise",   "default_weight_kg": 2,     "default_sets": 3, "default_reps": 8 }
   ]
 }
