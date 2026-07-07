@@ -1,18 +1,83 @@
 {
   "type": "Upper",
   "exercises": [
-    { "name": "Pull up",                  "default_weight_lbs": 60,   "default_sets": 3, "default_reps": 15 },
-    { "name": "Shoulder press",           "default_weight_lbs": 40,   "default_sets": 3, "default_reps": 15 },
-    { "name": "Barbell bench press",      "default_weight_lbs": 25,   "default_sets": 3, "default_reps": 10 },
-    { "name": "Supine bench press",       "default_weight_lbs": 20,   "default_sets": 3, "default_reps": 10 },
-    { "name": "Chest fly",                "default_weight_lbs": 55,   "default_sets": 3, "default_reps": 15 },
-    { "name": "Machine Chest press",      "default_weight_lbs": 55,   "default_sets": 3, "default_reps": 15 },
-    { "name": "Deadlift",                 "default_weight_lbs": null, "default_sets": 3, "default_reps": 10 },
-    { "name": "Back cable rowing",        "default_weight_lbs": 55,   "default_sets": 3, "default_reps": 15 },
-    { "name": "Lat pulldown",             "default_weight_lbs": 55,   "default_sets": 3, "default_reps": 15 },
-    { "name": "Face pull",                "default_weight_lbs": 40,   "default_sets": 3, "default_reps": 15 },
-    { "name": "Back Hyperextension",      "default_weight_lbs": null, "default_sets": 3, "default_reps": 15 },
-    { "name": "Bicep curl",               "default_weight_lbs": null, "default_sets": 3, "default_reps": 12 },
-    { "name": "Cable tricep press down",  "default_weight_lbs": null, "default_sets": 3, "default_reps": 15 }
+    {
+      "name": "Pull up",
+      "default_weight_lbs": 60,
+      "default_sets": 3,
+      "default_reps": 15
+    },
+    {
+      "name": "Shoulder press",
+      "default_weight_lbs": 40,
+      "default_sets": 3,
+      "default_reps": 15
+    },
+    {
+      "name": "Barbell bench press",
+      "default_weight_lbs": 25,
+      "default_sets": 3,
+      "default_reps": 10
+    },
+    {
+      "name": "Supine bench press",
+      "default_weight_lbs": 20,
+      "default_sets": 3,
+      "default_reps": 10
+    },
+    {
+      "name": "Chest fly",
+      "default_weight_lbs": 55,
+      "default_sets": 3,
+      "default_reps": 15
+    },
+    {
+      "name": "Machine Chest press",
+      "default_weight_lbs": 65,
+      "default_sets": 3,
+      "default_reps": 15
+    },
+    {
+      "name": "Deadlift",
+      "default_weight_lbs": null,
+      "default_sets": 3,
+      "default_reps": 10
+    },
+    {
+      "name": "Back cable rowing",
+      "default_weight_lbs": 55,
+      "default_sets": 3,
+      "default_reps": 15
+    },
+    {
+      "name": "Lat pulldown",
+      "default_weight_lbs": 65,
+      "default_sets": 3,
+      "default_reps": 15
+    },
+    {
+      "name": "Face pull",
+      "default_weight_lbs": 50,
+      "default_sets": 3,
+      "default_reps": 15
+    },
+    {
+      "name": "Back Hyperextension",
+      "default_weight_lbs": null,
+      "default_sets": 3,
+      "default_reps": 15
+    },
+    {
+      "name": "Bicep curl",
+      "default_weight_lbs": null,
+      "default_sets": 3,
+      "default_reps": 12
+    },
+    {
+      "name": "Cable tricep press down",
+      "default_weight_lbs": 40,
+      "default_sets": 3,
+      "default_reps": 10
+    }
   ]
 }
