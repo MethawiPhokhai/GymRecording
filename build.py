@@ -172,8 +172,69 @@ def build_card_html(entry):
   </details>"""
 
 
-def build_html(entries):
+def format_default_weight(ex):
+    if ex.get("default_weight_kg"):
+        return f"{ex['default_weight_kg']} kg"
+    if ex.get("default_weight_lbs"):
+        return f"{ex['default_weight_lbs']} lbs"
+    return "-"
+
+
+def build_template_section(template):
+    workout_type = template.get("type", "-")
+    color = TYPE_COLORS.get(workout_type, TYPE_DEFAULT)
+    badge = f'<span class="badge" style="background:{color}22;color:{color};border-color:{color}44">{workout_type}</span>'
+
+    if workout_type == "Class":
+        chips = "".join(
+            f'<span class="chip">{c["name"]}'
+            f'<small> · {c["default_duration_minutes"]} min</small></span>'
+            for c in template.get("classes", [])
+        )
+        return f"""
+  <div class="tpl-section">
+    <div class="tpl-head">{badge}</div>
+    <div class="chip-row">{chips}</div>
+  </div>"""
+
+    exercises = template.get("exercises", [])
+    if not exercises:
+        return ""
+    rows = ""
+    for e in exercises:
+        weight = format_default_weight(e)
+        sets = e.get("default_sets", "-")
+        reps = e.get("default_reps", "-")
+        rows += (
+            f"<tr>"
+            f"<td>{e['name']}</td>"
+            f"<td>{weight}</td>"
+            f"<td>{sets}×{reps}</td>"
+            f"</tr>\n"
+        )
+    return f"""
+  <div class="tpl-section">
+    <div class="tpl-head">{badge}<span class="count">{len(exercises)} exercises</span></div>
+    <div class="card" style="margin-top:.6rem">
+      <table>
+        <thead><tr><th>Exercise</th><th>Default Weight</th><th>Sets×Reps</th></tr></thead>
+        <tbody>
+{rows}        </tbody>
+      </table>
+    </div>
+  </div>"""
+
+
+TEMPLATE_ORDER = ["Upper", "Lower", "Class", "Running"]
+
+
+def build_html(entries, templates):
     cards = "\n".join(build_card_html(e) for e in entries)
+    ordered = [templates[t] for t in TEMPLATE_ORDER if t in templates]
+    ordered += [t for k, t in templates.items() if k not in TEMPLATE_ORDER]
+    template_sections = "\n".join(
+        s for s in (build_template_section(t) for t in ordered) if s
+    )
     updated = datetime.now(BKK).strftime("%Y-%m-%d %H:%M (Bangkok)")
     html = f"""<!DOCTYPE html>
 <html lang="en">
@@ -238,6 +299,29 @@ def build_html(entries):
     .class-name {{ font-size: .95rem; font-weight: 600; color: #e6edf3; }}
     .class-duration {{ font-size: .85rem; color: #7d8590; }}
     footer {{ margin-top: 2.5rem; text-align: center; font-size: .78rem; color: #484f58; }}
+    .tabs {{
+      display: flex; gap: .5rem; margin-bottom: 1.25rem;
+    }}
+    .tab {{
+      background: none; border: 1px solid #30363d; color: #7d8590;
+      font-size: .85rem; font-weight: 600; font-family: inherit;
+      padding: .45rem 1.1rem; border-radius: 20px; cursor: pointer;
+      transition: all .15s;
+    }}
+    .tab.active {{
+      background: #1f6feb22; border-color: #1f6feb66; color: #58a6ff;
+    }}
+    .view {{ display: none; }}
+    .view.active {{ display: block; }}
+    .tpl-section {{ margin-bottom: 1.5rem; }}
+    .tpl-head {{ display: flex; align-items: center; gap: .75rem; }}
+    .chip-row {{ display: flex; flex-wrap: wrap; gap: .5rem; margin-top: .6rem; }}
+    .chip {{
+      background: #161b22; border: 1px solid #30363d;
+      border-radius: 20px; padding: .35rem .85rem;
+      font-size: .82rem; color: #c9d1d9;
+    }}
+    .chip small {{ color: #7d8590; }}
     #ptr-indicator {{
       display: flex; align-items: center; justify-content: center;
       height: 0; overflow: hidden; transition: height .2s;
@@ -260,11 +344,30 @@ def build_html(entries):
       <h1>Gym Recording</h1>
       <p>Personal workout log — tracking sets, reps, and weights over time.</p>
     </header>
-    <p class="section-title">Latest 10 Workouts</p>
-    {cards}
+    <div class="tabs">
+      <button class="tab active" data-view="log">Log</button>
+      <button class="tab" data-view="templates">Templates</button>
+    </div>
+    <div id="view-log" class="view active">
+      <p class="section-title">Latest 10 Workouts</p>
+      {cards}
+    </div>
+    <div id="view-templates" class="view">
+      <p class="section-title">Default Exercises</p>
+      {template_sections}
+    </div>
     <footer>Updated {updated}</footer>
   </div>
   <script>
+    document.querySelectorAll('.tab').forEach(tab => {{
+      tab.addEventListener('click', () => {{
+        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+        document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+        tab.classList.add('active');
+        document.getElementById('view-' + tab.dataset.view).classList.add('active');
+      }});
+    }});
+
     let startY = 0, pulling = false;
     const indicator = document.getElementById('ptr-indicator');
     document.addEventListener('touchstart', e => {{
@@ -293,5 +396,5 @@ if __name__ == "__main__":
     templates = load_templates()
     entries = load_workouts()
     resolved = [resolve_session(e, templates) for e in entries]
-    build_html(resolved)
+    build_html(resolved, templates)
     print("index.html updated.")
