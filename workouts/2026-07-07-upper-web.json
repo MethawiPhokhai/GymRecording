@@ -1,0 +1,49 @@
+{
+  "date": "2026-07-07",
+  "day": "Tuesday",
+  "type": "Upper",
+  "exercises": [
+    {
+      "name": "Barbell bench press",
+      "completed": true,
+      "weight_lbs": 25,
+      "sets": 3,
+      "reps": 10
+    },
+    {
+      "name": "Supine bench press",
+      "completed": true,
+      "weight_lbs": 20,
+      "sets": 3,
+      "reps": 10
+    },
+    {
+      "name": "Machine Chest press",
+      "completed": true,
+      "weight_lbs": 65,
+      "sets": 3,
+      "reps": 15
+    },
+    {
+      "name": "Lat pulldown",
+      "completed": true,
+      "weight_lbs": 65,
+      "sets": 3,
+      "reps": 15
+    },
+    {
+      "name": "Face pull",
+      "completed": true,
+      "weight_lbs": 50,
+      "sets": 3,
+      "reps": 15
+    },
+    {
+      "name": "Cable tricep press down",
+      "completed": true,
+      "weight_lbs": 40,
+      "sets": 3,
+      "reps": 10
+    }
+  ]
+}
