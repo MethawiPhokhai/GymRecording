@@ -187,8 +187,9 @@ def build_template_section(template):
 
     if workout_type == "Class":
         chips = "".join(
-            f'<span class="chip">{c["name"]}'
-            f'<small> · {c["default_duration_minutes"]} min</small></span>'
+            f'<button class="chip sel-chip" data-name="{c["name"]}" '
+            f'data-duration="{c["default_duration_minutes"]}">{c["name"]}'
+            f'<small> · {c["default_duration_minutes"]} min</small></button>'
             for c in template.get("classes", [])
         )
         return f"""
@@ -206,7 +207,9 @@ def build_template_section(template):
         sets = e.get("default_sets", "-")
         reps = e.get("default_reps", "-")
         rows += (
-            f"<tr>"
+            f"<tr class='sel-row'>"
+            f"<td class='selcell'><input type='checkbox' class='sel' "
+            f"data-type='{workout_type}' data-name=\"{e['name']}\"></td>"
             f"<td>{e['name']}</td>"
             f"<td>{weight}</td>"
             f"<td>{sets}×{reps}</td>"
@@ -217,7 +220,7 @@ def build_template_section(template):
     <div class="tpl-head">{badge}<span class="count">{len(exercises)} exercises</span></div>
     <div class="card" style="margin-top:.6rem">
       <table>
-        <thead><tr><th>Exercise</th><th>Default Weight</th><th>Sets×Reps</th></tr></thead>
+        <thead><tr><th></th><th>Exercise</th><th>Default Weight</th><th>Sets×Reps</th></tr></thead>
         <tbody>
 {rows}        </tbody>
       </table>
@@ -226,6 +229,180 @@ def build_template_section(template):
 
 
 TEMPLATE_ORDER = ["Upper", "Lower", "Class", "Running"]
+
+SAVE_CSS = """
+    .selcell { width: 2.2rem; }
+    .sel {
+      width: 1.1rem; height: 1.1rem; accent-color: #e3b341;
+      cursor: pointer; vertical-align: middle;
+    }
+    .sel-row { cursor: pointer; }
+    .sel-chip {
+      cursor: pointer; font-family: inherit;
+      transition: all .15s;
+    }
+    .sel-chip.selected {
+      background: #e3b34122; border-color: #e3b34166; color: #e3b341;
+    }
+    .sel-chip.selected small { color: #e3b341aa; }
+    #savebar {
+      position: fixed; bottom: 0; left: 0; right: 0;
+      display: none; align-items: center; justify-content: center; gap: 1rem;
+      padding: .9rem 1rem calc(.9rem + env(safe-area-inset-bottom));
+      background: #161b22ee; border-top: 1px solid #30363d;
+      backdrop-filter: blur(8px);
+    }
+    #savebar.visible { display: flex; }
+    #savecount { font-size: .85rem; color: #7d8590; }
+    #savebtn {
+      background: #238636; border: none; color: #fff;
+      font-size: .9rem; font-weight: 600; font-family: inherit;
+      padding: .55rem 1.6rem; border-radius: 8px; cursor: pointer;
+    }
+    #savebtn:disabled { opacity: .5; cursor: wait; }
+    #tokenbtn {
+      background: none; border: 1px solid #30363d; color: #7d8590;
+      border-radius: 8px; padding: .5rem .7rem; cursor: pointer; font-family: inherit;
+    }
+"""
+
+SAVE_SCRIPT = """
+    const REPO = 'MethawiPhokhai/GymRecording';
+    const BRANCH = 'claude/session-summary-ffzuxy';
+    const API = `https://api.github.com/repos/${REPO}/contents/`;
+
+    const savebar = document.getElementById('savebar');
+    const savecount = document.getElementById('savecount');
+    const savebtn = document.getElementById('savebtn');
+
+    function selections() {
+      const items = [];
+      document.querySelectorAll('.sel:checked').forEach(cb =>
+        items.push({ kind: 'exercise', type: cb.dataset.type, name: cb.dataset.name }));
+      document.querySelectorAll('.sel-chip.selected').forEach(ch =>
+        items.push({ kind: 'class', name: ch.dataset.name, duration: +ch.dataset.duration }));
+      return items;
+    }
+
+    function refreshBar() {
+      const n = selections().length;
+      savecount.textContent = n + ' selected';
+      savebar.classList.toggle('visible', n > 0);
+    }
+
+    document.querySelectorAll('.sel').forEach(cb =>
+      cb.addEventListener('change', refreshBar));
+    document.querySelectorAll('.sel-row').forEach(row =>
+      row.addEventListener('click', e => {
+        if (e.target.classList.contains('sel')) return;
+        const cb = row.querySelector('.sel');
+        cb.checked = !cb.checked;
+        refreshBar();
+      }));
+    document.querySelectorAll('.sel-chip').forEach(ch =>
+      ch.addEventListener('click', () => {
+        ch.classList.toggle('selected');
+        refreshBar();
+      }));
+
+    function getToken(force) {
+      let t = localStorage.getItem('gh_token');
+      if (!t || force) {
+        t = prompt('Paste GitHub fine-grained token (Contents: Read and write on GymRecording). Stored only in this browser.');
+        if (t) localStorage.setItem('gh_token', t.trim());
+      }
+      return t;
+    }
+
+    document.getElementById('tokenbtn').addEventListener('click', () => getToken(true));
+
+    const b64 = s => btoa(unescape(encodeURIComponent(s)));
+    const unb64 = s => decodeURIComponent(escape(atob(s)));
+
+    async function ghGet(path, token) {
+      const r = await fetch(API + path + '?ref=' + BRANCH, {
+        headers: { Authorization: 'Bearer ' + token, Accept: 'application/vnd.github+json' }
+      });
+      if (r.status === 404) return null;
+      if (!r.ok) throw new Error('GET ' + path + ': ' + r.status);
+      return r.json();
+    }
+
+    async function ghPut(path, obj, sha, token) {
+      const body = {
+        message: 'log: add workout via web',
+        content: b64(JSON.stringify(obj, null, 2) + '\\n'),
+        branch: BRANCH
+      };
+      if (sha) body.sha = sha;
+      const r = await fetch(API + path, {
+        method: 'PUT',
+        headers: { Authorization: 'Bearer ' + token, Accept: 'application/vnd.github+json' },
+        body: JSON.stringify(body)
+      });
+      if (!r.ok) throw new Error('PUT ' + path + ': ' + r.status);
+    }
+
+    savebtn.addEventListener('click', async () => {
+      const items = selections();
+      if (!items.length) return;
+      const token = getToken(false);
+      if (!token) return;
+
+      const opts = { timeZone: 'Asia/Bangkok' };
+      const date = new Date().toLocaleDateString('en-CA', opts);
+      const dayName = new Date().toLocaleDateString('en-US', { weekday: 'long', ...opts });
+
+      savebtn.disabled = true;
+      savebtn.textContent = 'Saving…';
+      try {
+        const byType = {};
+        items.filter(i => i.kind === 'exercise').forEach(i => {
+          (byType[i.type] = byType[i.type] || []).push(i.name);
+        });
+
+        for (const [type, names] of Object.entries(byType)) {
+          const path = `workouts/${date}-${type.toLowerCase()}-web.json`;
+          const existing = await ghGet(path, token);
+          let obj, sha = null;
+          if (existing) {
+            obj = JSON.parse(unb64(existing.content));
+            sha = existing.sha;
+            const have = new Set(obj.exercises.map(e => e.name));
+            names.filter(n => !have.has(n)).forEach(n =>
+              obj.exercises.push({ name: n, completed: true }));
+          } else {
+            obj = { date, day: dayName, type,
+                    exercises: names.map(n => ({ name: n, completed: true })) };
+          }
+          await ghPut(path, obj, sha, token);
+        }
+
+        for (const c of items.filter(i => i.kind === 'class')) {
+          const slug = c.name.toLowerCase().replace(/\\s+/g, '');
+          const path = `workouts/${date}-class-${slug}.json`;
+          const existing = await ghGet(path, token);
+          const obj = { date, day: dayName, type: 'Class',
+                        name: c.name, duration_minutes: c.duration };
+          await ghPut(path, obj, existing ? existing.sha : null, token);
+        }
+
+        document.querySelectorAll('.sel:checked').forEach(cb => cb.checked = false);
+        document.querySelectorAll('.sel-chip.selected').forEach(ch => ch.classList.remove('selected'));
+        refreshBar();
+        alert('Saved! The site rebuilds in ~1 minute, then pull to refresh.');
+      } catch (err) {
+        if (String(err).includes('401') || String(err).includes('403')) {
+          alert('Token invalid or expired — tap ⚙ to set a new one.');
+        } else {
+          alert('Save failed: ' + err.message);
+        }
+      } finally {
+        savebtn.disabled = false;
+        savebtn.textContent = 'Save to Log';
+      }
+    });
+"""
 
 
 def build_html(entries, templates):
@@ -330,6 +507,7 @@ def build_html(entries, templates):
     #ptr-indicator.visible {{ height: 48px; }}
     #ptr-indicator svg {{ animation: spin 1s linear infinite; }}
     @keyframes spin {{ to {{ transform: rotate(360deg); }} }}
+{SAVE_CSS}
   </style>
 </head>
 <body>
@@ -355,9 +533,18 @@ def build_html(entries, templates):
     <div id="view-templates" class="view">
       <p class="section-title">Default Exercises</p>
       {template_sections}
+      <div style="height:4.5rem"></div>
     </div>
     <footer>Updated {updated}</footer>
   </div>
+  <div id="savebar">
+    <span id="savecount"></span>
+    <button id="savebtn">Save to Log</button>
+    <button id="tokenbtn" title="Set GitHub token">⚙</button>
+  </div>
+  <script>
+{SAVE_SCRIPT}
+  </script>
   <script>
     document.querySelectorAll('.tab').forEach(tab => {{
       tab.addEventListener('click', () => {{
