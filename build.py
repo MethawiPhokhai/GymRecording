@@ -187,9 +187,9 @@ def build_template_section(template):
 
     if workout_type == "Class":
         chips = "".join(
-            f'<button class="chip sel-chip" data-name="{c["name"]}" '
-            f'data-duration="{c["default_duration_minutes"]}">{c["name"]}'
-            f'<small> · {c["default_duration_minutes"]} min</small></button>'
+            f'<span class="chip sel-chip" data-name="{c["name"]}">{c["name"]}'
+            f'<small> · <input type="number" class="dur" '
+            f'value="{c["default_duration_minutes"]}"> min</small></span>'
             for c in template.get("classes", [])
         )
         return f"""
@@ -203,16 +203,24 @@ def build_template_section(template):
         return ""
     rows = ""
     for e in exercises:
-        weight = format_default_weight(e)
-        sets = e.get("default_sets", "-")
-        reps = e.get("default_reps", "-")
+        if e.get("default_weight_kg"):
+            num, unit = e["default_weight_kg"], "kg"
+        elif e.get("default_weight_lbs"):
+            num, unit = e["default_weight_lbs"], "lbs"
+        else:
+            num, unit = "", "lbs"
+        lbs_sel = " selected" if unit == "lbs" else ""
+        kg_sel = " selected" if unit == "kg" else ""
+        sets = e.get("default_sets") or ""
+        reps = e.get("default_reps") or ""
         rows += (
             f"<tr class='sel-row'>"
-            f"<td class='selcell'><input type='checkbox' class='sel' "
-            f"data-type='{workout_type}' data-name=\"{e['name']}\"></td>"
-            f"<td>{e['name']}</td>"
-            f"<td>{weight}</td>"
-            f"<td>{sets}×{reps}</td>"
+            f"<td class='selcell'><input type='checkbox' class='sel'></td>"
+            f"<td class='exname'>{e['name']}</td>"
+            f"<td class='wcell'><input type='number' class='w-num' step='0.5' value='{num}' placeholder='-'>"
+            f"<select class='w-unit'><option{lbs_sel}>lbs</option><option{kg_sel}>kg</option></select></td>"
+            f"<td class='srcell'><input type='number' class='sr-sets' value='{sets}'>×"
+            f"<input type='number' class='sr-reps' value='{reps}'></td>"
             f"</tr>\n"
         )
     return f"""
@@ -220,11 +228,12 @@ def build_template_section(template):
     <div class="tpl-head">{badge}<span class="count">{len(exercises)} exercises</span></div>
     <div class="card" style="margin-top:.6rem">
       <table>
-        <thead><tr><th></th><th>Exercise</th><th>Default Weight</th><th>Sets×Reps</th></tr></thead>
-        <tbody>
+        <thead><tr><th></th><th>Exercise</th><th>Weight</th><th>Sets×Reps</th></tr></thead>
+        <tbody data-type="{workout_type}">
 {rows}        </tbody>
       </table>
     </div>
+    <button class="addrow" data-type="{workout_type}">+ Add exercise</button>
   </div>"""
 
 
@@ -264,6 +273,29 @@ SAVE_CSS = """
       background: none; border: 1px solid #30363d; color: #7d8590;
       border-radius: 8px; padding: .5rem .7rem; cursor: pointer; font-family: inherit;
     }
+    .wcell input, .srcell input, .exname input, .dur {
+      background: #0d1117; border: 1px solid #30363d; color: #e6edf3;
+      border-radius: 6px; padding: .28rem .4rem;
+      font-size: .85rem; font-family: inherit;
+    }
+    .w-num { width: 4.4rem; }
+    .sr-sets, .sr-reps { width: 3rem; text-align: center; }
+    .srcell { white-space: nowrap; }
+    .exname input { width: 100%; min-width: 8rem; }
+    .dur { width: 3.6rem; padding: .1rem .3rem; font-size: .8rem; }
+    .w-unit {
+      background: #0d1117; color: #7d8590; border: 1px solid #30363d;
+      border-radius: 6px; padding: .28rem .2rem; font-size: .8rem;
+      font-family: inherit; margin-left: .3rem;
+    }
+    input[type=number] { appearance: textfield; -moz-appearance: textfield; }
+    input[type=number]::-webkit-inner-spin-button { -webkit-appearance: none; }
+    .addrow {
+      background: none; border: 1px dashed #30363d; color: #7d8590;
+      border-radius: 8px; padding: .45rem 1rem; margin-top: .6rem;
+      font-size: .82rem; font-family: inherit; cursor: pointer;
+    }
+    .addrow:hover { border-color: #484f58; color: #c9d1d9; }
 """
 
 SAVE_SCRIPT = """
@@ -275,12 +307,33 @@ SAVE_SCRIPT = """
     const savecount = document.getElementById('savecount');
     const savebtn = document.getElementById('savebtn');
 
+    function rowData(cb) {
+      const tr = cb.closest('tr');
+      const type = tr.closest('tbody').dataset.type;
+      const nameEl = tr.querySelector('.exname input') || tr.querySelector('.exname');
+      const name = (nameEl.value !== undefined ? nameEl.value : nameEl.textContent).trim();
+      const ex = { name, completed: true };
+      const w = parseFloat(tr.querySelector('.w-num').value);
+      if (w > 0) {
+        const unit = tr.querySelector('.w-unit').value;
+        if (unit === 'kg') ex.weight_kg = w; else ex.weight_lbs = w;
+      }
+      const sets = parseInt(tr.querySelector('.sr-sets').value);
+      const reps = parseInt(tr.querySelector('.sr-reps').value);
+      if (sets > 0) ex.sets = sets;
+      if (reps > 0) ex.reps = reps;
+      return { kind: 'exercise', type, ex };
+    }
+
     function selections() {
       const items = [];
-      document.querySelectorAll('.sel:checked').forEach(cb =>
-        items.push({ kind: 'exercise', type: cb.dataset.type, name: cb.dataset.name }));
+      document.querySelectorAll('.sel:checked').forEach(cb => {
+        const d = rowData(cb);
+        if (d.ex.name) items.push(d);
+      });
       document.querySelectorAll('.sel-chip.selected').forEach(ch =>
-        items.push({ kind: 'class', name: ch.dataset.name, duration: +ch.dataset.duration }));
+        items.push({ kind: 'class', name: ch.dataset.name,
+                     duration: parseInt(ch.querySelector('.dur').value) || null }));
       return items;
     }
 
@@ -290,18 +343,39 @@ SAVE_SCRIPT = """
       savebar.classList.toggle('visible', n > 0);
     }
 
-    document.querySelectorAll('.sel').forEach(cb =>
-      cb.addEventListener('change', refreshBar));
-    document.querySelectorAll('.sel-row').forEach(row =>
+    function bindRow(row) {
       row.addEventListener('click', e => {
-        if (e.target.classList.contains('sel')) return;
+        if (e.target.matches('input, select, button')) return;
         const cb = row.querySelector('.sel');
         cb.checked = !cb.checked;
         refreshBar();
-      }));
+      });
+      row.querySelector('.sel').addEventListener('change', refreshBar);
+    }
+
+    document.querySelectorAll('.sel-row').forEach(bindRow);
+
     document.querySelectorAll('.sel-chip').forEach(ch =>
-      ch.addEventListener('click', () => {
+      ch.addEventListener('click', e => {
+        if (e.target.matches('input')) return;
         ch.classList.toggle('selected');
+        refreshBar();
+      }));
+
+    document.querySelectorAll('.addrow').forEach(btn =>
+      btn.addEventListener('click', () => {
+        const tbody = btn.closest('.tpl-section').querySelector('tbody');
+        const tr = document.createElement('tr');
+        tr.className = 'sel-row';
+        tr.innerHTML = `
+          <td class='selcell'><input type='checkbox' class='sel' checked></td>
+          <td class='exname'><input type='text' placeholder='Exercise name'></td>
+          <td class='wcell'><input type='number' class='w-num' step='0.5' placeholder='-'>
+            <select class='w-unit'><option>lbs</option><option>kg</option></select></td>
+          <td class='srcell'><input type='number' class='sr-sets' value='3'>×<input type='number' class='sr-reps' value='15'></td>`;
+        tbody.appendChild(tr);
+        bindRow(tr);
+        tr.querySelector('.exname input').focus();
         refreshBar();
       }));
 
@@ -358,22 +432,23 @@ SAVE_SCRIPT = """
       try {
         const byType = {};
         items.filter(i => i.kind === 'exercise').forEach(i => {
-          (byType[i.type] = byType[i.type] || []).push(i.name);
+          (byType[i.type] = byType[i.type] || []).push(i.ex);
         });
 
-        for (const [type, names] of Object.entries(byType)) {
+        for (const [type, exs] of Object.entries(byType)) {
           const path = `workouts/${date}-${type.toLowerCase()}-web.json`;
           const existing = await ghGet(path, token);
           let obj, sha = null;
           if (existing) {
             obj = JSON.parse(unb64(existing.content));
             sha = existing.sha;
-            const have = new Set(obj.exercises.map(e => e.name));
-            names.filter(n => !have.has(n)).forEach(n =>
-              obj.exercises.push({ name: n, completed: true }));
+            exs.forEach(ex => {
+              const idx = obj.exercises.findIndex(e => e.name === ex.name);
+              if (idx >= 0) obj.exercises[idx] = ex;
+              else obj.exercises.push(ex);
+            });
           } else {
-            obj = { date, day: dayName, type,
-                    exercises: names.map(n => ({ name: n, completed: true })) };
+            obj = { date, day: dayName, type, exercises: exs };
           }
           await ghPut(path, obj, sha, token);
         }

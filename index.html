@@ -126,6 +126,29 @@
       background: none; border: 1px solid #30363d; color: #7d8590;
       border-radius: 8px; padding: .5rem .7rem; cursor: pointer; font-family: inherit;
     }
+    .wcell input, .srcell input, .exname input, .dur {
+      background: #0d1117; border: 1px solid #30363d; color: #e6edf3;
+      border-radius: 6px; padding: .28rem .4rem;
+      font-size: .85rem; font-family: inherit;
+    }
+    .w-num { width: 4.4rem; }
+    .sr-sets, .sr-reps { width: 3rem; text-align: center; }
+    .srcell { white-space: nowrap; }
+    .exname input { width: 100%; min-width: 8rem; }
+    .dur { width: 3.6rem; padding: .1rem .3rem; font-size: .8rem; }
+    .w-unit {
+      background: #0d1117; color: #7d8590; border: 1px solid #30363d;
+      border-radius: 6px; padding: .28rem .2rem; font-size: .8rem;
+      font-family: inherit; margin-left: .3rem;
+    }
+    input[type=number] { appearance: textfield; -moz-appearance: textfield; }
+    input[type=number]::-webkit-inner-spin-button { -webkit-appearance: none; }
+    .addrow {
+      background: none; border: 1px dashed #30363d; color: #7d8590;
+      border-radius: 8px; padding: .45rem 1rem; margin-top: .6rem;
+      font-size: .82rem; font-family: inherit; cursor: pointer;
+    }
+    .addrow:hover { border-color: #484f58; color: #c9d1d9; }
 
   </style>
 </head>
@@ -306,47 +329,49 @@
     <div class="tpl-head"><span class="badge" style="background:#4f8ef722;color:#4f8ef7;border-color:#4f8ef744">Upper</span><span class="count">8 exercises</span></div>
     <div class="card" style="margin-top:.6rem">
       <table>
-        <thead><tr><th></th><th>Exercise</th><th>Default Weight</th><th>Sets×Reps</th></tr></thead>
-        <tbody>
-<tr class='sel-row'><td class='selcell'><input type='checkbox' class='sel' data-type='Upper' data-name="Pull up"></td><td>Pull up</td><td>60 lbs</td><td>3×15</td></tr>
-<tr class='sel-row'><td class='selcell'><input type='checkbox' class='sel' data-type='Upper' data-name="Shoulder press"></td><td>Shoulder press</td><td>40 lbs</td><td>3×15</td></tr>
-<tr class='sel-row'><td class='selcell'><input type='checkbox' class='sel' data-type='Upper' data-name="Supine bench press"></td><td>Supine bench press</td><td>20 lbs</td><td>3×10</td></tr>
-<tr class='sel-row'><td class='selcell'><input type='checkbox' class='sel' data-type='Upper' data-name="Machine Chest press"></td><td>Machine Chest press</td><td>55 lbs</td><td>3×15</td></tr>
-<tr class='sel-row'><td class='selcell'><input type='checkbox' class='sel' data-type='Upper' data-name="Seated row"></td><td>Seated row</td><td>55 lbs</td><td>3×15</td></tr>
-<tr class='sel-row'><td class='selcell'><input type='checkbox' class='sel' data-type='Upper' data-name="Lat pulldown"></td><td>Lat pulldown</td><td>55 lbs</td><td>3×15</td></tr>
-<tr class='sel-row'><td class='selcell'><input type='checkbox' class='sel' data-type='Upper' data-name="Face pull"></td><td>Face pull</td><td>35 lbs</td><td>3×15</td></tr>
-<tr class='sel-row'><td class='selcell'><input type='checkbox' class='sel' data-type='Upper' data-name="Bicep curl"></td><td>Bicep curl</td><td>-</td><td>3×12</td></tr>
+        <thead><tr><th></th><th>Exercise</th><th>Weight</th><th>Sets×Reps</th></tr></thead>
+        <tbody data-type="Upper">
+<tr class='sel-row'><td class='selcell'><input type='checkbox' class='sel'></td><td class='exname'>Pull up</td><td class='wcell'><input type='number' class='w-num' step='0.5' value='60' placeholder='-'><select class='w-unit'><option selected>lbs</option><option>kg</option></select></td><td class='srcell'><input type='number' class='sr-sets' value='3'>×<input type='number' class='sr-reps' value='15'></td></tr>
+<tr class='sel-row'><td class='selcell'><input type='checkbox' class='sel'></td><td class='exname'>Shoulder press</td><td class='wcell'><input type='number' class='w-num' step='0.5' value='40' placeholder='-'><select class='w-unit'><option selected>lbs</option><option>kg</option></select></td><td class='srcell'><input type='number' class='sr-sets' value='3'>×<input type='number' class='sr-reps' value='15'></td></tr>
+<tr class='sel-row'><td class='selcell'><input type='checkbox' class='sel'></td><td class='exname'>Supine bench press</td><td class='wcell'><input type='number' class='w-num' step='0.5' value='20' placeholder='-'><select class='w-unit'><option selected>lbs</option><option>kg</option></select></td><td class='srcell'><input type='number' class='sr-sets' value='3'>×<input type='number' class='sr-reps' value='10'></td></tr>
+<tr class='sel-row'><td class='selcell'><input type='checkbox' class='sel'></td><td class='exname'>Machine Chest press</td><td class='wcell'><input type='number' class='w-num' step='0.5' value='55' placeholder='-'><select class='w-unit'><option selected>lbs</option><option>kg</option></select></td><td class='srcell'><input type='number' class='sr-sets' value='3'>×<input type='number' class='sr-reps' value='15'></td></tr>
+<tr class='sel-row'><td class='selcell'><input type='checkbox' class='sel'></td><td class='exname'>Seated row</td><td class='wcell'><input type='number' class='w-num' step='0.5' value='55' placeholder='-'><select class='w-unit'><option selected>lbs</option><option>kg</option></select></td><td class='srcell'><input type='number' class='sr-sets' value='3'>×<input type='number' class='sr-reps' value='15'></td></tr>
+<tr class='sel-row'><td class='selcell'><input type='checkbox' class='sel'></td><td class='exname'>Lat pulldown</td><td class='wcell'><input type='number' class='w-num' step='0.5' value='55' placeholder='-'><select class='w-unit'><option selected>lbs</option><option>kg</option></select></td><td class='srcell'><input type='number' class='sr-sets' value='3'>×<input type='number' class='sr-reps' value='15'></td></tr>
+<tr class='sel-row'><td class='selcell'><input type='checkbox' class='sel'></td><td class='exname'>Face pull</td><td class='wcell'><input type='number' class='w-num' step='0.5' value='35' placeholder='-'><select class='w-unit'><option selected>lbs</option><option>kg</option></select></td><td class='srcell'><input type='number' class='sr-sets' value='3'>×<input type='number' class='sr-reps' value='15'></td></tr>
+<tr class='sel-row'><td class='selcell'><input type='checkbox' class='sel'></td><td class='exname'>Bicep curl</td><td class='wcell'><input type='number' class='w-num' step='0.5' value='' placeholder='-'><select class='w-unit'><option selected>lbs</option><option>kg</option></select></td><td class='srcell'><input type='number' class='sr-sets' value='3'>×<input type='number' class='sr-reps' value='12'></td></tr>
         </tbody>
       </table>
     </div>
+    <button class="addrow" data-type="Upper">+ Add exercise</button>
   </div>
 
   <div class="tpl-section">
     <div class="tpl-head"><span class="badge" style="background:#f7934f22;color:#f7934f;border-color:#f7934f44">Lower</span><span class="count">8 exercises</span></div>
     <div class="card" style="margin-top:.6rem">
       <table>
-        <thead><tr><th></th><th>Exercise</th><th>Default Weight</th><th>Sets×Reps</th></tr></thead>
-        <tbody>
-<tr class='sel-row'><td class='selcell'><input type='checkbox' class='sel' data-type='Lower' data-name="Squat"></td><td>Squat</td><td>-</td><td>3×12</td></tr>
-<tr class='sel-row'><td class='selcell'><input type='checkbox' class='sel' data-type='Lower' data-name="Leg press"></td><td>Leg press</td><td>-</td><td>3×15</td></tr>
-<tr class='sel-row'><td class='selcell'><input type='checkbox' class='sel' data-type='Lower' data-name="Romanian deadlift"></td><td>Romanian deadlift</td><td>-</td><td>3×12</td></tr>
-<tr class='sel-row'><td class='selcell'><input type='checkbox' class='sel' data-type='Lower' data-name="Leg curl"></td><td>Leg curl</td><td>-</td><td>3×15</td></tr>
-<tr class='sel-row'><td class='selcell'><input type='checkbox' class='sel' data-type='Lower' data-name="Leg extension"></td><td>Leg extension</td><td>-</td><td>3×15</td></tr>
-<tr class='sel-row'><td class='selcell'><input type='checkbox' class='sel' data-type='Lower' data-name="Hip thrust"></td><td>Hip thrust</td><td>-</td><td>3×15</td></tr>
-<tr class='sel-row'><td class='selcell'><input type='checkbox' class='sel' data-type='Lower' data-name="Calf raise"></td><td>Calf raise</td><td>-</td><td>3×8</td></tr>
-<tr class='sel-row'><td class='selcell'><input type='checkbox' class='sel' data-type='Lower' data-name="Seated calf raise"></td><td>Seated calf raise</td><td>-</td><td>3×8</td></tr>
+        <thead><tr><th></th><th>Exercise</th><th>Weight</th><th>Sets×Reps</th></tr></thead>
+        <tbody data-type="Lower">
+<tr class='sel-row'><td class='selcell'><input type='checkbox' class='sel'></td><td class='exname'>Squat</td><td class='wcell'><input type='number' class='w-num' step='0.5' value='' placeholder='-'><select class='w-unit'><option selected>lbs</option><option>kg</option></select></td><td class='srcell'><input type='number' class='sr-sets' value='3'>×<input type='number' class='sr-reps' value='12'></td></tr>
+<tr class='sel-row'><td class='selcell'><input type='checkbox' class='sel'></td><td class='exname'>Leg press</td><td class='wcell'><input type='number' class='w-num' step='0.5' value='' placeholder='-'><select class='w-unit'><option selected>lbs</option><option>kg</option></select></td><td class='srcell'><input type='number' class='sr-sets' value='3'>×<input type='number' class='sr-reps' value='15'></td></tr>
+<tr class='sel-row'><td class='selcell'><input type='checkbox' class='sel'></td><td class='exname'>Romanian deadlift</td><td class='wcell'><input type='number' class='w-num' step='0.5' value='' placeholder='-'><select class='w-unit'><option selected>lbs</option><option>kg</option></select></td><td class='srcell'><input type='number' class='sr-sets' value='3'>×<input type='number' class='sr-reps' value='12'></td></tr>
+<tr class='sel-row'><td class='selcell'><input type='checkbox' class='sel'></td><td class='exname'>Leg curl</td><td class='wcell'><input type='number' class='w-num' step='0.5' value='' placeholder='-'><select class='w-unit'><option selected>lbs</option><option>kg</option></select></td><td class='srcell'><input type='number' class='sr-sets' value='3'>×<input type='number' class='sr-reps' value='15'></td></tr>
+<tr class='sel-row'><td class='selcell'><input type='checkbox' class='sel'></td><td class='exname'>Leg extension</td><td class='wcell'><input type='number' class='w-num' step='0.5' value='' placeholder='-'><select class='w-unit'><option selected>lbs</option><option>kg</option></select></td><td class='srcell'><input type='number' class='sr-sets' value='3'>×<input type='number' class='sr-reps' value='15'></td></tr>
+<tr class='sel-row'><td class='selcell'><input type='checkbox' class='sel'></td><td class='exname'>Hip thrust</td><td class='wcell'><input type='number' class='w-num' step='0.5' value='' placeholder='-'><select class='w-unit'><option selected>lbs</option><option>kg</option></select></td><td class='srcell'><input type='number' class='sr-sets' value='3'>×<input type='number' class='sr-reps' value='15'></td></tr>
+<tr class='sel-row'><td class='selcell'><input type='checkbox' class='sel'></td><td class='exname'>Calf raise</td><td class='wcell'><input type='number' class='w-num' step='0.5' value='' placeholder='-'><select class='w-unit'><option selected>lbs</option><option>kg</option></select></td><td class='srcell'><input type='number' class='sr-sets' value='3'>×<input type='number' class='sr-reps' value='8'></td></tr>
+<tr class='sel-row'><td class='selcell'><input type='checkbox' class='sel'></td><td class='exname'>Seated calf raise</td><td class='wcell'><input type='number' class='w-num' step='0.5' value='' placeholder='-'><select class='w-unit'><option selected>lbs</option><option>kg</option></select></td><td class='srcell'><input type='number' class='sr-sets' value='3'>×<input type='number' class='sr-reps' value='8'></td></tr>
         </tbody>
       </table>
     </div>
+    <button class="addrow" data-type="Lower">+ Add exercise</button>
   </div>
 
   <div class="tpl-section">
     <div class="tpl-head"><span class="badge" style="background:#a04ff722;color:#a04ff7;border-color:#a04ff744">Class</span></div>
-    <div class="chip-row"><button class="chip sel-chip" data-name="Core Body" data-duration="60">Core Body<small> · 60 min</small></button><button class="chip sel-chip" data-name="Yoga" data-duration="60">Yoga<small> · 60 min</small></button><button class="chip sel-chip" data-name="Zumba" data-duration="60">Zumba<small> · 60 min</small></button><button class="chip sel-chip" data-name="Body Combat" data-duration="60">Body Combat<small> · 60 min</small></button><button class="chip sel-chip" data-name="Pilates" data-duration="60">Pilates<small> · 60 min</small></button><button class="chip sel-chip" data-name="Hyrox" data-duration="60">Hyrox<small> · 60 min</small></button><button class="chip sel-chip" data-name="Breath Work" data-duration="60">Breath Work<small> · 60 min</small></button></div>
+    <div class="chip-row"><span class="chip sel-chip" data-name="Core Body">Core Body<small> · <input type="number" class="dur" value="60"> min</small></span><span class="chip sel-chip" data-name="Yoga">Yoga<small> · <input type="number" class="dur" value="60"> min</small></span><span class="chip sel-chip" data-name="Zumba">Zumba<small> · <input type="number" class="dur" value="60"> min</small></span><span class="chip sel-chip" data-name="Body Combat">Body Combat<small> · <input type="number" class="dur" value="60"> min</small></span><span class="chip sel-chip" data-name="Pilates">Pilates<small> · <input type="number" class="dur" value="60"> min</small></span><span class="chip sel-chip" data-name="Hyrox">Hyrox<small> · <input type="number" class="dur" value="60"> min</small></span><span class="chip sel-chip" data-name="Breath Work">Breath Work<small> · <input type="number" class="dur" value="60"> min</small></span></div>
   </div>
       <div style="height:4.5rem"></div>
     </div>
-    <footer>Updated 2026-07-07 16:19 (Bangkok)</footer>
+    <footer>Updated 2026-07-07 16:25 (Bangkok)</footer>
   </div>
   <div id="savebar">
     <span id="savecount"></span>
@@ -363,12 +388,33 @@
     const savecount = document.getElementById('savecount');
     const savebtn = document.getElementById('savebtn');
 
+    function rowData(cb) {
+      const tr = cb.closest('tr');
+      const type = tr.closest('tbody').dataset.type;
+      const nameEl = tr.querySelector('.exname input') || tr.querySelector('.exname');
+      const name = (nameEl.value !== undefined ? nameEl.value : nameEl.textContent).trim();
+      const ex = { name, completed: true };
+      const w = parseFloat(tr.querySelector('.w-num').value);
+      if (w > 0) {
+        const unit = tr.querySelector('.w-unit').value;
+        if (unit === 'kg') ex.weight_kg = w; else ex.weight_lbs = w;
+      }
+      const sets = parseInt(tr.querySelector('.sr-sets').value);
+      const reps = parseInt(tr.querySelector('.sr-reps').value);
+      if (sets > 0) ex.sets = sets;
+      if (reps > 0) ex.reps = reps;
+      return { kind: 'exercise', type, ex };
+    }
+
     function selections() {
       const items = [];
-      document.querySelectorAll('.sel:checked').forEach(cb =>
-        items.push({ kind: 'exercise', type: cb.dataset.type, name: cb.dataset.name }));
+      document.querySelectorAll('.sel:checked').forEach(cb => {
+        const d = rowData(cb);
+        if (d.ex.name) items.push(d);
+      });
       document.querySelectorAll('.sel-chip.selected').forEach(ch =>
-        items.push({ kind: 'class', name: ch.dataset.name, duration: +ch.dataset.duration }));
+        items.push({ kind: 'class', name: ch.dataset.name,
+                     duration: parseInt(ch.querySelector('.dur').value) || null }));
       return items;
     }
 
@@ -378,18 +424,39 @@
       savebar.classList.toggle('visible', n > 0);
     }
 
-    document.querySelectorAll('.sel').forEach(cb =>
-      cb.addEventListener('change', refreshBar));
-    document.querySelectorAll('.sel-row').forEach(row =>
+    function bindRow(row) {
       row.addEventListener('click', e => {
-        if (e.target.classList.contains('sel')) return;
+        if (e.target.matches('input, select, button')) return;
         const cb = row.querySelector('.sel');
         cb.checked = !cb.checked;
         refreshBar();
-      }));
+      });
+      row.querySelector('.sel').addEventListener('change', refreshBar);
+    }
+
+    document.querySelectorAll('.sel-row').forEach(bindRow);
+
     document.querySelectorAll('.sel-chip').forEach(ch =>
-      ch.addEventListener('click', () => {
+      ch.addEventListener('click', e => {
+        if (e.target.matches('input')) return;
         ch.classList.toggle('selected');
+        refreshBar();
+      }));
+
+    document.querySelectorAll('.addrow').forEach(btn =>
+      btn.addEventListener('click', () => {
+        const tbody = btn.closest('.tpl-section').querySelector('tbody');
+        const tr = document.createElement('tr');
+        tr.className = 'sel-row';
+        tr.innerHTML = `
+          <td class='selcell'><input type='checkbox' class='sel' checked></td>
+          <td class='exname'><input type='text' placeholder='Exercise name'></td>
+          <td class='wcell'><input type='number' class='w-num' step='0.5' placeholder='-'>
+            <select class='w-unit'><option>lbs</option><option>kg</option></select></td>
+          <td class='srcell'><input type='number' class='sr-sets' value='3'>×<input type='number' class='sr-reps' value='15'></td>`;
+        tbody.appendChild(tr);
+        bindRow(tr);
+        tr.querySelector('.exname input').focus();
         refreshBar();
       }));
 
@@ -446,22 +513,23 @@
       try {
         const byType = {};
         items.filter(i => i.kind === 'exercise').forEach(i => {
-          (byType[i.type] = byType[i.type] || []).push(i.name);
+          (byType[i.type] = byType[i.type] || []).push(i.ex);
         });
 
-        for (const [type, names] of Object.entries(byType)) {
+        for (const [type, exs] of Object.entries(byType)) {
           const path = `workouts/${date}-${type.toLowerCase()}-web.json`;
           const existing = await ghGet(path, token);
           let obj, sha = null;
           if (existing) {
             obj = JSON.parse(unb64(existing.content));
             sha = existing.sha;
-            const have = new Set(obj.exercises.map(e => e.name));
-            names.filter(n => !have.has(n)).forEach(n =>
-              obj.exercises.push({ name: n, completed: true }));
+            exs.forEach(ex => {
+              const idx = obj.exercises.findIndex(e => e.name === ex.name);
+              if (idx >= 0) obj.exercises[idx] = ex;
+              else obj.exercises.push(ex);
+            });
           } else {
-            obj = { date, day: dayName, type,
-                    exercises: names.map(n => ({ name: n, completed: true })) };
+            obj = { date, day: dayName, type, exercises: exs };
           }
           await ghPut(path, obj, sha, token);
         }
