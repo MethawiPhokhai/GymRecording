@@ -29,7 +29,22 @@ def load_workouts():
         with open(os.path.join(WORKOUTS_DIR, fname)) as f:
             data = json.load(f)
         entries.append(data)
-    return entries[:10]
+    return entries
+
+
+def apply_latest_defaults(templates, all_entries):
+    """Use the most recently recorded weight of each exercise as its template default."""
+    latest = {}
+    for entry in sorted(all_entries, key=lambda e: e.get("date", "")):
+        for ex in entry.get("exercises", []):
+            if ex.get("weight_kg") or ex.get("weight_lbs"):
+                latest[ex["name"]] = (ex.get("weight_kg"), ex.get("weight_lbs"))
+    for t in templates.values():
+        for e in t.get("exercises", []):
+            if e["name"] in latest:
+                kg, lbs = latest[e["name"]]
+                e["default_weight_kg"] = kg
+                e["default_weight_lbs"] = lbs
 
 
 def merge_exercises(session_exercises, template):
@@ -667,6 +682,7 @@ def build_html(entries, templates):
 if __name__ == "__main__":
     templates = load_templates()
     entries = load_workouts()
-    resolved = [resolve_session(e, templates) for e in entries]
+    apply_latest_defaults(templates, entries)
+    resolved = [resolve_session(e, templates) for e in entries[:10]]
     build_html(resolved, templates)
     print("index.html updated.")
