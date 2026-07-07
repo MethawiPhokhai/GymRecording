@@ -168,11 +168,13 @@ def build_card_html(entry):
       <span class="badge" style="background:{color}22;color:{color};border-color:{color}44">{workout_type}</span>
       <span class="count">{count} exercises</span>
     </summary>
+    <div class="tbl-wrap">
     <table>
       <thead><tr><th>Exercise</th><th>Weight</th><th>Sets×Reps</th><th>Note</th></tr></thead>
       <tbody>
 {rows}      </tbody>
     </table>
+    </div>
   </details>"""
 
 
@@ -231,11 +233,13 @@ def build_template_section(template):
   <div class="tpl-section">
     <div class="tpl-head">{badge}<span class="count">{len(exercises)} exercises</span></div>
     <div class="card" style="margin-top:.6rem">
+      <div class="tbl-wrap">
       <table>
         <thead><tr><th></th><th>Exercise</th><th>Weight</th><th>Sets×Reps</th></tr></thead>
         <tbody data-type="{workout_type}">
 {rows}        </tbody>
       </table>
+      </div>
     </div>
     <button class="addrow" data-type="{workout_type}">+ Add exercise</button>
   </div>"""
@@ -285,7 +289,7 @@ SAVE_CSS = """
     .w-num { width: 4.4rem; }
     .sr-sets, .sr-reps { width: 3rem; text-align: center; }
     .srcell { white-space: nowrap; }
-    .exname input { width: 100%; min-width: 8rem; }
+    .exname input { width: 10rem; }
     .dur { width: 3.6rem; padding: .1rem .3rem; font-size: .8rem; }
     .w-unit {
       background: #0d1117; color: #7d8590; border: 1px solid #30363d;
@@ -537,7 +541,9 @@ def build_html(entries, templates):
       padding: .2rem .6rem; border-radius: 20px; border: 1px solid;
     }}
     .count {{ font-size: .78rem; color: #7d8590; flex-shrink: 0; }}
-    table {{ width: 100%; border-collapse: collapse; font-size: .875rem; }}
+    .tbl-wrap {{ overflow-x: auto; -webkit-overflow-scrolling: touch; }}
+    table {{ width: 100%; min-width: max-content; border-collapse: collapse; font-size: .875rem; }}
+    td, th {{ white-space: nowrap; }}
     thead tr {{ background: #0d1117; }}
     th {{
       text-align: left; padding: .5rem 1.1rem;

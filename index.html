@@ -43,7 +43,9 @@
       padding: .2rem .6rem; border-radius: 20px; border: 1px solid;
     }
     .count { font-size: .78rem; color: #7d8590; flex-shrink: 0; }
-    table { width: 100%; border-collapse: collapse; font-size: .875rem; }
+    .tbl-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+    table { width: 100%; min-width: max-content; border-collapse: collapse; font-size: .875rem; }
+    td, th { white-space: nowrap; }
     thead tr { background: #0d1117; }
     th {
       text-align: left; padding: .5rem 1.1rem;
@@ -134,7 +136,7 @@
     .w-num { width: 4.4rem; }
     .sr-sets, .sr-reps { width: 3rem; text-align: center; }
     .srcell { white-space: nowrap; }
-    .exname input { width: 100%; min-width: 8rem; }
+    .exname input { width: 10rem; }
     .dur { width: 3.6rem; padding: .1rem .3rem; font-size: .8rem; }
     .w-unit {
       background: #0d1117; color: #7d8590; border: 1px solid #30363d;
@@ -216,6 +218,7 @@
       <span class="badge" style="background:#f7934f22;color:#f7934f;border-color:#f7934f44">Lower</span>
       <span class="count">5 exercises</span>
     </summary>
+    <div class="tbl-wrap">
     <table>
       <thead><tr><th>Exercise</th><th>Weight</th><th>Sets×Reps</th><th>Note</th></tr></thead>
       <tbody>
@@ -226,6 +229,7 @@
 <tr><td>Seated calf raise</td><td>2 kg</td><td>3×8</td><td class='note'>เน้น Soleus</td></tr>
       </tbody>
     </table>
+    </div>
   </details>
 
   <details class="card">
@@ -235,6 +239,7 @@
       <span class="badge" style="background:#4f8ef722;color:#4f8ef7;border-color:#4f8ef744">Upper</span>
       <span class="count">5 exercises</span>
     </summary>
+    <div class="tbl-wrap">
     <table>
       <thead><tr><th>Exercise</th><th>Weight</th><th>Sets×Reps</th><th>Note</th></tr></thead>
       <tbody>
@@ -245,6 +250,7 @@
 <tr><td>Lat pulldown</td><td>55 lbs</td><td>3×15</td><td class='note'></td></tr>
       </tbody>
     </table>
+    </div>
   </details>
 
   <details class="card">
@@ -267,6 +273,7 @@
       <span class="badge" style="background:#4f8ef722;color:#4f8ef7;border-color:#4f8ef744">Upper</span>
       <span class="count">2 exercises</span>
     </summary>
+    <div class="tbl-wrap">
     <table>
       <thead><tr><th>Exercise</th><th>Weight</th><th>Sets×Reps</th><th>Note</th></tr></thead>
       <tbody>
@@ -274,6 +281,7 @@
 <tr><td>Squat</td><td>24 kg</td><td>3×10</td><td class='note'></td></tr>
       </tbody>
     </table>
+    </div>
   </details>
 
   <details class="card">
@@ -283,6 +291,7 @@
       <span class="badge" style="background:#4f8ef722;color:#4f8ef7;border-color:#4f8ef744">Upper</span>
       <span class="count">5 exercises</span>
     </summary>
+    <div class="tbl-wrap">
     <table>
       <thead><tr><th>Exercise</th><th>Weight</th><th>Sets×Reps</th><th>Note</th></tr></thead>
       <tbody>
@@ -293,6 +302,7 @@
 <tr><td>Back Hyperextension</td><td>-</td><td>3×15</td><td class='note'>bodyweight</td></tr>
       </tbody>
     </table>
+    </div>
   </details>
 
   <details class="card">
@@ -326,6 +336,7 @@
   <div class="tpl-section">
     <div class="tpl-head"><span class="badge" style="background:#4f8ef722;color:#4f8ef7;border-color:#4f8ef744">Upper</span><span class="count">13 exercises</span></div>
     <div class="card" style="margin-top:.6rem">
+      <div class="tbl-wrap">
       <table>
         <thead><tr><th></th><th>Exercise</th><th>Weight</th><th>Sets×Reps</th></tr></thead>
         <tbody data-type="Upper">
@@ -344,6 +355,7 @@
 <tr class='sel-row'><td class='selcell'><input type='checkbox' class='sel'></td><td class='exname'>Cable tricep press down</td><td class='wcell'><input type='number' class='w-num' step='0.5' value='' placeholder='-'><select class='w-unit'><option selected>lbs</option><option>kg</option></select></td><td class='srcell'><input type='number' class='sr-sets' value='3'>×<input type='number' class='sr-reps' value='15'></td></tr>
         </tbody>
       </table>
+      </div>
     </div>
     <button class="addrow" data-type="Upper">+ Add exercise</button>
   </div>
@@ -351,6 +363,7 @@
   <div class="tpl-section">
     <div class="tpl-head"><span class="badge" style="background:#f7934f22;color:#f7934f;border-color:#f7934f44">Lower</span><span class="count">9 exercises</span></div>
     <div class="card" style="margin-top:.6rem">
+      <div class="tbl-wrap">
       <table>
         <thead><tr><th></th><th>Exercise</th><th>Weight</th><th>Sets×Reps</th></tr></thead>
         <tbody data-type="Lower">
@@ -365,6 +378,7 @@
 <tr class='sel-row'><td class='selcell'><input type='checkbox' class='sel'></td><td class='exname'>Seated calf raise</td><td class='wcell'><input type='number' class='w-num' step='0.5' value='2' placeholder='-'><select class='w-unit'><option>lbs</option><option selected>kg</option></select></td><td class='srcell'><input type='number' class='sr-sets' value='3'>×<input type='number' class='sr-reps' value='8'></td></tr>
         </tbody>
       </table>
+      </div>
     </div>
     <button class="addrow" data-type="Lower">+ Add exercise</button>
   </div>
@@ -375,7 +389,7 @@
   </div>
       <div style="height:4.5rem"></div>
     </div>
-    <footer>Updated 2026-07-07 16:40 (Bangkok)</footer>
+    <footer>Updated 2026-07-07 18:24 (Bangkok)</footer>
   </div>
   <div id="savebar">
     <span id="savecount"></span>
