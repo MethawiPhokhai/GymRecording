@@ -3,6 +3,7 @@
   "exercises": [
     { "name": "Bird dog",   "default_weight_lbs": null, "default_sets": 3, "default_reps": 8 },
     { "name": "Side plank", "default_weight_lbs": null, "default_sets": 3, "default_reps": 8 },
-    { "name": "Curl-up",    "default_weight_lbs": null, "default_sets": 3, "default_reps": 8 }
+    { "name": "Curl-up",    "default_weight_lbs": null, "default_sets": 3, "default_reps": 8 },
+    { "name": "Cat-cow",    "default_weight_lbs": null, "default_sets": 1, "default_reps": 10 }
   ]
 }
