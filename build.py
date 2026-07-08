@@ -94,6 +94,7 @@ def resolve_session(entry, templates):
 TYPE_COLORS = {
     "Upper":   "#4f8ef7",
     "Lower":   "#f7934f",
+    "Core":    "#f75f8f",
     "Class":   "#a04ff7",
     "Running": "#4ff7a0",
 }
@@ -260,7 +261,7 @@ def build_template_section(template):
   </div>"""
 
 
-TEMPLATE_ORDER = ["Upper", "Lower", "Class", "Running"]
+TEMPLATE_ORDER = ["Upper", "Lower", "Core", "Class", "Running"]
 
 SAVE_CSS = """
     .selcell { width: 2.2rem; }
