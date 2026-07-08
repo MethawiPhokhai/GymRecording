@@ -1,0 +1,10 @@
+{
+  "type": "Mobility",
+  "exercises": [
+    { "name": "Runner's lunge",     "default_weight_lbs": null, "default_sets": 2, "default_reps": 8 },
+    { "name": "Deep squat",         "default_weight_lbs": null, "default_sets": 2, "default_reps": 10 },
+    { "name": "Windshield wipers",  "default_weight_lbs": null, "default_sets": 2, "default_reps": 10 },
+    { "name": "Cobra flow",         "default_weight_lbs": null, "default_sets": 2, "default_reps": 10 },
+    { "name": "Cossack squat",      "default_weight_lbs": null, "default_sets": 2, "default_reps": 8 }
+  ]
+}
