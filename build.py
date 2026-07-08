@@ -319,6 +319,14 @@ SAVE_CSS = """
       font-size: .82rem; font-family: inherit; cursor: pointer;
     }
     .addrow:hover { border-color: #484f58; color: #c9d1d9; }
+    .more-hidden { display: none; }
+    #viewmore {
+      display: block; width: 100%; margin-top: .5rem;
+      background: none; border: 1px solid #30363d; color: #58a6ff;
+      border-radius: 10px; padding: .7rem; cursor: pointer;
+      font-size: .85rem; font-weight: 600; font-family: inherit;
+    }
+    #viewmore:hover { border-color: #484f58; background: #161b22; }
 """
 
 SAVE_SCRIPT = """
@@ -413,6 +421,14 @@ SAVE_SCRIPT = """
 
     document.getElementById('tokenbtn').addEventListener('click', () => getToken(true));
 
+    const viewmore = document.getElementById('viewmore');
+    if (viewmore) viewmore.addEventListener('click', () => {
+      document.querySelectorAll('.more-hidden').forEach((c, i) => {
+        if (i < 10) c.classList.remove('more-hidden');
+      });
+      if (!document.querySelector('.more-hidden')) viewmore.style.display = 'none';
+    });
+
     const b64 = s => btoa(unescape(encodeURIComponent(s)));
     const unb64 = s => decodeURIComponent(escape(atob(s)));
 
@@ -503,8 +519,19 @@ SAVE_SCRIPT = """
 """
 
 
+PAGE_SIZE = 10
+
+
 def build_html(entries, templates):
-    cards = "\n".join(build_card_html(e) for e in entries)
+    card_list = [build_card_html(e) for e in entries]
+    card_list = [
+        c if i < PAGE_SIZE else c.replace('<details class="card">', '<details class="card more-hidden">', 1)
+        for i, c in enumerate(card_list)
+    ]
+    cards = "\n".join(card_list)
+    view_more = (
+        '<button id="viewmore">View more</button>' if len(entries) > PAGE_SIZE else ""
+    )
     ordered = [templates[t] for t in TEMPLATE_ORDER if t in templates]
     ordered += [t for k, t in templates.items() if k not in TEMPLATE_ORDER]
     template_sections = "\n".join(
@@ -627,8 +654,9 @@ def build_html(entries, templates):
       <button class="tab" data-view="templates">Templates</button>
     </div>
     <div id="view-log" class="view active">
-      <p class="section-title">Latest 10 Workouts</p>
+      <p class="section-title">Latest Workouts</p>
       {cards}
+      {view_more}
     </div>
     <div id="view-templates" class="view">
       <p class="section-title">Default Exercises</p>
@@ -683,6 +711,6 @@ if __name__ == "__main__":
     templates = load_templates()
     entries = load_workouts()
     apply_latest_defaults(templates, entries)
-    resolved = [resolve_session(e, templates) for e in entries[:10]]
+    resolved = [resolve_session(e, templates) for e in entries]
     build_html(resolved, templates)
     print("index.html updated.")
