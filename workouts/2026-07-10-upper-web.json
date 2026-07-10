@@ -1,0 +1,34 @@
+{
+  "date": "2026-07-10",
+  "day": "Friday",
+  "type": "Upper",
+  "exercises": [
+    {
+      "name": "Deadlift",
+      "completed": true,
+      "weight_lbs": 30,
+      "sets": 3,
+      "reps": 10
+    },
+    {
+      "name": "Back cable rowing",
+      "completed": true,
+      "weight_lbs": 65,
+      "sets": 3,
+      "reps": 10
+    },
+    {
+      "name": "Back Hyperextension",
+      "completed": true,
+      "sets": 3,
+      "reps": 10
+    },
+    {
+      "name": "Bicep curl",
+      "completed": true,
+      "weight_lbs": 5,
+      "sets": 3,
+      "reps": 15
+    }
+  ]
+}
