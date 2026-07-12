@@ -264,6 +264,236 @@ def build_template_section(template):
 
 TEMPLATE_ORDER = ["Upper", "Lower", "Core", "Mobility", "Class", "Running"]
 
+LBS_TO_KG = 0.45359237
+
+
+def norm_weight_kg(ex):
+    if ex.get("weight_kg"):
+        return float(ex["weight_kg"])
+    if ex.get("weight_lbs"):
+        return float(ex["weight_lbs"]) * LBS_TO_KG
+    return None
+
+
+def display_weight(ex):
+    if ex.get("weight_kg"):
+        return f"{ex['weight_kg']:g} kg"
+    if ex.get("weight_lbs"):
+        return f"{ex['weight_lbs']:g} lbs"
+    return "BW"
+
+
+def point_from_exercise(date, ex):
+    """One measurable data point, or None if the entry has no numbers at all."""
+    kg = norm_weight_kg(ex)
+    sets, reps = ex.get("sets"), ex.get("reps")
+    work = sets * reps if (sets and reps) else None
+    if kg is None and work is None:
+        return None
+    if kg is not None and work:
+        volume = kg * work
+    elif work:
+        volume = work  # bodyweight: total reps
+    else:
+        volume = None
+    if ex.get("weight_kg"):
+        unit, raw = "kg", float(ex["weight_kg"])
+    elif ex.get("weight_lbs"):
+        unit, raw = "lbs", float(ex["weight_lbs"])
+    else:
+        unit, raw = None, None
+    return {
+        "date": date,
+        "weight": display_weight(ex),
+        "kg": kg,
+        "unit": unit,
+        "raw": raw,
+        "sets": sets,
+        "reps": reps,
+        "work": work,
+        "volume": volume,
+    }
+
+
+def _cmp(a, b):
+    if a is None or b is None:
+        return 0
+    return (a > b) - (a < b)
+
+
+def trend_vs_prev(prev, cur):
+    """Compare two points → (css_class, label). Weight decides; ties fall to sets×reps.
+    Label shows the weight delta when weight changed, else the volume/reps delta."""
+    if prev is None:
+        return "new", "● new"
+    if prev["kg"] is not None and cur["kg"] is not None:
+        d = _cmp(cur["kg"], prev["kg"])
+        if d:
+            if prev["unit"] == cur["unit"]:
+                delta = f"{cur['raw'] - prev['raw']:+g} {cur['unit']}"
+            else:
+                delta = f"{cur['kg'] - prev['kg']:+.1f} kg"
+            return ("up", f"▲ {delta}") if d > 0 else ("down", f"▼ {delta}")
+        d = _cmp(cur["work"], prev["work"])
+    elif prev["kg"] is None and cur["kg"] is not None:
+        return "up", "▲ +weight"   # bodyweight → added weight
+    elif prev["kg"] is not None and cur["kg"] is None:
+        return "down", "▼ −weight"  # weighted → bodyweight
+    else:
+        d = _cmp(cur["work"], prev["work"])
+    pct = None
+    if prev["volume"] and cur["volume"] is not None:
+        pct = round((cur["volume"] - prev["volume"]) / prev["volume"] * 100)
+    if d > 0:
+        return "up", f"▲ {pct:+d}%" if pct is not None else "▲ up"
+    if d < 0:
+        return "down", f"▼ {pct:+d}%" if pct is not None else "▼ down"
+    return "flat", "— same"
+
+
+def collect_progress(raw_entries, templates):
+    """Group completed strength exercises by name, oldest→newest, raw logged data only."""
+    name_type = {}
+    for t in TEMPLATE_ORDER:
+        for e in templates.get(t, {}).get("exercises", []):
+            name_type.setdefault(e["name"], t)
+    history = {}
+    for entry in sorted(raw_entries, key=lambda e: e.get("date", "")):
+        if entry.get("type") in ("Class", "Running"):
+            continue
+        for ex in entry.get("exercises", []):
+            if not ex.get("completed"):
+                continue
+            point = point_from_exercise(entry.get("date", ""), ex)
+            if point is None:
+                continue
+            name = ex["name"]
+            history.setdefault(name, {"points": [], "type": None})
+            history[name]["points"].append(point)
+            history[name]["type"] = name_type.get(name, entry.get("type", "-"))
+    return history
+
+
+def build_sparkline(points):
+    vols = [p["volume"] for p in points if p["volume"] is not None][-10:]
+    if len(vols) < 2:
+        return ""
+    w, h, pad = 88, 26, 5
+    lo, hi = min(vols), max(vols)
+    span = (hi - lo) or 1
+    xs = [pad + i * (w - 2 * pad) / (len(vols) - 1) for i in range(len(vols))]
+    ys = [h - pad - (v - lo) / span * (h - 2 * pad) for v in vols]
+    poly = " ".join(f"{x:.1f},{y:.1f}" for x, y in zip(xs, ys))
+    return (
+        f'<svg class="spark" width="{w}" height="{h}" viewBox="0 0 {w} {h}" aria-hidden="true">'
+        f'<polyline points="{poly}" fill="none" stroke="#7d8590" stroke-width="2" '
+        f'stroke-linecap="round" stroke-linejoin="round"/>'
+        f'<circle cx="{xs[-1]:.1f}" cy="{ys[-1]:.1f}" r="4" fill="#58a6ff" '
+        f'stroke="#161b22" stroke-width="2"/></svg>'
+    )
+
+
+def format_volume(p):
+    if p["volume"] is None:
+        return "-"
+    if p["kg"] is None:
+        return f"{p['volume']:g} reps"
+    return f"{p['volume']:g} kg"
+
+
+def build_progress_card(name, data):
+    points = data["points"]
+    workout_type = data["type"]
+    color = TYPE_COLORS.get(workout_type, TYPE_DEFAULT)
+    latest = points[-1]
+    prev = points[-2] if len(points) > 1 else None
+    cls, label = trend_vs_prev(prev, latest)
+
+    rows = ""
+    for i in range(len(points) - 1, -1, -1):
+        p = points[i]
+        p_prev = points[i - 1] if i > 0 else None
+        d_cls, d_label = trend_vs_prev(p_prev, p)
+        sr = f"{p['sets']}×{p['reps']}" if p["work"] else "-"
+        rows += (
+            f"<tr>"
+            f"<td>{p['date']}</td>"
+            f"<td>{p['weight']}</td>"
+            f"<td>{sr}</td>"
+            f"<td>{format_volume(p)}</td>"
+            f"<td><span class='trend {d_cls}'>{d_label}</span></td>"
+            f"</tr>\n"
+        )
+
+    sr_latest = f"{latest['sets']}×{latest['reps']}" if latest["work"] else ""
+    latest_str = " · ".join(s for s in (latest["weight"], sr_latest, latest["date"]) if s)
+    badge = (f'<span class="badge" style="background:{color}22;color:{color};'
+             f'border-color:{color}44">{workout_type}</span>')
+    return f"""
+  <details class="card prog-card" data-type="{workout_type}">
+    <summary>
+      <div class="prog-main">
+        <div class="prog-head"><span class="prog-name">{name}</span>{badge}</div>
+        <div class="prog-latest">{latest_str}</div>
+      </div>
+      {build_sparkline(points)}
+      <span class="trend {cls}">{label}</span>
+    </summary>
+    <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Date</th><th>Weight</th><th>Sets×Reps</th><th>Volume</th><th>Δ</th></tr></thead>
+      <tbody>
+{rows}      </tbody>
+    </table>
+    </div>
+  </details>"""
+
+
+def build_progress_view(raw_entries, templates):
+    history = collect_progress(raw_entries, templates)
+    if not history:
+        return "<p class='section-title'>No strength data yet</p>"
+
+    ordered = sorted(history.items(), key=lambda kv: kv[1]["points"][-1]["date"], reverse=True)
+
+    last_date = ordered[0][1]["points"][-1]["date"]
+    last_names = [(n, d) for n, d in ordered if d["points"][-1]["date"] == last_date]
+    last_types = sorted({d["type"] for _, d in last_names})
+    up = sum(
+        1 for _, d in last_names
+        if trend_vs_prev(d["points"][-2] if len(d["points"]) > 1 else None, d["points"][-1])[0] == "up"
+    )
+    stats = f"""
+  <div class="stats">
+    <div class="stat">
+      <div class="stat-label">Last session</div>
+      <div class="stat-value">{last_date}</div>
+      <div class="stat-sub">{" / ".join(last_types)} · {len(last_names)} exercises</div>
+    </div>
+    <div class="stat">
+      <div class="stat-label">Progressive overload</div>
+      <div class="stat-value">{up}<small>/{len(last_names)}</small></div>
+      <div class="stat-sub">▲ vs previous session</div>
+    </div>
+    <div class="stat">
+      <div class="stat-label">Tracked</div>
+      <div class="stat-value">{len(history)}</div>
+      <div class="stat-sub">exercises with data</div>
+    </div>
+  </div>"""
+
+    types_present = sorted({d["type"] for _, d in ordered},
+                           key=lambda t: TEMPLATE_ORDER.index(t) if t in TEMPLATE_ORDER else 99)
+    chips = '<span class="chip filter-chip selected" data-filter="all">All</span>'
+    chips += "".join(
+        f'<span class="chip filter-chip" data-filter="{t}">{t}</span>' for t in types_present
+    )
+    cards = "\n".join(build_progress_card(n, d) for n, d in ordered)
+    return f"""{stats}
+  <div class="chip-row" id="prog-filters">{chips}</div>
+  <p class="section-title" style="margin-top:1.25rem">Latest first — tap a card for full history</p>
+{cards}"""
+
 SAVE_CSS = """
     .selcell { width: 2.2rem; }
     .sel {
@@ -329,6 +559,61 @@ SAVE_CSS = """
       font-size: .85rem; font-weight: 600; font-family: inherit;
     }
     #viewmore:hover { border-color: #484f58; background: #161b22; }
+"""
+
+PROGRESS_CSS = """
+    .stats {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: .75rem; margin-bottom: 1.25rem;
+    }
+    .stat {
+      background: #161b22; border: 1px solid #30363d;
+      border-radius: 10px; padding: .8rem 1rem; min-width: 0;
+    }
+    .stat-label {
+      font-size: .68rem; font-weight: 600; letter-spacing: .06em;
+      text-transform: uppercase; color: #7d8590;
+    }
+    .stat-value { font-size: 1.3rem; font-weight: 700; color: #f0f6fc; margin-top: .15rem; }
+    .stat-value small { font-size: .85rem; font-weight: 600; color: #7d8590; }
+    .stat-sub { font-size: .74rem; color: #7d8590; margin-top: .1rem; }
+    .filter-chip { cursor: pointer; transition: all .15s; user-select: none; }
+    .filter-chip.selected { background: #1f6feb22; border-color: #1f6feb66; color: #58a6ff; }
+    .prog-main { flex: 1; min-width: 0; }
+    .prog-head { display: flex; align-items: center; gap: .6rem; }
+    .prog-name {
+      font-size: .92rem; font-weight: 600; color: #e6edf3;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+    .prog-latest { font-size: .76rem; color: #7d8590; margin-top: .2rem; }
+    .spark { flex-shrink: 0; }
+    .trend {
+      font-size: .8rem; font-weight: 600; white-space: nowrap;
+      flex-shrink: 0; min-width: 4.3rem; text-align: right;
+      font-variant-numeric: tabular-nums;
+    }
+    .trend.up   { color: #3fb950; }
+    .trend.down { color: #f85149; }
+    .trend.flat { color: #7d8590; }
+    .trend.new  { color: #58a6ff; }
+    td .trend { min-width: 0; text-align: left; }
+    @media (max-width: 480px) {
+      .stats { grid-template-columns: 1fr 1fr; }
+      .stat:first-child { grid-column: 1 / -1; }
+      .spark { display: none; }
+    }
+"""
+
+PROGRESS_SCRIPT = """
+    document.querySelectorAll('.filter-chip').forEach(ch =>
+      ch.addEventListener('click', () => {
+        document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('selected'));
+        ch.classList.add('selected');
+        const f = ch.dataset.filter;
+        document.querySelectorAll('.prog-card').forEach(card => {
+          card.style.display = (f === 'all' || card.dataset.type === f) ? '' : 'none';
+        });
+      }));
 """
 
 SAVE_SCRIPT = """
@@ -524,7 +809,8 @@ SAVE_SCRIPT = """
 PAGE_SIZE = 10
 
 
-def build_html(entries, templates):
+def build_html(entries, templates, raw_entries):
+    progress_view = build_progress_view(raw_entries, templates)
     card_list = [build_card_html(e) for e in entries]
     card_list = [
         c if i < PAGE_SIZE else c.replace('<details class="card">', '<details class="card more-hidden">', 1)
@@ -637,6 +923,7 @@ def build_html(entries, templates):
     #ptr-indicator svg {{ animation: spin 1s linear infinite; }}
     @keyframes spin {{ to {{ transform: rotate(360deg); }} }}
 {SAVE_CSS}
+{PROGRESS_CSS}
   </style>
 </head>
 <body>
@@ -653,12 +940,16 @@ def build_html(entries, templates):
     </header>
     <div class="tabs">
       <button class="tab active" data-view="log">Log</button>
+      <button class="tab" data-view="progress">Progress</button>
       <button class="tab" data-view="templates">Templates</button>
     </div>
     <div id="view-log" class="view active">
       <p class="section-title">Latest Workouts</p>
       {cards}
       {view_more}
+    </div>
+    <div id="view-progress" class="view">
+{progress_view}
     </div>
     <div id="view-templates" class="view">
       <p class="section-title">Default Exercises</p>
@@ -674,6 +965,7 @@ def build_html(entries, templates):
   </div>
   <script>
 {SAVE_SCRIPT}
+{PROGRESS_SCRIPT}
   </script>
   <script>
     document.querySelectorAll('.tab').forEach(tab => {{
@@ -714,5 +1006,5 @@ if __name__ == "__main__":
     entries = load_workouts()
     apply_latest_defaults(templates, entries)
     resolved = [resolve_session(e, templates) for e in entries]
-    build_html(resolved, templates)
+    build_html(resolved, templates, entries)
     print("index.html updated.")
