@@ -1,0 +1,48 @@
+{
+  "date": "2026-07-12",
+  "day": "Sunday",
+  "type": "Lower",
+  "exercises": [
+    {
+      "name": "Squat",
+      "completed": true,
+      "weight_kg": 20,
+      "sets": 3,
+      "reps": 10
+    },
+    {
+      "name": "Romanian deadlift",
+      "completed": true,
+      "weight_kg": 30,
+      "sets": 3,
+      "reps": 15
+    },
+    {
+      "name": "Bulgarian split squat",
+      "completed": true,
+      "weight_lbs": 20,
+      "sets": 3,
+      "reps": 10
+    },
+    {
+      "name": "Leg extension",
+      "completed": true,
+      "weight_lbs": 60,
+      "sets": 3,
+      "reps": 15
+    },
+    {
+      "name": "Calf raise",
+      "completed": true,
+      "sets": 3,
+      "reps": 10
+    },
+    {
+      "name": "Seated calf raise",
+      "completed": true,
+      "weight_kg": 15,
+      "sets": 3,
+      "reps": 15
+    }
+  ]
+}
