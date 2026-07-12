@@ -160,6 +160,48 @@
     }
     #viewmore:hover { border-color: #484f58; background: #161b22; }
 
+
+    .stats {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: .75rem; margin-bottom: 1.25rem;
+    }
+    .stat {
+      background: #161b22; border: 1px solid #30363d;
+      border-radius: 10px; padding: .8rem 1rem; min-width: 0;
+    }
+    .stat-label {
+      font-size: .68rem; font-weight: 600; letter-spacing: .06em;
+      text-transform: uppercase; color: #7d8590;
+    }
+    .stat-value { font-size: 1.3rem; font-weight: 700; color: #f0f6fc; margin-top: .15rem; }
+    .stat-value small { font-size: .85rem; font-weight: 600; color: #7d8590; }
+    .stat-sub { font-size: .74rem; color: #7d8590; margin-top: .1rem; }
+    .filter-chip { cursor: pointer; transition: all .15s; user-select: none; }
+    .filter-chip.selected { background: #1f6feb22; border-color: #1f6feb66; color: #58a6ff; }
+    .prog-main { flex: 1; min-width: 0; }
+    .prog-head { display: flex; align-items: center; gap: .6rem; }
+    .prog-name {
+      font-size: .92rem; font-weight: 600; color: #e6edf3;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+    .prog-latest { font-size: .76rem; color: #7d8590; margin-top: .2rem; }
+    .spark { flex-shrink: 0; }
+    .trend {
+      font-size: .8rem; font-weight: 600; white-space: nowrap;
+      flex-shrink: 0; min-width: 4.3rem; text-align: right;
+      font-variant-numeric: tabular-nums;
+    }
+    .trend.up   { color: #3fb950; }
+    .trend.down { color: #f85149; }
+    .trend.flat { color: #7d8590; }
+    .trend.new  { color: #58a6ff; }
+    td .trend { min-width: 0; text-align: left; }
+    @media (max-width: 480px) {
+      .stats { grid-template-columns: 1fr 1fr; }
+      .stat:first-child { grid-column: 1 / -1; }
+      .spark { display: none; }
+    }
+
   </style>
 </head>
 <body>
@@ -176,6 +218,7 @@
     </header>
     <div class="tabs">
       <button class="tab active" data-view="log">Log</button>
+      <button class="tab" data-view="progress">Progress</button>
       <button class="tab" data-view="templates">Templates</button>
     </div>
     <div id="view-log" class="view active">
@@ -608,6 +651,503 @@
   </details>
       <button id="viewmore">View more</button>
     </div>
+    <div id="view-progress" class="view">
+
+  <div class="stats">
+    <div class="stat">
+      <div class="stat-label">Last session</div>
+      <div class="stat-value">2026-07-12</div>
+      <div class="stat-sub">Lower · 6 exercises</div>
+    </div>
+    <div class="stat">
+      <div class="stat-label">Progressive overload</div>
+      <div class="stat-value">4<small>/6</small></div>
+      <div class="stat-sub">▲ vs previous session</div>
+    </div>
+    <div class="stat">
+      <div class="stat-label">Tracked</div>
+      <div class="stat-value">24</div>
+      <div class="stat-sub">exercises with data</div>
+    </div>
+  </div>
+  <div class="chip-row" id="prog-filters"><span class="chip filter-chip selected" data-filter="all">All</span><span class="chip filter-chip" data-filter="Upper">Upper</span><span class="chip filter-chip" data-filter="Lower">Lower</span></div>
+  <p class="section-title" style="margin-top:1.25rem">Latest first — tap a card for full history</p>
+
+  <details class="card prog-card" data-type="Lower">
+    <summary>
+      <div class="prog-main">
+        <div class="prog-head"><span class="prog-name">Squat</span><span class="badge" style="background:#f7934f22;color:#f7934f;border-color:#f7934f44">Lower</span></div>
+        <div class="prog-latest">20 kg · 3×10 · 2026-07-12</div>
+      </div>
+      <svg class="spark" width="88" height="26" viewBox="0 0 88 26" aria-hidden="true"><polyline points="5.0,5.0 24.5,21.0 44.0,9.4 63.5,21.0 83.0,21.0" fill="none" stroke="#7d8590" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="83.0" cy="21.0" r="4" fill="#58a6ff" stroke="#161b22" stroke-width="2"/></svg>
+      <span class="trend flat">— same</span>
+    </summary>
+    <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Date</th><th>Weight</th><th>Sets×Reps</th><th>Volume</th><th>Δ</th></tr></thead>
+      <tbody>
+<tr><td>2026-07-12</td><td>20 kg</td><td>3×10</td><td>600 kg</td><td><span class='trend flat'>— same</span></td></tr>
+<tr><td>2026-07-03</td><td>20 kg</td><td>3×10</td><td>600 kg</td><td><span class='trend down'>▼ -4 kg</span></td></tr>
+<tr><td>2026-06-26</td><td>24 kg</td><td>3×10</td><td>720 kg</td><td><span class='trend up'>▲ +4 kg</span></td></tr>
+<tr><td>2026-06-19</td><td>20 kg</td><td>3×10</td><td>600 kg</td><td><span class='trend up'>▲ +3 kg</span></td></tr>
+<tr><td>2026-06-13</td><td>17 kg</td><td>3×15</td><td>765 kg</td><td><span class='trend new'>● new</span></td></tr>
+      </tbody>
+    </table>
+    </div>
+  </details>
+
+  <details class="card prog-card" data-type="Lower">
+    <summary>
+      <div class="prog-main">
+        <div class="prog-head"><span class="prog-name">Romanian deadlift</span><span class="badge" style="background:#f7934f22;color:#f7934f;border-color:#f7934f44">Lower</span></div>
+        <div class="prog-latest">30 kg · 3×15 · 2026-07-12</div>
+      </div>
+      <svg class="spark" width="88" height="26" viewBox="0 0 88 26" aria-hidden="true"><polyline points="5.0,21.0 31.0,21.0 57.0,21.0 83.0,5.0" fill="none" stroke="#7d8590" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="83.0" cy="5.0" r="4" fill="#58a6ff" stroke="#161b22" stroke-width="2"/></svg>
+      <span class="trend up">▲ +15 kg</span>
+    </summary>
+    <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Date</th><th>Weight</th><th>Sets×Reps</th><th>Volume</th><th>Δ</th></tr></thead>
+      <tbody>
+<tr><td>2026-07-12</td><td>30 kg</td><td>3×15</td><td>1350 kg</td><td><span class='trend up'>▲ +15 kg</span></td></tr>
+<tr><td>2026-07-03</td><td>15 kg</td><td>3×15</td><td>675 kg</td><td><span class='trend flat'>— same</span></td></tr>
+<tr><td>2026-06-19</td><td>15 kg</td><td>3×15</td><td>675 kg</td><td><span class='trend flat'>— same</span></td></tr>
+<tr><td>2026-06-13</td><td>15 kg</td><td>3×15</td><td>675 kg</td><td><span class='trend new'>● new</span></td></tr>
+      </tbody>
+    </table>
+    </div>
+  </details>
+
+  <details class="card prog-card" data-type="Lower">
+    <summary>
+      <div class="prog-main">
+        <div class="prog-head"><span class="prog-name">Leg extension</span><span class="badge" style="background:#f7934f22;color:#f7934f;border-color:#f7934f44">Lower</span></div>
+        <div class="prog-latest">60 lbs · 3×15 · 2026-07-12</div>
+      </div>
+      <svg class="spark" width="88" height="26" viewBox="0 0 88 26" aria-hidden="true"><polyline points="5.0,20.6 44.0,21.0 83.0,5.0" fill="none" stroke="#7d8590" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="83.0" cy="5.0" r="4" fill="#58a6ff" stroke="#161b22" stroke-width="2"/></svg>
+      <span class="trend up">▲ +5 lbs</span>
+    </summary>
+    <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Date</th><th>Weight</th><th>Sets×Reps</th><th>Volume</th><th>Δ</th></tr></thead>
+      <tbody>
+<tr><td>2026-07-12</td><td>60 lbs</td><td>3×15</td><td>1224.7 kg</td><td><span class='trend up'>▲ +5 lbs</span></td></tr>
+<tr><td>2026-07-03</td><td>55 lbs</td><td>3×15</td><td>1122.64 kg</td><td><span class='trend down'>▼ -0.1 kg</span></td></tr>
+<tr><td>2026-06-13</td><td>25 kg</td><td>3×15</td><td>1125 kg</td><td><span class='trend new'>● new</span></td></tr>
+      </tbody>
+    </table>
+    </div>
+  </details>
+
+  <details class="card prog-card" data-type="Lower">
+    <summary>
+      <div class="prog-main">
+        <div class="prog-head"><span class="prog-name">Calf raise</span><span class="badge" style="background:#f7934f22;color:#f7934f;border-color:#f7934f44">Lower</span></div>
+        <div class="prog-latest">BW · 3×10 · 2026-07-12</div>
+      </div>
+      <svg class="spark" width="88" height="26" viewBox="0 0 88 26" aria-hidden="true"><polyline points="5.0,21.0 44.0,21.0 83.0,5.0" fill="none" stroke="#7d8590" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="83.0" cy="5.0" r="4" fill="#58a6ff" stroke="#161b22" stroke-width="2"/></svg>
+      <span class="trend up">▲ +25%</span>
+    </summary>
+    <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Date</th><th>Weight</th><th>Sets×Reps</th><th>Volume</th><th>Δ</th></tr></thead>
+      <tbody>
+<tr><td>2026-07-12</td><td>BW</td><td>3×10</td><td>30 reps</td><td><span class='trend up'>▲ +25%</span></td></tr>
+<tr><td>2026-07-03</td><td>BW</td><td>3×8</td><td>24 reps</td><td><span class='trend flat'>— same</span></td></tr>
+<tr><td>2026-06-13</td><td>BW</td><td>3×8</td><td>24 reps</td><td><span class='trend new'>● new</span></td></tr>
+      </tbody>
+    </table>
+    </div>
+  </details>
+
+  <details class="card prog-card" data-type="Lower">
+    <summary>
+      <div class="prog-main">
+        <div class="prog-head"><span class="prog-name">Seated calf raise</span><span class="badge" style="background:#f7934f22;color:#f7934f;border-color:#f7934f44">Lower</span></div>
+        <div class="prog-latest">15 kg · 3×15 · 2026-07-12</div>
+      </div>
+      <svg class="spark" width="88" height="26" viewBox="0 0 88 26" aria-hidden="true"><polyline points="5.0,19.9 44.0,21.0 83.0,5.0" fill="none" stroke="#7d8590" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="83.0" cy="5.0" r="4" fill="#58a6ff" stroke="#161b22" stroke-width="2"/></svg>
+      <span class="trend up">▲ +13 kg</span>
+    </summary>
+    <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Date</th><th>Weight</th><th>Sets×Reps</th><th>Volume</th><th>Δ</th></tr></thead>
+      <tbody>
+<tr><td>2026-07-12</td><td>15 kg</td><td>3×15</td><td>675 kg</td><td><span class='trend up'>▲ +13 kg</span></td></tr>
+<tr><td>2026-07-03</td><td>2 kg</td><td>3×8</td><td>48 kg</td><td><span class='trend down'>▼ -47%</span></td></tr>
+<tr><td>2026-06-13</td><td>2 kg</td><td>3×15</td><td>90 kg</td><td><span class='trend new'>● new</span></td></tr>
+      </tbody>
+    </table>
+    </div>
+  </details>
+
+  <details class="card prog-card" data-type="Lower">
+    <summary>
+      <div class="prog-main">
+        <div class="prog-head"><span class="prog-name">Bulgarian split squat</span><span class="badge" style="background:#f7934f22;color:#f7934f;border-color:#f7934f44">Lower</span></div>
+        <div class="prog-latest">20 lbs · 3×10 · 2026-07-12</div>
+      </div>
+      
+      <span class="trend new">● new</span>
+    </summary>
+    <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Date</th><th>Weight</th><th>Sets×Reps</th><th>Volume</th><th>Δ</th></tr></thead>
+      <tbody>
+<tr><td>2026-07-12</td><td>20 lbs</td><td>3×10</td><td>272.155 kg</td><td><span class='trend new'>● new</span></td></tr>
+      </tbody>
+    </table>
+    </div>
+  </details>
+
+  <details class="card prog-card" data-type="Upper">
+    <summary>
+      <div class="prog-main">
+        <div class="prog-head"><span class="prog-name">Back cable rowing</span><span class="badge" style="background:#4f8ef722;color:#4f8ef7;border-color:#4f8ef744">Upper</span></div>
+        <div class="prog-latest">65 lbs · 3×10 · 2026-07-10</div>
+      </div>
+      <svg class="spark" width="88" height="26" viewBox="0 0 88 26" aria-hidden="true"><polyline points="5.0,5.0 83.0,21.0" fill="none" stroke="#7d8590" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="83.0" cy="21.0" r="4" fill="#58a6ff" stroke="#161b22" stroke-width="2"/></svg>
+      <span class="trend up">▲ +10 lbs</span>
+    </summary>
+    <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Date</th><th>Weight</th><th>Sets×Reps</th><th>Volume</th><th>Δ</th></tr></thead>
+      <tbody>
+<tr><td>2026-07-10</td><td>65 lbs</td><td>3×10</td><td>884.505 kg</td><td><span class='trend up'>▲ +10 lbs</span></td></tr>
+<tr><td>2026-06-16</td><td>55 lbs</td><td>3×15</td><td>1122.64 kg</td><td><span class='trend new'>● new</span></td></tr>
+      </tbody>
+    </table>
+    </div>
+  </details>
+
+  <details class="card prog-card" data-type="Upper">
+    <summary>
+      <div class="prog-main">
+        <div class="prog-head"><span class="prog-name">Back Hyperextension</span><span class="badge" style="background:#4f8ef722;color:#4f8ef7;border-color:#4f8ef744">Upper</span></div>
+        <div class="prog-latest">BW · 3×10 · 2026-07-10</div>
+      </div>
+      <svg class="spark" width="88" height="26" viewBox="0 0 88 26" aria-hidden="true"><polyline points="5.0,5.0 83.0,21.0" fill="none" stroke="#7d8590" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="83.0" cy="21.0" r="4" fill="#58a6ff" stroke="#161b22" stroke-width="2"/></svg>
+      <span class="trend down">▼ -33%</span>
+    </summary>
+    <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Date</th><th>Weight</th><th>Sets×Reps</th><th>Volume</th><th>Δ</th></tr></thead>
+      <tbody>
+<tr><td>2026-07-10</td><td>BW</td><td>3×10</td><td>30 reps</td><td><span class='trend down'>▼ -33%</span></td></tr>
+<tr><td>2026-06-23</td><td>BW</td><td>3×15</td><td>45 reps</td><td><span class='trend new'>● new</span></td></tr>
+      </tbody>
+    </table>
+    </div>
+  </details>
+
+  <details class="card prog-card" data-type="Upper">
+    <summary>
+      <div class="prog-main">
+        <div class="prog-head"><span class="prog-name">Deadlift</span><span class="badge" style="background:#4f8ef722;color:#4f8ef7;border-color:#4f8ef744">Upper</span></div>
+        <div class="prog-latest">30 lbs · 3×10 · 2026-07-10</div>
+      </div>
+      
+      <span class="trend new">● new</span>
+    </summary>
+    <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Date</th><th>Weight</th><th>Sets×Reps</th><th>Volume</th><th>Δ</th></tr></thead>
+      <tbody>
+<tr><td>2026-07-10</td><td>30 lbs</td><td>3×10</td><td>408.233 kg</td><td><span class='trend new'>● new</span></td></tr>
+      </tbody>
+    </table>
+    </div>
+  </details>
+
+  <details class="card prog-card" data-type="Upper">
+    <summary>
+      <div class="prog-main">
+        <div class="prog-head"><span class="prog-name">Bicep curl</span><span class="badge" style="background:#4f8ef722;color:#4f8ef7;border-color:#4f8ef744">Upper</span></div>
+        <div class="prog-latest">5 lbs · 3×15 · 2026-07-10</div>
+      </div>
+      
+      <span class="trend new">● new</span>
+    </summary>
+    <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Date</th><th>Weight</th><th>Sets×Reps</th><th>Volume</th><th>Δ</th></tr></thead>
+      <tbody>
+<tr><td>2026-07-10</td><td>5 lbs</td><td>3×15</td><td>102.058 kg</td><td><span class='trend new'>● new</span></td></tr>
+      </tbody>
+    </table>
+    </div>
+  </details>
+
+  <details class="card prog-card" data-type="Upper">
+    <summary>
+      <div class="prog-main">
+        <div class="prog-head"><span class="prog-name">Supine bench press</span><span class="badge" style="background:#4f8ef722;color:#4f8ef7;border-color:#4f8ef744">Upper</span></div>
+        <div class="prog-latest">20 lbs · 3×10 · 2026-07-07</div>
+      </div>
+      <svg class="spark" width="88" height="26" viewBox="0 0 88 26" aria-hidden="true"><polyline points="5.0,21.0 31.0,21.0 57.0,21.0 83.0,21.0" fill="none" stroke="#7d8590" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="83.0" cy="21.0" r="4" fill="#58a6ff" stroke="#161b22" stroke-width="2"/></svg>
+      <span class="trend flat">— same</span>
+    </summary>
+    <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Date</th><th>Weight</th><th>Sets×Reps</th><th>Volume</th><th>Δ</th></tr></thead>
+      <tbody>
+<tr><td>2026-07-07</td><td>20 lbs</td><td>3×10</td><td>272.155 kg</td><td><span class='trend flat'>— same</span></td></tr>
+<tr><td>2026-06-30</td><td>20 lbs</td><td>3×10</td><td>272.155 kg</td><td><span class='trend flat'>— same</span></td></tr>
+<tr><td>2026-06-23</td><td>20 lbs</td><td>3×10</td><td>272.155 kg</td><td><span class='trend flat'>— same</span></td></tr>
+<tr><td>2026-06-16</td><td>20 lbs</td><td>3×10</td><td>272.155 kg</td><td><span class='trend new'>● new</span></td></tr>
+      </tbody>
+    </table>
+    </div>
+  </details>
+
+  <details class="card prog-card" data-type="Upper">
+    <summary>
+      <div class="prog-main">
+        <div class="prog-head"><span class="prog-name">Face pull</span><span class="badge" style="background:#4f8ef722;color:#4f8ef7;border-color:#4f8ef744">Upper</span></div>
+        <div class="prog-latest">50 lbs · 3×15 · 2026-07-07</div>
+      </div>
+      <svg class="spark" width="88" height="26" viewBox="0 0 88 26" aria-hidden="true"><polyline points="5.0,21.0 83.0,5.0" fill="none" stroke="#7d8590" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="83.0" cy="5.0" r="4" fill="#58a6ff" stroke="#161b22" stroke-width="2"/></svg>
+      <span class="trend up">▲ +10 lbs</span>
+    </summary>
+    <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Date</th><th>Weight</th><th>Sets×Reps</th><th>Volume</th><th>Δ</th></tr></thead>
+      <tbody>
+<tr><td>2026-07-07</td><td>50 lbs</td><td>3×15</td><td>1020.58 kg</td><td><span class='trend up'>▲ +10 lbs</span></td></tr>
+<tr><td>2026-06-23</td><td>40 lbs</td><td>3×15</td><td>816.466 kg</td><td><span class='trend new'>● new</span></td></tr>
+      </tbody>
+    </table>
+    </div>
+  </details>
+
+  <details class="card prog-card" data-type="Upper">
+    <summary>
+      <div class="prog-main">
+        <div class="prog-head"><span class="prog-name">Barbell bench press</span><span class="badge" style="background:#4f8ef722;color:#4f8ef7;border-color:#4f8ef744">Upper</span></div>
+        <div class="prog-latest">25 lbs · 3×10 · 2026-07-07</div>
+      </div>
+      
+      <span class="trend new">● new</span>
+    </summary>
+    <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Date</th><th>Weight</th><th>Sets×Reps</th><th>Volume</th><th>Δ</th></tr></thead>
+      <tbody>
+<tr><td>2026-07-07</td><td>25 lbs</td><td>3×10</td><td>340.194 kg</td><td><span class='trend new'>● new</span></td></tr>
+      </tbody>
+    </table>
+    </div>
+  </details>
+
+  <details class="card prog-card" data-type="Upper">
+    <summary>
+      <div class="prog-main">
+        <div class="prog-head"><span class="prog-name">Machine Chest press</span><span class="badge" style="background:#4f8ef722;color:#4f8ef7;border-color:#4f8ef744">Upper</span></div>
+        <div class="prog-latest">65 lbs · 3×15 · 2026-07-07</div>
+      </div>
+      
+      <span class="trend new">● new</span>
+    </summary>
+    <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Date</th><th>Weight</th><th>Sets×Reps</th><th>Volume</th><th>Δ</th></tr></thead>
+      <tbody>
+<tr><td>2026-07-07</td><td>65 lbs</td><td>3×15</td><td>1326.76 kg</td><td><span class='trend new'>● new</span></td></tr>
+      </tbody>
+    </table>
+    </div>
+  </details>
+
+  <details class="card prog-card" data-type="Upper">
+    <summary>
+      <div class="prog-main">
+        <div class="prog-head"><span class="prog-name">Lat pulldown</span><span class="badge" style="background:#4f8ef722;color:#4f8ef7;border-color:#4f8ef744">Upper</span></div>
+        <div class="prog-latest">65 lbs · 3×15 · 2026-07-07</div>
+      </div>
+      
+      <span class="trend new">● new</span>
+    </summary>
+    <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Date</th><th>Weight</th><th>Sets×Reps</th><th>Volume</th><th>Δ</th></tr></thead>
+      <tbody>
+<tr><td>2026-07-07</td><td>65 lbs</td><td>3×15</td><td>1326.76 kg</td><td><span class='trend new'>● new</span></td></tr>
+      </tbody>
+    </table>
+    </div>
+  </details>
+
+  <details class="card prog-card" data-type="Upper">
+    <summary>
+      <div class="prog-main">
+        <div class="prog-head"><span class="prog-name">Cable tricep press down</span><span class="badge" style="background:#4f8ef722;color:#4f8ef7;border-color:#4f8ef744">Upper</span></div>
+        <div class="prog-latest">40 lbs · 3×10 · 2026-07-07</div>
+      </div>
+      
+      <span class="trend new">● new</span>
+    </summary>
+    <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Date</th><th>Weight</th><th>Sets×Reps</th><th>Volume</th><th>Δ</th></tr></thead>
+      <tbody>
+<tr><td>2026-07-07</td><td>40 lbs</td><td>3×10</td><td>544.311 kg</td><td><span class='trend new'>● new</span></td></tr>
+      </tbody>
+    </table>
+    </div>
+  </details>
+
+  <details class="card prog-card" data-type="Upper">
+    <summary>
+      <div class="prog-main">
+        <div class="prog-head"><span class="prog-name">Chest fly</span><span class="badge" style="background:#4f8ef722;color:#4f8ef7;border-color:#4f8ef744">Upper</span></div>
+        <div class="prog-latest">55 lbs · 3×15 · 2026-06-30</div>
+      </div>
+      
+      <span class="trend new">● new</span>
+    </summary>
+    <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Date</th><th>Weight</th><th>Sets×Reps</th><th>Volume</th><th>Δ</th></tr></thead>
+      <tbody>
+<tr><td>2026-06-30</td><td>55 lbs</td><td>3×15</td><td>1122.64 kg</td><td><span class='trend new'>● new</span></td></tr>
+      </tbody>
+    </table>
+    </div>
+  </details>
+
+  <details class="card prog-card" data-type="Upper">
+    <summary>
+      <div class="prog-main">
+        <div class="prog-head"><span class="prog-name">Overhead face pull</span><span class="badge" style="background:#4f8ef722;color:#4f8ef7;border-color:#4f8ef744">Upper</span></div>
+        <div class="prog-latest">30 kg · 3×15 · 2026-06-26</div>
+      </div>
+      
+      <span class="trend new">● new</span>
+    </summary>
+    <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Date</th><th>Weight</th><th>Sets×Reps</th><th>Volume</th><th>Δ</th></tr></thead>
+      <tbody>
+<tr><td>2026-06-26</td><td>30 kg</td><td>3×15</td><td>1350 kg</td><td><span class='trend new'>● new</span></td></tr>
+      </tbody>
+    </table>
+    </div>
+  </details>
+
+  <details class="card prog-card" data-type="Upper">
+    <summary>
+      <div class="prog-main">
+        <div class="prog-head"><span class="prog-name">Shoulder press</span><span class="badge" style="background:#4f8ef722;color:#4f8ef7;border-color:#4f8ef744">Upper</span></div>
+        <div class="prog-latest">40 lbs · 3×15 · 2026-06-23</div>
+      </div>
+      
+      <span class="trend new">● new</span>
+    </summary>
+    <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Date</th><th>Weight</th><th>Sets×Reps</th><th>Volume</th><th>Δ</th></tr></thead>
+      <tbody>
+<tr><td>2026-06-23</td><td>40 lbs</td><td>3×15</td><td>816.466 kg</td><td><span class='trend new'>● new</span></td></tr>
+      </tbody>
+    </table>
+    </div>
+  </details>
+
+  <details class="card prog-card" data-type="Upper">
+    <summary>
+      <div class="prog-main">
+        <div class="prog-head"><span class="prog-name">Dumbbell shoulder press</span><span class="badge" style="background:#4f8ef722;color:#4f8ef7;border-color:#4f8ef744">Upper</span></div>
+        <div class="prog-latest">7.5 kg · 3×15 · 2026-06-18</div>
+      </div>
+      
+      <span class="trend new">● new</span>
+    </summary>
+    <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Date</th><th>Weight</th><th>Sets×Reps</th><th>Volume</th><th>Δ</th></tr></thead>
+      <tbody>
+<tr><td>2026-06-18</td><td>7.5 kg</td><td>3×15</td><td>337.5 kg</td><td><span class='trend new'>● new</span></td></tr>
+      </tbody>
+    </table>
+    </div>
+  </details>
+
+  <details class="card prog-card" data-type="Upper">
+    <summary>
+      <div class="prog-main">
+        <div class="prog-head"><span class="prog-name">Machine shoulder press</span><span class="badge" style="background:#4f8ef722;color:#4f8ef7;border-color:#4f8ef744">Upper</span></div>
+        <div class="prog-latest">45 lbs · 3×15 · 2026-06-18</div>
+      </div>
+      
+      <span class="trend new">● new</span>
+    </summary>
+    <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Date</th><th>Weight</th><th>Sets×Reps</th><th>Volume</th><th>Δ</th></tr></thead>
+      <tbody>
+<tr><td>2026-06-18</td><td>45 lbs</td><td>3×15</td><td>918.525 kg</td><td><span class='trend new'>● new</span></td></tr>
+      </tbody>
+    </table>
+    </div>
+  </details>
+
+  <details class="card prog-card" data-type="Upper">
+    <summary>
+      <div class="prog-main">
+        <div class="prog-head"><span class="prog-name">Barbell curl</span><span class="badge" style="background:#4f8ef722;color:#4f8ef7;border-color:#4f8ef744">Upper</span></div>
+        <div class="prog-latest">5 kg · 3×15 · 2026-06-18</div>
+      </div>
+      
+      <span class="trend new">● new</span>
+    </summary>
+    <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Date</th><th>Weight</th><th>Sets×Reps</th><th>Volume</th><th>Δ</th></tr></thead>
+      <tbody>
+<tr><td>2026-06-18</td><td>5 kg</td><td>3×15</td><td>225 kg</td><td><span class='trend new'>● new</span></td></tr>
+      </tbody>
+    </table>
+    </div>
+  </details>
+
+  <details class="card prog-card" data-type="Upper">
+    <summary>
+      <div class="prog-main">
+        <div class="prog-head"><span class="prog-name">Back cable pull</span><span class="badge" style="background:#4f8ef722;color:#4f8ef7;border-color:#4f8ef744">Upper</span></div>
+        <div class="prog-latest">55 lbs · 3×15 · 2026-06-12</div>
+      </div>
+      
+      <span class="trend new">● new</span>
+    </summary>
+    <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Date</th><th>Weight</th><th>Sets×Reps</th><th>Volume</th><th>Δ</th></tr></thead>
+      <tbody>
+<tr><td>2026-06-12</td><td>55 lbs</td><td>3×15</td><td>1122.64 kg</td><td><span class='trend new'>● new</span></td></tr>
+      </tbody>
+    </table>
+    </div>
+  </details>
+
+  <details class="card prog-card" data-type="Upper">
+    <summary>
+      <div class="prog-main">
+        <div class="prog-head"><span class="prog-name">Dumbbell curl</span><span class="badge" style="background:#4f8ef722;color:#4f8ef7;border-color:#4f8ef744">Upper</span></div>
+        <div class="prog-latest">10 kg · 3×15 · 2026-06-12</div>
+      </div>
+      
+      <span class="trend new">● new</span>
+    </summary>
+    <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Date</th><th>Weight</th><th>Sets×Reps</th><th>Volume</th><th>Δ</th></tr></thead>
+      <tbody>
+<tr><td>2026-06-12</td><td>10 kg</td><td>3×15</td><td>450 kg</td><td><span class='trend new'>● new</span></td></tr>
+      </tbody>
+    </table>
+    </div>
+  </details>
+    </div>
     <div id="view-templates" class="view">
       <p class="section-title">Default Exercises</p>
       
@@ -707,7 +1247,7 @@
   </div>
       <div style="height:4.5rem"></div>
     </div>
-    <footer>Updated 2026-07-12 17:31 (Bangkok)</footer>
+    <footer>Updated 2026-07-12 18:14 (Bangkok)</footer>
   </div>
   <div id="savebar">
     <span id="savecount"></span>
@@ -902,6 +1442,17 @@
         savebtn.textContent = 'Save to Log';
       }
     });
+
+
+    document.querySelectorAll('.filter-chip').forEach(ch =>
+      ch.addEventListener('click', () => {
+        document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('selected'));
+        ch.classList.add('selected');
+        const f = ch.dataset.filter;
+        document.querySelectorAll('.prog-card').forEach(card => {
+          card.style.display = (f === 'all' || card.dataset.type === f) ? '' : 'none';
+        });
+      }));
 
   </script>
   <script>
