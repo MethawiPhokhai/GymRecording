@@ -1,0 +1,49 @@
+{
+  "date": "2026-07-15",
+  "day": "Wednesday",
+  "type": "Upper",
+  "exercises": [
+    {
+      "name": "Pull up",
+      "completed": true,
+      "weight_lbs": 60,
+      "sets": 3,
+      "reps": 15
+    },
+    {
+      "name": "Supine bench press",
+      "completed": true,
+      "weight_lbs": 20,
+      "sets": 3,
+      "reps": 10
+    },
+    {
+      "name": "Chest fly",
+      "completed": true,
+      "weight_lbs": 55,
+      "sets": 3,
+      "reps": 15
+    },
+    {
+      "name": "Back cable rowing",
+      "completed": true,
+      "weight_lbs": 65,
+      "sets": 3,
+      "reps": 15
+    },
+    {
+      "name": "Face pull",
+      "completed": true,
+      "weight_lbs": 50,
+      "sets": 3,
+      "reps": 15
+    },
+    {
+      "name": "Cable tricep press down",
+      "completed": true,
+      "weight_lbs": 40,
+      "sets": 3,
+      "reps": 10
+    }
+  ]
+}
