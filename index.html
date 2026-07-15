@@ -1264,6 +1264,26 @@
   </div>
 
   <div class="tpl-section">
+    <div class="tpl-head"><span class="badge" style="background:#e3c04f22;color:#e3c04f;border-color:#e3c04f44">Full body</span><span class="count">6 exercises</span></div>
+    <div class="card" style="margin-top:.6rem">
+      <div class="tbl-wrap">
+      <table>
+        <thead><tr><th></th><th>Exercise</th><th>Weight</th><th>Sets×Reps</th></tr></thead>
+        <tbody data-type="Full body">
+<tr class='sel-row'><td class='selcell'><input type='checkbox' class='sel'></td><td class='exname'>Squat</td><td class='wcell'><input type='number' class='w-num' step='0.5' value='20' placeholder='-'><select class='w-unit'><option>lbs</option><option selected>kg</option></select></td><td class='srcell'><input type='number' class='sr-sets' value='3'>×<input type='number' class='sr-reps' value='10'></td></tr>
+<tr class='sel-row'><td class='selcell'><input type='checkbox' class='sel'></td><td class='exname'>Romanian deadlift</td><td class='wcell'><input type='number' class='w-num' step='0.5' value='30' placeholder='-'><select class='w-unit'><option>lbs</option><option selected>kg</option></select></td><td class='srcell'><input type='number' class='sr-sets' value='3'>×<input type='number' class='sr-reps' value='12'></td></tr>
+<tr class='sel-row'><td class='selcell'><input type='checkbox' class='sel'></td><td class='exname'>Supine bench press</td><td class='wcell'><input type='number' class='w-num' step='0.5' value='20' placeholder='-'><select class='w-unit'><option selected>lbs</option><option>kg</option></select></td><td class='srcell'><input type='number' class='sr-sets' value='3'>×<input type='number' class='sr-reps' value='10'></td></tr>
+<tr class='sel-row'><td class='selcell'><input type='checkbox' class='sel'></td><td class='exname'>Back cable rowing</td><td class='wcell'><input type='number' class='w-num' step='0.5' value='65' placeholder='-'><select class='w-unit'><option selected>lbs</option><option>kg</option></select></td><td class='srcell'><input type='number' class='sr-sets' value='3'>×<input type='number' class='sr-reps' value='12'></td></tr>
+<tr class='sel-row'><td class='selcell'><input type='checkbox' class='sel'></td><td class='exname'>Shoulder press</td><td class='wcell'><input type='number' class='w-num' step='0.5' value='40' placeholder='-'><select class='w-unit'><option selected>lbs</option><option>kg</option></select></td><td class='srcell'><input type='number' class='sr-sets' value='3'>×<input type='number' class='sr-reps' value='12'></td></tr>
+<tr class='sel-row'><td class='selcell'><input type='checkbox' class='sel'></td><td class='exname'>Lat pulldown</td><td class='wcell'><input type='number' class='w-num' step='0.5' value='65' placeholder='-'><select class='w-unit'><option selected>lbs</option><option>kg</option></select></td><td class='srcell'><input type='number' class='sr-sets' value='3'>×<input type='number' class='sr-reps' value='10'></td></tr>
+        </tbody>
+      </table>
+      </div>
+    </div>
+    <button class="addrow" data-type="Full body">+ Add exercise</button>
+  </div>
+
+  <div class="tpl-section">
     <div class="tpl-head"><span class="badge" style="background:#f75f8f22;color:#f75f8f;border-color:#f75f8f44">Core</span><span class="count">4 exercises</span></div>
     <div class="card" style="margin-top:.6rem">
       <div class="tbl-wrap">
@@ -1306,7 +1326,7 @@
   </div>
       <div style="height:4.5rem"></div>
     </div>
-    <footer>Updated 2026-07-15 07:00 (Bangkok)</footer>
+    <footer>Updated 2026-07-15 09:22 (Bangkok)</footer>
   </div>
   <div id="savebar">
     <span id="savecount"></span>
@@ -1460,7 +1480,7 @@
         });
 
         for (const [type, exs] of Object.entries(byType)) {
-          const path = `workouts/${date}-${type.toLowerCase()}-web.json`;
+          const path = `workouts/${date}-${type.toLowerCase().replace(/\s+/g, '')}-web.json`;
           const existing = await ghGet(path, token);
           let obj, sha = null;
           if (existing) {

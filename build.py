@@ -92,8 +92,9 @@ def resolve_session(entry, templates):
 
 
 TYPE_COLORS = {
-    "Upper":    "#4f8ef7",
-    "Lower":    "#f7934f",
+    "Upper":     "#4f8ef7",
+    "Lower":     "#f7934f",
+    "Full body": "#e3c04f",
     "Core":     "#f75f8f",
     "Mobility": "#4fd8f7",
     "Class":    "#a04ff7",
@@ -262,7 +263,7 @@ def build_template_section(template):
   </div>"""
 
 
-TEMPLATE_ORDER = ["Upper", "Lower", "Core", "Mobility", "Class", "Running"]
+TEMPLATE_ORDER = ["Upper", "Lower", "Full body", "Core", "Mobility", "Class", "Running"]
 
 LBS_TO_KG = 0.45359237
 
@@ -762,7 +763,7 @@ SAVE_SCRIPT = """
         });
 
         for (const [type, exs] of Object.entries(byType)) {
-          const path = `workouts/${date}-${type.toLowerCase()}-web.json`;
+          const path = `workouts/${date}-${type.toLowerCase().replace(/\\s+/g, '')}-web.json`;
           const existing = await ghGet(path, token);
           let obj, sha = null;
           if (existing) {
