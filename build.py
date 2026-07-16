@@ -222,6 +222,21 @@ def build_template_section(template):
     <div class="chip-row">{chips}</div>
   </div>"""
 
+    if workout_type == "Running":
+        return f"""
+  <div class="tpl-section">
+    <div class="tpl-head">{badge}</div>
+    <label class="run-toggle"><input type="checkbox" class="sel-run"> Log a run today</label>
+    <div class="run-grid">
+      <label class="run-cell">Duration (min)<input type="number" class="rfield" data-r="duration_minutes" step="1" placeholder="-"></label>
+      <label class="run-cell">Distance (km)<input type="number" class="rfield" data-r="distance_km" step="0.01" placeholder="-"></label>
+      <label class="run-cell">Pace (min/km)<input type="text" class="rfield" data-r="pace" placeholder="7:04"></label>
+      <label class="run-cell">Avg HR (bpm)<input type="number" class="rfield" data-r="avg_heart_rate_bpm" placeholder="-"></label>
+      <label class="run-cell">Calories (kcal)<input type="number" class="rfield" data-r="calories" placeholder="-"></label>
+      <label class="run-cell run-note">Note<input type="text" class="rfield" data-r="note" placeholder="Zone 2 / location"></label>
+    </div>
+  </div>"""
+
     exercises = template.get("exercises", [])
     if not exercises:
         return ""
@@ -497,7 +512,7 @@ def build_progress_view(raw_entries, templates):
 
 SAVE_CSS = """
     .selcell { width: 2.2rem; }
-    .sel {
+    .sel, .sel-run {
       width: 1.1rem; height: 1.1rem; accent-color: #e3b341;
       cursor: pointer; vertical-align: middle;
     }
@@ -529,11 +544,16 @@ SAVE_CSS = """
       background: none; border: 1px solid #30363d; color: #7d8590;
       border-radius: 8px; padding: .5rem .7rem; cursor: pointer; font-family: inherit;
     }
-    .wcell input, .srcell input, .exname input, .dur {
+    .wcell input, .srcell input, .exname input, .dur, .rfield {
       background: #0d1117; border: 1px solid #30363d; color: #e6edf3;
       border-radius: 6px; padding: .28rem .4rem;
       font-size: .85rem; font-family: inherit;
     }
+    .rfield { width: 100%; }
+    .run-toggle { display: flex; align-items: center; gap: .5rem; margin-top: .6rem; font-size: .85rem; color: #c9d1d9; cursor: pointer; }
+    .run-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: .6rem; margin-top: .6rem; }
+    .run-cell { display: flex; flex-direction: column; gap: .25rem; font-size: .72rem; color: #7d8590; }
+    .run-note { grid-column: 1 / -1; }
     .w-num { width: 4.4rem; }
     .sr-sets, .sr-reps { width: 3rem; text-align: center; }
     .srcell { white-space: nowrap; }
@@ -653,6 +673,24 @@ SAVE_SCRIPT = """
       document.querySelectorAll('.sel-chip.selected').forEach(ch =>
         items.push({ kind: 'class', name: ch.dataset.name,
                      duration: parseInt(ch.querySelector('.dur').value) || null }));
+      const runCb = document.querySelector('.sel-run');
+      if (runCb && runCb.checked) {
+        const run = { kind: 'running' };
+        document.querySelectorAll('.rfield').forEach(f => {
+          const k = f.dataset.r;
+          let v = f.value.trim();
+          if (!v) return;
+          if (k === 'pace') {
+            if (!v.includes('min/km')) v = v + ' min/km';
+            run[k] = v;
+          } else if (k === 'note') {
+            run[k] = v;
+          } else {
+            run[k] = Number(v);
+          }
+        });
+        items.push(run);
+      }
       return items;
     }
 
@@ -680,6 +718,9 @@ SAVE_SCRIPT = """
         ch.classList.toggle('selected');
         refreshBar();
       }));
+
+    const runToggle = document.querySelector('.sel-run');
+    if (runToggle) runToggle.addEventListener('change', refreshBar);
 
     document.querySelectorAll('.addrow').forEach(btn =>
       btn.addEventListener('click', () => {
@@ -789,8 +830,26 @@ SAVE_SCRIPT = """
           await ghPut(path, obj, existing ? existing.sha : null, token);
         }
 
+        for (const r of items.filter(i => i.kind === 'running')) {
+          let n = 1, runPath, runExisting;
+          while (true) {
+            runPath = n === 1
+              ? `workouts/${date}-running-web.json`
+              : `workouts/${date}-running-web-${n}.json`;
+            runExisting = await ghGet(runPath, token);
+            if (!runExisting) break;
+            n++;
+          }
+          const runObj = { date, day: dayName, type: 'Running' };
+          Object.keys(r).forEach(k => { if (k !== 'kind') runObj[k] = r[k]; });
+          await ghPut(runPath, runObj, null, token);
+        }
+
         document.querySelectorAll('.sel:checked').forEach(cb => cb.checked = false);
         document.querySelectorAll('.sel-chip.selected').forEach(ch => ch.classList.remove('selected'));
+        const runClear = document.querySelector('.sel-run');
+        if (runClear) runClear.checked = false;
+        document.querySelectorAll('.rfield').forEach(f => f.value = '');
         refreshBar();
         alert('Saved! The site rebuilds in ~1 minute, then pull to refresh.');
       } catch (err) {
