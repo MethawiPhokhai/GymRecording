@@ -1,0 +1,35 @@
+{
+  "date": "2026-07-28",
+  "day": "Tuesday",
+  "type": "Full body",
+  "exercises": [
+    {
+      "name": "Squat",
+      "completed": true,
+      "weight_kg": 20,
+      "sets": 3,
+      "reps": 10
+    },
+    {
+      "name": "Supine bench press",
+      "completed": true,
+      "weight_lbs": 20,
+      "sets": 3,
+      "reps": 10
+    },
+    {
+      "name": "Back cable rowing",
+      "completed": true,
+      "weight_lbs": 65,
+      "sets": 3,
+      "reps": 12
+    },
+    {
+      "name": "Shoulder press",
+      "completed": true,
+      "weight_lbs": 40,
+      "sets": 3,
+      "reps": 12
+    }
+  ]
+}
