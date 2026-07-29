@@ -33,6 +33,8 @@ Per type:
 
 Weights use **mixed units by intent** — kg and lbs both appear across exercises; do not normalize.
 
+A leading `* ` in a template exercise name marks the runner-strength pool (from a Facebook post, Jul 2026). The `*` is part of the `name` key — starred template entries do not match unstarred names in past workouts, so defaults/progress treat them as distinct exercises. This is intentional.
+
 `apply_latest_defaults` (build.py:35) overwrites template defaults with the most recently recorded weight per exercise name at build time. Template defaults in the JSON are therefore not canonical and drift as workouts are added.
 
 ## Conventions

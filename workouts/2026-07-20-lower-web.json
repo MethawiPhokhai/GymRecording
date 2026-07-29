@@ -11,14 +11,14 @@
       "reps": 10
     },
     {
-      "name": "Romanian deadlift",
+      "name": "* Romanian deadlift",
       "completed": true,
       "weight_kg": 30,
       "sets": 3,
       "reps": 15
     },
     {
-      "name": "Seated calf raise",
+      "name": "* Seated calf raise",
       "completed": true,
       "weight_kg": 15,
       "sets": 3,

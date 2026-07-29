@@ -11,14 +11,14 @@
       "reps": 10
     },
     {
-      "name": "Romanian deadlift",
+      "name": "* Romanian deadlift",
       "completed": true,
       "weight_kg": 30,
       "sets": 3,
       "reps": 15
     },
     {
-      "name": "Bulgarian split squat",
+      "name": "* Bulgarian split squat",
       "completed": true,
       "weight_lbs": 20,
       "sets": 3,
@@ -32,13 +32,13 @@
       "reps": 15
     },
     {
-      "name": "Calf raise",
+      "name": "* Calf raise",
       "completed": true,
       "sets": 3,
       "reps": 10
     },
     {
-      "name": "Seated calf raise",
+      "name": "* Seated calf raise",
       "completed": true,
       "weight_kg": 15,
       "sets": 3,

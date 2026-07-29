@@ -2,7 +2,7 @@
   "type": "Full body",
   "exercises": [
     { "name": "Squat",              "default_weight_kg": 20,    "default_sets": 3, "default_reps": 10 },
-    { "name": "Romanian deadlift",  "default_weight_kg": 30,    "default_sets": 3, "default_reps": 12 },
+    { "name": "* Romanian deadlift","default_weight_kg": 30,    "default_sets": 3, "default_reps": 12 },
     { "name": "Supine bench press", "default_weight_lbs": 20,   "default_sets": 3, "default_reps": 10 },
     { "name": "Back cable rowing",  "default_weight_lbs": 65,   "default_sets": 3, "default_reps": 12 },
     { "name": "Shoulder press",     "default_weight_lbs": 40,   "default_sets": 3, "default_reps": 12 },
