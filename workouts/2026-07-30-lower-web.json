@@ -1,0 +1,28 @@
+{
+  "date": "2026-07-30",
+  "day": "Thursday",
+  "type": "Lower",
+  "exercises": [
+    {
+      "name": "* Goblet squat",
+      "completed": true,
+      "weight_lbs": 30,
+      "sets": 3,
+      "reps": 10
+    },
+    {
+      "name": "* Romanian deadlift",
+      "completed": true,
+      "weight_kg": 30,
+      "sets": 3,
+      "reps": 15
+    },
+    {
+      "name": "* Bulgarian split squat",
+      "completed": true,
+      "weight_lbs": 20,
+      "sets": 3,
+      "reps": 10
+    }
+  ]
+}
