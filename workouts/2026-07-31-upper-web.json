@@ -1,0 +1,28 @@
+{
+  "date": "2026-07-31",
+  "day": "Friday",
+  "type": "Upper",
+  "exercises": [
+    {
+      "name": "Shoulder press",
+      "completed": true,
+      "weight_lbs": 50,
+      "sets": 3,
+      "reps": 10
+    },
+    {
+      "name": "Chest fly",
+      "completed": true,
+      "weight_lbs": 55,
+      "sets": 3,
+      "reps": 15
+    },
+    {
+      "name": "Lat pulldown",
+      "completed": true,
+      "weight_lbs": 70,
+      "sets": 3,
+      "reps": 10
+    }
+  ]
+}
