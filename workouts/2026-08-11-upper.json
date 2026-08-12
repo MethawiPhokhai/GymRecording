@@ -1,0 +1,42 @@
+{
+  "date": "2026-08-11",
+  "day": "Tuesday",
+  "type": "Upper",
+  "exercises": [
+    {
+      "name": "Shoulder press",
+      "completed": true,
+      "weight_lbs": 50,
+      "sets": 3,
+      "reps": 15
+    },
+    {
+      "name": "Barbell bench press",
+      "completed": true,
+      "weight_lbs": 20,
+      "sets": 3,
+      "reps": 10
+    },
+    {
+      "name": "Chest fly",
+      "completed": true,
+      "weight_lbs": 55,
+      "sets": 3,
+      "reps": 15
+    },
+    {
+      "name": "Lat pulldown",
+      "completed": true,
+      "weight_lbs": 70,
+      "sets": 3,
+      "reps": 15
+    },
+    {
+      "name": "Back Hyperextension",
+      "completed": true,
+      "weight_lbs": 10,
+      "sets": 3,
+      "reps": 15
+    }
+  ]
+}
