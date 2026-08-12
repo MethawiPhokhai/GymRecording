@@ -1,0 +1,21 @@
+{
+  "date": "2026-08-12",
+  "day": "Wednesday",
+  "type": "Lower",
+  "exercises": [
+    {
+      "name": "Squat",
+      "completed": true,
+      "weight_lbs": 44,
+      "sets": 3,
+      "reps": 10
+    },
+    {
+      "name": "romanian deadlift",
+      "completed": true,
+      "weight_lbs": 66,
+      "sets": 3,
+      "reps": 10
+    }
+  ]
+}
