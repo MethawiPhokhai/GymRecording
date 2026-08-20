@@ -1,0 +1,56 @@
+{
+  "date": "2026-08-18",
+  "day": "Tuesday",
+  "type": "Upper",
+  "exercises": [
+    {
+      "name": "incline bench press",
+      "completed": true,
+      "weight_lbs": 11,
+      "sets": 5,
+      "reps": 12
+    },
+    {
+      "name": "incline bench press",
+      "completed": true,
+      "weight_lbs": 11,
+      "sets": 5,
+      "reps": 10
+    },
+    {
+      "name": "incline bench press",
+      "completed": true,
+      "weight_lbs": 11,
+      "sets": 5,
+      "reps": 7
+    },
+    {
+      "name": "incline bench press",
+      "completed": true,
+      "weight_lbs": 11,
+      "sets": 5,
+      "reps": 7
+    },
+    {
+      "name": "incline bench press",
+      "completed": true,
+      "weight_lbs": 11,
+      "sets": 5,
+      "reps": 6
+    },
+    {
+      "name": "dumbbell front raise",
+      "completed": true,
+      "weight_lbs": 11,
+      "sets": 3,
+      "reps": 10
+    },
+    {
+      "name": "incline sit up",
+      "completed": true,
+      "weight_lbs": 0,
+      "sets": 3,
+      "reps": 10
+    }
+  ]
+}
