@@ -1,0 +1,21 @@
+{
+  "date": "2026-08-22",
+  "day": "Saturday",
+  "type": "Upper",
+  "exercises": [
+    {
+      "name": "Back cable rowing",
+      "completed": true,
+      "weight_lbs": 60,
+      "sets": 4,
+      "reps": 10
+    },
+    {
+      "name": "Back Hyperextension",
+      "completed": true,
+      "weight_lbs": 5,
+      "sets": 4,
+      "reps": 10
+    }
+  ]
+}
