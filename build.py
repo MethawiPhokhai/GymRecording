@@ -879,26 +879,12 @@ PAGE_SIZE = 10
 from datetime import date as _date, timedelta
 
 
+STRENGTH_TYPES = {"Upper", "Lower", "Full body", "Core", "Mobility"}
+
+
 def compute_summary(entries, raw_entries):
     """Derive dashboard stats for the header strip from real logged data."""
     dates = sorted({e.get("date") for e in raw_entries if e.get("date")}, reverse=True)
-
-    # Consecutive-day streak ending at the most recent workout date
-    streak = 0
-    cur = None
-    for d in dates:
-        try:
-            dt = _date.fromisoformat(d)
-        except Exception:
-            continue
-        if cur is None:
-            cur, streak = dt, 1
-        elif cur - dt == timedelta(days=1):
-            cur, streak = dt, streak + 1
-        elif cur - dt == timedelta(days=0):
-            continue  # same day, multiple sessions
-        else:
-            break
 
     # Window = 30 days back from the latest workout
     cutoff = None
@@ -909,30 +895,16 @@ def compute_summary(entries, raw_entries):
             cutoff = None
     recent = [e for e in raw_entries if e.get("date") and (not cutoff or e["date"] >= cutoff)]
 
-    volume = 0.0
-    for e in recent:
-        if e.get("type") in ("Class", "Running"):
-            continue
-        for ex in e.get("exercises", []):
-            if not ex.get("completed"):
-                continue
-            kg = norm_weight_kg(ex)
-            s, r = ex.get("sets"), ex.get("reps")
-            if kg and s and r:
-                volume += kg * s * r
-
-    distance = sum((e.get("distance_km") or 0) for e in recent if e.get("type") == "Running")
-    workouts_30 = sum(1 for e in recent)
     sessions = len({e.get("date") for e in recent})
-
-    # Total sessions tracked
+    weight = sum(1 for e in recent if e.get("type") in STRENGTH_TYPES)
+    cardio = sum(1 for e in recent if e.get("type") not in STRENGTH_TYPES)
+    distance = sum((e.get("distance_km") or 0) for e in recent if e.get("type") == "Running")
     total_sessions = len({e.get("date") for e in raw_entries})
 
     return {
-        "streak": streak,
         "last30": sessions,
-        "workouts_30": workouts_30,
-        "volume": int(volume),
+        "weight": weight,
+        "cardio": cardio,
         "distance": distance,
         "total": total_sessions,
     }
@@ -940,13 +912,12 @@ def compute_summary(entries, raw_entries):
 
 def build_statgrid(entries, raw_entries):
     s = compute_summary(entries, raw_entries)
-    vol_disp = f"{s['volume'] / 1000.0:.1f}k" if s["volume"] >= 1000 else f"{s['volume']:,}"
     dist_disp = f"{s['distance']:.1f}" if s["distance"] else "0"
     return f"""
     <div class="statgrid">
-      <div class="stat"><div class="k">Streak</div><div class="v">{s['streak']}d</div><div class="d">{'keep going 🔥' if s['streak'] else 'log one today'}</div></div>
-      <div class="stat"><div class="k">Last 30 days</div><div class="v">{s['last30']}</div><div class="d">sessions</div></div>
-      <div class="stat"><div class="k">Volume</div><div class="v">{vol_disp}&nbsp;kg</div><div class="d">last 30 days</div></div>
+      <div class="stat"><div class="k">Last 30 days</div><div class="v">{s['last30']}</div><div class="d">total sessions</div></div>
+      <div class="stat"><div class="k">Weight training</div><div class="v">{s['weight']}</div><div class="d">sessions · 30d</div></div>
+      <div class="stat"><div class="k">Cardio</div><div class="v">{s['cardio']}</div><div class="d">sessions · 30d</div></div>
       <div class="stat"><div class="k">Run distance</div><div class="v">{dist_disp}&nbsp;km</div><div class="d">last 30 days</div></div>
     </div>"""
 
@@ -1151,9 +1122,8 @@ def build_html(entries, templates, raw_entries):
         more = f'<button class="view-more">View more</button>' if len(col_entries) > PAGE_SIZE else ""
         return "\n".join(lst), more
 
-    STRENGTH = {"Upper", "Lower", "Full body", "Core", "Mobility"}
-    weight = [e for e in entries if e.get("type") in STRENGTH]
-    cardio = [e for e in entries if e.get("type") not in STRENGTH]
+    weight = [e for e in entries if e.get("type") in STRENGTH_TYPES]
+    cardio = [e for e in entries if e.get("type") not in STRENGTH_TYPES]
     weight_cards, weight_more = col(weight)
     cardio_cards, cardio_more = col(cardio)
     ordered = [templates[t] for t in TEMPLATE_ORDER if t in templates]
