@@ -402,10 +402,10 @@ def build_sparkline(points):
     poly = " ".join(f"{x:.1f},{y:.1f}" for x, y in zip(xs, ys))
     return (
         f'<svg class="spark" width="{w}" height="{h}" viewBox="0 0 {w} {h}" aria-hidden="true">'
-        f'<polyline points="{poly}" fill="none" stroke="#7d8590" stroke-width="2" '
+        f'<polyline points="{poly}" fill="none" stroke="#5e6ad2" stroke-width="2" '
         f'stroke-linecap="round" stroke-linejoin="round"/>'
-        f'<circle cx="{xs[-1]:.1f}" cy="{ys[-1]:.1f}" r="4" fill="#58a6ff" '
-        f'stroke="#161b22" stroke-width="2"/></svg>'
+        f'<circle cx="{xs[-1]:.1f}" cy="{ys[-1]:.1f}" r="4" fill="#5e6ad2" '
+        f'stroke="#0f1014" stroke-width="2"/></svg>'
     )
 
 
@@ -465,7 +465,7 @@ def build_progress_card(name, data):
   </details>"""
 
 
-def build_progress_view(raw_entries, templates):
+def build_progress_view(raw_entries, templates, compact=False):
     history = collect_progress(raw_entries, templates)
     if not history:
         return "<p class='section-title'>No strength data yet</p>"
@@ -505,6 +505,10 @@ def build_progress_view(raw_entries, templates):
         f'<span class="chip filter-chip" data-filter="{t}">{t}</span>' for t in types_present
     )
     cards = "\n".join(build_progress_card(n, d) for n, d in ordered)
+    if compact:
+        return f"""
+  <div class="chip-row" id="prog-filters">{chips}</div>
+{cards}"""
     return f"""{stats}
   <div class="chip-row" id="prog-filters">{chips}</div>
   <p class="section-title" style="margin-top:1.25rem">Latest first — tap a card for full history</p>
@@ -868,123 +872,301 @@ SAVE_SCRIPT = """
 
 PAGE_SIZE = 10
 
+#!/usr/bin/env python3
+# New tail for build.py — replaces build_html with a Design-3 (Linear-style) dashboard,
+# keeping all data functions + SAVE_SCRIPT + PROGRESS_SCRIPT intact.
+
+from datetime import date as _date, timedelta
+
+
+def compute_summary(entries, raw_entries):
+    """Derive dashboard stats for the header strip from real logged data."""
+    dates = sorted({e.get("date") for e in raw_entries if e.get("date")}, reverse=True)
+
+    # Consecutive-day streak ending at the most recent workout date
+    streak = 0
+    cur = None
+    for d in dates:
+        try:
+            dt = _date.fromisoformat(d)
+        except Exception:
+            continue
+        if cur is None:
+            cur, streak = dt, 1
+        elif cur - dt == timedelta(days=1):
+            cur, streak = dt, streak + 1
+        elif cur - dt == timedelta(days=0):
+            continue  # same day, multiple sessions
+        else:
+            break
+
+    # Window = 30 days back from the latest workout
+    cutoff = None
+    if dates:
+        try:
+            cutoff = (_date.fromisoformat(dates[0]) - timedelta(days=29)).isoformat()
+        except Exception:
+            cutoff = None
+    recent = [e for e in raw_entries if e.get("date") and (not cutoff or e["date"] >= cutoff)]
+
+    volume = 0.0
+    for e in recent:
+        if e.get("type") in ("Class", "Running"):
+            continue
+        for ex in e.get("exercises", []):
+            if not ex.get("completed"):
+                continue
+            kg = norm_weight_kg(ex)
+            s, r = ex.get("sets"), ex.get("reps")
+            if kg and s and r:
+                volume += kg * s * r
+
+    distance = sum((e.get("distance_km") or 0) for e in recent if e.get("type") == "Running")
+    workouts_30 = sum(1 for e in recent)
+    sessions = len({e.get("date") for e in recent})
+
+    # Total sessions tracked
+    total_sessions = len({e.get("date") for e in raw_entries})
+
+    return {
+        "streak": streak,
+        "last30": sessions,
+        "workouts_30": workouts_30,
+        "volume": int(volume),
+        "distance": distance,
+        "total": total_sessions,
+    }
+
+
+def build_statgrid(entries, raw_entries):
+    s = compute_summary(entries, raw_entries)
+    vol_disp = f"{s['volume'] / 1000.0:.1f}k" if s["volume"] >= 1000 else f"{s['volume']:,}"
+    dist_disp = f"{s['distance']:.1f}" if s["distance"] else "0"
+    return f"""
+    <div class="statgrid">
+      <div class="stat"><div class="k">Streak</div><div class="v">{s['streak']}d</div><div class="d">{'keep going 🔥' if s['streak'] else 'log one today'}</div></div>
+      <div class="stat"><div class="k">Last 30 days</div><div class="v">{s['last30']}</div><div class="d">sessions</div></div>
+      <div class="stat"><div class="k">Volume</div><div class="v">{vol_disp}&nbsp;kg</div><div class="d">last 30 days</div></div>
+      <div class="stat"><div class="k">Run distance</div><div class="v">{dist_disp}&nbsp;km</div><div class="d">last 30 days</div></div>
+    </div>"""
+
+
+STYLE = """
+  :root{
+    --bg:#08090c; --panel:#0f1014; --panel2:#14151a; --hover:#1a1c22;
+    --line:#22242b; --line2:#2c2f38; --ink:#f2f3f7; --mut:#8a8f9c; --dim:#5b6070;
+    --accent:#5e6ad2; --accent2:#7a86ff; --green:#4dd0a9; --orange:#f7a35c; --red:#f16b5f;
+    --mono:'JetBrains Mono','SFMono-Regular',ui-monospace,Menlo,Consolas,monospace;
+    --radius:10px;
+  }
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  html{-webkit-text-size-adjust:100%}
+  body{background:var(--bg);color:var(--ink);font-family:'Inter',system-ui,-apple-system,'Segoe UI',sans-serif;line-height:1.45;-webkit-font-smoothing:antialiased}
+  button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit}
+  a{color:inherit;text-decoration:none}
+  .layout{display:grid;grid-template-columns:1fr;min-height:100vh}
+
+  /* ---- Desktop sidebar ---- */
+  .side{background:var(--panel);border-right:1px solid var(--line);padding:16px 12px;display:none;flex-direction:column;gap:2px;position:sticky;top:0;height:100vh;overflow:auto}
+  .side .brand{display:flex;align-items:center;gap:9px;padding:4px 10px 18px;font-weight:700;font-size:13.5px;letter-spacing:-.01em}
+  .side .brand .logo{width:20px;height:20px;border-radius:6px;background:linear-gradient(135deg,var(--accent),var(--accent2))}
+  .side a{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:8px;color:var(--mut);font-size:13px;font-weight:550}
+  .side a svg{width:16px;height:16px;flex:none}
+  .side a.on{background:var(--hover);color:var(--ink)}
+  .side a:hover{background:var(--hover);color:var(--ink)}
+  .side hr{border:none;border-top:1px solid var(--line);margin:12px 8px}
+  .side .foot{padding:10px 12px;font-size:10.5px;color:var(--dim);margin-top:auto}
+  .side .foot b{display:block;color:var(--mut);font-weight:600}
+
+  /* ---- Mobile bottom nav ---- */
+  .bmob{position:fixed;left:0;right:0;bottom:0;background:rgba(8,9,12,.94);backdrop-filter:blur(10px);border-top:1px solid var(--line);display:grid;grid-template-columns:repeat(2,1fr);z-index:30}
+  .bmob button{color:var(--mut);font-size:10.5px;font-weight:600;padding:12px 0 14px;display:flex;flex-direction:column;align-items:center;gap:4px}
+  .bmob button.on{color:var(--accent)}
+  .bmob svg{width:20px;height:20px}
+
+  /* ---- Main ---- */
+  .main{width:100%;max-width:1000px;margin:0 auto;padding:18px 18px 92px}
+  .view{display:none}
+  .view.on{display:block}
+  .dash-cols{display:block}
+  .dash-cols section{min-width:0}
+  .topbar{display:flex;align-items:center;justify-content:space-between;gap:10px;padding-bottom:16px}
+  .topbar h1{font-size:17px;font-weight:700;letter-spacing:-.02em;margin:0}
+  .topbar .meta{font-size:12px;color:var(--mut);margin-top:2px}
+  .topbar .actions{display:flex;gap:8px}
+
+  .statgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+  .stat{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:13px 15px}
+  .stat .k{font-size:11px;color:var(--mut);text-transform:uppercase;letter-spacing:.06em;font-weight:600}
+  .stat .v{font-family:var(--mono);font-size:22px;font-weight:700;letter-spacing:-.02em;margin-top:6px}
+  .stat .d{font-size:11.5px;color:var(--mut);margin-top:2px}
+
+  .section-title{font-size:12px;font-weight:700;color:var(--mut);text-transform:uppercase;letter-spacing:.07em;margin:20px 0 12px}
+
+  /* ---- Tables ---- */
+  .tbl-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;background:var(--panel);border:1px solid var(--line);border-radius:var(--radius)}
+  table{width:100%;border-collapse:collapse;font-size:13px}
+  th{text-align:left;color:var(--dim);font-size:10.5px;text-transform:uppercase;letter-spacing:.05em;padding:10px 14px 8px;border-bottom:1px solid var(--line);font-weight:600;white-space:nowrap}
+  td{padding:9px 14px;border-bottom:1px solid #16171c;color:var(--ink)}
+  tbody tr:hover td{background:var(--hover)}
+  .num{text-align:right;font-family:var(--mono);color:var(--mut);font-size:12px}
+  td.note{color:var(--orange);font-size:12px}
+  .trend{font-weight:600;white-space:nowrap;font-variant-numeric:tabular-nums;font-size:12px}
+  .trend.up{color:var(--green)} .trend.down{color:var(--red)} .trend.flat{color:var(--dim)} .trend.new{color:var(--accent2)}
+
+  /* ---- Log cards (details) ---- */
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);margin-bottom:9px;overflow:hidden}
+  .card:hover{border-color:var(--line2)}
+  .card summary{display:flex;align-items:center;gap:12px;padding:13px 15px;cursor:pointer;list-style:none;user-select:none;flex-wrap:wrap}
+  .card summary::-webkit-details-marker{display:none}
+  .card summary::before{content:'';flex:none;border:5.5px solid transparent;border-left:8px solid var(--dim);transition:transform .18s}
+  .card[open] summary::before{transform:rotate(90deg)}
+  .date{font-family:var(--mono);font-size:12.5px;color:var(--mut);min-width:78px}
+  .day{font-size:11px;color:var(--dim);text-transform:uppercase;letter-spacing:.05em;flex:none;width:34px}
+  .badge{font-size:10.5px;font-weight:700;padding:2.5px 9px;border-radius:20px;border:1px solid;flex:none;letter-spacing:.02em;margin-left:auto}
+  .count{font-size:12.5px;color:var(--mut);text-align:right;font-variant-numeric:tabular-nums}
+  .detail{padding:4px 15px 15px;border-top:1px solid var(--line)}
+  .detail .tbl-wrap{margin-top:12px}
+  .class-detail{padding:12px 15px 15px 30px;display:flex;align-items:center;gap:8px}
+  .class-name{font-size:14px;font-weight:600}
+  .class-duration{font-size:12px;color:var(--mut)}
+  .more-hidden{display:none}
+
+  /* ---- Header chrome (Log view) ---- */
+  .headline{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:6px}
+  .headline .title{font-size:15px;font-weight:700;letter-spacing:-.01em}
+
+  /* ---- Progress ---- */
+  .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:14px}
+  .stats .stat-label{font-size:10.5px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--mut)}
+  .stats .stat-value{font-size:20px;font-weight:700;color:var(--ink);margin-top:4px;font-family:var(--mono)}
+  .stats .stat-value small{font-size:12px;font-weight:600;color:var(--mut)}
+  .stats .stat-sub{font-size:11.5px;color:var(--mut);margin-top:2px}
+  .chip-row{display:flex;flex-wrap:wrap;gap:7px;margin:12px 0}
+  .chip{background:var(--panel);border:1px solid var(--line);border-radius:20px;padding:6px 14px;font-size:12.5px;color:var(--mut);cursor:pointer;user-select:none;transition:.15s}
+  .chip:hover{border-color:var(--line2);color:var(--ink)}
+  .chip small{color:var(--dim)}
+  .filter-chip.selected{background:var(--accent);border-color:var(--accent);color:#fff}
+  .prog-card .tbl-wrap{margin-top:12px}
+  .prog-main{flex:1;min-width:0}
+  .prog-head{display:flex;align-items:center;gap:8px}
+  .prog-name{font-size:13.5px;font-weight:650;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .prog-latest{font-size:11.5px;color:var(--mut);margin-top:2px}
+  .spark{flex-shrink:0}
+
+  /* ---- Templates / save form ---- */
+  .tpl-section{margin-bottom:16px}
+  .tpl-head{display:flex;align-items:center;gap:9px;padding:4px 0 2px}
+  .tpl-head .t{font-weight:700;font-size:14px;color:var(--ink)}
+  .tpl-count{font-size:11.5px;color:var(--mut)}
+  .selcell{width:2.2rem}
+  .sel,.sel-run{width:1.05rem;height:1.05rem;accent-color:var(--accent);cursor:pointer;vertical-align:middle}
+  .sel-row{cursor:pointer}
+  .sel-chip{cursor:pointer;transition:.15s;user-select:none}
+  .sel-chip.selected{background:var(--accent);border-color:var(--accent);color:#fff}
+  .sel-chip.selected small{color:#fff}
+  .wcell input,.srcell input,.exname input,.dur,.rfield,input.rv{
+    background:var(--panel2);border:1px solid var(--line);color:var(--ink);
+    border-radius:6px;padding:6px 8px;font-size:12.5px;font-family:inherit;min-width:0
+  }
+  .wcell input:focus,.srcell input:focus,.exname input:focus,.dur:focus,.rfield:focus,input.rv:focus{
+    outline:none;border-color:var(--accent)
+  }
+  .rfield{width:100%}
+  .w-num{width:4.2rem}
+  .sr-sets,.sr-reps{width:2.6rem;text-align:center}
+  .srcell{white-space:nowrap}
+  .exname input{width:9rem}
+  .dur{width:3.4rem;padding:4px 6px;font-size:12px}
+  .w-unit{background:var(--panel2);color:var(--mut);border:1px solid var(--line);border-radius:6px;padding:6px 4px;font-size:12px;font-family:inherit;margin-left:4px}
+  input[type=number]{appearance:textfield;-moz-appearance:textfield}
+  input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
+  .addrow{background:none;border:1px dashed var(--line2);color:var(--mut);border-radius:8px;padding:10px 14px;margin-top:8px;font-size:12.5px;font-family:inherit;cursor:pointer;width:100%}
+  .addrow:hover{border-color:var(--accent);color:var(--ink)}
+  .run-toggle{display:flex;align-items:center;gap:8px;margin-top:8px;font-size:13px;color:var(--ink);cursor:pointer}
+  .run-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:8px}
+  .run-cell{display:flex;flex-direction:column;gap:4px;font-size:11px;color:var(--mut)}
+  .run-note{grid-column:1 / -1}
+  .note-row{display:flex;gap:8px;align-items:center;font-size:11px;color:var(--mut)}
+
+  /* ---- Save bar ---- */
+  #savebar{position:fixed;bottom:0;left:0;right:0;display:none;align-items:center;justify-content:center;gap:14px;padding:11px 16px calc(11px + env(safe-area-inset-bottom));background:rgba(15,16,20,.95);border-top:1px solid var(--line);backdrop-filter:blur(10px);z-index:40}
+  #savebar.visible{display:flex}
+  #savecount{font-size:12.5px;color:var(--mut)}
+  #savebtn{background:var(--accent);border:none;color:#fff;font-size:13px;font-weight:650;font-family:inherit;padding:9px 20px;border-radius:8px}
+  #savebtn:hover{filter:brightness(1.1)}
+  #savebtn:disabled{opacity:.5;cursor:wait}
+  #tokenbtn{background:var(--panel2);border:1px solid var(--line);color:var(--mut);border-radius:8px;padding:9px 12px}
+
+  #view-more,.view-more,.btn{border:1px solid var(--line2);background:var(--panel2);color:var(--ink);border-radius:8px;padding:9px 14px;font-size:12.5px;font-weight:600}
+  #view-more:hover,.view-more:hover,.btn:hover{border-color:var(--accent)}
+  #view-more,.view-more{display:block;width:100%;margin-top:10px}
+  .btn.primary{background:var(--accent);border-color:var(--accent);color:#fff}
+
+  /* pull-to-refresh */
+  #ptr-indicator{display:flex;align-items:center;justify-content:center;height:0;overflow:hidden;transition:height .2s;color:var(--mut);font-size:12px;gap:8px}
+  #ptr-indicator.visible{height:48px}
+  #ptr-indicator svg{animation:spin 1s linear infinite}
+  @keyframes spin{to{transform:rotate(360deg)}}
+
+  footer{margin:28px 0 8px;text-align:center;font-size:11.5px;color:var(--dim)}
+
+  /* responsive */
+  @media(min-width:900px){
+    .layout{grid-template-columns:232px 1fr}
+    .side{display:flex}
+    .bmob{display:none}
+    .main{padding:22px 28px 40px}
+    .statgrid{grid-template-columns:repeat(4,1fr)}
+    .stats{grid-template-columns:repeat(3,1fr)}
+    .dash-cols{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;align-items:start}
+    #savebar{bottom:0}
+  }
+  @media(max-width:480px){
+    .statgrid{grid-template-columns:1fr 1fr}
+    .stats{grid-template-columns:1fr 1fr}
+    .stats .stat:first-child{grid-column:1 / -1}
+    .spark{display:none}
+    .date{min-width:64px}
+  }
+"""
+
 
 def build_html(entries, templates, raw_entries):
-    progress_view = build_progress_view(raw_entries, templates)
-    card_list = [build_card_html(e) for e in entries]
-    card_list = [
-        c if i < PAGE_SIZE else c.replace('<details class="card">', '<details class="card more-hidden">', 1)
-        for i, c in enumerate(card_list)
-    ]
-    cards = "\n".join(card_list)
-    view_more = (
-        '<button id="viewmore">View more</button>' if len(entries) > PAGE_SIZE else ""
-    )
+    progress_view = build_progress_view(raw_entries, templates, compact=True)
+
+    def col(col_entries):
+        lst = [build_card_html(e) for e in col_entries]
+        lst = [
+            c if i < PAGE_SIZE else c.replace('<details class="card">', '<details class="card more-hidden">', 1)
+            for i, c in enumerate(lst)
+        ]
+        more = f'<button class="view-more">View more</button>' if len(col_entries) > PAGE_SIZE else ""
+        return "\n".join(lst), more
+
+    STRENGTH = {"Upper", "Lower", "Full body", "Core", "Mobility"}
+    weight = [e for e in entries if e.get("type") in STRENGTH]
+    cardio = [e for e in entries if e.get("type") not in STRENGTH]
+    weight_cards, weight_more = col(weight)
+    cardio_cards, cardio_more = col(cardio)
     ordered = [templates[t] for t in TEMPLATE_ORDER if t in templates]
     ordered += [t for k, t in templates.items() if k not in TEMPLATE_ORDER]
     template_sections = "\n".join(
         s for s in (build_template_section(t) for t in ordered) if s
     )
+    statgrid = build_statgrid(entries, raw_entries)
+
+    latest_date = entries[0].get("date", "—") if entries else "—"
+    n = len(entries)
     updated = datetime.now(BKK).strftime("%Y-%m-%d %H:%M (Bangkok)")
+
     html = f"""<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Gym Recording</title>
-  <style>
-    *, *::before, *::after {{ box-sizing: border-box; margin: 0; padding: 0; }}
-    body {{
-      background: #0d1117; color: #e6edf3;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      padding: 2rem 1rem; min-height: 100vh;
-    }}
-    .container {{ max-width: 720px; margin: 0 auto; }}
-    header {{ margin-bottom: 2rem; }}
-    header h1 {{ font-size: 1.6rem; font-weight: 700; color: #f0f6fc; }}
-    header p {{ margin-top: .4rem; color: #7d8590; font-size: .9rem; }}
-    .section-title {{
-      font-size: .75rem; font-weight: 600; letter-spacing: .08em;
-      text-transform: uppercase; color: #7d8590; margin-bottom: 1rem;
-    }}
-    .card {{
-      background: #161b22; border: 1px solid #30363d;
-      border-radius: 10px; margin-bottom: .75rem;
-      overflow: hidden; transition: border-color .15s;
-    }}
-    .card:hover {{ border-color: #484f58; }}
-    .card summary {{
-      display: flex; align-items: center; gap: .75rem;
-      padding: .85rem 1.1rem; cursor: pointer;
-      list-style: none; user-select: none;
-    }}
-    .card summary::-webkit-details-marker {{ display: none; }}
-    .card summary::before {{
-      content: "›"; font-size: 1.1rem; color: #7d8590;
-      transition: transform .2s; flex-shrink: 0;
-    }}
-    .card[open] summary::before {{ transform: rotate(90deg); }}
-    .date {{ font-size: .9rem; font-weight: 600; color: #e6edf3; min-width: 100px; }}
-    .day {{ font-size: .85rem; color: #7d8590; flex: 1; }}
-    .badge {{
-      font-size: .75rem; font-weight: 600;
-      padding: .2rem .6rem; border-radius: 20px; border: 1px solid;
-    }}
-    .count {{ font-size: .78rem; color: #7d8590; flex-shrink: 0; }}
-    .tbl-wrap {{ overflow-x: auto; -webkit-overflow-scrolling: touch; }}
-    table {{ width: 100%; min-width: max-content; border-collapse: collapse; font-size: .875rem; }}
-    td, th {{ white-space: nowrap; }}
-    thead tr {{ background: #0d1117; }}
-    th {{
-      text-align: left; padding: .5rem 1.1rem;
-      font-size: .72rem; font-weight: 600; letter-spacing: .05em;
-      text-transform: uppercase; color: #7d8590; border-top: 1px solid #21262d;
-    }}
-    td {{ padding: .55rem 1.1rem; border-top: 1px solid #21262d; color: #c9d1d9; }}
-    td.note {{ color: #f7934f; font-size: .82rem; }}
-    tbody tr:hover td {{ background: #1c2128; }}
-    .class-detail {{
-      padding: .75rem 1.1rem 1rem 2.8rem;
-      border-top: 1px solid #21262d;
-      display: flex; align-items: center; gap: .5rem;
-    }}
-    .class-name {{ font-size: .95rem; font-weight: 600; color: #e6edf3; }}
-    .class-duration {{ font-size: .85rem; color: #7d8590; }}
-    footer {{ margin-top: 2.5rem; text-align: center; font-size: .78rem; color: #484f58; }}
-    .tabs {{
-      display: flex; gap: .5rem; margin-bottom: 1.25rem;
-    }}
-    .tab {{
-      background: none; border: 1px solid #30363d; color: #7d8590;
-      font-size: .85rem; font-weight: 600; font-family: inherit;
-      padding: .45rem 1.1rem; border-radius: 20px; cursor: pointer;
-      transition: all .15s;
-    }}
-    .tab.active {{
-      background: #1f6feb22; border-color: #1f6feb66; color: #58a6ff;
-    }}
-    .view {{ display: none; }}
-    .view.active {{ display: block; }}
-    .tpl-section {{ margin-bottom: 1.5rem; }}
-    .tpl-head {{ display: flex; align-items: center; gap: .75rem; }}
-    .chip-row {{ display: flex; flex-wrap: wrap; gap: .5rem; margin-top: .6rem; }}
-    .chip {{
-      background: #161b22; border: 1px solid #30363d;
-      border-radius: 20px; padding: .35rem .85rem;
-      font-size: .82rem; color: #c9d1d9;
-    }}
-    .chip small {{ color: #7d8590; }}
-    #ptr-indicator {{
-      display: flex; align-items: center; justify-content: center;
-      height: 0; overflow: hidden; transition: height .2s;
-      color: #7d8590; font-size: .8rem; gap: .4rem;
-    }}
-    #ptr-indicator.visible {{ height: 48px; }}
-    #ptr-indicator svg {{ animation: spin 1s linear infinite; }}
-    @keyframes spin {{ to {{ transform: rotate(360deg); }} }}
-{SAVE_CSS}
-{PROGRESS_CSS}
-  </style>
+  <style>{STYLE}</style>
 </head>
 <body>
   <div id="ptr-indicator">
@@ -993,63 +1175,120 @@ def build_html(entries, templates, raw_entries):
     </svg>
     Refreshing…
   </div>
-  <div class="container">
-    <header>
-      <h1>Gym Recording</h1>
-      <p>Personal workout log — tracking sets, reps, and weights over time.</p>
-    </header>
-    <div class="tabs">
-      <button class="tab active" data-view="log">Log</button>
-      <button class="tab" data-view="progress">Progress</button>
-      <button class="tab" data-view="templates">Templates</button>
+  <div class="layout">
+    <aside class="side">
+      <div class="brand"><span class="logo"></span> Gym Recording</div>
+      <a class="on" data-view="dashboard" href="#">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>Dashboard
+      </a>
+      <a data-view="templates" href="#">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M3 9h18M8 2v4M16 2v4"/></svg>Plan
+      </a>
+      <hr>
+      <a href="#">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg>Settings
+      </a>
+      <div class="foot"><b>{n} workouts</b>updated {updated}</div>
+    </aside>
+
+    <div class="main">
+      <div class="topbar">
+        <div><h1 id="page-title">Dashboard</h1><div class="meta">latest session {latest_date}</div></div>
+        <div class="actions"><button class="btn primary" data-go="templates">Log workout</button></div>
+      </div>
+
+      <div id="view-dashboard" class="view on">
+        {statgrid}
+        <div class="dash-cols">
+          <section>
+            <div class="section-title">Weight training</div>
+            {weight_cards}
+            {weight_more}
+          </section>
+          <section>
+            <div class="section-title">Cardio</div>
+            {cardio_cards}
+            {cardio_more}
+          </section>
+          <section>
+            <div class="section-title">Progress</div>
+            {progress_view}
+          </section>
+        </div>
+      </div>
+
+      <div id="view-templates" class="view">
+        <div class="section-title">Select exercises to log</div>
+        <p style="color:var(--mut);font-size:13px;margin-bottom:14px">Tick the exercises you did — the save bar appears at the bottom.</p>
+        {template_sections}
+        <div style="height:5rem"></div>
+      </div>
+
+      <footer>Updated {updated}</footer>
     </div>
-    <div id="view-log" class="view active">
-      <p class="section-title">Latest Workouts</p>
-      {cards}
-      {view_more}
-    </div>
-    <div id="view-progress" class="view">
-{progress_view}
-    </div>
-    <div id="view-templates" class="view">
-      <p class="section-title">Default Exercises</p>
-      {template_sections}
-      <div style="height:4.5rem"></div>
-    </div>
-    <footer>Updated {updated}</footer>
   </div>
+
+  <nav class="bmob">
+    <button class="on" data-view="dashboard"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>Dashboard</button>
+    <button data-view="templates"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M3 9h18M8 2v4M16 2v4"/></svg>Plan</button>
+  </nav>
+
   <div id="savebar">
     <span id="savecount"></span>
     <button id="savebtn">Save to Log</button>
     <button id="tokenbtn" title="Set GitHub token">⚙</button>
   </div>
+
+  <script>{SAVE_SCRIPT}</script>
+  <script>{PROGRESS_SCRIPT}</script>
   <script>
-{SAVE_SCRIPT}
-{PROGRESS_SCRIPT}
-  </script>
-  <script>
-    document.querySelectorAll('.tab').forEach(tab => {{
-      tab.addEventListener('click', () => {{
-        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-        document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
-        tab.classList.add('active');
-        document.getElementById('view-' + tab.dataset.view).classList.add('active');
+    var views = ['dashboard','templates'];
+    var titles = {{'dashboard':'Dashboard','templates':'Plan'}};
+    function showView(v) {{
+      views.forEach(function(x) {{
+        document.getElementById('view-' + x).classList.toggle('on', x === v);
+      }});
+      document.querySelectorAll('.side a,.bmob button').forEach(function(el) {{
+        el.classList.toggle('on', el.dataset.view === v);
+      }});
+      var t = document.getElementById('page-title');
+      if (t) t.textContent = titles[v] || 'Log';
+    }}
+    document.querySelectorAll('.side a,.bmob button[data-view]').forEach(function(el) {{
+      el.addEventListener('click', function(e) {{
+        e.preventDefault();
+        showView(el.dataset.view);
       }});
     }});
+    document.querySelectorAll('.btn[data-go]').forEach(function(b) {{
+      b.addEventListener('click', function() {{ showView(b.dataset.go); }});
+    }});
+    // per-column "View more" (weight training / cardio)
+    document.querySelectorAll('.view-more').forEach(function(btn) {{
+      btn.addEventListener('click', function() {{
+        var col = btn.parentElement;
+        var shown = 0;
+        col.querySelectorAll('.more-hidden').forEach(function(c) {{
+          if (shown < 10) {{ c.classList.remove('more-hidden'); shown++; }}
+        }});
+        if (!col.querySelector('.more-hidden')) btn.style.display = 'none';
+      }});
+    }});
+    // restore last view
+    var last = localStorage.getItem('gr_view');
+    if (last && views.indexOf(last) >= 0) showView(last);
 
-    let startY = 0, pulling = false;
-    const indicator = document.getElementById('ptr-indicator');
-    document.addEventListener('touchstart', e => {{
+    // pull-to-refresh
+    var startY = 0, pulling = false;
+    var indicator = document.getElementById('ptr-indicator');
+    document.addEventListener('touchstart', function(e) {{
       if (window.scrollY === 0) startY = e.touches[0].clientY;
     }}, {{ passive: true }});
-    document.addEventListener('touchmove', e => {{
-      if (window.scrollY === 0 && e.touches[0].clientY - startY > 60) {{
-        pulling = true;
-        indicator.classList.add('visible');
-      }}
+    document.addEventListener('touchmove', function(e) {{
+      if (window.scrollY === 0 && e.touches[0].clientY - startY > 60) {{ pulling = true; indicator.classList.add('visible'); }}
     }}, {{ passive: true }});
-    document.addEventListener('touchend', () => {{
-      if (pulling) {{ location.reload(); }}
+    document.addEventListener('touchend', function() {{
+      if (pulling) location.reload();
       pulling = false;
       indicator.classList.remove('visible');
     }});
@@ -1059,6 +1298,7 @@ def build_html(entries, templates, raw_entries):
 """
     with open(HTML_PATH, "w") as f:
         f.write(html)
+    return html
 
 
 if __name__ == "__main__":

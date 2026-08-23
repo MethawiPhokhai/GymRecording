@@ -5,209 +5,184 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Gym Recording</title>
   <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    body {
-      background: #0d1117; color: #e6edf3;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      padding: 2rem 1rem; min-height: 100vh;
-    }
-    .container { max-width: 720px; margin: 0 auto; }
-    header { margin-bottom: 2rem; }
-    header h1 { font-size: 1.6rem; font-weight: 700; color: #f0f6fc; }
-    header p { margin-top: .4rem; color: #7d8590; font-size: .9rem; }
-    .section-title {
-      font-size: .75rem; font-weight: 600; letter-spacing: .08em;
-      text-transform: uppercase; color: #7d8590; margin-bottom: 1rem;
-    }
-    .card {
-      background: #161b22; border: 1px solid #30363d;
-      border-radius: 10px; margin-bottom: .75rem;
-      overflow: hidden; transition: border-color .15s;
-    }
-    .card:hover { border-color: #484f58; }
-    .card summary {
-      display: flex; align-items: center; gap: .75rem;
-      padding: .85rem 1.1rem; cursor: pointer;
-      list-style: none; user-select: none;
-    }
-    .card summary::-webkit-details-marker { display: none; }
-    .card summary::before {
-      content: "›"; font-size: 1.1rem; color: #7d8590;
-      transition: transform .2s; flex-shrink: 0;
-    }
-    .card[open] summary::before { transform: rotate(90deg); }
-    .date { font-size: .9rem; font-weight: 600; color: #e6edf3; min-width: 100px; }
-    .day { font-size: .85rem; color: #7d8590; flex: 1; }
-    .badge {
-      font-size: .75rem; font-weight: 600;
-      padding: .2rem .6rem; border-radius: 20px; border: 1px solid;
-    }
-    .count { font-size: .78rem; color: #7d8590; flex-shrink: 0; }
-    .tbl-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
-    table { width: 100%; min-width: max-content; border-collapse: collapse; font-size: .875rem; }
-    td, th { white-space: nowrap; }
-    thead tr { background: #0d1117; }
-    th {
-      text-align: left; padding: .5rem 1.1rem;
-      font-size: .72rem; font-weight: 600; letter-spacing: .05em;
-      text-transform: uppercase; color: #7d8590; border-top: 1px solid #21262d;
-    }
-    td { padding: .55rem 1.1rem; border-top: 1px solid #21262d; color: #c9d1d9; }
-    td.note { color: #f7934f; font-size: .82rem; }
-    tbody tr:hover td { background: #1c2128; }
-    .class-detail {
-      padding: .75rem 1.1rem 1rem 2.8rem;
-      border-top: 1px solid #21262d;
-      display: flex; align-items: center; gap: .5rem;
-    }
-    .class-name { font-size: .95rem; font-weight: 600; color: #e6edf3; }
-    .class-duration { font-size: .85rem; color: #7d8590; }
-    footer { margin-top: 2.5rem; text-align: center; font-size: .78rem; color: #484f58; }
-    .tabs {
-      display: flex; gap: .5rem; margin-bottom: 1.25rem;
-    }
-    .tab {
-      background: none; border: 1px solid #30363d; color: #7d8590;
-      font-size: .85rem; font-weight: 600; font-family: inherit;
-      padding: .45rem 1.1rem; border-radius: 20px; cursor: pointer;
-      transition: all .15s;
-    }
-    .tab.active {
-      background: #1f6feb22; border-color: #1f6feb66; color: #58a6ff;
-    }
-    .view { display: none; }
-    .view.active { display: block; }
-    .tpl-section { margin-bottom: 1.5rem; }
-    .tpl-head { display: flex; align-items: center; gap: .75rem; }
-    .chip-row { display: flex; flex-wrap: wrap; gap: .5rem; margin-top: .6rem; }
-    .chip {
-      background: #161b22; border: 1px solid #30363d;
-      border-radius: 20px; padding: .35rem .85rem;
-      font-size: .82rem; color: #c9d1d9;
-    }
-    .chip small { color: #7d8590; }
-    #ptr-indicator {
-      display: flex; align-items: center; justify-content: center;
-      height: 0; overflow: hidden; transition: height .2s;
-      color: #7d8590; font-size: .8rem; gap: .4rem;
-    }
-    #ptr-indicator.visible { height: 48px; }
-    #ptr-indicator svg { animation: spin 1s linear infinite; }
-    @keyframes spin { to { transform: rotate(360deg); } }
+  :root{
+    --bg:#08090c; --panel:#0f1014; --panel2:#14151a; --hover:#1a1c22;
+    --line:#22242b; --line2:#2c2f38; --ink:#f2f3f7; --mut:#8a8f9c; --dim:#5b6070;
+    --accent:#5e6ad2; --accent2:#7a86ff; --green:#4dd0a9; --orange:#f7a35c; --red:#f16b5f;
+    --mono:'JetBrains Mono','SFMono-Regular',ui-monospace,Menlo,Consolas,monospace;
+    --radius:10px;
+  }
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  html{-webkit-text-size-adjust:100%}
+  body{background:var(--bg);color:var(--ink);font-family:'Inter',system-ui,-apple-system,'Segoe UI',sans-serif;line-height:1.45;-webkit-font-smoothing:antialiased}
+  button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit}
+  a{color:inherit;text-decoration:none}
+  .layout{display:grid;grid-template-columns:1fr;min-height:100vh}
 
-    .selcell { width: 2.2rem; }
-    .sel, .sel-run {
-      width: 1.1rem; height: 1.1rem; accent-color: #e3b341;
-      cursor: pointer; vertical-align: middle;
-    }
-    .sel-row { cursor: pointer; }
-    .sel-chip {
-      cursor: pointer; font-family: inherit;
-      transition: all .15s;
-    }
-    .sel-chip.selected {
-      background: #e3b34122; border-color: #e3b34166; color: #e3b341;
-    }
-    .sel-chip.selected small { color: #e3b341aa; }
-    #savebar {
-      position: fixed; bottom: 0; left: 0; right: 0;
-      display: none; align-items: center; justify-content: center; gap: 1rem;
-      padding: .9rem 1rem calc(.9rem + env(safe-area-inset-bottom));
-      background: #161b22ee; border-top: 1px solid #30363d;
-      backdrop-filter: blur(8px);
-    }
-    #savebar.visible { display: flex; }
-    #savecount { font-size: .85rem; color: #7d8590; }
-    #savebtn {
-      background: #238636; border: none; color: #fff;
-      font-size: .9rem; font-weight: 600; font-family: inherit;
-      padding: .55rem 1.6rem; border-radius: 8px; cursor: pointer;
-    }
-    #savebtn:disabled { opacity: .5; cursor: wait; }
-    #tokenbtn {
-      background: none; border: 1px solid #30363d; color: #7d8590;
-      border-radius: 8px; padding: .5rem .7rem; cursor: pointer; font-family: inherit;
-    }
-    .wcell input, .srcell input, .exname input, .dur, .rfield {
-      background: #0d1117; border: 1px solid #30363d; color: #e6edf3;
-      border-radius: 6px; padding: .28rem .4rem;
-      font-size: .85rem; font-family: inherit;
-    }
-    .rfield { width: 100%; }
-    .run-toggle { display: flex; align-items: center; gap: .5rem; margin-top: .6rem; font-size: .85rem; color: #c9d1d9; cursor: pointer; }
-    .run-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: .6rem; margin-top: .6rem; }
-    .run-cell { display: flex; flex-direction: column; gap: .25rem; font-size: .72rem; color: #7d8590; }
-    .run-note { grid-column: 1 / -1; }
-    .w-num { width: 4.4rem; }
-    .sr-sets, .sr-reps { width: 3rem; text-align: center; }
-    .srcell { white-space: nowrap; }
-    .exname input { width: 10rem; }
-    .dur { width: 3.6rem; padding: .1rem .3rem; font-size: .8rem; }
-    .w-unit {
-      background: #0d1117; color: #7d8590; border: 1px solid #30363d;
-      border-radius: 6px; padding: .28rem .2rem; font-size: .8rem;
-      font-family: inherit; margin-left: .3rem;
-    }
-    input[type=number] { appearance: textfield; -moz-appearance: textfield; }
-    input[type=number]::-webkit-inner-spin-button { -webkit-appearance: none; }
-    .addrow {
-      background: none; border: 1px dashed #30363d; color: #7d8590;
-      border-radius: 8px; padding: .45rem 1rem; margin-top: .6rem;
-      font-size: .82rem; font-family: inherit; cursor: pointer;
-    }
-    .addrow:hover { border-color: #484f58; color: #c9d1d9; }
-    .more-hidden { display: none; }
-    #viewmore {
-      display: block; width: 100%; margin-top: .5rem;
-      background: none; border: 1px solid #30363d; color: #58a6ff;
-      border-radius: 10px; padding: .7rem; cursor: pointer;
-      font-size: .85rem; font-weight: 600; font-family: inherit;
-    }
-    #viewmore:hover { border-color: #484f58; background: #161b22; }
+  /* ---- Desktop sidebar ---- */
+  .side{background:var(--panel);border-right:1px solid var(--line);padding:16px 12px;display:none;flex-direction:column;gap:2px;position:sticky;top:0;height:100vh;overflow:auto}
+  .side .brand{display:flex;align-items:center;gap:9px;padding:4px 10px 18px;font-weight:700;font-size:13.5px;letter-spacing:-.01em}
+  .side .brand .logo{width:20px;height:20px;border-radius:6px;background:linear-gradient(135deg,var(--accent),var(--accent2))}
+  .side a{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:8px;color:var(--mut);font-size:13px;font-weight:550}
+  .side a svg{width:16px;height:16px;flex:none}
+  .side a.on{background:var(--hover);color:var(--ink)}
+  .side a:hover{background:var(--hover);color:var(--ink)}
+  .side hr{border:none;border-top:1px solid var(--line);margin:12px 8px}
+  .side .foot{padding:10px 12px;font-size:10.5px;color:var(--dim);margin-top:auto}
+  .side .foot b{display:block;color:var(--mut);font-weight:600}
 
+  /* ---- Mobile bottom nav ---- */
+  .bmob{position:fixed;left:0;right:0;bottom:0;background:rgba(8,9,12,.94);backdrop-filter:blur(10px);border-top:1px solid var(--line);display:grid;grid-template-columns:repeat(2,1fr);z-index:30}
+  .bmob button{color:var(--mut);font-size:10.5px;font-weight:600;padding:12px 0 14px;display:flex;flex-direction:column;align-items:center;gap:4px}
+  .bmob button.on{color:var(--accent)}
+  .bmob svg{width:20px;height:20px}
 
-    .stats {
-      display: grid; grid-template-columns: repeat(3, 1fr);
-      gap: .75rem; margin-bottom: 1.25rem;
-    }
-    .stat {
-      background: #161b22; border: 1px solid #30363d;
-      border-radius: 10px; padding: .8rem 1rem; min-width: 0;
-    }
-    .stat-label {
-      font-size: .68rem; font-weight: 600; letter-spacing: .06em;
-      text-transform: uppercase; color: #7d8590;
-    }
-    .stat-value { font-size: 1.3rem; font-weight: 700; color: #f0f6fc; margin-top: .15rem; }
-    .stat-value small { font-size: .85rem; font-weight: 600; color: #7d8590; }
-    .stat-sub { font-size: .74rem; color: #7d8590; margin-top: .1rem; }
-    .filter-chip { cursor: pointer; transition: all .15s; user-select: none; }
-    .filter-chip.selected { background: #1f6feb22; border-color: #1f6feb66; color: #58a6ff; }
-    .prog-main { flex: 1; min-width: 0; }
-    .prog-head { display: flex; align-items: center; gap: .6rem; }
-    .prog-name {
-      font-size: .92rem; font-weight: 600; color: #e6edf3;
-      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-    }
-    .prog-latest { font-size: .76rem; color: #7d8590; margin-top: .2rem; }
-    .spark { flex-shrink: 0; }
-    .trend {
-      font-size: .8rem; font-weight: 600; white-space: nowrap;
-      flex-shrink: 0; min-width: 4.3rem; text-align: right;
-      font-variant-numeric: tabular-nums;
-    }
-    .trend.up   { color: #3fb950; }
-    .trend.down { color: #f85149; }
-    .trend.flat { color: #7d8590; }
-    .trend.new  { color: #58a6ff; }
-    td .trend { min-width: 0; text-align: left; }
-    @media (max-width: 480px) {
-      .stats { grid-template-columns: 1fr 1fr; }
-      .stat:first-child { grid-column: 1 / -1; }
-      .spark { display: none; }
-    }
+  /* ---- Main ---- */
+  .main{width:100%;max-width:1000px;margin:0 auto;padding:18px 18px 92px}
+  .view{display:none}
+  .view.on{display:block}
+  .dash-cols{display:block}
+  .dash-cols section{min-width:0}
+  .topbar{display:flex;align-items:center;justify-content:space-between;gap:10px;padding-bottom:16px}
+  .topbar h1{font-size:17px;font-weight:700;letter-spacing:-.02em;margin:0}
+  .topbar .meta{font-size:12px;color:var(--mut);margin-top:2px}
+  .topbar .actions{display:flex;gap:8px}
 
-  </style>
+  .statgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+  .stat{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:13px 15px}
+  .stat .k{font-size:11px;color:var(--mut);text-transform:uppercase;letter-spacing:.06em;font-weight:600}
+  .stat .v{font-family:var(--mono);font-size:22px;font-weight:700;letter-spacing:-.02em;margin-top:6px}
+  .stat .d{font-size:11.5px;color:var(--mut);margin-top:2px}
+
+  .section-title{font-size:12px;font-weight:700;color:var(--mut);text-transform:uppercase;letter-spacing:.07em;margin:20px 0 12px}
+
+  /* ---- Tables ---- */
+  .tbl-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;background:var(--panel);border:1px solid var(--line);border-radius:var(--radius)}
+  table{width:100%;border-collapse:collapse;font-size:13px}
+  th{text-align:left;color:var(--dim);font-size:10.5px;text-transform:uppercase;letter-spacing:.05em;padding:10px 14px 8px;border-bottom:1px solid var(--line);font-weight:600;white-space:nowrap}
+  td{padding:9px 14px;border-bottom:1px solid #16171c;color:var(--ink)}
+  tbody tr:hover td{background:var(--hover)}
+  .num{text-align:right;font-family:var(--mono);color:var(--mut);font-size:12px}
+  td.note{color:var(--orange);font-size:12px}
+  .trend{font-weight:600;white-space:nowrap;font-variant-numeric:tabular-nums;font-size:12px}
+  .trend.up{color:var(--green)} .trend.down{color:var(--red)} .trend.flat{color:var(--dim)} .trend.new{color:var(--accent2)}
+
+  /* ---- Log cards (details) ---- */
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);margin-bottom:9px;overflow:hidden}
+  .card:hover{border-color:var(--line2)}
+  .card summary{display:flex;align-items:center;gap:12px;padding:13px 15px;cursor:pointer;list-style:none;user-select:none;flex-wrap:wrap}
+  .card summary::-webkit-details-marker{display:none}
+  .card summary::before{content:'';flex:none;border:5.5px solid transparent;border-left:8px solid var(--dim);transition:transform .18s}
+  .card[open] summary::before{transform:rotate(90deg)}
+  .date{font-family:var(--mono);font-size:12.5px;color:var(--mut);min-width:78px}
+  .day{font-size:11px;color:var(--dim);text-transform:uppercase;letter-spacing:.05em;flex:none;width:34px}
+  .badge{font-size:10.5px;font-weight:700;padding:2.5px 9px;border-radius:20px;border:1px solid;flex:none;letter-spacing:.02em;margin-left:auto}
+  .count{font-size:12.5px;color:var(--mut);text-align:right;font-variant-numeric:tabular-nums}
+  .detail{padding:4px 15px 15px;border-top:1px solid var(--line)}
+  .detail .tbl-wrap{margin-top:12px}
+  .class-detail{padding:12px 15px 15px 30px;display:flex;align-items:center;gap:8px}
+  .class-name{font-size:14px;font-weight:600}
+  .class-duration{font-size:12px;color:var(--mut)}
+  .more-hidden{display:none}
+
+  /* ---- Header chrome (Log view) ---- */
+  .headline{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:6px}
+  .headline .title{font-size:15px;font-weight:700;letter-spacing:-.01em}
+
+  /* ---- Progress ---- */
+  .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:14px}
+  .stats .stat-label{font-size:10.5px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--mut)}
+  .stats .stat-value{font-size:20px;font-weight:700;color:var(--ink);margin-top:4px;font-family:var(--mono)}
+  .stats .stat-value small{font-size:12px;font-weight:600;color:var(--mut)}
+  .stats .stat-sub{font-size:11.5px;color:var(--mut);margin-top:2px}
+  .chip-row{display:flex;flex-wrap:wrap;gap:7px;margin:12px 0}
+  .chip{background:var(--panel);border:1px solid var(--line);border-radius:20px;padding:6px 14px;font-size:12.5px;color:var(--mut);cursor:pointer;user-select:none;transition:.15s}
+  .chip:hover{border-color:var(--line2);color:var(--ink)}
+  .chip small{color:var(--dim)}
+  .filter-chip.selected{background:var(--accent);border-color:var(--accent);color:#fff}
+  .prog-card .tbl-wrap{margin-top:12px}
+  .prog-main{flex:1;min-width:0}
+  .prog-head{display:flex;align-items:center;gap:8px}
+  .prog-name{font-size:13.5px;font-weight:650;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .prog-latest{font-size:11.5px;color:var(--mut);margin-top:2px}
+  .spark{flex-shrink:0}
+
+  /* ---- Templates / save form ---- */
+  .tpl-section{margin-bottom:16px}
+  .tpl-head{display:flex;align-items:center;gap:9px;padding:4px 0 2px}
+  .tpl-head .t{font-weight:700;font-size:14px;color:var(--ink)}
+  .tpl-count{font-size:11.5px;color:var(--mut)}
+  .selcell{width:2.2rem}
+  .sel,.sel-run{width:1.05rem;height:1.05rem;accent-color:var(--accent);cursor:pointer;vertical-align:middle}
+  .sel-row{cursor:pointer}
+  .sel-chip{cursor:pointer;transition:.15s;user-select:none}
+  .sel-chip.selected{background:var(--accent);border-color:var(--accent);color:#fff}
+  .sel-chip.selected small{color:#fff}
+  .wcell input,.srcell input,.exname input,.dur,.rfield,input.rv{
+    background:var(--panel2);border:1px solid var(--line);color:var(--ink);
+    border-radius:6px;padding:6px 8px;font-size:12.5px;font-family:inherit;min-width:0
+  }
+  .wcell input:focus,.srcell input:focus,.exname input:focus,.dur:focus,.rfield:focus,input.rv:focus{
+    outline:none;border-color:var(--accent)
+  }
+  .rfield{width:100%}
+  .w-num{width:4.2rem}
+  .sr-sets,.sr-reps{width:2.6rem;text-align:center}
+  .srcell{white-space:nowrap}
+  .exname input{width:9rem}
+  .dur{width:3.4rem;padding:4px 6px;font-size:12px}
+  .w-unit{background:var(--panel2);color:var(--mut);border:1px solid var(--line);border-radius:6px;padding:6px 4px;font-size:12px;font-family:inherit;margin-left:4px}
+  input[type=number]{appearance:textfield;-moz-appearance:textfield}
+  input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
+  .addrow{background:none;border:1px dashed var(--line2);color:var(--mut);border-radius:8px;padding:10px 14px;margin-top:8px;font-size:12.5px;font-family:inherit;cursor:pointer;width:100%}
+  .addrow:hover{border-color:var(--accent);color:var(--ink)}
+  .run-toggle{display:flex;align-items:center;gap:8px;margin-top:8px;font-size:13px;color:var(--ink);cursor:pointer}
+  .run-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:8px}
+  .run-cell{display:flex;flex-direction:column;gap:4px;font-size:11px;color:var(--mut)}
+  .run-note{grid-column:1 / -1}
+  .note-row{display:flex;gap:8px;align-items:center;font-size:11px;color:var(--mut)}
+
+  /* ---- Save bar ---- */
+  #savebar{position:fixed;bottom:0;left:0;right:0;display:none;align-items:center;justify-content:center;gap:14px;padding:11px 16px calc(11px + env(safe-area-inset-bottom));background:rgba(15,16,20,.95);border-top:1px solid var(--line);backdrop-filter:blur(10px);z-index:40}
+  #savebar.visible{display:flex}
+  #savecount{font-size:12.5px;color:var(--mut)}
+  #savebtn{background:var(--accent);border:none;color:#fff;font-size:13px;font-weight:650;font-family:inherit;padding:9px 20px;border-radius:8px}
+  #savebtn:hover{filter:brightness(1.1)}
+  #savebtn:disabled{opacity:.5;cursor:wait}
+  #tokenbtn{background:var(--panel2);border:1px solid var(--line);color:var(--mut);border-radius:8px;padding:9px 12px}
+
+  #view-more,.view-more,.btn{border:1px solid var(--line2);background:var(--panel2);color:var(--ink);border-radius:8px;padding:9px 14px;font-size:12.5px;font-weight:600}
+  #view-more:hover,.view-more:hover,.btn:hover{border-color:var(--accent)}
+  #view-more,.view-more{display:block;width:100%;margin-top:10px}
+  .btn.primary{background:var(--accent);border-color:var(--accent);color:#fff}
+
+  /* pull-to-refresh */
+  #ptr-indicator{display:flex;align-items:center;justify-content:center;height:0;overflow:hidden;transition:height .2s;color:var(--mut);font-size:12px;gap:8px}
+  #ptr-indicator.visible{height:48px}
+  #ptr-indicator svg{animation:spin 1s linear infinite}
+  @keyframes spin{to{transform:rotate(360deg)}}
+
+  footer{margin:28px 0 8px;text-align:center;font-size:11.5px;color:var(--dim)}
+
+  /* responsive */
+  @media(min-width:900px){
+    .layout{grid-template-columns:232px 1fr}
+    .side{display:flex}
+    .bmob{display:none}
+    .main{padding:22px 28px 40px}
+    .statgrid{grid-template-columns:repeat(4,1fr)}
+    .stats{grid-template-columns:repeat(3,1fr)}
+    .dash-cols{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;align-items:start}
+    #savebar{bottom:0}
+  }
+  @media(max-width:480px){
+    .statgrid{grid-template-columns:1fr 1fr}
+    .stats{grid-template-columns:1fr 1fr}
+    .stats .stat:first-child{grid-column:1 / -1}
+    .spark{display:none}
+    .date{min-width:64px}
+  }
+</style>
 </head>
 <body>
   <div id="ptr-indicator">
@@ -216,19 +191,40 @@
     </svg>
     Refreshing…
   </div>
-  <div class="container">
-    <header>
-      <h1>Gym Recording</h1>
-      <p>Personal workout log — tracking sets, reps, and weights over time.</p>
-    </header>
-    <div class="tabs">
-      <button class="tab active" data-view="log">Log</button>
-      <button class="tab" data-view="progress">Progress</button>
-      <button class="tab" data-view="templates">Templates</button>
+  <div class="layout">
+    <aside class="side">
+      <div class="brand"><span class="logo"></span> Gym Recording</div>
+      <a class="on" data-view="dashboard" href="#">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>Dashboard
+      </a>
+      <a data-view="templates" href="#">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M3 9h18M8 2v4M16 2v4"/></svg>Plan
+      </a>
+      <hr>
+      <a href="#">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg>Settings
+      </a>
+      <div class="foot"><b>50 workouts</b>updated 2026-08-23 15:26 (Bangkok)</div>
+    </aside>
+
+    <div class="main">
+      <div class="topbar">
+        <div><h1 id="page-title">Dashboard</h1><div class="meta">latest session 2026-08-22</div></div>
+        <div class="actions"><button class="btn primary" data-go="templates">Log workout</button></div>
+      </div>
+
+      <div id="view-dashboard" class="view on">
+        
+    <div class="statgrid">
+      <div class="stat"><div class="k">Streak</div><div class="v">2d</div><div class="d">keep going 🔥</div></div>
+      <div class="stat"><div class="k">Last 30 days</div><div class="v">15</div><div class="d">sessions</div></div>
+      <div class="stat"><div class="k">Volume</div><div class="v">31.1k&nbsp;kg</div><div class="d">last 30 days</div></div>
+      <div class="stat"><div class="k">Run distance</div><div class="v">28.1&nbsp;km</div><div class="d">last 30 days</div></div>
     </div>
-    <div id="view-log" class="view active">
-      <p class="section-title">Latest Workouts</p>
-      
+        <div class="dash-cols">
+          <section>
+            <div class="section-title">Weight training</div>
+            
   <details class="card">
     <summary>
       <span class="date">2026-08-22</span>
@@ -263,18 +259,6 @@
 <tr><td>Incline sit up</td><td>-</td><td>3×10</td><td class='note'>12/10/8</td></tr>
       </tbody>
     </table>
-    </div>
-  </details>
-
-  <details class="card">
-    <summary>
-      <span class="date">2026-08-21</span>
-      <span class="day">Friday</span>
-      <span class="badge" style="background:#4ff7a022;color:#4ff7a0;border-color:#4ff7a044">Running</span>
-      <span class="count">37.38 min · 5.03 km · pace 7:26 min/km</span>
-    </summary>
-    <div class="class-detail">
-      <span class="class-name">37.38 min · 5.03 km · pace 7:26 min/km<br><small style='color:#7d8590'>❤ 148 bpm · 🔥 322 kcal</small></span>
     </div>
   </details>
 
@@ -323,42 +307,6 @@
 
   <details class="card">
     <summary>
-      <span class="date">2026-08-17</span>
-      <span class="day">Monday</span>
-      <span class="badge" style="background:#4ff7a022;color:#4ff7a0;border-color:#4ff7a044">Running</span>
-      <span class="count">37.58 min · 5.02 km · pace 7:29 min/km</span>
-    </summary>
-    <div class="class-detail">
-      <span class="class-name">37.58 min · 5.02 km · pace 7:29 min/km<br><small style='color:#7d8590'>❤ 139 bpm · 🔥 282 kcal</small></span>
-    </div>
-  </details>
-
-  <details class="card">
-    <summary>
-      <span class="date">2026-08-13</span>
-      <span class="day">Thursday</span>
-      <span class="badge" style="background:#4ff7a022;color:#4ff7a0;border-color:#4ff7a044">Running</span>
-      <span class="count">37.57 min · 5.02 km · pace 7:29 min/km</span>
-    </summary>
-    <div class="class-detail">
-      <span class="class-name">37.57 min · 5.02 km · pace 7:29 min/km<br><small style='color:#7d8590'>❤ 139 bpm · 🔥 281 kcal</small></span>
-    </div>
-  </details>
-
-  <details class="card">
-    <summary>
-      <span class="date">2026-08-12</span>
-      <span class="day">Wednesday</span>
-      <span class="badge" style="background:#4ff7a022;color:#4ff7a0;border-color:#4ff7a044">Running</span>
-      <span class="count">24.45 min · 3.02 km · pace 8:06 min/km</span>
-    </summary>
-    <div class="class-detail">
-      <span class="class-name">24.45 min · 3.02 km · pace 8:06 min/km<br><small style='color:#7d8590'>❤ 148 bpm · 🔥 212 kcal</small></span>
-    </div>
-  </details>
-
-  <details class="card">
-    <summary>
       <span class="date">2026-08-12</span>
       <span class="day">Wednesday</span>
       <span class="badge" style="background:#f7934f22;color:#f7934f;border-color:#f7934f44">Lower</span>
@@ -396,31 +344,7 @@
     </div>
   </details>
 
-  <details class="card more-hidden">
-    <summary>
-      <span class="date">2026-08-08</span>
-      <span class="day">Saturday</span>
-      <span class="badge" style="background:#4ff7a022;color:#4ff7a0;border-color:#4ff7a044">Running</span>
-      <span class="count">30.17 min · 4.02 km · pace 7:30 min/km</span>
-    </summary>
-    <div class="class-detail">
-      <span class="class-name">30.17 min · 4.02 km · pace 7:30 min/km<br><small style='color:#7d8590'>❤ 146 bpm · 🔥 257 kcal</small></span>
-    </div>
-  </details>
-
-  <details class="card more-hidden">
-    <summary>
-      <span class="date">2026-08-06</span>
-      <span class="day">Thursday</span>
-      <span class="badge" style="background:#4ff7a022;color:#4ff7a0;border-color:#4ff7a044">Running</span>
-      <span class="count">30 min · 4 km</span>
-    </summary>
-    <div class="class-detail">
-      <span class="class-name">30 min · 4 km<br><small style='color:#7d8590'>❤ 140 bpm · 🔥 200 kcal</small></span>
-    </div>
-  </details>
-
-  <details class="card more-hidden">
+  <details class="card">
     <summary>
       <span class="date">2026-08-05</span>
       <span class="day">Wednesday</span>
@@ -440,7 +364,7 @@
     </div>
   </details>
 
-  <details class="card more-hidden">
+  <details class="card">
     <summary>
       <span class="date">2026-08-04</span>
       <span class="day">Tuesday</span>
@@ -460,7 +384,7 @@
     </div>
   </details>
 
-  <details class="card more-hidden">
+  <details class="card">
     <summary>
       <span class="date">2026-07-31</span>
       <span class="day">Friday</span>
@@ -479,19 +403,7 @@
     </div>
   </details>
 
-  <details class="card more-hidden">
-    <summary>
-      <span class="date">2026-07-30</span>
-      <span class="day">Thursday</span>
-      <span class="badge" style="background:#4ff7a022;color:#4ff7a0;border-color:#4ff7a044">Running</span>
-      <span class="count">15.5 min · 2.02 km · pace 7.51 min/km</span>
-    </summary>
-    <div class="class-detail">
-      <span class="class-name">15.5 min · 2.02 km · pace 7.51 min/km<br><small style='color:#7d8590'>❤ 128 bpm · 🔥 106 kcal</small></span>
-    </div>
-  </details>
-
-  <details class="card more-hidden">
+  <details class="card">
     <summary>
       <span class="date">2026-07-30</span>
       <span class="day">Thursday</span>
@@ -591,18 +503,6 @@
 
   <details class="card more-hidden">
     <summary>
-      <span class="date">2026-07-16</span>
-      <span class="day">Thursday</span>
-      <span class="badge" style="background:#4ff7a022;color:#4ff7a0;border-color:#4ff7a044">Running</span>
-      <span class="count">1.22 min · 9.43 km · pace 8.41 min/km</span>
-    </summary>
-    <div class="class-detail">
-      <span class="class-name">1.22 min · 9.43 km · pace 8.41 min/km<br><small style='color:#7d8590'>❤ 164 bpm · 🔥 638 kcal</small></span>
-    </div>
-  </details>
-
-  <details class="card more-hidden">
-    <summary>
       <span class="date">2026-07-14</span>
       <span class="day">Tuesday</span>
       <span class="badge" style="background:#4f8ef722;color:#4f8ef7;border-color:#4f8ef744">Upper</span>
@@ -620,19 +520,6 @@
 <tr><td>Cable tricep press down</td><td>40 lbs</td><td>3×10</td><td class='note'></td></tr>
       </tbody>
     </table>
-    </div>
-  </details>
-
-  <details class="card more-hidden">
-    <summary>
-      <span class="date">2026-07-14</span>
-      <span class="day">Tuesday</span>
-      <span class="badge" style="background:#a04ff722;color:#a04ff7;border-color:#a04ff744">Class</span>
-      <span class="count">Breath Work</span>
-    </summary>
-    <div class="class-detail">
-      <span class="class-name">Breath Work</span>
-      <span class='class-duration'>· 60 minutes</span>
     </div>
   </details>
 
@@ -660,18 +547,6 @@
 
   <details class="card more-hidden">
     <summary>
-      <span class="date">2026-07-11</span>
-      <span class="day">Saturday</span>
-      <span class="badge" style="background:#4ff7a022;color:#4ff7a0;border-color:#4ff7a044">Running</span>
-      <span class="count">1h 5min · 9.17 km · pace 7:04 min/km · Nakhon Ratchasima</span>
-    </summary>
-    <div class="class-detail">
-      <span class="class-name">1h 5min · 9.17 km · pace 7:04 min/km · Nakhon Ratchasima<br><small style='color:#7d8590'>❤ 156 bpm · 🔥 584 kcal</small></span>
-    </div>
-  </details>
-
-  <details class="card more-hidden">
-    <summary>
       <span class="date">2026-07-10</span>
       <span class="day">Friday</span>
       <span class="badge" style="background:#4f8ef722;color:#4f8ef7;border-color:#4f8ef744">Upper</span>
@@ -687,18 +562,6 @@
 <tr><td>Bicep curl</td><td>5 lbs</td><td>3×15</td><td class='note'></td></tr>
       </tbody>
     </table>
-    </div>
-  </details>
-
-  <details class="card more-hidden">
-    <summary>
-      <span class="date">2026-07-08</span>
-      <span class="day">Wednesday</span>
-      <span class="badge" style="background:#4ff7a022;color:#4ff7a0;border-color:#4ff7a044">Running</span>
-      <span class="count">35 min · 5.17 km · pace 6:49 min/km · Treadmill · Interval 40×8</span>
-    </summary>
-    <div class="class-detail">
-      <span class="class-name">35 min · 5.17 km · pace 6:49 min/km · Treadmill · Interval 40×8<br><small style='color:#7d8590'>❤ 152 bpm · 🔥 292 kcal</small></span>
     </div>
   </details>
 
@@ -721,44 +584,6 @@
 <tr><td>Cable tricep press down</td><td>40 lbs</td><td>3×10</td><td class='note'></td></tr>
       </tbody>
     </table>
-    </div>
-  </details>
-
-  <details class="card more-hidden">
-    <summary>
-      <span class="date">2026-07-07</span>
-      <span class="day">Tuesday</span>
-      <span class="badge" style="background:#a04ff722;color:#a04ff7;border-color:#a04ff744">Class</span>
-      <span class="count">Core Body</span>
-    </summary>
-    <div class="class-detail">
-      <span class="class-name">Core Body</span>
-      <span class='class-duration'>· 30 minutes</span>
-    </div>
-  </details>
-
-  <details class="card more-hidden">
-    <summary>
-      <span class="date">2026-07-07</span>
-      <span class="day">Tuesday</span>
-      <span class="badge" style="background:#a04ff722;color:#a04ff7;border-color:#a04ff744">Class</span>
-      <span class="count">Breath Work</span>
-    </summary>
-    <div class="class-detail">
-      <span class="class-name">Breath Work</span>
-      <span class='class-duration'>· 60 minutes</span>
-    </div>
-  </details>
-
-  <details class="card more-hidden">
-    <summary>
-      <span class="date">2026-07-04</span>
-      <span class="day">Saturday</span>
-      <span class="badge" style="background:#4ff7a022;color:#4ff7a0;border-color:#4ff7a044">Running</span>
-      <span class="count">2h 5min · 17.02 km · pace 7:21 min/km · Treadmill</span>
-    </summary>
-    <div class="class-detail">
-      <span class="class-name">2h 5min · 17.02 km · pace 7:21 min/km · Treadmill<br><small style='color:#7d8590'>❤ 149 bpm · 🔥 856 kcal</small></span>
     </div>
   </details>
 
@@ -806,19 +631,6 @@
 
   <details class="card more-hidden">
     <summary>
-      <span class="date">2026-06-30</span>
-      <span class="day">Tuesday</span>
-      <span class="badge" style="background:#a04ff722;color:#a04ff7;border-color:#a04ff744">Class</span>
-      <span class="count">Core Body</span>
-    </summary>
-    <div class="class-detail">
-      <span class="class-name">Core Body</span>
-      <span class='class-duration'>· 30 minutes</span>
-    </div>
-  </details>
-
-  <details class="card more-hidden">
-    <summary>
       <span class="date">2026-06-26</span>
       <span class="day">Friday</span>
       <span class="badge" style="background:#4f8ef722;color:#4f8ef7;border-color:#4f8ef744">Upper</span>
@@ -853,43 +665,6 @@
 <tr><td>Back Hyperextension</td><td>5 lbs</td><td>3×15</td><td class='note'>bodyweight</td></tr>
       </tbody>
     </table>
-    </div>
-  </details>
-
-  <details class="card more-hidden">
-    <summary>
-      <span class="date">2026-06-23</span>
-      <span class="day">Tuesday</span>
-      <span class="badge" style="background:#a04ff722;color:#a04ff7;border-color:#a04ff744">Class</span>
-      <span class="count">Breath Work</span>
-    </summary>
-    <div class="class-detail">
-      <span class="class-name">Breath Work</span>
-      <span class='class-duration'>· 60 minutes</span>
-    </div>
-  </details>
-
-  <details class="card more-hidden">
-    <summary>
-      <span class="date">2026-06-20</span>
-      <span class="day">Saturday</span>
-      <span class="badge" style="background:#4ff7a022;color:#4ff7a0;border-color:#4ff7a044">Running</span>
-      <span class="count">1h 36min · 12.53 km · pace 7:41 min/km · Zone 2</span>
-    </summary>
-    <div class="class-detail">
-      <span class="class-name">1h 36min · 12.53 km · pace 7:41 min/km · Zone 2</span>
-    </div>
-  </details>
-
-  <details class="card more-hidden">
-    <summary>
-      <span class="date">2026-06-19</span>
-      <span class="day">Friday</span>
-      <span class="badge" style="background:#4ff7a022;color:#4ff7a0;border-color:#4ff7a044">Running</span>
-      <span class="count">Interval 400m × 5</span>
-    </summary>
-    <div class="class-detail">
-      <span class="class-name">Interval 400m × 5</span>
     </div>
   </details>
 
@@ -953,32 +728,6 @@
 
   <details class="card more-hidden">
     <summary>
-      <span class="date">2026-06-16</span>
-      <span class="day">Tuesday</span>
-      <span class="badge" style="background:#a04ff722;color:#a04ff7;border-color:#a04ff744">Class</span>
-      <span class="count">Core Body</span>
-    </summary>
-    <div class="class-detail">
-      <span class="class-name">Core Body</span>
-      <span class='class-duration'>· 30 minutes</span>
-    </div>
-  </details>
-
-  <details class="card more-hidden">
-    <summary>
-      <span class="date">2026-06-16</span>
-      <span class="day">Tuesday</span>
-      <span class="badge" style="background:#a04ff722;color:#a04ff7;border-color:#a04ff744">Class</span>
-      <span class="count">Breath Work</span>
-    </summary>
-    <div class="class-detail">
-      <span class="class-name">Breath Work</span>
-      <span class='class-duration'>· 60 minutes</span>
-    </div>
-  </details>
-
-  <details class="card more-hidden">
-    <summary>
       <span class="date">2026-06-13</span>
       <span class="day">Saturday</span>
       <span class="badge" style="background:#f7934f22;color:#f7934f;border-color:#f7934f44">Lower</span>
@@ -995,18 +744,6 @@
 <tr><td>* Seated calf raise</td><td>2 kg</td><td>3×15</td><td class='note'>เน้น Soleus</td></tr>
       </tbody>
     </table>
-    </div>
-  </details>
-
-  <details class="card more-hidden">
-    <summary>
-      <span class="date">2026-06-12</span>
-      <span class="day">Friday</span>
-      <span class="badge" style="background:#4ff7a022;color:#4ff7a0;border-color:#4ff7a044">Running</span>
-      <span class="count">30 min · Zone 2</span>
-    </summary>
-    <div class="class-detail">
-      <span class="class-name">30 min · Zone 2</span>
     </div>
   </details>
 
@@ -1048,6 +785,269 @@
     </table>
     </div>
   </details>
+            <button class="view-more">View more</button>
+          </section>
+          <section>
+            <div class="section-title">Cardio</div>
+            
+  <details class="card">
+    <summary>
+      <span class="date">2026-08-21</span>
+      <span class="day">Friday</span>
+      <span class="badge" style="background:#4ff7a022;color:#4ff7a0;border-color:#4ff7a044">Running</span>
+      <span class="count">37.38 min · 5.03 km · pace 7:26 min/km</span>
+    </summary>
+    <div class="class-detail">
+      <span class="class-name">37.38 min · 5.03 km · pace 7:26 min/km<br><small style='color:#7d8590'>❤ 148 bpm · 🔥 322 kcal</small></span>
+    </div>
+  </details>
+
+  <details class="card">
+    <summary>
+      <span class="date">2026-08-17</span>
+      <span class="day">Monday</span>
+      <span class="badge" style="background:#4ff7a022;color:#4ff7a0;border-color:#4ff7a044">Running</span>
+      <span class="count">37.58 min · 5.02 km · pace 7:29 min/km</span>
+    </summary>
+    <div class="class-detail">
+      <span class="class-name">37.58 min · 5.02 km · pace 7:29 min/km<br><small style='color:#7d8590'>❤ 139 bpm · 🔥 282 kcal</small></span>
+    </div>
+  </details>
+
+  <details class="card">
+    <summary>
+      <span class="date">2026-08-13</span>
+      <span class="day">Thursday</span>
+      <span class="badge" style="background:#4ff7a022;color:#4ff7a0;border-color:#4ff7a044">Running</span>
+      <span class="count">37.57 min · 5.02 km · pace 7:29 min/km</span>
+    </summary>
+    <div class="class-detail">
+      <span class="class-name">37.57 min · 5.02 km · pace 7:29 min/km<br><small style='color:#7d8590'>❤ 139 bpm · 🔥 281 kcal</small></span>
+    </div>
+  </details>
+
+  <details class="card">
+    <summary>
+      <span class="date">2026-08-12</span>
+      <span class="day">Wednesday</span>
+      <span class="badge" style="background:#4ff7a022;color:#4ff7a0;border-color:#4ff7a044">Running</span>
+      <span class="count">24.45 min · 3.02 km · pace 8:06 min/km</span>
+    </summary>
+    <div class="class-detail">
+      <span class="class-name">24.45 min · 3.02 km · pace 8:06 min/km<br><small style='color:#7d8590'>❤ 148 bpm · 🔥 212 kcal</small></span>
+    </div>
+  </details>
+
+  <details class="card">
+    <summary>
+      <span class="date">2026-08-08</span>
+      <span class="day">Saturday</span>
+      <span class="badge" style="background:#4ff7a022;color:#4ff7a0;border-color:#4ff7a044">Running</span>
+      <span class="count">30.17 min · 4.02 km · pace 7:30 min/km</span>
+    </summary>
+    <div class="class-detail">
+      <span class="class-name">30.17 min · 4.02 km · pace 7:30 min/km<br><small style='color:#7d8590'>❤ 146 bpm · 🔥 257 kcal</small></span>
+    </div>
+  </details>
+
+  <details class="card">
+    <summary>
+      <span class="date">2026-08-06</span>
+      <span class="day">Thursday</span>
+      <span class="badge" style="background:#4ff7a022;color:#4ff7a0;border-color:#4ff7a044">Running</span>
+      <span class="count">30 min · 4 km</span>
+    </summary>
+    <div class="class-detail">
+      <span class="class-name">30 min · 4 km<br><small style='color:#7d8590'>❤ 140 bpm · 🔥 200 kcal</small></span>
+    </div>
+  </details>
+
+  <details class="card">
+    <summary>
+      <span class="date">2026-07-30</span>
+      <span class="day">Thursday</span>
+      <span class="badge" style="background:#4ff7a022;color:#4ff7a0;border-color:#4ff7a044">Running</span>
+      <span class="count">15.5 min · 2.02 km · pace 7.51 min/km</span>
+    </summary>
+    <div class="class-detail">
+      <span class="class-name">15.5 min · 2.02 km · pace 7.51 min/km<br><small style='color:#7d8590'>❤ 128 bpm · 🔥 106 kcal</small></span>
+    </div>
+  </details>
+
+  <details class="card">
+    <summary>
+      <span class="date">2026-07-16</span>
+      <span class="day">Thursday</span>
+      <span class="badge" style="background:#4ff7a022;color:#4ff7a0;border-color:#4ff7a044">Running</span>
+      <span class="count">1.22 min · 9.43 km · pace 8.41 min/km</span>
+    </summary>
+    <div class="class-detail">
+      <span class="class-name">1.22 min · 9.43 km · pace 8.41 min/km<br><small style='color:#7d8590'>❤ 164 bpm · 🔥 638 kcal</small></span>
+    </div>
+  </details>
+
+  <details class="card">
+    <summary>
+      <span class="date">2026-07-14</span>
+      <span class="day">Tuesday</span>
+      <span class="badge" style="background:#a04ff722;color:#a04ff7;border-color:#a04ff744">Class</span>
+      <span class="count">Breath Work</span>
+    </summary>
+    <div class="class-detail">
+      <span class="class-name">Breath Work</span>
+      <span class='class-duration'>· 60 minutes</span>
+    </div>
+  </details>
+
+  <details class="card">
+    <summary>
+      <span class="date">2026-07-11</span>
+      <span class="day">Saturday</span>
+      <span class="badge" style="background:#4ff7a022;color:#4ff7a0;border-color:#4ff7a044">Running</span>
+      <span class="count">1h 5min · 9.17 km · pace 7:04 min/km · Nakhon Ratchasima</span>
+    </summary>
+    <div class="class-detail">
+      <span class="class-name">1h 5min · 9.17 km · pace 7:04 min/km · Nakhon Ratchasima<br><small style='color:#7d8590'>❤ 156 bpm · 🔥 584 kcal</small></span>
+    </div>
+  </details>
+
+  <details class="card more-hidden">
+    <summary>
+      <span class="date">2026-07-08</span>
+      <span class="day">Wednesday</span>
+      <span class="badge" style="background:#4ff7a022;color:#4ff7a0;border-color:#4ff7a044">Running</span>
+      <span class="count">35 min · 5.17 km · pace 6:49 min/km · Treadmill · Interval 40×8</span>
+    </summary>
+    <div class="class-detail">
+      <span class="class-name">35 min · 5.17 km · pace 6:49 min/km · Treadmill · Interval 40×8<br><small style='color:#7d8590'>❤ 152 bpm · 🔥 292 kcal</small></span>
+    </div>
+  </details>
+
+  <details class="card more-hidden">
+    <summary>
+      <span class="date">2026-07-07</span>
+      <span class="day">Tuesday</span>
+      <span class="badge" style="background:#a04ff722;color:#a04ff7;border-color:#a04ff744">Class</span>
+      <span class="count">Core Body</span>
+    </summary>
+    <div class="class-detail">
+      <span class="class-name">Core Body</span>
+      <span class='class-duration'>· 30 minutes</span>
+    </div>
+  </details>
+
+  <details class="card more-hidden">
+    <summary>
+      <span class="date">2026-07-07</span>
+      <span class="day">Tuesday</span>
+      <span class="badge" style="background:#a04ff722;color:#a04ff7;border-color:#a04ff744">Class</span>
+      <span class="count">Breath Work</span>
+    </summary>
+    <div class="class-detail">
+      <span class="class-name">Breath Work</span>
+      <span class='class-duration'>· 60 minutes</span>
+    </div>
+  </details>
+
+  <details class="card more-hidden">
+    <summary>
+      <span class="date">2026-07-04</span>
+      <span class="day">Saturday</span>
+      <span class="badge" style="background:#4ff7a022;color:#4ff7a0;border-color:#4ff7a044">Running</span>
+      <span class="count">2h 5min · 17.02 km · pace 7:21 min/km · Treadmill</span>
+    </summary>
+    <div class="class-detail">
+      <span class="class-name">2h 5min · 17.02 km · pace 7:21 min/km · Treadmill<br><small style='color:#7d8590'>❤ 149 bpm · 🔥 856 kcal</small></span>
+    </div>
+  </details>
+
+  <details class="card more-hidden">
+    <summary>
+      <span class="date">2026-06-30</span>
+      <span class="day">Tuesday</span>
+      <span class="badge" style="background:#a04ff722;color:#a04ff7;border-color:#a04ff744">Class</span>
+      <span class="count">Core Body</span>
+    </summary>
+    <div class="class-detail">
+      <span class="class-name">Core Body</span>
+      <span class='class-duration'>· 30 minutes</span>
+    </div>
+  </details>
+
+  <details class="card more-hidden">
+    <summary>
+      <span class="date">2026-06-23</span>
+      <span class="day">Tuesday</span>
+      <span class="badge" style="background:#a04ff722;color:#a04ff7;border-color:#a04ff744">Class</span>
+      <span class="count">Breath Work</span>
+    </summary>
+    <div class="class-detail">
+      <span class="class-name">Breath Work</span>
+      <span class='class-duration'>· 60 minutes</span>
+    </div>
+  </details>
+
+  <details class="card more-hidden">
+    <summary>
+      <span class="date">2026-06-20</span>
+      <span class="day">Saturday</span>
+      <span class="badge" style="background:#4ff7a022;color:#4ff7a0;border-color:#4ff7a044">Running</span>
+      <span class="count">1h 36min · 12.53 km · pace 7:41 min/km · Zone 2</span>
+    </summary>
+    <div class="class-detail">
+      <span class="class-name">1h 36min · 12.53 km · pace 7:41 min/km · Zone 2</span>
+    </div>
+  </details>
+
+  <details class="card more-hidden">
+    <summary>
+      <span class="date">2026-06-19</span>
+      <span class="day">Friday</span>
+      <span class="badge" style="background:#4ff7a022;color:#4ff7a0;border-color:#4ff7a044">Running</span>
+      <span class="count">Interval 400m × 5</span>
+    </summary>
+    <div class="class-detail">
+      <span class="class-name">Interval 400m × 5</span>
+    </div>
+  </details>
+
+  <details class="card more-hidden">
+    <summary>
+      <span class="date">2026-06-16</span>
+      <span class="day">Tuesday</span>
+      <span class="badge" style="background:#a04ff722;color:#a04ff7;border-color:#a04ff744">Class</span>
+      <span class="count">Core Body</span>
+    </summary>
+    <div class="class-detail">
+      <span class="class-name">Core Body</span>
+      <span class='class-duration'>· 30 minutes</span>
+    </div>
+  </details>
+
+  <details class="card more-hidden">
+    <summary>
+      <span class="date">2026-06-16</span>
+      <span class="day">Tuesday</span>
+      <span class="badge" style="background:#a04ff722;color:#a04ff7;border-color:#a04ff744">Class</span>
+      <span class="count">Breath Work</span>
+    </summary>
+    <div class="class-detail">
+      <span class="class-name">Breath Work</span>
+      <span class='class-duration'>· 60 minutes</span>
+    </div>
+  </details>
+
+  <details class="card more-hidden">
+    <summary>
+      <span class="date">2026-06-12</span>
+      <span class="day">Friday</span>
+      <span class="badge" style="background:#4ff7a022;color:#4ff7a0;border-color:#4ff7a044">Running</span>
+      <span class="count">30 min · Zone 2</span>
+    </summary>
+    <div class="class-detail">
+      <span class="class-name">30 min · Zone 2</span>
+    </div>
+  </details>
 
   <details class="card more-hidden">
     <summary>
@@ -1061,29 +1061,12 @@
       <span class='class-duration'>· 60 minutes</span>
     </div>
   </details>
-      <button id="viewmore">View more</button>
-    </div>
-    <div id="view-progress" class="view">
-
-  <div class="stats">
-    <div class="stat">
-      <div class="stat-label">Last session</div>
-      <div class="stat-value">2026-08-22</div>
-      <div class="stat-sub">Upper · 2 exercises</div>
-    </div>
-    <div class="stat">
-      <div class="stat-label">Progressive overload</div>
-      <div class="stat-value">1<small>/2</small></div>
-      <div class="stat-sub">▲ vs previous session</div>
-    </div>
-    <div class="stat">
-      <div class="stat-label">Tracked</div>
-      <div class="stat-value">31</div>
-      <div class="stat-sub">exercises with data</div>
-    </div>
-  </div>
+            <button class="view-more">View more</button>
+          </section>
+          <section>
+            <div class="section-title">Progress</div>
+            
   <div class="chip-row" id="prog-filters"><span class="chip filter-chip selected" data-filter="all">All</span><span class="chip filter-chip" data-filter="Upper">Upper</span><span class="chip filter-chip" data-filter="Lower">Lower</span></div>
-  <p class="section-title" style="margin-top:1.25rem">Latest first — tap a card for full history</p>
 
   <details class="card prog-card" data-type="Upper">
     <summary>
@@ -1091,7 +1074,7 @@
         <div class="prog-head"><span class="prog-name">Back cable rowing</span><span class="badge" style="background:#4f8ef722;color:#4f8ef7;border-color:#4f8ef744">Upper</span></div>
         <div class="prog-latest">60 lbs · 4×10 · 2026-08-22</div>
       </div>
-      <svg class="spark" width="88" height="26" viewBox="0 0 88 26" aria-hidden="true"><polyline points="5.0,12.4 14.8,21.0 24.5,5.0 34.2,5.0 44.0,14.6 53.8,5.0 63.5,5.0 73.2,12.4 83.0,13.6" fill="none" stroke="#7d8590" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="83.0" cy="13.6" r="4" fill="#58a6ff" stroke="#161b22" stroke-width="2"/></svg>
+      <svg class="spark" width="88" height="26" viewBox="0 0 88 26" aria-hidden="true"><polyline points="5.0,12.4 14.8,21.0 24.5,5.0 34.2,5.0 44.0,14.6 53.8,5.0 63.5,5.0 73.2,12.4 83.0,13.6" fill="none" stroke="#5e6ad2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="83.0" cy="13.6" r="4" fill="#5e6ad2" stroke="#0f1014" stroke-width="2"/></svg>
       <span class="trend up">▲ +5 lbs</span>
     </summary>
     <div class="tbl-wrap">
@@ -1118,7 +1101,7 @@
         <div class="prog-head"><span class="prog-name">Back Hyperextension</span><span class="badge" style="background:#4f8ef722;color:#4f8ef7;border-color:#4f8ef744">Upper</span></div>
         <div class="prog-latest">5 lbs · 4×10 · 2026-08-22</div>
       </div>
-      <svg class="spark" width="88" height="26" viewBox="0 0 88 26" aria-hidden="true"><polyline points="5.0,19.6 24.5,21.0 44.0,19.6 63.5,5.0 83.0,15.4" fill="none" stroke="#7d8590" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="83.0" cy="15.4" r="4" fill="#58a6ff" stroke="#161b22" stroke-width="2"/></svg>
+      <svg class="spark" width="88" height="26" viewBox="0 0 88 26" aria-hidden="true"><polyline points="5.0,19.6 24.5,21.0 44.0,19.6 63.5,5.0 83.0,15.4" fill="none" stroke="#5e6ad2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="83.0" cy="15.4" r="4" fill="#5e6ad2" stroke="#0f1014" stroke-width="2"/></svg>
       <span class="trend down">▼ -5 lbs</span>
     </summary>
     <div class="tbl-wrap">
@@ -1198,7 +1181,7 @@
         <div class="prog-head"><span class="prog-name">Squat</span><span class="badge" style="background:#f7934f22;color:#f7934f;border-color:#f7934f44">Lower</span></div>
         <div class="prog-latest">44 lbs · 3×10 · 2026-08-19</div>
       </div>
-      <svg class="spark" width="88" height="26" viewBox="0 0 88 26" aria-hidden="true"><polyline points="5.0,5.0 14.8,20.9 24.5,9.3 34.2,20.9 44.0,20.9 53.8,20.9 63.5,20.9 73.2,21.0 83.0,21.0" fill="none" stroke="#7d8590" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="83.0" cy="21.0" r="4" fill="#58a6ff" stroke="#161b22" stroke-width="2"/></svg>
+      <svg class="spark" width="88" height="26" viewBox="0 0 88 26" aria-hidden="true"><polyline points="5.0,5.0 14.8,20.9 24.5,9.3 34.2,20.9 44.0,20.9 53.8,20.9 63.5,20.9 73.2,21.0 83.0,21.0" fill="none" stroke="#5e6ad2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="83.0" cy="21.0" r="4" fill="#5e6ad2" stroke="#0f1014" stroke-width="2"/></svg>
       <span class="trend flat">— same</span>
     </summary>
     <div class="tbl-wrap">
@@ -1225,7 +1208,7 @@
         <div class="prog-head"><span class="prog-name">* Romanian deadlift</span><span class="badge" style="background:#f7934f22;color:#f7934f;border-color:#f7934f44">Lower</span></div>
         <div class="prog-latest">30 kg · 3×15 · 2026-08-19</div>
       </div>
-      <svg class="spark" width="88" height="26" viewBox="0 0 88 26" aria-hidden="true"><polyline points="5.0,21.0 18.0,21.0 31.0,21.0 44.0,5.0 57.0,5.0 70.0,5.0 83.0,5.0" fill="none" stroke="#7d8590" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="83.0" cy="5.0" r="4" fill="#58a6ff" stroke="#161b22" stroke-width="2"/></svg>
+      <svg class="spark" width="88" height="26" viewBox="0 0 88 26" aria-hidden="true"><polyline points="5.0,21.0 18.0,21.0 31.0,21.0 44.0,5.0 57.0,5.0 70.0,5.0 83.0,5.0" fill="none" stroke="#5e6ad2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="83.0" cy="5.0" r="4" fill="#5e6ad2" stroke="#0f1014" stroke-width="2"/></svg>
       <span class="trend flat">— same</span>
     </summary>
     <div class="tbl-wrap">
@@ -1250,7 +1233,7 @@
         <div class="prog-head"><span class="prog-name">* Calf raise</span><span class="badge" style="background:#f7934f22;color:#f7934f;border-color:#f7934f44">Lower</span></div>
         <div class="prog-latest">BW · 3×8 · 2026-08-19</div>
       </div>
-      <svg class="spark" width="88" height="26" viewBox="0 0 88 26" aria-hidden="true"><polyline points="5.0,21.0 31.0,21.0 57.0,5.0 83.0,21.0" fill="none" stroke="#7d8590" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="83.0" cy="21.0" r="4" fill="#58a6ff" stroke="#161b22" stroke-width="2"/></svg>
+      <svg class="spark" width="88" height="26" viewBox="0 0 88 26" aria-hidden="true"><polyline points="5.0,21.0 31.0,21.0 57.0,5.0 83.0,21.0" fill="none" stroke="#5e6ad2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="83.0" cy="21.0" r="4" fill="#5e6ad2" stroke="#0f1014" stroke-width="2"/></svg>
       <span class="trend down">▼ -20%</span>
     </summary>
     <div class="tbl-wrap">
@@ -1272,7 +1255,7 @@
         <div class="prog-head"><span class="prog-name">* Seated calf raise</span><span class="badge" style="background:#f7934f22;color:#f7934f;border-color:#f7934f44">Lower</span></div>
         <div class="prog-latest">15 kg · 3×8 · 2026-08-19</div>
       </div>
-      <svg class="spark" width="88" height="26" viewBox="0 0 88 26" aria-hidden="true"><polyline points="5.0,19.9 24.5,21.0 44.0,5.0 63.5,13.0 83.0,13.0" fill="none" stroke="#7d8590" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="83.0" cy="13.0" r="4" fill="#58a6ff" stroke="#161b22" stroke-width="2"/></svg>
+      <svg class="spark" width="88" height="26" viewBox="0 0 88 26" aria-hidden="true"><polyline points="5.0,19.9 24.5,21.0 44.0,5.0 63.5,13.0 83.0,13.0" fill="none" stroke="#5e6ad2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="83.0" cy="13.0" r="4" fill="#5e6ad2" stroke="#0f1014" stroke-width="2"/></svg>
       <span class="trend flat">— same</span>
     </summary>
     <div class="tbl-wrap">
@@ -1314,7 +1297,7 @@
         <div class="prog-head"><span class="prog-name">Supine bench press</span><span class="badge" style="background:#4f8ef722;color:#4f8ef7;border-color:#4f8ef744">Upper</span></div>
         <div class="prog-latest">20 lbs · 3×10 · 2026-08-17</div>
       </div>
-      <svg class="spark" width="88" height="26" viewBox="0 0 88 26" aria-hidden="true"><polyline points="5.0,21.0 18.0,21.0 31.0,21.0 44.0,21.0 57.0,21.0 70.0,21.0 83.0,21.0" fill="none" stroke="#7d8590" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="83.0" cy="21.0" r="4" fill="#58a6ff" stroke="#161b22" stroke-width="2"/></svg>
+      <svg class="spark" width="88" height="26" viewBox="0 0 88 26" aria-hidden="true"><polyline points="5.0,21.0 18.0,21.0 31.0,21.0 44.0,21.0 57.0,21.0 70.0,21.0 83.0,21.0" fill="none" stroke="#5e6ad2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="83.0" cy="21.0" r="4" fill="#5e6ad2" stroke="#0f1014" stroke-width="2"/></svg>
       <span class="trend flat">— same</span>
     </summary>
     <div class="tbl-wrap">
@@ -1339,7 +1322,7 @@
         <div class="prog-head"><span class="prog-name">Shoulder press</span><span class="badge" style="background:#4f8ef722;color:#4f8ef7;border-color:#4f8ef744">Upper</span></div>
         <div class="prog-latest">50 lbs · 3×15 · 2026-08-17</div>
       </div>
-      <svg class="spark" width="88" height="26" viewBox="0 0 88 26" aria-hidden="true"><polyline points="5.0,13.9 18.0,21.0 31.0,19.8 44.0,5.0 57.0,5.0 70.0,5.0 83.0,5.0" fill="none" stroke="#7d8590" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="83.0" cy="5.0" r="4" fill="#58a6ff" stroke="#161b22" stroke-width="2"/></svg>
+      <svg class="spark" width="88" height="26" viewBox="0 0 88 26" aria-hidden="true"><polyline points="5.0,13.9 18.0,21.0 31.0,19.8 44.0,5.0 57.0,5.0 70.0,5.0 83.0,5.0" fill="none" stroke="#5e6ad2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="83.0" cy="5.0" r="4" fill="#5e6ad2" stroke="#0f1014" stroke-width="2"/></svg>
       <span class="trend flat">— same</span>
     </summary>
     <div class="tbl-wrap">
@@ -1364,7 +1347,7 @@
         <div class="prog-head"><span class="prog-name">Lat pulldown</span><span class="badge" style="background:#4f8ef722;color:#4f8ef7;border-color:#4f8ef744">Upper</span></div>
         <div class="prog-latest">55 lbs · 3×15 · 2026-08-17</div>
       </div>
-      <svg class="spark" width="88" height="26" viewBox="0 0 88 26" aria-hidden="true"><polyline points="5.0,8.4 24.5,8.4 44.0,21.0 63.5,5.0 83.0,15.3" fill="none" stroke="#7d8590" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="83.0" cy="15.3" r="4" fill="#58a6ff" stroke="#161b22" stroke-width="2"/></svg>
+      <svg class="spark" width="88" height="26" viewBox="0 0 88 26" aria-hidden="true"><polyline points="5.0,8.4 24.5,8.4 44.0,21.0 63.5,5.0 83.0,15.3" fill="none" stroke="#5e6ad2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="83.0" cy="15.3" r="4" fill="#5e6ad2" stroke="#0f1014" stroke-width="2"/></svg>
       <span class="trend down">▼ -15 lbs</span>
     </summary>
     <div class="tbl-wrap">
@@ -1387,7 +1370,7 @@
         <div class="prog-head"><span class="prog-name">Cable tricep press down</span><span class="badge" style="background:#4f8ef722;color:#4f8ef7;border-color:#4f8ef744">Upper</span></div>
         <div class="prog-latest">40 lbs · 3×10 · 2026-08-17</div>
       </div>
-      <svg class="spark" width="88" height="26" viewBox="0 0 88 26" aria-hidden="true"><polyline points="5.0,21.0 44.0,21.0 83.0,21.0" fill="none" stroke="#7d8590" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="83.0" cy="21.0" r="4" fill="#58a6ff" stroke="#161b22" stroke-width="2"/></svg>
+      <svg class="spark" width="88" height="26" viewBox="0 0 88 26" aria-hidden="true"><polyline points="5.0,21.0 44.0,21.0 83.0,21.0" fill="none" stroke="#5e6ad2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="83.0" cy="21.0" r="4" fill="#5e6ad2" stroke="#0f1014" stroke-width="2"/></svg>
       <span class="trend flat">— same</span>
     </summary>
     <div class="tbl-wrap">
@@ -1408,7 +1391,7 @@
         <div class="prog-head"><span class="prog-name">Bicep curl</span><span class="badge" style="background:#4f8ef722;color:#4f8ef7;border-color:#4f8ef744">Upper</span></div>
         <div class="prog-latest">10 lbs · 3×12 · 2026-08-17</div>
       </div>
-      <svg class="spark" width="88" height="26" viewBox="0 0 88 26" aria-hidden="true"><polyline points="5.0,21.0 44.0,5.0 83.0,5.0" fill="none" stroke="#7d8590" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="83.0" cy="5.0" r="4" fill="#58a6ff" stroke="#161b22" stroke-width="2"/></svg>
+      <svg class="spark" width="88" height="26" viewBox="0 0 88 26" aria-hidden="true"><polyline points="5.0,21.0 44.0,5.0 83.0,5.0" fill="none" stroke="#5e6ad2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="83.0" cy="5.0" r="4" fill="#5e6ad2" stroke="#0f1014" stroke-width="2"/></svg>
       <span class="trend flat">— same</span>
     </summary>
     <div class="tbl-wrap">
@@ -1448,7 +1431,7 @@
         <div class="prog-head"><span class="prog-name">Chest fly</span><span class="badge" style="background:#4f8ef722;color:#4f8ef7;border-color:#4f8ef744">Upper</span></div>
         <div class="prog-latest">55 lbs · 3×15 · 2026-08-11</div>
       </div>
-      <svg class="spark" width="88" height="26" viewBox="0 0 88 26" aria-hidden="true"><polyline points="5.0,21.0 31.0,21.0 57.0,21.0 83.0,21.0" fill="none" stroke="#7d8590" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="83.0" cy="21.0" r="4" fill="#58a6ff" stroke="#161b22" stroke-width="2"/></svg>
+      <svg class="spark" width="88" height="26" viewBox="0 0 88 26" aria-hidden="true"><polyline points="5.0,21.0 31.0,21.0 57.0,21.0 83.0,21.0" fill="none" stroke="#5e6ad2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="83.0" cy="21.0" r="4" fill="#5e6ad2" stroke="#0f1014" stroke-width="2"/></svg>
       <span class="trend flat">— same</span>
     </summary>
     <div class="tbl-wrap">
@@ -1470,7 +1453,7 @@
         <div class="prog-head"><span class="prog-name">Barbell bench press</span><span class="badge" style="background:#4f8ef722;color:#4f8ef7;border-color:#4f8ef744">Upper</span></div>
         <div class="prog-latest">20 lbs · 3×10 · 2026-08-11</div>
       </div>
-      <svg class="spark" width="88" height="26" viewBox="0 0 88 26" aria-hidden="true"><polyline points="5.0,5.0 20.6,21.0 36.2,21.0 51.8,21.0 67.4,5.0 83.0,21.0" fill="none" stroke="#7d8590" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="83.0" cy="21.0" r="4" fill="#58a6ff" stroke="#161b22" stroke-width="2"/></svg>
+      <svg class="spark" width="88" height="26" viewBox="0 0 88 26" aria-hidden="true"><polyline points="5.0,5.0 20.6,21.0 36.2,21.0 51.8,21.0 67.4,5.0 83.0,21.0" fill="none" stroke="#5e6ad2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="83.0" cy="21.0" r="4" fill="#5e6ad2" stroke="#0f1014" stroke-width="2"/></svg>
       <span class="trend down">▼ -5 lbs</span>
     </summary>
     <div class="tbl-wrap">
@@ -1494,7 +1477,7 @@
         <div class="prog-head"><span class="prog-name">Face pull</span><span class="badge" style="background:#4f8ef722;color:#4f8ef7;border-color:#4f8ef744">Upper</span></div>
         <div class="prog-latest">50 lbs · 3×15 · 2026-08-05</div>
       </div>
-      <svg class="spark" width="88" height="26" viewBox="0 0 88 26" aria-hidden="true"><polyline points="5.0,21.0 20.6,5.0 36.2,5.0 51.8,5.0 67.4,5.0 83.0,5.0" fill="none" stroke="#7d8590" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="83.0" cy="5.0" r="4" fill="#58a6ff" stroke="#161b22" stroke-width="2"/></svg>
+      <svg class="spark" width="88" height="26" viewBox="0 0 88 26" aria-hidden="true"><polyline points="5.0,21.0 20.6,5.0 36.2,5.0 51.8,5.0 67.4,5.0 83.0,5.0" fill="none" stroke="#5e6ad2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="83.0" cy="5.0" r="4" fill="#5e6ad2" stroke="#0f1014" stroke-width="2"/></svg>
       <span class="trend flat">— same</span>
     </summary>
     <div class="tbl-wrap">
@@ -1518,7 +1501,7 @@
         <div class="prog-head"><span class="prog-name">* Bulgarian split squat</span><span class="badge" style="background:#f7934f22;color:#f7934f;border-color:#f7934f44">Lower</span></div>
         <div class="prog-latest">20 lbs · 3×10 · 2026-07-30</div>
       </div>
-      <svg class="spark" width="88" height="26" viewBox="0 0 88 26" aria-hidden="true"><polyline points="5.0,21.0 83.0,21.0" fill="none" stroke="#7d8590" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="83.0" cy="21.0" r="4" fill="#58a6ff" stroke="#161b22" stroke-width="2"/></svg>
+      <svg class="spark" width="88" height="26" viewBox="0 0 88 26" aria-hidden="true"><polyline points="5.0,21.0 83.0,21.0" fill="none" stroke="#5e6ad2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="83.0" cy="21.0" r="4" fill="#5e6ad2" stroke="#0f1014" stroke-width="2"/></svg>
       <span class="trend flat">— same</span>
     </summary>
     <div class="tbl-wrap">
@@ -1557,7 +1540,7 @@
         <div class="prog-head"><span class="prog-name">Machine Chest press</span><span class="badge" style="background:#4f8ef722;color:#4f8ef7;border-color:#4f8ef744">Upper</span></div>
         <div class="prog-latest">65 lbs · 3×15 · 2026-07-21</div>
       </div>
-      <svg class="spark" width="88" height="26" viewBox="0 0 88 26" aria-hidden="true"><polyline points="5.0,21.0 83.0,21.0" fill="none" stroke="#7d8590" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="83.0" cy="21.0" r="4" fill="#58a6ff" stroke="#161b22" stroke-width="2"/></svg>
+      <svg class="spark" width="88" height="26" viewBox="0 0 88 26" aria-hidden="true"><polyline points="5.0,21.0 83.0,21.0" fill="none" stroke="#5e6ad2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="83.0" cy="21.0" r="4" fill="#5e6ad2" stroke="#0f1014" stroke-width="2"/></svg>
       <span class="trend flat">— same</span>
     </summary>
     <div class="tbl-wrap">
@@ -1596,7 +1579,7 @@
         <div class="prog-head"><span class="prog-name">Leg extension</span><span class="badge" style="background:#f7934f22;color:#f7934f;border-color:#f7934f44">Lower</span></div>
         <div class="prog-latest">60 lbs · 3×15 · 2026-07-12</div>
       </div>
-      <svg class="spark" width="88" height="26" viewBox="0 0 88 26" aria-hidden="true"><polyline points="5.0,20.6 44.0,21.0 83.0,5.0" fill="none" stroke="#7d8590" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="83.0" cy="5.0" r="4" fill="#58a6ff" stroke="#161b22" stroke-width="2"/></svg>
+      <svg class="spark" width="88" height="26" viewBox="0 0 88 26" aria-hidden="true"><polyline points="5.0,20.6 44.0,21.0 83.0,5.0" fill="none" stroke="#5e6ad2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="83.0" cy="5.0" r="4" fill="#5e6ad2" stroke="#0f1014" stroke-width="2"/></svg>
       <span class="trend up">▲ +5 lbs</span>
     </summary>
     <div class="tbl-wrap">
@@ -1743,10 +1726,14 @@
     </table>
     </div>
   </details>
-    </div>
-    <div id="view-templates" class="view">
-      <p class="section-title">Default Exercises</p>
-      
+          </section>
+        </div>
+      </div>
+
+      <div id="view-templates" class="view">
+        <div class="section-title">Select exercises to log</div>
+        <p style="color:var(--mut);font-size:13px;margin-bottom:14px">Tick the exercises you did — the save bar appears at the bottom.</p>
+        
   <div class="tpl-section">
     <div class="tpl-head"><span class="badge" style="background:#4f8ef722;color:#4f8ef7;border-color:#4f8ef744">Upper</span><span class="count">13 exercises</span></div>
     <div class="card" style="margin-top:.6rem">
@@ -1881,17 +1868,25 @@
       <label class="run-cell run-note">Note<input type="text" class="rfield" data-r="note" placeholder="Zone 2 / location"></label>
     </div>
   </div>
-      <div style="height:4.5rem"></div>
+        <div style="height:5rem"></div>
+      </div>
+
+      <footer>Updated 2026-08-23 15:26 (Bangkok)</footer>
     </div>
-    <footer>Updated 2026-08-22 08:49 (Bangkok)</footer>
   </div>
+
+  <nav class="bmob">
+    <button class="on" data-view="dashboard"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>Dashboard</button>
+    <button data-view="templates"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M3 9h18M8 2v4M16 2v4"/></svg>Plan</button>
+  </nav>
+
   <div id="savebar">
     <span id="savecount"></span>
     <button id="savebtn">Save to Log</button>
     <button id="tokenbtn" title="Set GitHub token">⚙</button>
   </div>
-  <script>
 
+  <script>
     const REPO = 'MethawiPhokhai/GymRecording';
     const BRANCH = 'claude/session-summary-ffzuxy';
     const API = `https://api.github.com/repos/${REPO}/contents/`;
@@ -2117,8 +2112,8 @@
         savebtn.textContent = 'Save to Log';
       }
     });
-
-
+</script>
+  <script>
     document.querySelectorAll('.filter-chip').forEach(ch =>
       ch.addEventListener('click', () => {
         document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('selected'));
@@ -2128,31 +2123,55 @@
           card.style.display = (f === 'all' || card.dataset.type === f) ? '' : 'none';
         });
       }));
-
-  </script>
+</script>
   <script>
-    document.querySelectorAll('.tab').forEach(tab => {
-      tab.addEventListener('click', () => {
-        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-        document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
-        tab.classList.add('active');
-        document.getElementById('view-' + tab.dataset.view).classList.add('active');
+    var views = ['dashboard','templates'];
+    var titles = {'dashboard':'Dashboard','templates':'Plan'};
+    function showView(v) {
+      views.forEach(function(x) {
+        document.getElementById('view-' + x).classList.toggle('on', x === v);
+      });
+      document.querySelectorAll('.side a,.bmob button').forEach(function(el) {
+        el.classList.toggle('on', el.dataset.view === v);
+      });
+      var t = document.getElementById('page-title');
+      if (t) t.textContent = titles[v] || 'Log';
+    }
+    document.querySelectorAll('.side a,.bmob button[data-view]').forEach(function(el) {
+      el.addEventListener('click', function(e) {
+        e.preventDefault();
+        showView(el.dataset.view);
       });
     });
+    document.querySelectorAll('.btn[data-go]').forEach(function(b) {
+      b.addEventListener('click', function() { showView(b.dataset.go); });
+    });
+    // per-column "View more" (weight training / cardio)
+    document.querySelectorAll('.view-more').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        var col = btn.parentElement;
+        var shown = 0;
+        col.querySelectorAll('.more-hidden').forEach(function(c) {
+          if (shown < 10) { c.classList.remove('more-hidden'); shown++; }
+        });
+        if (!col.querySelector('.more-hidden')) btn.style.display = 'none';
+      });
+    });
+    // restore last view
+    var last = localStorage.getItem('gr_view');
+    if (last && views.indexOf(last) >= 0) showView(last);
 
-    let startY = 0, pulling = false;
-    const indicator = document.getElementById('ptr-indicator');
-    document.addEventListener('touchstart', e => {
+    // pull-to-refresh
+    var startY = 0, pulling = false;
+    var indicator = document.getElementById('ptr-indicator');
+    document.addEventListener('touchstart', function(e) {
       if (window.scrollY === 0) startY = e.touches[0].clientY;
     }, { passive: true });
-    document.addEventListener('touchmove', e => {
-      if (window.scrollY === 0 && e.touches[0].clientY - startY > 60) {
-        pulling = true;
-        indicator.classList.add('visible');
-      }
+    document.addEventListener('touchmove', function(e) {
+      if (window.scrollY === 0 && e.touches[0].clientY - startY > 60) { pulling = true; indicator.classList.add('visible'); }
     }, { passive: true });
-    document.addEventListener('touchend', () => {
-      if (pulling) { location.reload(); }
+    document.addEventListener('touchend', function() {
+      if (pulling) location.reload();
       pulling = false;
       indicator.classList.remove('visible');
     });
