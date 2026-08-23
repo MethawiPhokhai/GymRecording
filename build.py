@@ -1204,7 +1204,6 @@ def build_html(entries, templates, raw_entries):
         <div><h1 id="page-title">Dashboard</h1><div class="meta">latest session {latest_date}</div></div>
         <div class="actions">
           <button class="hamburger" id="menu-btn" aria-label="Menu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 6h18M3 12h18M3 18h18"/></svg></button>
-          <button class="btn primary" data-go="templates">Log workout</button>
         </div>
       </div>
 
