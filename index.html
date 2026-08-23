@@ -17,10 +17,11 @@
   body{background:var(--bg);color:var(--ink);font-family:'Inter',system-ui,-apple-system,'Segoe UI',sans-serif;line-height:1.45;-webkit-font-smoothing:antialiased}
   button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit}
   a{color:inherit;text-decoration:none}
-  .layout{display:grid;grid-template-columns:1fr;min-height:100vh}
+  .layout{min-height:100vh}
 
-  /* ---- Desktop sidebar ---- */
-  .side{background:var(--panel);border-right:1px solid var(--line);padding:16px 12px;display:none;flex-direction:column;gap:2px;position:sticky;top:0;height:100vh;overflow:auto}
+  /* ---- Slide-out drawer (replaces desktop sidebar) ---- */
+  .side{position:fixed;top:0;left:0;bottom:0;width:250px;background:var(--panel);border-right:1px solid var(--line);padding:16px 12px calc(16px + env(safe-area-inset-bottom));display:flex;flex-direction:column;gap:2px;transform:translateX(-105%);transition:transform .22s ease;z-index:60;overflow:auto}
+  .side.open{transform:translateX(0)}
   .side .brand{display:flex;align-items:center;gap:9px;padding:4px 10px 18px;font-weight:700;font-size:13.5px;letter-spacing:-.01em}
   .side .brand .logo{width:20px;height:20px;border-radius:6px;background:linear-gradient(135deg,var(--accent),var(--accent2))}
   .side a{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:8px;color:var(--mut);font-size:13px;font-weight:550}
@@ -30,6 +31,13 @@
   .side hr{border:none;border-top:1px solid var(--line);margin:12px 8px}
   .side .foot{padding:10px 12px;font-size:10.5px;color:var(--dim);margin-top:auto}
   .side .foot b{display:block;color:var(--mut);font-weight:600}
+  .overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);opacity:0;pointer-events:none;transition:opacity .2s;z-index:55}
+  .overlay.show{opacity:1;pointer-events:auto}
+
+  /* ---- Hamburger menu button ---- */
+  .hamburger{display:none;align-items:center;justify-content:center;border:1px solid var(--line2);background:var(--panel2);color:var(--ink);border-radius:8px;padding:8px 12px}
+  .hamburger:hover{border-color:var(--accent)}
+  .hamburger svg{width:18px;height:18px}
 
   /* ---- Mobile bottom nav ---- */
   .bmob{position:fixed;left:0;right:0;bottom:0;background:rgba(8,9,12,.94);backdrop-filter:blur(10px);border-top:1px solid var(--line);display:grid;grid-template-columns:repeat(2,1fr);z-index:30}
@@ -38,7 +46,7 @@
   .bmob svg{width:20px;height:20px}
 
   /* ---- Main ---- */
-  .main{width:100%;max-width:1000px;margin:0 auto;padding:18px 18px 92px}
+  .main{width:100%;max-width:1500px;margin:0 auto;padding:18px 18px 92px}
   .view{display:none}
   .view.on{display:block}
   .dash-cols{display:block}
@@ -166,10 +174,9 @@
 
   /* responsive */
   @media(min-width:900px){
-    .layout{grid-template-columns:232px 1fr}
-    .side{display:flex}
     .bmob{display:none}
-    .main{padding:22px 28px 40px}
+    .hamburger{display:inline-flex}
+    .main{width:80%;max-width:1500px;padding:22px 28px 40px}
     .statgrid{grid-template-columns:repeat(4,1fr)}
     .stats{grid-template-columns:repeat(3,1fr)}
     .dash-cols{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;align-items:start}
@@ -204,13 +211,17 @@
       <a href="#">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg>Settings
       </a>
-      <div class="foot"><b>50 workouts</b>updated 2026-08-23 15:26 (Bangkok)</div>
+      <div class="foot"><b>50 workouts</b>updated 2026-08-23 15:39 (Bangkok)</div>
     </aside>
+    <div class="overlay" id="overlay"></div>
 
     <div class="main">
       <div class="topbar">
         <div><h1 id="page-title">Dashboard</h1><div class="meta">latest session 2026-08-22</div></div>
-        <div class="actions"><button class="btn primary" data-go="templates">Log workout</button></div>
+        <div class="actions">
+          <button class="hamburger" id="menu-btn" aria-label="Menu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 6h18M3 12h18M3 18h18"/></svg></button>
+          <button class="btn primary" data-go="templates">Log workout</button>
+        </div>
       </div>
 
       <div id="view-dashboard" class="view on">
@@ -1871,7 +1882,7 @@
         <div style="height:5rem"></div>
       </div>
 
-      <footer>Updated 2026-08-23 15:26 (Bangkok)</footer>
+      <footer>Updated 2026-08-23 15:39 (Bangkok)</footer>
     </div>
   </div>
 
@@ -2137,10 +2148,20 @@
       var t = document.getElementById('page-title');
       if (t) t.textContent = titles[v] || 'Log';
     }
+    function closeMenu() {
+      document.querySelector('.side').classList.remove('open');
+      document.getElementById('overlay').classList.remove('show');
+    }
+    document.getElementById('menu-btn').addEventListener('click', function() {
+      document.querySelector('.side').classList.toggle('open');
+      document.getElementById('overlay').classList.toggle('show');
+    });
+    document.getElementById('overlay').addEventListener('click', closeMenu);
     document.querySelectorAll('.side a,.bmob button[data-view]').forEach(function(el) {
       el.addEventListener('click', function(e) {
         e.preventDefault();
-        showView(el.dataset.view);
+        if (el.dataset.view) showView(el.dataset.view);
+        closeMenu();
       });
     });
     document.querySelectorAll('.btn[data-go]').forEach(function(b) {
