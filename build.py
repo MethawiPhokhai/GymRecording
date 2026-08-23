@@ -901,11 +901,21 @@ def compute_summary(entries, raw_entries):
     distance = sum((e.get("distance_km") or 0) for e in recent if e.get("type") == "Running")
     total_sessions = len({e.get("date") for e in raw_entries})
 
+    # Weekly run distance: Monday of the current week → today
+    today = datetime.now(BKK).date()
+    monday = today - timedelta(days=today.weekday())
+    run_week = sum(
+        (e.get("distance_km") or 0) for e in raw_entries
+        if e.get("type") == "Running" and e.get("date")
+        and monday.isoformat() <= e["date"] <= today.isoformat()
+    )
+
     return {
         "last30": sessions,
         "weight": weight,
         "cardio": cardio,
         "distance": distance,
+        "run_week": round(run_week, 1),
         "total": total_sessions,
     }
 
@@ -919,6 +929,7 @@ def build_statgrid(entries, raw_entries):
       <div class="stat"><div class="k">Weight training</div><div class="v">{s['weight']}</div><div class="d">sessions · 30d</div></div>
       <div class="stat"><div class="k">Cardio</div><div class="v">{s['cardio']}</div><div class="d">sessions · 30d</div></div>
       <div class="stat"><div class="k">Run distance</div><div class="v">{dist_disp}&nbsp;km</div><div class="d">last 30 days</div></div>
+      <div class="stat stat-week"><div class="k">Run · this week</div><div class="v">{s['run_week']}&nbsp;km</div><div class="d">Mon → today</div></div>
     </div>"""
 
 
@@ -975,6 +986,7 @@ STYLE = """
   .topbar .actions{display:flex;gap:8px}
 
   .statgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+  .statgrid .stat-week{grid-column:1 / -1}
   .stat{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:13px 15px}
   .stat .k{font-size:11px;color:var(--mut);text-transform:uppercase;letter-spacing:.06em;font-weight:600}
   .stat .v{font-family:var(--mono);font-size:22px;font-weight:700;letter-spacing:-.02em;margin-top:6px}
@@ -1095,7 +1107,8 @@ STYLE = """
     .bmob{display:none}
     .hamburger{display:inline-flex}
     .main{width:80%;max-width:1500px;padding:22px 28px 40px}
-    .statgrid{grid-template-columns:repeat(4,1fr)}
+    .statgrid{grid-template-columns:repeat(5,1fr)}
+    .statgrid .stat-week{grid-column:auto}
     .stats{grid-template-columns:repeat(3,1fr)}
     .dash-cols{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;align-items:start}
     #savebar{bottom:0}

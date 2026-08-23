@@ -57,6 +57,7 @@
   .topbar .actions{display:flex;gap:8px}
 
   .statgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+  .statgrid .stat-week{grid-column:1 / -1}
   .stat{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:13px 15px}
   .stat .k{font-size:11px;color:var(--mut);text-transform:uppercase;letter-spacing:.06em;font-weight:600}
   .stat .v{font-family:var(--mono);font-size:22px;font-weight:700;letter-spacing:-.02em;margin-top:6px}
@@ -177,7 +178,8 @@
     .bmob{display:none}
     .hamburger{display:inline-flex}
     .main{width:80%;max-width:1500px;padding:22px 28px 40px}
-    .statgrid{grid-template-columns:repeat(4,1fr)}
+    .statgrid{grid-template-columns:repeat(5,1fr)}
+    .statgrid .stat-week{grid-column:auto}
     .stats{grid-template-columns:repeat(3,1fr)}
     .dash-cols{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;align-items:start}
     #savebar{bottom:0}
@@ -211,7 +213,7 @@
       <a href="#">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg>Settings
       </a>
-      <div class="foot"><b>51 workouts</b>updated 2026-08-23 18:00 (Bangkok)</div>
+      <div class="foot"><b>51 workouts</b>updated 2026-08-23 18:08 (Bangkok)</div>
     </aside>
     <div class="overlay" id="overlay"></div>
 
@@ -230,6 +232,7 @@
       <div class="stat"><div class="k">Weight training</div><div class="v">11</div><div class="d">sessions · 30d</div></div>
       <div class="stat"><div class="k">Cardio</div><div class="v">8</div><div class="d">sessions · 30d</div></div>
       <div class="stat"><div class="k">Run distance</div><div class="v">33.1&nbsp;km</div><div class="d">last 30 days</div></div>
+      <div class="stat stat-week"><div class="k">Run · this week</div><div class="v">15.1&nbsp;km</div><div class="d">Mon → today</div></div>
     </div>
         <div class="dash-cols">
           <section>
@@ -1893,7 +1896,7 @@
         <div style="height:5rem"></div>
       </div>
 
-      <footer>Updated 2026-08-23 18:00 (Bangkok)</footer>
+      <footer>Updated 2026-08-23 18:08 (Bangkok)</footer>
     </div>
   </div>
 
