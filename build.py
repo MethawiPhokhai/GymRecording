@@ -895,7 +895,7 @@ def compute_summary(entries, raw_entries):
             cutoff = None
     recent = [e for e in raw_entries if e.get("date") and (not cutoff or e["date"] >= cutoff)]
 
-    sessions = len({e.get("date") for e in recent})
+    sessions = len(recent)  # each logged workout = 1 session (weight + cardio add up)
     weight = sum(1 for e in recent if e.get("type") in STRENGTH_TYPES)
     cardio = sum(1 for e in recent if e.get("type") not in STRENGTH_TYPES)
     distance = sum((e.get("distance_km") or 0) for e in recent if e.get("type") == "Running")
