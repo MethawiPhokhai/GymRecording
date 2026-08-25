@@ -8,8 +8,8 @@
       "completed": true,
       "weight_kg": 5,
       "sets": 5,
-      "reps": 8,
-      "note": "12/10/7/7/6"
+      "reps": 42,
+      "reps_by_set": [12, 10, 7, 7, 6]
     },
     {
       "name": "Dumbbell front raise",
@@ -23,8 +23,8 @@
       "completed": true,
       "weight_kg": 0,
       "sets": 3,
-      "reps": 10,
-      "note": "12/10/8"
+      "reps": 30,
+      "reps_by_set": [12, 10, 8]
     }
   ]
 }
