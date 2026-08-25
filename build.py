@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 import json
 import os
+import re
 from datetime import datetime, timezone, timedelta
 
 BKK = timezone(timedelta(hours=7))
@@ -60,13 +61,14 @@ def merge_exercises(session_exercises, template):
         else:
             weight_kg, weight_lbs = base.get("default_weight_kg"), base.get("default_weight_lbs")
         merged.append({
-            "name":       name,
-            "weight_lbs": weight_lbs,
-            "weight_kg":  weight_kg,
-            "sets":       ex.get("sets")       or base.get("default_sets"),
-            "reps":       ex.get("reps")       or base.get("default_reps"),
-            "completed":  ex.get("completed", False),
-            "note":       ex.get("note", ""),
+            "name":        name,
+            "weight_lbs":  weight_lbs,
+            "weight_kg":   weight_kg,
+            "sets":        ex.get("sets")        or base.get("default_sets"),
+            "reps":        ex.get("reps")        or base.get("default_reps"),
+            "reps_by_set": ex.get("reps_by_set") or None,
+            "completed":   ex.get("completed", False),
+            "note":        ex.get("note", ""),
         })
     return merged
 
@@ -173,7 +175,7 @@ def build_card_html(entry):
             f"<tr>"
             f"<td>{e['name']}</td>"
             f"<td>{weight}</td>"
-            f"<td>{e['sets']}×{e['reps']}</td>"
+            f"<td>{format_sets_reps(e.get('sets'), e.get('reps'), e.get('reps_by_set'))}</td>"
             f"<td class='note'>{e.get('note','')}</td>"
             f"</tr>\n"
         )
@@ -259,7 +261,7 @@ def build_template_section(template):
             f"<td class='wcell'><input type='number' class='w-num' step='0.5' value='{num}' placeholder='-'>"
             f"<select class='w-unit'><option{lbs_sel}>lbs</option><option{kg_sel}>kg</option></select></td>"
             f"<td class='srcell'><input type='number' class='sr-sets' value='{sets}'>×"
-            f"<input type='number' class='sr-reps' value='{reps}'></td>"
+            f"<input type='text' class='sr-reps' value='{reps}' placeholder='12 10 10 8'></td>"
             f"</tr>\n"
         )
     return f"""
@@ -299,11 +301,36 @@ def display_weight(ex):
     return "BW"
 
 
+def format_sets_reps(sets, reps, reps_by_set=None):
+    """Render "4×12" for a single rep value, or "12/10/10/8" (×4) for a per-set list."""
+    if reps_by_set:
+        vals = "/".join(str(r) for r in reps_by_set)
+        return f"{len(reps_by_set)}× <span class='rbs'>{vals}</span>"
+    if sets and reps:
+        return f"{sets}×{reps}"
+    return "-"
+
+
+def _reps_from_note(note):
+    """Parse a per-set rep string like '12/10/10/8' or '12 10 10 8' → [12,10,10,8]."""
+    if not note:
+        return None
+    vals = [int(s) for s in re.split(r"[\s,/]+", note.strip()) if s.lstrip("-").isdigit()]
+    return vals if len(vals) >= 2 else None
+
+
 def point_from_exercise(date, ex):
     """One measurable data point, or None if the entry has no numbers at all."""
     kg = norm_weight_kg(ex)
     sets, reps = ex.get("sets"), ex.get("reps")
-    work = sets * reps if (sets and reps) else None
+    reps_by_set = ex.get("reps_by_set") or _reps_from_note(ex.get("note"))
+    if reps_by_set:
+        # Per-set rep list (e.g. [12,10,10,8]) → total work = sum of reps.
+        sets = len(reps_by_set)
+        reps = sum(reps_by_set)
+        work = reps
+    else:
+        work = sets * reps if (sets and reps) else None
     if kg is None and work is None:
         return None
     if kg is not None and work:
@@ -326,6 +353,7 @@ def point_from_exercise(date, ex):
         "raw": raw,
         "sets": sets,
         "reps": reps,
+        "reps_by_set": reps_by_set,
         "work": work,
         "volume": volume,
     }
@@ -430,7 +458,7 @@ def build_progress_card(name, data):
         p = points[i]
         p_prev = points[i - 1] if i > 0 else None
         d_cls, d_label = trend_vs_prev(p_prev, p)
-        sr = f"{p['sets']}×{p['reps']}" if p["work"] else "-"
+        sr = format_sets_reps(p["sets"], p["reps"], p.get("reps_by_set")) if p["work"] else "-"
         rows += (
             f"<tr>"
             f"<td>{p['date']}</td>"
@@ -441,7 +469,7 @@ def build_progress_card(name, data):
             f"</tr>\n"
         )
 
-    sr_latest = f"{latest['sets']}×{latest['reps']}" if latest["work"] else ""
+    sr_latest = format_sets_reps(latest["sets"], latest["reps"], latest.get("reps_by_set")) if latest["work"] else ""
     latest_str = " · ".join(s for s in (latest["weight"], sr_latest, latest["date"]) if s)
     badge = (f'<span class="badge" style="background:{color}22;color:{color};'
              f'border-color:{color}44">{workout_type}</span>')
@@ -662,9 +690,17 @@ SAVE_SCRIPT = """
         if (unit === 'kg') ex.weight_kg = w; else ex.weight_lbs = w;
       }
       const sets = parseInt(tr.querySelector('.sr-sets').value);
-      const reps = parseInt(tr.querySelector('.sr-reps').value);
+      const repsRaw = tr.querySelector('.sr-reps').value.trim();
+      const reps = parseInt(repsRaw);
       if (sets > 0) ex.sets = sets;
-      if (reps > 0) ex.reps = reps;
+      // Allow per-set reps: "12 10 10 8" (spaces/commas) → reps_by_set array.
+      const vals = repsRaw.split(/[\s,]+/).map(s => parseInt(s)).filter(n => !isNaN(n));
+      if (vals.length > 1) {
+        ex.reps_by_set = vals;
+        ex.sets = vals.length;   // keep sets consistent with the list length
+      } else if (reps > 0) {
+        ex.reps = reps;
+      }
       return { kind: 'exercise', type, ex };
     }
 
@@ -736,7 +772,7 @@ SAVE_SCRIPT = """
           <td class='exname'><input type='text' placeholder='Exercise name'></td>
           <td class='wcell'><input type='number' class='w-num' step='0.5' placeholder='-'>
             <select class='w-unit'><option>lbs</option><option>kg</option></select></td>
-          <td class='srcell'><input type='number' class='sr-sets' value='3'>×<input type='number' class='sr-reps' value='15'></td>`;
+          <td class='srcell'><input type='number' class='sr-sets' value='3'>×<input type='text' class='sr-reps' value='15' placeholder='12 10 10 8'></td>`;
         tbody.appendChild(tr);
         bindRow(tr);
         tr.querySelector('.exname input').focus();
@@ -1066,6 +1102,8 @@ STYLE = """
   .rfield{width:100%}
   .w-num{width:4.2rem}
   .sr-sets,.sr-reps{width:2.6rem;text-align:center}
+  .sr-reps{width:5.6rem;font-family:var(--mono)}
+  .rbs{color:var(--accent2);font-family:var(--mono)}
   .srcell{white-space:nowrap}
   .exname input{width:9rem}
   .dur{width:3.4rem;padding:4px 6px;font-size:12px}
