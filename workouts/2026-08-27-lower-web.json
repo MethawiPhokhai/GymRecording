@@ -1,0 +1,31 @@
+{
+  "date": "2026-08-27",
+  "day": "Thursday",
+  "type": "Lower",
+  "exercises": [
+    {
+      "name": "Squat",
+      "completed": true,
+      "weight_kg": 10,
+      "sets": 4,
+      "reps": 40,
+      "reps_by_set": [10, 10, 10, 10]
+    },
+    {
+      "name": "* Romanian deadlift",
+      "completed": true,
+      "weight_kg": 30,
+      "sets": 3,
+      "reps": 30,
+      "reps_by_set": [10, 10, 10]
+    },
+    {
+      "name": "* Bent-knee single-leg calf raise",
+      "completed": true,
+      "weight_kg": 10,
+      "sets": 3,
+      "reps": 30,
+      "reps_by_set": [10, 10, 10]
+    }
+  ]
+}
