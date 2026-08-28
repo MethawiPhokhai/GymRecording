@@ -85,7 +85,7 @@ def resolve_session(entry, templates):
             duration = pool.get(class_name, {}).get("default_duration_minutes")
         return {**entry, "duration_minutes": duration}
 
-    if workout_type == "Running":
+    if workout_type in ("Running", "Cycling"):
         return entry
 
     exercises = [e for e in entry.get("exercises", []) if e.get("completed")]
@@ -101,6 +101,7 @@ TYPE_COLORS = {
     "Mobility": "#4fd8f7",
     "Class":    "#a04ff7",
     "Running":  "#4ff7a0",
+    "Cycling":  "#33c3f0",
 }
 TYPE_DEFAULT = "#888"
 
@@ -111,7 +112,7 @@ def build_card_html(entry):
     workout_type = entry.get("type", "-")
     color = TYPE_COLORS.get(workout_type, TYPE_DEFAULT)
 
-    if workout_type == "Running":
+    if workout_type in ("Running", "Cycling"):
         duration = entry.get("duration_minutes")
         distance = entry.get("distance_km")
         pace = entry.get("pace")
@@ -239,6 +240,19 @@ def build_template_section(template):
     </div>
   </div>"""
 
+    if workout_type == "Cycling":
+        return f"""
+  <div class="tpl-section">
+    <div class="tpl-head">{badge}</div>
+    <label class="run-toggle"><input type="checkbox" class="sel-run"> Log cycling today</label>
+    <div class="run-grid">
+      <label class="run-cell">Duration (min)<input type="number" class="rfield" data-r="duration_minutes" step="1" placeholder="-"></label>
+      <label class="run-cell">Avg HR (bpm)<input type="number" class="rfield" data-r="avg_heart_rate_bpm" placeholder="-"></label>
+      <label class="run-cell">Calories (kcal)<input type="number" class="rfield" data-r="calories" placeholder="-"></label>
+      <label class="run-cell run-note">Note<input type="text" class="rfield" data-r="note" placeholder="Zone 2 / recovery"></label>
+    </div>
+  </div>"""
+
     exercises = template.get("exercises", [])
     if not exercises:
         return ""
@@ -280,7 +294,7 @@ def build_template_section(template):
   </div>"""
 
 
-TEMPLATE_ORDER = ["Upper", "Lower", "Full body", "Core", "Mobility", "Class", "Running"]
+TEMPLATE_ORDER = ["Upper", "Lower", "Full body", "Core", "Mobility", "Class", "Running", "Cycling"]
 
 LBS_TO_KG = 0.45359237
 
