@@ -1,0 +1,31 @@
+{
+  "date": "2026-09-03",
+  "day": "Thursday",
+  "type": "Upper",
+  "exercises": [
+    {
+      "name": "Lat pulldown",
+      "completed": true,
+      "weight_lbs": 60,
+      "sets": 4,
+      "reps": 40,
+      "reps_by_set": [10, 10, 10, 10]
+    },
+    {
+      "name": "Incline bench press",
+      "completed": true,
+      "weight_lbs": 20,
+      "sets": 4,
+      "reps": 24,
+      "reps_by_set": [7, 7, 5, 5]
+    },
+    {
+      "name": "Back Hyperextension",
+      "completed": true,
+      "weight_lbs": 5,
+      "sets": 3,
+      "reps": 30,
+      "reps_by_set": [10, 10, 10]
+    }
+  ]
+}
