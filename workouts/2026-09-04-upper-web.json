@@ -1,0 +1,39 @@
+{
+  "date": "2026-09-04",
+  "day": "Friday",
+  "type": "Upper",
+  "exercises": [
+    {
+      "name": "Barbell bench press",
+      "completed": true,
+      "weight_lbs": 20,
+      "sets": 4,
+      "reps": 36,
+      "reps_by_set": [10, 10, 8, 8]
+    },
+    {
+      "name": "Shoulder press",
+      "completed": true,
+      "weight_lbs": 50,
+      "sets": 4,
+      "reps": 40,
+      "reps_by_set": [10, 10, 10, 10]
+    },
+    {
+      "name": "Face pull",
+      "completed": true,
+      "weight_lbs": 50,
+      "sets": 4,
+      "reps": 40,
+      "reps_by_set": [10, 10, 10, 10]
+    },
+    {
+      "name": "Back cable rowing",
+      "completed": true,
+      "weight_lbs": 65,
+      "sets": 4,
+      "reps": 40,
+      "reps_by_set": [10, 10, 10, 10]
+    }
+  ]
+}
