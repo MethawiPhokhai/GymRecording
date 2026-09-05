@@ -1,0 +1,10 @@
+{
+  "type": "Hip Flexor",
+  "exercises": [
+    { "name": "Hip flexor stretch",     "default_weight_lbs": null, "default_sets": 2, "default_reps": 2 },
+    { "name": "Kneeling lunge stretch", "default_weight_lbs": null, "default_sets": 2, "default_reps": 2 },
+    { "name": "Glute bridge",           "default_weight_lbs": null, "default_sets": 3, "default_reps": 12 },
+    { "name": "Dead bug",               "default_weight_lbs": null, "default_sets": 3, "default_reps": 8 },
+    { "name": "Bird dog",               "default_weight_lbs": null, "default_sets": 3, "default_reps": 8 }
+  ]
+}
