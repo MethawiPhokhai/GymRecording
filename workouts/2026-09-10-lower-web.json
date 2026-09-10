@@ -1,0 +1,41 @@
+{
+  "date": "2026-09-10",
+  "day": "Thursday",
+  "type": "Lower",
+  "exercises": [
+    {
+      "name": "Squat",
+      "completed": true,
+      "weight_kg": 20,
+      "sets": 4,
+      "reps": 10
+    },
+    {
+      "name": "* Romanian deadlift",
+      "completed": true,
+      "weight_kg": 30,
+      "sets": 4,
+      "reps": 10
+    },
+    {
+      "name": "Leg extension",
+      "completed": true,
+      "weight_lbs": 65,
+      "sets": 4,
+      "reps": 10
+    },
+    {
+      "name": "* Bent-knee single-leg calf raise",
+      "completed": true,
+      "weight_kg": 10,
+      "sets": 3,
+      "reps": 8
+    },
+    {
+      "name": "* Tibialis raise",
+      "completed": true,
+      "sets": 3,
+      "reps": 15
+    }
+  ]
+}
