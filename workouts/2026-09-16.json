@@ -1,7 +1,7 @@
 {
   "date": "2026-09-16",
   "day": "Wednesday",
-  "type": "Lower",
+  "type": "Full body",
   "exercises": [
     {
       "name": "* Goblet squat",
@@ -36,6 +36,19 @@
       "completed": true,
       "sets": 3,
       "reps": 15
+    },
+    {
+      "name": "Back Hyperextension",
+      "completed": true,
+      "sets": 3,
+      "reps": 10
+    },
+    {
+      "name": "Cable tricep press down",
+      "completed": true,
+      "weight_lbs": 50,
+      "sets": 3,
+      "reps": 10
     }
   ]
 }
