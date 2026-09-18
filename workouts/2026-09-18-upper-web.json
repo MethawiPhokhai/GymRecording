@@ -1,0 +1,47 @@
+{
+  "date": "2026-09-18",
+  "day": "Friday",
+  "type": "Upper",
+  "exercises": [
+    {
+      "name": "Face pull",
+      "completed": true,
+      "weight_lbs": 50,
+      "sets": 3,
+      "reps": 15
+    },
+    {
+      "name": "Bicep curl",
+      "completed": true,
+      "weight_lbs": 10,
+      "sets": 3,
+      "reps": 10
+    },
+    {
+      "name": "Incline bench press",
+      "completed": true,
+      "weight_lbs": 20,
+      "sets": 4,
+      "reps_by_set": [
+        9,
+        8,
+        8,
+        7
+      ]
+    },
+    {
+      "name": "Plate front raise",
+      "completed": true,
+      "weight_lbs": 10,
+      "sets": 3,
+      "reps": 10
+    },
+    {
+      "name": "Dumbell rear delt fly",
+      "completed": true,
+      "weight_lbs": 5,
+      "sets": 3,
+      "reps": 10
+    }
+  ]
+}
