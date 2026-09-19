@@ -749,6 +749,17 @@ SAVE_SCRIPT = """
       return items;
     }
 
+    // Keep the save bar clear of the mobile bottom nav (nav stays at the very
+    // bottom, the bar floats just above it) so both stay tappable.
+    function syncNavHeight() {
+      const nav = document.querySelector('.bmob');
+      const shown = nav && getComputedStyle(nav).display !== 'none';
+      document.documentElement.style.setProperty('--nav-h', (shown ? nav.offsetHeight : 0) + 'px');
+    }
+    syncNavHeight();
+    window.addEventListener('resize', syncNavHeight);
+    window.addEventListener('orientationchange', () => setTimeout(syncNavHeight, 120));
+
     function refreshBar() {
       const n = selections().length;
       savecount.textContent = n + ' selected';
@@ -1134,7 +1145,7 @@ STYLE = """
   .note-row{display:flex;gap:8px;align-items:center;font-size:11px;color:var(--mut)}
 
   /* ---- Save bar ---- */
-  #savebar{position:fixed;bottom:0;left:0;right:0;display:none;align-items:center;justify-content:center;gap:14px;padding:11px 16px calc(11px + env(safe-area-inset-bottom));background:rgba(15,16,20,.95);border-top:1px solid var(--line);backdrop-filter:blur(10px);z-index:40}
+  #savebar{position:fixed;bottom:var(--nav-h,0px);left:0;right:0;display:none;align-items:center;justify-content:center;gap:14px;padding:11px 16px;background:rgba(15,16,20,.95);border-top:1px solid var(--line);backdrop-filter:blur(10px);z-index:40;transition:bottom .18s ease}
   #savebar.visible{display:flex}
   #savecount{font-size:12.5px;color:var(--mut)}
   #savebtn{background:var(--accent);border:none;color:#fff;font-size:13px;font-weight:650;font-family:inherit;padding:9px 20px;border-radius:8px}
@@ -1164,7 +1175,7 @@ STYLE = """
     .statgrid .stat-week{grid-column:auto}
     .stats{grid-template-columns:repeat(3,1fr)}
     .dash-cols{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;align-items:start}
-    #savebar{bottom:0}
+    #savebar{bottom:0;padding:11px 16px calc(11px + env(safe-area-inset-bottom))}
   }
   @media(max-width:480px){
     .statgrid{grid-template-columns:1fr 1fr}
@@ -1267,7 +1278,7 @@ def build_html(entries, templates, raw_entries):
         <div class="section-title">Select exercises to log</div>
         <p style="color:var(--mut);font-size:13px;margin-bottom:14px">Tick the exercises you did — the save bar appears at the bottom.</p>
         {template_sections}
-        <div style="height:5rem"></div>
+        <div style="height:9rem"></div>
       </div>
 
       <footer>Updated {updated}</footer>
