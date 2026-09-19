@@ -14,6 +14,12 @@
       "default_reps": 15
     },
     {
+      "name": "Lateral raise",
+      "default_weight_lbs": 10,
+      "default_sets": 3,
+      "default_reps": 15
+    },
+    {
       "name": "Barbell bench press",
       "default_weight_lbs": 25,
       "default_sets": 3,
