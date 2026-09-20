@@ -6,6 +6,9 @@
     { "name": "Curl-up",                "default_weight_lbs": null, "default_sets": 3, "default_reps": 8 },
     { "name": "Cat-cow",                "default_weight_lbs": null, "default_sets": 1, "default_reps": 10 },
     { "name": "* Dead bug (long lever)","default_weight_lbs": null, "default_sets": 3, "default_reps": 8 },
-    { "name": "* Pallof march",         "default_weight_lbs": null, "default_sets": 3, "default_reps": 10 }
+    { "name": "* Pallof march",         "default_weight_lbs": null, "default_sets": 3, "default_reps": 10 },
+    { "name": "* Cable crunch",         "default_weight_lbs": 40,   "default_sets": 3, "default_reps": 12 },
+    { "name": "* Hanging leg raise",    "default_weight_lbs": null, "default_sets": 3, "default_reps": 10 },
+    { "name": "* Reverse crunch",       "default_weight_lbs": null, "default_sets": 3, "default_reps": 12 }
   ]
 }
