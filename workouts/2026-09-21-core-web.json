@@ -1,0 +1,14 @@
+{
+  "date": "2026-09-21",
+  "day": "Monday",
+  "type": "Core",
+  "exercises": [
+    {
+      "name": "* Cable crunch",
+      "completed": true,
+      "weight_lbs": 40,
+      "sets": 3,
+      "reps": 12
+    }
+  ]
+}
