@@ -103,6 +103,7 @@ TYPE_COLORS = {
     "Running":  "#4ff7a0",
     "Cycling":  "#33c3f0",
     "Hip Flexor": "#e39d4f",
+    "Long Sitting": "#8f7dff",
 }
 TYPE_DEFAULT = "#888"
 
@@ -295,7 +296,7 @@ def build_template_section(template):
   </div>"""
 
 
-TEMPLATE_ORDER = ["Upper", "Lower", "Full body", "Core", "Mobility", "Hip Flexor", "Class", "Running", "Cycling"]
+TEMPLATE_ORDER = ["Upper", "Lower", "Full body", "Core", "Mobility", "Hip Flexor", "Long Sitting", "Class", "Running", "Cycling"]
 
 LBS_TO_KG = 0.45359237
 
@@ -941,7 +942,7 @@ PAGE_SIZE = 10
 from datetime import date as _date, timedelta
 
 
-STRENGTH_TYPES = {"Upper", "Lower", "Full body", "Core", "Mobility", "Hip Flexor"}
+STRENGTH_TYPES = {"Upper", "Lower", "Full body", "Core", "Mobility", "Hip Flexor", "Long Sitting"}
 
 
 def compute_summary(entries, raw_entries):
