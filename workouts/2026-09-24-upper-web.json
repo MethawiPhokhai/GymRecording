@@ -1,0 +1,54 @@
+{
+  "date": "2026-09-24",
+  "day": "Thursday",
+  "type": "Upper",
+  "exercises": [
+    {
+      "name": "Shoulder press",
+      "completed": true,
+      "weight_lbs": 60,
+      "sets": 4,
+      "reps": 10
+    },
+    {
+      "name": "Chest fly",
+      "completed": true,
+      "weight_lbs": 55,
+      "sets": 3,
+      "reps": 15
+    },
+    {
+      "name": "Back cable rowing",
+      "completed": true,
+      "weight_lbs": 60,
+      "sets": 3,
+      "reps": 15
+    },
+    {
+      "name": "Lat pulldown",
+      "completed": true,
+      "weight_lbs": 60,
+      "sets": 3,
+      "reps": 15
+    },
+    {
+      "name": "Bicep curl",
+      "completed": true,
+      "weight_lbs": 10,
+      "sets": 3,
+      "reps": 12
+    },
+    {
+      "name": "Incline bench press",
+      "completed": true,
+      "weight_lbs": 20,
+      "sets": 4,
+      "reps_by_set": [
+        10,
+        10,
+        10,
+        10
+      ]
+    }
+  ]
+}
