@@ -1,0 +1,12 @@
+{
+  "type": "Lower B",
+  "exercises": [
+    { "name": "* Romanian deadlift",              "default_weight_kg": 15,    "default_sets": 3, "default_reps": 10 },
+    { "name": "Single-leg RDL",                   "default_weight_lbs": null, "default_sets": 3, "default_reps": 10 },
+    { "name": "Leg curl",                         "default_weight_lbs": null, "default_sets": 3, "default_reps": 12 },
+    { "name": "* Nordic hamstring curl",          "default_weight_lbs": null, "default_sets": 2, "default_reps": 4 },
+    { "name": "* Calf raise",                     "default_weight_lbs": null, "default_sets": 3, "default_reps": 8 },
+    { "name": "* Bent-knee single-leg calf raise","default_weight_lbs": null, "default_sets": 3, "default_reps": 8 },
+    { "name": "* Tibialis raise",                 "default_weight_lbs": null, "default_sets": 3, "default_reps": 15 }
+  ]
+}

@@ -96,6 +96,8 @@ def resolve_session(entry, templates):
 TYPE_COLORS = {
     "Upper":     "#4f8ef7",
     "Lower":     "#f7934f",
+    "Lower A":   "#f7934f",
+    "Lower B":   "#ffab5c",
     "Full body": "#e3c04f",
     "Core":     "#f75f8f",
     "Mobility": "#4fd8f7",
@@ -296,7 +298,7 @@ def build_template_section(template):
   </div>"""
 
 
-TEMPLATE_ORDER = ["Upper", "Lower", "Full body", "Core", "Mobility", "Hip Flexor", "Long Sitting", "Class", "Running", "Cycling"]
+TEMPLATE_ORDER = ["Upper", "Lower A", "Lower B", "Full body", "Core", "Mobility", "Hip Flexor", "Long Sitting", "Class", "Running", "Cycling"]
 
 LBS_TO_KG = 0.45359237
 
@@ -942,7 +944,7 @@ PAGE_SIZE = 10
 from datetime import date as _date, timedelta
 
 
-STRENGTH_TYPES = {"Upper", "Lower", "Full body", "Core", "Mobility", "Hip Flexor", "Long Sitting"}
+STRENGTH_TYPES = {"Upper", "Lower", "Lower A", "Lower B", "Full body", "Core", "Mobility", "Hip Flexor", "Long Sitting"}
 
 
 def compute_summary(entries, raw_entries):
