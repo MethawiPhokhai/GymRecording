@@ -1,6 +1,7 @@
 {
   "type": "Push A",
   "exercises": [
+    { "name": "Incline bench press",      "group": "Chest",    "default_weight_lbs": 20,   "default_sets": 4, "default_reps": 10 },
     { "name": "Barbell bench press",      "group": "Chest",    "default_weight_lbs": 25,   "default_sets": 3, "default_reps": 10 },
     { "name": "Supine bench press",       "group": "Chest",    "default_weight_lbs": 20,   "default_sets": 3, "default_reps": 10 },
     { "name": "Shoulder press",           "group": "Shoulder", "default_weight_lbs": 40,   "default_sets": 3, "default_reps": 15 },
