@@ -62,6 +62,7 @@ def merge_exercises(session_exercises, template):
             weight_kg, weight_lbs = base.get("default_weight_kg"), base.get("default_weight_lbs")
         merged.append({
             "name":        name,
+            "group":       base.get("group", ""),
             "weight_lbs":  weight_lbs,
             "weight_kg":   weight_kg,
             "sets":        ex.get("sets")        or base.get("default_sets"),
@@ -95,6 +96,8 @@ def resolve_session(entry, templates):
 
 TYPE_COLORS = {
     "Upper":     "#4f8ef7",
+    "Push A":    "#4f8ef7",
+    "Pull B":    "#7bb0ff",
     "Lower":     "#f7934f",
     "Lower A":   "#f7934f",
     "Lower B":   "#ffab5c",
@@ -108,6 +111,13 @@ TYPE_COLORS = {
     "Long Sitting": "#8f7dff",
 }
 TYPE_DEFAULT = "#888"
+
+
+def group_tag(group):
+    """Small grey muscle-group label shown after an exercise name, e.g. '(Chest)'."""
+    if not group:
+        return ""
+    return f" <span class='grp'>({group})</span>"
 
 
 def build_card_html(entry):
@@ -178,7 +188,7 @@ def build_card_html(entry):
             weight = "-"
         rows += (
             f"<tr>"
-            f"<td>{e['name']}</td>"
+            f"<td>{e['name']}{group_tag(e.get('group'))}</td>"
             f"<td>{weight}</td>"
             f"<td>{format_sets_reps(e.get('sets'), e.get('reps'), e.get('reps_by_set'))}</td>"
             f"<td class='note'>{e.get('note','')}</td>"
@@ -275,7 +285,7 @@ def build_template_section(template):
         rows += (
             f"<tr class='sel-row'>"
             f"<td class='selcell'><input type='checkbox' class='sel'></td>"
-            f"<td class='exname'>{e['name']}</td>"
+            f"<td class='exname'>{e['name']}{group_tag(e.get('group'))}</td>"
             f"<td class='wcell'><input type='number' class='w-num' step='0.5' value='{num}' placeholder='-'>"
             f"<select class='w-unit'><option{lbs_sel}>lbs</option><option{kg_sel}>kg</option></select></td>"
             f"<td class='srcell'><input type='number' class='sr-sets' value='{sets}'>×"
@@ -298,7 +308,7 @@ def build_template_section(template):
   </div>"""
 
 
-TEMPLATE_ORDER = ["Upper", "Lower A", "Lower B", "Full body", "Core", "Mobility", "Hip Flexor", "Long Sitting", "Class", "Running", "Cycling"]
+TEMPLATE_ORDER = ["Push A", "Pull B", "Lower A", "Lower B", "Full body", "Core", "Mobility", "Hip Flexor", "Long Sitting", "Class", "Running", "Cycling"]
 
 LBS_TO_KG = 0.45359237
 
@@ -944,7 +954,7 @@ PAGE_SIZE = 10
 from datetime import date as _date, timedelta
 
 
-STRENGTH_TYPES = {"Upper", "Lower", "Lower A", "Lower B", "Full body", "Core", "Mobility", "Hip Flexor", "Long Sitting"}
+STRENGTH_TYPES = {"Upper", "Push A", "Pull B", "Lower", "Lower A", "Lower B", "Full body", "Core", "Mobility", "Hip Flexor", "Long Sitting"}
 
 
 def compute_summary(entries, raw_entries):
@@ -1135,6 +1145,7 @@ STYLE = """
   .rbs{color:var(--accent2);font-family:var(--mono)}
   .srcell{white-space:nowrap}
   .exname input{width:9rem}
+  .grp{font-size:10px;font-weight:600;opacity:.55;white-space:nowrap;margin-left:.3rem}
   .dur{width:3.4rem;padding:4px 6px;font-size:12px}
   .w-unit{background:var(--panel2);color:var(--mut);border:1px solid var(--line);border-radius:6px;padding:6px 4px;font-size:12px;font-family:inherit;margin-left:4px}
   input[type=number]{appearance:textfield;-moz-appearance:textfield}
