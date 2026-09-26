@@ -1,9 +1,28 @@
 {
   "type": "Lower A",
   "exercises": [
-    { "name": "Squat",                    "default_weight_kg": 20,    "default_sets": 3, "default_reps": 10 },
-    { "name": "* Bulgarian split squat",  "default_weight_lbs": null, "default_sets": 3, "default_reps": 8 },
-    { "name": "Leg extension",            "default_weight_lbs": 55,   "default_sets": 3, "default_reps": 12 },
-    { "name": "Hip thrust",               "default_weight_kg": 10,    "default_sets": 3, "default_reps": 12 }
+    {
+      "name": "Squat",
+      "default_weight_lbs": 44,
+      "default_sets": 3,
+      "default_reps": 10
+    },
+    {
+      "name": "* Bulgarian split squat",
+      "default_sets": 3,
+      "default_reps": 8
+    },
+    {
+      "name": "Leg extension",
+      "default_weight_lbs": 55,
+      "default_sets": 3,
+      "default_reps": 12
+    },
+    {
+      "name": "Hip thrust",
+      "default_weight_lbs": 22,
+      "default_sets": 3,
+      "default_reps": 12
+    }
   ]
 }

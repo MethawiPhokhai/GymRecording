@@ -1,15 +1,57 @@
 {
   "type": "Long Sitting",
   "exercises": [
-    { "name": "Standing hip flexor stretch",    "default_weight_lbs": null, "default_sets": 2, "default_reps": 30 },
-    { "name": "Couch stretch",                  "default_weight_lbs": null, "default_sets": 2, "default_reps": 30 },
-    { "name": "Thoracic extension (foam roller)","default_weight_lbs": null, "default_sets": 2, "default_reps": 10 },
-    { "name": "Open book rotation",             "default_weight_lbs": null, "default_sets": 2, "default_reps": 8 },
-    { "name": "Single-leg glute bridge",        "default_weight_lbs": null, "default_sets": 3, "default_reps": 10 },
-    { "name": "Clamshell",                      "default_weight_lbs": null, "default_sets": 3, "default_reps": 12 },
-    { "name": "Standing hip abduction",         "default_weight_lbs": null, "default_sets": 3, "default_reps": 12 },
-    { "name": "Hip hinge drill",                "default_weight_lbs": null, "default_sets": 3, "default_reps": 8 },
-    { "name": "Suitcase carry",                 "default_weight_lbs": 20,   "default_sets": 3, "default_reps": 20 },
-    { "name": "Pallof press",                   "default_weight_lbs": 30,   "default_sets": 3, "default_reps": 10 }
+    {
+      "name": "Standing hip flexor stretch",
+      "default_sets": 2,
+      "default_reps": 30
+    },
+    {
+      "name": "Couch stretch",
+      "default_sets": 2,
+      "default_reps": 30
+    },
+    {
+      "name": "Thoracic extension (foam roller)",
+      "default_sets": 2,
+      "default_reps": 10
+    },
+    {
+      "name": "Open book rotation",
+      "default_sets": 2,
+      "default_reps": 8
+    },
+    {
+      "name": "Single-leg glute bridge",
+      "default_sets": 3,
+      "default_reps": 10
+    },
+    {
+      "name": "Clamshell",
+      "default_sets": 3,
+      "default_reps": 12
+    },
+    {
+      "name": "Standing hip abduction",
+      "default_sets": 3,
+      "default_reps": 12
+    },
+    {
+      "name": "Hip hinge drill",
+      "default_sets": 3,
+      "default_reps": 8
+    },
+    {
+      "name": "Suitcase carry",
+      "default_weight_lbs": 20,
+      "default_sets": 3,
+      "default_reps": 20
+    },
+    {
+      "name": "Pallof press",
+      "default_weight_lbs": 30,
+      "default_sets": 3,
+      "default_reps": 10
+    }
   ]
 }

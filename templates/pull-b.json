@@ -1,12 +1,51 @@
 {
   "type": "Pull B",
   "exercises": [
-    { "name": "Deadlift",               "group": "Back",     "default_weight_lbs": null, "default_sets": 3, "default_reps": 10 },
-    { "name": "Pull up",                "group": "Back",     "default_weight_lbs": 60,   "default_sets": 3, "default_reps": 15 },
-    { "name": "Lat pulldown",           "group": "Back",     "default_weight_lbs": 65,   "default_sets": 3, "default_reps": 15 },
-    { "name": "Back cable rowing",      "group": "Back",     "default_weight_lbs": 55,   "default_sets": 3, "default_reps": 15 },
-    { "name": "Face pull",              "group": "Shoulder", "default_weight_lbs": 50,   "default_sets": 3, "default_reps": 15 },
-    { "name": "Back Hyperextension",    "group": "Back",     "default_weight_lbs": null, "default_sets": 3, "default_reps": 15 },
-    { "name": "Bicep curl",             "group": "Biceps",   "default_weight_lbs": null, "default_sets": 3, "default_reps": 12 }
+    {
+      "name": "Deadlift",
+      "group": "Back",
+      "default_sets": 3,
+      "default_reps": 10
+    },
+    {
+      "name": "Pull up",
+      "group": "Back",
+      "default_weight_lbs": 60,
+      "default_sets": 3,
+      "default_reps": 15
+    },
+    {
+      "name": "Lat pulldown",
+      "group": "Back",
+      "default_weight_lbs": 65,
+      "default_sets": 3,
+      "default_reps": 15
+    },
+    {
+      "name": "Back cable rowing",
+      "group": "Back",
+      "default_weight_lbs": 55,
+      "default_sets": 3,
+      "default_reps": 15
+    },
+    {
+      "name": "Face pull",
+      "group": "Shoulder",
+      "default_weight_lbs": 50,
+      "default_sets": 3,
+      "default_reps": 15
+    },
+    {
+      "name": "Back Hyperextension",
+      "group": "Back",
+      "default_sets": 3,
+      "default_reps": 15
+    },
+    {
+      "name": "Bicep curl",
+      "group": "Biceps",
+      "default_sets": 3,
+      "default_reps": 12
+    }
   ]
 }

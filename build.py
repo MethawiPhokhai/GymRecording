@@ -34,18 +34,21 @@ def load_workouts():
 
 
 def apply_latest_defaults(templates, all_entries):
-    """Use the most recently recorded weight of each exercise as its template default."""
+    """Template defaults follow the MOST RECENT logged weight — not the all-time max.
+
+    Deliberate: a deliberate back-off (deload, niggle, form reset) must not be undone
+    by the app resurrecting an old peak as the suggested load.
+    """
     latest = {}
     for entry in sorted(all_entries, key=lambda e: e.get("date", "")):
         for ex in entry.get("exercises", []):
-            if ex.get("weight_kg") or ex.get("weight_lbs"):
-                latest[ex["name"]] = (ex.get("weight_kg"), ex.get("weight_lbs"))
+            w = norm_weight_lbs(ex)
+            if w is not None:
+                latest[ex["name"]] = w
     for t in templates.values():
         for e in t.get("exercises", []):
             if e["name"] in latest:
-                kg, lbs = latest[e["name"]]
-                e["default_weight_kg"] = kg
-                e["default_weight_lbs"] = lbs
+                e["default_weight_lbs"] = round(latest[e["name"]] * 2) / 2
 
 
 def merge_exercises(session_exercises, template):
@@ -56,15 +59,13 @@ def merge_exercises(session_exercises, template):
     for ex in session_exercises:
         name = ex["name"]
         base = pool.get(name, {})
-        if ex.get("weight_kg") or ex.get("weight_lbs"):
-            weight_kg, weight_lbs = ex.get("weight_kg"), ex.get("weight_lbs")
-        else:
-            weight_kg, weight_lbs = base.get("default_weight_kg"), base.get("default_weight_lbs")
+        weight_lbs = norm_weight_lbs(ex)
+        if weight_lbs is None:
+            weight_lbs = base.get("default_weight_lbs")
         merged.append({
             "name":        name,
             "group":       base.get("group", ""),
             "weight_lbs":  weight_lbs,
-            "weight_kg":   weight_kg,
             "sets":        ex.get("sets")        or base.get("default_sets"),
             "reps":        ex.get("reps")        or base.get("default_reps"),
             "reps_by_set": ex.get("reps_by_set") or None,
@@ -180,10 +181,8 @@ def build_card_html(entry):
     exercises = entry.get("exercises", [])
     rows = ""
     for e in exercises:
-        if e.get("weight_kg"):
-            weight = f"{e['weight_kg']} kg"
-        elif e.get("weight_lbs"):
-            weight = f"{e['weight_lbs']} lbs"
+        if e.get("weight_lbs"):
+            weight = f"{e['weight_lbs']:g} lbs"
         else:
             weight = "-"
         rows += (
@@ -214,10 +213,8 @@ def build_card_html(entry):
 
 
 def format_default_weight(ex):
-    if ex.get("default_weight_kg"):
-        return f"{ex['default_weight_kg']} kg"
     if ex.get("default_weight_lbs"):
-        return f"{ex['default_weight_lbs']} lbs"
+        return f"{ex['default_weight_lbs']:g} lbs"
     return "-"
 
 
@@ -272,14 +269,8 @@ def build_template_section(template):
         return ""
     rows = ""
     for e in exercises:
-        if e.get("default_weight_kg"):
-            num, unit = e["default_weight_kg"], "kg"
-        elif e.get("default_weight_lbs"):
-            num, unit = e["default_weight_lbs"], "lbs"
-        else:
-            num, unit = "", "lbs"
-        lbs_sel = " selected" if unit == "lbs" else ""
-        kg_sel = " selected" if unit == "kg" else ""
+        num = e.get("default_weight_lbs")
+        num = f"{num:g}" if num else ""
         sets = e.get("default_sets") or ""
         reps = e.get("default_reps") or ""
         rows += (
@@ -287,7 +278,7 @@ def build_template_section(template):
             f"<td class='selcell'><input type='checkbox' class='sel'></td>"
             f"<td class='exname'>{e['name']}{group_tag(e.get('group'))}</td>"
             f"<td class='wcell'><input type='number' class='w-num' step='0.5' value='{num}' placeholder='-'>"
-            f"<select class='w-unit'><option{lbs_sel}>lbs</option><option{kg_sel}>kg</option></select></td>"
+            f"<span class='w-unit'>{UNIT}</span></td>"
             f"<td class='srcell'><input type='number' class='sr-sets' value='{sets}'>×"
             f"<input type='text' class='sr-reps' value='{reps}' placeholder='12 10 10 8'></td>"
             f"</tr>\n"
@@ -311,22 +302,27 @@ def build_template_section(template):
 TEMPLATE_ORDER = ["Push A", "Pull B", "Lower A", "Lower B", "Full body", "Core", "Mobility", "Hip Flexor", "Long Sitting", "Class", "Running", "Cycling"]
 
 LBS_TO_KG = 0.45359237
+KG_TO_LBS = 2.20462262
+
+# The log is lbs-only: workouts store `weight_lbs`, templates store
+# `default_weight_lbs`, and the UI has no unit switch. `weight_kg` is still READ
+# as a fallback so a stray kg value renders correctly instead of vanishing,
+# but nothing in this file writes it any more.
+UNIT = "lbs"
 
 
-def norm_weight_kg(ex):
-    if ex.get("weight_kg"):
-        return float(ex["weight_kg"])
+def norm_weight_lbs(ex):
+    """Weight in lbs, whichever field the entry happens to carry."""
     if ex.get("weight_lbs"):
-        return float(ex["weight_lbs"]) * LBS_TO_KG
+        return float(ex["weight_lbs"])
+    if ex.get("weight_kg"):
+        return round(float(ex["weight_kg"]) * KG_TO_LBS * 2) / 2
     return None
 
 
 def display_weight(ex):
-    if ex.get("weight_kg"):
-        return f"{ex['weight_kg']:g} kg"
-    if ex.get("weight_lbs"):
-        return f"{ex['weight_lbs']:g} lbs"
-    return "BW"
+    v = norm_weight_lbs(ex)
+    return "BW" if v is None else f"{v:g} lbs"
 
 
 def format_sets_reps(sets, reps, reps_by_set=None):
@@ -349,7 +345,7 @@ def _reps_from_note(note):
 
 def point_from_exercise(date, ex):
     """One measurable data point, or None if the entry has no numbers at all."""
-    kg = norm_weight_kg(ex)
+    w = norm_weight_lbs(ex)
     sets, reps = ex.get("sets"), ex.get("reps")
     reps_by_set = ex.get("reps_by_set") or _reps_from_note(ex.get("note"))
     if reps_by_set:
@@ -359,24 +355,24 @@ def point_from_exercise(date, ex):
         work = reps
     else:
         work = sets * reps if (sets and reps) else None
-    if kg is None and work is None:
+    if w is None and work is None:
         return None
-    if kg is not None and work:
-        volume = kg * work
+    if w is not None and work:
+        volume = w * work
     elif work:
         volume = work  # bodyweight: total reps
     else:
         volume = None
-    if ex.get("weight_kg"):
-        unit, raw = "kg", float(ex["weight_kg"])
-    elif ex.get("weight_lbs"):
-        unit, raw = "lbs", float(ex["weight_lbs"])
+    if ex.get("weight_lbs"):
+        unit, raw = UNIT, float(ex["weight_lbs"])
+    elif ex.get("weight_kg"):
+        unit, raw = UNIT, norm_weight_lbs(ex)
     else:
         unit, raw = None, None
     return {
         "date": date,
         "weight": display_weight(ex),
-        "kg": kg,
+        "w": w,
         "unit": unit,
         "raw": raw,
         "sets": sets,
@@ -398,18 +394,18 @@ def trend_vs_prev(prev, cur):
     Label shows the weight delta when weight changed, else the volume/reps delta."""
     if prev is None:
         return "new", "● new"
-    if prev["kg"] is not None and cur["kg"] is not None:
-        d = _cmp(cur["kg"], prev["kg"])
+    if prev["w"] is not None and cur["w"] is not None:
+        d = _cmp(cur["w"], prev["w"])
         if d:
             if prev["unit"] == cur["unit"]:
                 delta = f"{cur['raw'] - prev['raw']:+g} {cur['unit']}"
             else:
-                delta = f"{cur['kg'] - prev['kg']:+.1f} kg"
+                delta = f"{cur['w'] - prev['w']:+.1f} {UNIT}"
             return ("up", f"▲ {delta}") if d > 0 else ("down", f"▼ {delta}")
         d = _cmp(cur["work"], prev["work"])
-    elif prev["kg"] is None and cur["kg"] is not None:
+    elif prev["w"] is None and cur["w"] is not None:
         return "up", "▲ +weight"   # bodyweight → added weight
-    elif prev["kg"] is not None and cur["kg"] is None:
+    elif prev["w"] is not None and cur["w"] is None:
         return "down", "▼ −weight"  # weighted → bodyweight
     else:
         d = _cmp(cur["work"], prev["work"])
@@ -468,9 +464,9 @@ def build_sparkline(points):
 def format_volume(p):
     if p["volume"] is None:
         return "-"
-    if p["kg"] is None:
+    if p["w"] is None:
         return f"{p['volume']:g} reps"
-    return f"{p['volume']:g} kg"
+    return f"{p['volume']:g} {UNIT}"
 
 
 def build_progress_card(name, data):
@@ -621,8 +617,9 @@ SAVE_CSS = """
     .dur { width: 3.6rem; padding: .1rem .3rem; font-size: .8rem; }
     .w-unit {
       background: #0d1117; color: #7d8590; border: 1px solid #30363d;
-      border-radius: 6px; padding: .28rem .2rem; font-size: .8rem;
+      border-radius: 6px; padding: .28rem .55rem; font-size: .8rem;
       font-family: inherit; margin-left: .3rem;
+      display: inline-block; white-space: nowrap;
     }
     input[type=number] { appearance: textfield; -moz-appearance: textfield; }
     input[type=number]::-webkit-inner-spin-button { -webkit-appearance: none; }
@@ -713,10 +710,7 @@ SAVE_SCRIPT = """
       const name = (nameEl.value !== undefined ? nameEl.value : nameEl.textContent).trim();
       const ex = { name, completed: true };
       const w = parseFloat(tr.querySelector('.w-num').value);
-      if (w > 0) {
-        const unit = tr.querySelector('.w-unit').value;
-        if (unit === 'kg') ex.weight_kg = w; else ex.weight_lbs = w;
-      }
+      if (w > 0) ex.weight_lbs = w;   // lbs-only log; nothing writes weight_kg
       const sets = parseInt(tr.querySelector('.sr-sets').value);
       const repsRaw = tr.querySelector('.sr-reps').value.trim();
       const reps = parseInt(repsRaw);
@@ -810,7 +804,7 @@ SAVE_SCRIPT = """
           <td class='selcell'><input type='checkbox' class='sel' checked></td>
           <td class='exname'><input type='text' placeholder='Exercise name'></td>
           <td class='wcell'><input type='number' class='w-num' step='0.5' placeholder='-'>
-            <select class='w-unit'><option>lbs</option><option>kg</option></select></td>
+            <span class='w-unit'>lbs</span></td>
           <td class='srcell'><input type='number' class='sr-sets' value='3'>×<input type='text' class='sr-reps' value='15' placeholder='12 10 10 8'></td>`;
         tbody.appendChild(tr);
         bindRow(tr);
@@ -1147,7 +1141,7 @@ STYLE = """
   .exname input{width:9rem}
   .grp{font-size:10px;font-weight:600;opacity:.55;white-space:nowrap;margin-left:.3rem}
   .dur{width:3.4rem;padding:4px 6px;font-size:12px}
-  .w-unit{background:var(--panel2);color:var(--mut);border:1px solid var(--line);border-radius:6px;padding:6px 4px;font-size:12px;font-family:inherit;margin-left:4px}
+  .w-unit{background:var(--panel2);color:var(--mut);border:1px solid var(--line);border-radius:6px;padding:6px 9px;font-size:12px;font-family:inherit;margin-left:4px;display:inline-block;white-space:nowrap}
   input[type=number]{appearance:textfield;-moz-appearance:textfield}
   input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
   .addrow{background:none;border:1px dashed var(--line2);color:var(--mut);border-radius:8px;padding:10px 14px;margin-top:8px;font-size:12.5px;font-family:inherit;cursor:pointer;width:100%}

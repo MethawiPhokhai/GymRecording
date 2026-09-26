@@ -5,27 +5,40 @@
   "exercises": [
     {
       "name": "Squat",
-      "completed": true,
-      "weight_kg": 10,
+      "weight_lbs": 22,
       "sets": 4,
       "reps": 40,
-      "reps_by_set": [10, 10, 10, 10]
+      "reps_by_set": [
+        10,
+        10,
+        10,
+        10
+      ],
+      "completed": true
     },
     {
       "name": "* Romanian deadlift",
-      "completed": true,
-      "weight_kg": 30,
+      "weight_lbs": 66,
       "sets": 3,
       "reps": 30,
-      "reps_by_set": [10, 10, 10]
+      "reps_by_set": [
+        10,
+        10,
+        10
+      ],
+      "completed": true
     },
     {
       "name": "* Bent-knee single-leg calf raise",
-      "completed": true,
-      "weight_kg": 10,
+      "weight_lbs": 22,
       "sets": 3,
       "reps": 30,
-      "reps_by_set": [10, 10, 10]
+      "reps_by_set": [
+        10,
+        10,
+        10
+      ],
+      "completed": true
     }
   ]
 }

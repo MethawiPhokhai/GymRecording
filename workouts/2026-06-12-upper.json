@@ -3,8 +3,23 @@
   "day": "Friday",
   "type": "Upper",
   "exercises": [
-    { "name": "Lat pulldown",     "completed": true },
-    { "name": "Back cable pull",  "weight_lbs": 55, "sets": 3, "reps": 15, "completed": true },
-    { "name": "Dumbbell curl",    "weight_kg": 10,  "sets": 3, "reps": 15, "completed": true }
+    {
+      "name": "Lat pulldown",
+      "completed": true
+    },
+    {
+      "name": "Back cable pull",
+      "weight_lbs": 55,
+      "sets": 3,
+      "reps": 15,
+      "completed": true
+    },
+    {
+      "name": "Dumbbell curl",
+      "weight_lbs": 22,
+      "sets": 3,
+      "reps": 15,
+      "completed": true
+    }
   ]
 }

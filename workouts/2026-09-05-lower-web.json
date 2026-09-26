@@ -5,40 +5,40 @@
   "exercises": [
     {
       "name": "Squat",
-      "completed": true,
-      "weight_kg": 20,
+      "weight_lbs": 44,
       "sets": 4,
-      "reps": 10
+      "reps": 10,
+      "completed": true
     },
     {
       "name": "* Bulgarian split squat",
-      "completed": true,
       "weight_lbs": 20,
       "sets": 3,
       "reps_by_set": [
         10,
         10,
         8
-      ]
+      ],
+      "completed": true
     },
     {
       "name": "Single-leg RDL",
-      "completed": true,
       "sets": 3,
-      "reps": 10
+      "reps": 10,
+      "completed": true
     },
     {
       "name": "* Bent-knee single-leg calf raise",
-      "completed": true,
-      "weight_kg": 10,
+      "weight_lbs": 22,
       "sets": 3,
-      "reps": 10
+      "reps": 10,
+      "completed": true
     },
     {
       "name": "* Tibialis raise",
-      "completed": true,
       "sets": 3,
-      "reps": 15
+      "reps": 15,
+      "completed": true
     }
   ]
 }

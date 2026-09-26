@@ -5,31 +5,31 @@
   "exercises": [
     {
       "name": "Squat",
-      "completed": true,
-      "weight_kg": 20,
+      "weight_lbs": 44,
       "sets": 3,
-      "reps": 10
+      "reps": 10,
+      "completed": true
     },
     {
       "name": "Supine bench press",
-      "completed": true,
       "weight_lbs": 20,
       "sets": 3,
-      "reps": 10
+      "reps": 10,
+      "completed": true
     },
     {
       "name": "Back cable rowing",
-      "completed": true,
       "weight_lbs": 65,
       "sets": 3,
-      "reps": 12
+      "reps": 12,
+      "completed": true
     },
     {
       "name": "Shoulder press",
-      "completed": true,
       "weight_lbs": 40,
       "sets": 3,
-      "reps": 12
+      "reps": 12,
+      "completed": true
     }
   ]
 }

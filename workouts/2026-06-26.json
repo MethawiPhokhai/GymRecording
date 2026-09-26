@@ -3,7 +3,19 @@
   "day": "Friday",
   "type": "Upper",
   "exercises": [
-    { "name": "Overhead face pull", "weight_kg": 30, "sets": 3, "reps": 15, "completed": true },
-    { "name": "Squat",              "weight_kg": 24, "sets": 3, "reps": 10, "completed": true }
+    {
+      "name": "Overhead face pull",
+      "weight_lbs": 66,
+      "sets": 3,
+      "reps": 15,
+      "completed": true
+    },
+    {
+      "name": "Squat",
+      "weight_lbs": 53,
+      "sets": 3,
+      "reps": 10,
+      "completed": true
+    }
   ]
 }

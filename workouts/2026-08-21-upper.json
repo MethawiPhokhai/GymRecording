@@ -5,26 +5,35 @@
   "exercises": [
     {
       "name": "Incline bench press",
-      "completed": true,
-      "weight_kg": 5,
+      "weight_lbs": 11,
       "sets": 5,
       "reps": 42,
-      "reps_by_set": [12, 10, 7, 7, 6]
+      "reps_by_set": [
+        12,
+        10,
+        7,
+        7,
+        6
+      ],
+      "completed": true
     },
     {
       "name": "Dumbbell front raise",
-      "completed": true,
-      "weight_kg": 5,
+      "weight_lbs": 11,
       "sets": 3,
-      "reps": 10
+      "reps": 10,
+      "completed": true
     },
     {
       "name": "Incline sit up",
-      "completed": true,
-      "weight_kg": 0,
       "sets": 3,
       "reps": 30,
-      "reps_by_set": [12, 10, 8]
+      "reps_by_set": [
+        12,
+        10,
+        8
+      ],
+      "completed": true
     }
   ]
 }
