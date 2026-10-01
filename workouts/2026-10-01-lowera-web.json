@@ -1,0 +1,35 @@
+{
+  "date": "2026-10-01",
+  "day": "Thursday",
+  "type": "Lower A",
+  "exercises": [
+    {
+      "name": "Squat",
+      "completed": true,
+      "weight_lbs": 20,
+      "sets": 4,
+      "reps": 10
+    },
+    {
+      "name": "* Bulgarian split squat",
+      "completed": true,
+      "weight_lbs": 20,
+      "sets": 3,
+      "reps": 8
+    },
+    {
+      "name": "Leg extension",
+      "completed": true,
+      "weight_lbs": 65,
+      "sets": 3,
+      "reps": 12
+    },
+    {
+      "name": "Hip thrust",
+      "completed": true,
+      "weight_lbs": 22,
+      "sets": 3,
+      "reps": 12
+    }
+  ]
+}
