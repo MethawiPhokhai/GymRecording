@@ -270,6 +270,7 @@ def build_template_section(template):
     rows = ""
     for e in exercises:
         num = e.get("default_weight_lbs")
+        kgv = f"{round(num * LBS_TO_KG * 2) / 2:g}" if num else ""
         num = f"{num:g}" if num else ""
         sets = e.get("default_sets") or ""
         reps = e.get("default_reps") or ""
@@ -278,7 +279,9 @@ def build_template_section(template):
             f"<td class='selcell'><input type='checkbox' class='sel'></td>"
             f"<td class='exname'>{e['name']}{group_tag(e.get('group'))}</td>"
             f"<td class='wcell'><input type='number' class='w-num' step='0.5' value='{num}' placeholder='-'>"
-            f"<span class='w-unit'>{UNIT}</span></td>"
+            f"<span class='w-unit'>{UNIT}</span>"
+            f"<input type='number' class='w-kg' step='0.5' value='{kgv}' placeholder='-'>"
+            f"<span class='w-unit w-unit2'>{KG_UNIT}</span></td>"
             f"<td class='srcell'><input type='number' class='sr-sets' value='{sets}'>×"
             f"<input type='text' class='sr-reps' value='{reps}' placeholder='12 10 10 8'></td>"
             f"</tr>\n"
@@ -309,6 +312,12 @@ KG_TO_LBS = 2.20462262
 # as a fallback so a stray kg value renders correctly instead of vanishing,
 # but nothing in this file writes it any more.
 UNIT = "lbs"
+# The logging form shows BOTH lbs and kg side by side and mirrors edits between
+# them, because the user genuinely thinks in kg for some lifts (Squat, Hip
+# thrust, RDL, calf raises) and lbs for others (machines, most dumbbells).
+# This is NOT a unit switch — neither field is ever hidden, and only lbs is
+# written to the JSON.
+KG_UNIT = "kg"
 
 
 def norm_weight_lbs(ex):
@@ -611,6 +620,9 @@ SAVE_CSS = """
     .run-cell { display: flex; flex-direction: column; gap: .25rem; font-size: .72rem; color: #7d8590; }
     .run-note { grid-column: 1 / -1; }
     .w-num { width: 4.4rem; }
+    .w-kg { width: 3.4rem; text-align: center; color: #7d8590; }
+    .w-kg:focus { color: #e6edf3; }
+    .w-unit2 { opacity: .6; }
     .sr-sets, .sr-reps { width: 3rem; text-align: center; }
     .srcell { white-space: nowrap; }
     .exname input { width: 10rem; }
@@ -804,13 +816,35 @@ SAVE_SCRIPT = """
           <td class='selcell'><input type='checkbox' class='sel' checked></td>
           <td class='exname'><input type='text' placeholder='Exercise name'></td>
           <td class='wcell'><input type='number' class='w-num' step='0.5' placeholder='-'>
-            <span class='w-unit'>lbs</span></td>
+            <span class='w-unit'>lbs</span>
+            <input type='number' class='w-kg' step='0.5' placeholder='-'>
+            <span class='w-unit w-unit2'>kg</span></td>
           <td class='srcell'><input type='number' class='sr-sets' value='3'>×<input type='text' class='sr-reps' value='15' placeholder='12 10 10 8'></td>`;
         tbody.appendChild(tr);
         bindRow(tr);
         tr.querySelector('.exname input').focus();
         refreshBar();
       }));
+
+    // lbs <-> kg mirror. Both fields stay visible; editing either fills the
+    // other. Delegated on document so rows from "+ Add exercise" are covered
+    // too. Only .w-num (lbs) is ever persisted.
+    const LB_PER_KG = 2.20462262;
+    const r05 = v => Math.round(v * 2) / 2;
+    document.addEventListener('input', e => {
+      const td = e.target.closest && e.target.closest('.wcell');
+      if (!td) return;
+      const lb = td.querySelector('.w-num');
+      const kg = td.querySelector('.w-kg');
+      if (!lb || !kg) return;
+      if (e.target === lb) {
+        const v = parseFloat(lb.value);
+        kg.value = isNaN(v) ? '' : r05(v / LB_PER_KG);
+      } else if (e.target === kg) {
+        const v = parseFloat(kg.value);
+        lb.value = isNaN(v) ? '' : r05(v * LB_PER_KG);
+      }
+    });
 
     function getToken(force) {
       let t = localStorage.getItem('gh_token');
