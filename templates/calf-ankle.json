@@ -1,0 +1,24 @@
+{
+  "type": "Calf & Ankle",
+  "exercises": [
+    {
+      "name": "* Calf raise",
+      "group": "Calf",
+      "default_sets": 3,
+      "default_reps": 12
+    },
+    {
+      "name": "* Bent-knee single-leg calf raise",
+      "group": "Soleus",
+      "default_weight_lbs": 22,
+      "default_sets": 3,
+      "default_reps": 10
+    },
+    {
+      "name": "* Tibialis raise",
+      "group": "Tibialis",
+      "default_sets": 3,
+      "default_reps": 15
+    }
+  ]
+}
