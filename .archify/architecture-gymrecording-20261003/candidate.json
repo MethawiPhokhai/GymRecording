@@ -1,0 +1,48 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "GymRecording Workout-to-Page Architecture",
+    "output": ".archify/architecture-gymrecording-20261003/gymrecording.html",
+    "quality_profile": "showcase",
+    "repository": {
+      "url": "https://github.com/MethawiPhokhai/GymRecording.git",
+      "provider": "github",
+      "link_mode": "web",
+      "revision": "175830d181ac866b95f1128564e9bd9adba058c1"
+    }
+  },
+  "components": [
+    { "id": "owner", "type": "external", "label": "Workout Owner", "sublabel": "runs logger commands", "pos": [40, 300], "size": [150, 64], "sources": [{ "path": "scripts/log_workout.py", "line": 354, "end_line": 382, "label": "CLI commands" }] },
+    { "id": "logger", "type": "backend", "label": "log_workout.py", "sublabel": "record · progress · summary", "pos": [300, 300], "size": [170, 64], "tag": "optional --push", "sources": [{ "path": "scripts/log_workout.py", "line": 103, "end_line": 140, "label": "write workout" }, { "path": "scripts/log_workout.py", "line": 143, "end_line": 167, "label": "push flow" }] },
+    { "id": "workouts", "type": "database", "label": "workouts/*.json", "sublabel": "dated sessions", "pos": [525, 205], "size": [160, 64], "sources": [{ "path": "build.py", "line": 25, "end_line": 33, "label": "load sessions" }, { "path": "scripts/log_workout.py", "line": 71, "end_line": 100, "label": "write running log" }] },
+    { "id": "templates", "type": "database", "label": "templates/*.json", "sublabel": "exercise defaults", "pos": [525, 395], "size": [160, 64], "sources": [{ "path": "build.py", "line": 14, "end_line": 22, "label": "load templates" }, { "path": "scripts/log_workout.py", "line": 31, "end_line": 37, "label": "read template" }] },
+    { "id": "actions", "type": "cloud", "label": "GitHub Actions", "sublabel": "workout push trigger", "pos": [760, 300], "size": [175, 64], "tag": "update-log.yml", "sources": [{ "path": ".github/workflows/update-log.yml", "line": 3, "end_line": 30, "label": "build workflow" }] },
+    { "id": "builder", "type": "backend", "label": "build.py", "sublabel": "resolve · merge · render", "pos": [1035, 300], "size": [160, 64], "tag": "Python stdlib", "sources": [{ "path": "build.py", "line": 78, "end_line": 95, "label": "resolve session" }, { "path": "build.py", "line": 1414, "end_line": 1419, "label": "build entrypoint" }] },
+    { "id": "dashboard", "type": "backend", "label": "Dashboard views", "sublabel": "progress + stat grid", "pos": [1260, 205], "size": [175, 64], "sources": [{ "path": "build.py", "line": 432, "end_line": 452, "label": "progress data" }, { "path": "build.py", "line": 989, "end_line": 1037, "label": "dashboard stats" }] },
+    { "id": "html", "type": "backend", "label": "index.html", "sublabel": "generated artifact", "pos": [1260, 395], "size": [175, 64], "sources": [{ "path": "build.py", "line": 1233, "end_line": 1260, "label": "render page" }, { "path": "build.py", "line": 1409, "end_line": 1411, "label": "write artifact" }] },
+    { "id": "pages", "type": "external", "label": "GitHub Pages", "sublabel": "published workout log", "pos": [1490, 300], "size": [160, 64], "sources": [{ "path": "README.md", "line": 5, "label": "published page" }] }
+  ],
+  "boundaries": [
+    { "kind": "region", "label": "GymRecording repository", "wraps": ["logger", "workouts", "templates", "actions", "builder", "dashboard", "html"] }
+  ],
+  "connections": [
+    { "id": "owner-logger", "from": "owner", "to": "logger", "label": "record / inspect", "variant": "emphasis" },
+    { "id": "logger-workouts", "from": "logger", "to": "workouts", "label": "write session", "fromSide": "right", "toSide": "left" },
+    { "id": "logger-templates", "from": "logger", "to": "templates", "label": "load template", "fromSide": "bottom", "toSide": "left" },
+    { "id": "logger-actions", "from": "logger", "to": "actions", "label": "--push", "variant": "dashed", "fromSide": "right", "toSide": "bottom" },
+    { "id": "workouts-actions", "from": "workouts", "to": "actions", "label": "push trigger", "variant": "dashed", "fromSide": "right", "toSide": "top" },
+    { "id": "workouts-builder", "from": "workouts", "to": "builder", "label": "load_workouts", "fromSide": "right", "toSide": "top" },
+    { "id": "templates-builder", "from": "templates", "to": "builder", "label": "load_templates", "fromSide": "right", "toSide": "bottom" },
+    { "id": "actions-builder", "from": "actions", "to": "builder", "label": "run build.py" },
+    { "id": "builder-dashboard", "from": "builder", "to": "dashboard", "label": "progress + stats", "fromSide": "right", "toSide": "left" },
+    { "id": "builder-html", "from": "builder", "to": "html", "label": "build_html", "fromSide": "right", "toSide": "left" },
+    { "id": "dashboard-html", "from": "dashboard", "to": "html", "label": "render sections", "variant": "dashed", "fromSide": "bottom", "toSide": "top" },
+    { "id": "html-pages", "from": "html", "to": "pages", "label": "serve static page", "variant": "emphasis" }
+  ],
+  "cards": [
+    { "dot": "cyan", "title": "Input paths", "items": ["CLI logging writes strength or running sessions", "Templates are read for defaults and exercise names", "Existing workout JSON remains the build source of truth"] },
+    { "dot": "emerald", "title": "Build path", "items": ["resolve_session handles Class, Running, Cycling, and strength entries", "Progress views skip Class and Running for exercise history", "The dashboard adds 30-day and weekly cardio statistics"] },
+    { "dot": "rose", "title": "Delivery paths", "items": ["--push can commit workout changes to the default branch", "GitHub Actions rebuilds index.html after workout pushes", "GitHub Pages publishes the generated artifact"] }
+  ]
+}
