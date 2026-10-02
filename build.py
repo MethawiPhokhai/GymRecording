@@ -302,7 +302,7 @@ def build_template_section(template):
   </div>"""
 
 
-TEMPLATE_ORDER = ["Push A", "Pull B", "Lower A", "Lower B", "Full body", "Core", "Mobility", "Hip Flexor", "Long Sitting", "Class", "Running", "Cycling"]
+TEMPLATE_ORDER = ["Push A", "Pull B", "Lower", "Full body", "Core", "Mobility", "Hip Flexor", "Long Sitting", "Class", "Running", "Cycling"]
 
 LBS_TO_KG = 0.45359237
 KG_TO_LBS = 2.20462262

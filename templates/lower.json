@@ -1,0 +1,46 @@
+{
+  "type": "Lower",
+  "exercises": [
+    {
+      "name": "Squat",
+      "group": "Quad/Glute",
+      "default_weight_lbs": 44,
+      "default_sets": 4,
+      "default_reps": 8
+    },
+    {
+      "name": "* Romanian deadlift",
+      "group": "Hamstring/Glute",
+      "default_weight_lbs": 77,
+      "default_sets": 4,
+      "default_reps": 8
+    },
+    {
+      "name": "* Bulgarian split squat",
+      "group": "Quad/Glute",
+      "default_weight_lbs": 20,
+      "default_sets": 3,
+      "default_reps": 8
+    },
+    {
+      "name": "Hip thrust",
+      "group": "Glute",
+      "default_weight_lbs": 22,
+      "default_sets": 3,
+      "default_reps": 10
+    },
+    {
+      "name": "* Bent-knee single-leg calf raise",
+      "group": "Calf",
+      "default_weight_lbs": 22,
+      "default_sets": 3,
+      "default_reps": 10
+    },
+    {
+      "name": "* Tibialis raise",
+      "group": "Tibialis",
+      "default_sets": 3,
+      "default_reps": 15
+    }
+  ]
+}
