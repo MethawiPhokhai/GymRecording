@@ -19,45 +19,26 @@
   a{color:inherit;text-decoration:none}
   .layout{min-height:100vh}
 
-  /* ---- Slide-out drawer (replaces desktop sidebar) ---- */
-  .side{position:fixed;top:0;left:0;bottom:0;width:250px;background:var(--panel);border-right:1px solid var(--line);padding:16px 12px calc(16px + env(safe-area-inset-bottom));display:flex;flex-direction:column;gap:2px;transform:translateX(-105%);transition:transform .22s ease;z-index:60;overflow:auto}
-  .side.open{transform:translateX(0)}
-  .side .brand{display:flex;align-items:center;gap:9px;padding:4px 10px 18px;font-weight:700;font-size:13.5px;letter-spacing:-.01em}
-  .side .brand .logo{width:20px;height:20px;border-radius:6px;background:linear-gradient(135deg,var(--accent),var(--accent2))}
-  .side a{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:8px;color:var(--mut);font-size:13px;font-weight:550}
-  .side a svg{width:16px;height:16px;flex:none}
-  .side a.on{background:var(--hover);color:var(--ink)}
-  .side a:hover{background:var(--hover);color:var(--ink)}
-  .side hr{border:none;border-top:1px solid var(--line);margin:12px 8px}
-  .side .foot{padding:10px 12px;font-size:10.5px;color:var(--dim);margin-top:auto}
-  .side .foot b{display:block;color:var(--mut);font-weight:600}
-  .overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);opacity:0;pointer-events:none;transition:opacity .2s;z-index:55}
-  .overlay.show{opacity:1;pointer-events:auto}
-
-  /* ---- Hamburger menu button ---- */
-  .hamburger{display:none;align-items:center;justify-content:center;border:1px solid var(--line2);background:var(--panel2);color:var(--ink);border-radius:8px;padding:8px 12px}
-  .hamburger:hover{border-color:var(--accent)}
-  .hamburger svg{width:18px;height:18px}
-
-  /* ---- Mobile bottom nav ---- */
-  .bmob{position:fixed;left:0;right:0;bottom:0;background:rgba(8,9,12,.94);backdrop-filter:blur(10px);border-top:1px solid var(--line);display:grid;grid-template-columns:repeat(2,1fr);z-index:30}
-  .bmob button{color:var(--mut);font-size:10.5px;font-weight:600;padding:12px 0 14px;display:flex;flex-direction:column;align-items:center;gap:4px}
-  .bmob button.on{color:var(--accent)}
-  .bmob svg{width:20px;height:20px}
-
   /* ---- Main ---- */
-  .main{width:100%;max-width:1500px;margin:0 auto;padding:18px 18px 92px}
+  .main{width:100%;max-width:1500px;margin:0 auto;padding:18px 18px 40px}
   .view{display:none}
   .view.on{display:block}
-  .dash-cols{display:block}
-  .dash-cols section{min-width:0}
-  .topbar{display:flex;align-items:center;justify-content:space-between;gap:10px;padding-bottom:16px}
+  .topbar{display:flex;align-items:center;justify-content:space-between;gap:20px;padding-bottom:24px}
   .topbar h1{font-size:17px;font-weight:700;letter-spacing:-.02em;margin:0}
   .topbar .meta{font-size:12px;color:var(--mut);margin-top:2px}
-  .topbar .actions{display:flex;gap:8px}
+  .topbar .actions{display:flex;gap:8px;margin-left:auto}
+  .top-nav{display:flex;align-items:center;gap:4px;white-space:nowrap}
+  .top-nav a{color:var(--mut);font-size:12.5px;font-weight:600;padding:8px 11px;border-radius:8px}
+  .top-nav a:hover{background:var(--hover);color:var(--ink)}
+  .top-nav a.on{background:var(--accent);color:#fff}
+  .top-nav a:focus-visible{outline:2px solid var(--accent2);outline-offset:2px}
+  .page-intro{margin-bottom:18px}
+  .page-intro h2{font-size:20px;letter-spacing:-.025em;margin:0 0 4px}
+  .page-intro p{font-size:13px;color:var(--mut);max-width:52rem}
+  .focus-section{margin-top:24px}
 
   .statgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
-  .statgrid .stat-week{grid-column:1 / -1}
+  .focus-stats{grid-template-columns:repeat(4,1fr);margin-bottom:24px}
   .stat{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:13px 15px}
   .stat .k{font-size:11px;color:var(--mut);text-transform:uppercase;letter-spacing:.06em;font-weight:600}
   .stat .v{font-family:var(--mono);font-size:22px;font-weight:700;letter-spacing:-.02em;margin-top:6px}
@@ -86,7 +67,7 @@
   .date{font-family:var(--mono);font-size:12.5px;color:var(--mut);min-width:78px}
   .day{font-size:11px;color:var(--dim);text-transform:uppercase;letter-spacing:.05em;flex:none;width:34px}
   .badge{font-size:10.5px;font-weight:700;padding:2.5px 9px;border-radius:20px;border:1px solid;flex:none;letter-spacing:.02em;margin-left:auto}
-  .count{font-size:12.5px;color:var(--mut);text-align:right;font-variant-numeric:tabular-nums}
+  .count{font-size:12.5px;color:var(--mut);text-align:right;font-variant-numeric:tabular-nums;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
   .detail{padding:4px 15px 15px;border-top:1px solid var(--line)}
   .detail .tbl-wrap{margin-top:12px}
   .class-detail{padding:12px 15px 15px 30px;display:flex;align-items:center;gap:8px}
@@ -178,17 +159,18 @@
 
   /* responsive */
   @media(min-width:900px){
-    .bmob{display:none}
-    .hamburger{display:inline-flex}
     .main{width:80%;max-width:1500px;padding:22px 28px 40px}
-    .statgrid{grid-template-columns:repeat(5,1fr)}
-    .statgrid .stat-week{grid-column:auto}
+    .statgrid{grid-template-columns:repeat(4,1fr)}
     .stats{grid-template-columns:repeat(3,1fr)}
-    .dash-cols{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;align-items:start}
-    #savebar{bottom:0;padding:11px 16px calc(11px + env(safe-area-inset-bottom))}
   }
-  @media(max-width:480px){
-    .statgrid{grid-template-columns:1fr 1fr}
+  @media(max-width:600px){
+    .main{padding:16px 14px 28px}
+    .topbar{align-items:flex-start;flex-direction:column;gap:14px;padding-bottom:20px}
+    .topbar .actions{width:100%;margin-left:0;overflow-x:auto;padding:2px}
+    .top-nav{width:max-content}
+    .top-nav a{padding:8px 10px}
+    .page-intro h2{font-size:18px}
+    .focus-stats{grid-template-columns:1fr 1fr;margin-bottom:20px}
     .stats{grid-template-columns:1fr 1fr}
     .stats .stat:first-child{grid-column:1 / -1}
     .spark{display:none}
@@ -204,1380 +186,22 @@
     Refreshing…
   </div>
   <div class="layout">
-    <aside class="side">
-      <div class="brand"><span class="logo"></span> Gym Recording</div>
-      <a class="on" data-view="dashboard" href="#">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>Dashboard
-      </a>
-      <a data-view="templates" href="#">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M3 9h18M8 2v4M16 2v4"/></svg>Plan
-      </a>
-      <hr>
-      <a href="#">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg>Settings
-      </a>
-      <div class="foot"><b>78 workouts</b>updated 2026-10-02 19:08 (Bangkok)</div>
-    </aside>
-    <div class="overlay" id="overlay"></div>
-
     <div class="main">
       <div class="topbar">
-        <div><h1 id="page-title">Dashboard</h1><div class="meta">latest session 2026-10-02</div></div>
+        <div><h1 id="page-title">Weight Training</h1><div class="meta">latest session 2026-10-02 · 78 workouts</div></div>
         <div class="actions">
-          <button class="hamburger" id="menu-btn" aria-label="Menu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 6h18M3 12h18M3 18h18"/></svg></button>
+          <nav class="top-nav" aria-label="Primary navigation">
+            <a class="on" data-view="weight" href="#weight">Weight Training</a>
+            <a data-view="cardio" href="#cardio">Cardio</a>
+            <a data-view="templates" href="#plan">Plan</a>
+          </nav>
         </div>
       </div>
 
-      <div id="view-dashboard" class="view on">
-        
-    <div class="statgrid">
-      <div class="stat"><div class="k">Last 30 days</div><div class="v">20</div><div class="d">total sessions</div></div>
-      <div class="stat"><div class="k">Weight training</div><div class="v">16</div><div class="d">sessions · 30d</div></div>
-      <div class="stat"><div class="k">Cardio</div><div class="v">4</div><div class="d">sessions · 30d</div></div>
-      <div class="stat"><div class="k">Run distance</div><div class="v">23.0&nbsp;km</div><div class="d">last 30 days</div></div>
-      <div class="stat stat-week"><div class="k">Run · this week</div><div class="v">5.0&nbsp;km</div><div class="d">Mon → today</div></div>
-    </div>
-        <div class="dash-cols">
-          <section>
-            <div class="section-title">Weight training</div>
-            
-  <details class="card">
-    <summary>
-      <span class="date">2026-10-01</span>
-      <span class="day">Thursday</span>
-      <span class="badge" style="background:#f7934f22;color:#f7934f;border-color:#f7934f44">Lower A</span>
-      <span class="count">4 exercises</span>
-    </summary>
-    <div class="tbl-wrap">
-    <table>
-      <thead><tr><th>Exercise</th><th>Weight</th><th>Sets×Reps</th><th>Note</th></tr></thead>
-      <tbody>
-<tr><td>Squat</td><td>44 lbs</td><td>4×10</td><td class='note'></td></tr>
-<tr><td>* Bulgarian split squat</td><td>20 lbs</td><td>3×8</td><td class='note'></td></tr>
-<tr><td>Leg extension</td><td>65 lbs</td><td>3×12</td><td class='note'></td></tr>
-<tr><td>Hip thrust</td><td>22 lbs</td><td>3×12</td><td class='note'></td></tr>
-      </tbody>
-    </table>
-    </div>
-  </details>
-
-  <details class="card">
-    <summary>
-      <span class="date">2026-09-29</span>
-      <span class="day">Tuesday</span>
-      <span class="badge" style="background:#7bb0ff22;color:#7bb0ff;border-color:#7bb0ff44">Pull B</span>
-      <span class="count">5 exercises</span>
-    </summary>
-    <div class="tbl-wrap">
-    <table>
-      <thead><tr><th>Exercise</th><th>Weight</th><th>Sets×Reps</th><th>Note</th></tr></thead>
-      <tbody>
-<tr><td>Lat pulldown (Back)</td><td>60 lbs</td><td>3×15</td><td class='note'></td></tr>
-<tr><td>Back cable rowing (Back)</td><td>60 lbs</td><td>3×15</td><td class='note'></td></tr>
-<tr><td>Face pull (Shoulder)</td><td>60 lbs</td><td>3×15</td><td class='note'></td></tr>
-<tr><td>Back Hyperextension (Back)</td><td>10 lbs</td><td>4×10</td><td class='note'></td></tr>
-<tr><td>Bicep curl (Biceps)</td><td>10 lbs</td><td>3×12</td><td class='note'></td></tr>
-      </tbody>
-    </table>
-    </div>
-  </details>
-
-  <details class="card">
-    <summary>
-      <span class="date">2026-09-28</span>
-      <span class="day">Monday</span>
-      <span class="badge" style="background:#4f8ef722;color:#4f8ef7;border-color:#4f8ef744">Push A</span>
-      <span class="count">5 exercises</span>
-    </summary>
-    <div class="tbl-wrap">
-    <table>
-      <thead><tr><th>Exercise</th><th>Weight</th><th>Sets×Reps</th><th>Note</th></tr></thead>
-      <tbody>
-<tr><td>Incline bench press (Chest)</td><td>20 lbs</td><td>4× <span class='rbs'>8/8/8/8</span></td><td class='note'></td></tr>
-<tr><td>Shoulder press (Shoulder)</td><td>60 lbs</td><td>3×15</td><td class='note'></td></tr>
-<tr><td>Chest fly (Chest)</td><td>55 lbs</td><td>4×10</td><td class='note'></td></tr>
-<tr><td>Lateral raise (Shoulder)</td><td>10 lbs</td><td>4×10</td><td class='note'></td></tr>
-<tr><td>Cable tricep press down (Triceps)</td><td>50 lbs</td><td>4×10</td><td class='note'></td></tr>
-      </tbody>
-    </table>
-    </div>
-  </details>
-
-  <details class="card">
-    <summary>
-      <span class="date">2026-09-25</span>
-      <span class="day">Friday</span>
-      <span class="badge" style="background:#f7934f22;color:#f7934f;border-color:#f7934f44">Lower</span>
-      <span class="count">3 exercises</span>
-    </summary>
-    <div class="tbl-wrap">
-    <table>
-      <thead><tr><th>Exercise</th><th>Weight</th><th>Sets×Reps</th><th>Note</th></tr></thead>
-      <tbody>
-<tr><td>Squat <span class='grp'>(Quad/Glute)</span></td><td>55 lbs</td><td>3×10</td><td class='note'></td></tr>
-<tr><td>* Romanian deadlift <span class='grp'>(Hamstring/Glute)</span></td><td>77 lbs</td><td>4×10</td><td class='note'></td></tr>
-<tr><td>Leg extension</td><td>65 lbs</td><td>3×15</td><td class='note'></td></tr>
-      </tbody>
-    </table>
-    </div>
-  </details>
-
-  <details class="card">
-    <summary>
-      <span class="date">2026-09-24</span>
-      <span class="day">Thursday</span>
-      <span class="badge" style="background:#4f8ef722;color:#4f8ef7;border-color:#4f8ef744">Upper</span>
-      <span class="count">6 exercises</span>
-    </summary>
-    <div class="tbl-wrap">
-    <table>
-      <thead><tr><th>Exercise</th><th>Weight</th><th>Sets×Reps</th><th>Note</th></tr></thead>
-      <tbody>
-<tr><td>Shoulder press</td><td>60 lbs</td><td>4×10</td><td class='note'></td></tr>
-<tr><td>Chest fly</td><td>55 lbs</td><td>3×15</td><td class='note'></td></tr>
-<tr><td>Back cable rowing</td><td>60 lbs</td><td>3×15</td><td class='note'></td></tr>
-<tr><td>Lat pulldown</td><td>60 lbs</td><td>3×15</td><td class='note'></td></tr>
-<tr><td>Bicep curl</td><td>10 lbs</td><td>3×12</td><td class='note'></td></tr>
-<tr><td>Incline bench press</td><td>20 lbs</td><td>4× <span class='rbs'>10/10/10/10</span></td><td class='note'></td></tr>
-      </tbody>
-    </table>
-    </div>
-  </details>
-
-  <details class="card">
-    <summary>
-      <span class="date">2026-09-22</span>
-      <span class="day">Tuesday</span>
-      <span class="badge" style="background:#f7934f22;color:#f7934f;border-color:#f7934f44">Lower</span>
-      <span class="count">5 exercises</span>
-    </summary>
-    <div class="tbl-wrap">
-    <table>
-      <thead><tr><th>Exercise</th><th>Weight</th><th>Sets×Reps</th><th>Note</th></tr></thead>
-      <tbody>
-<tr><td>* Goblet squat</td><td>38 lbs</td><td>4×10</td><td class='note'></td></tr>
-<tr><td>* Romanian deadlift <span class='grp'>(Hamstring/Glute)</span></td><td>66 lbs</td><td>3×15</td><td class='note'></td></tr>
-<tr><td>Hip thrust <span class='grp'>(Glute)</span></td><td>22 lbs</td><td>3×15</td><td class='note'></td></tr>
-<tr><td>* Bent-knee single-leg calf raise <span class='grp'>(Calf)</span></td><td>22 lbs</td><td>4×10</td><td class='note'></td></tr>
-<tr><td>* Tibialis raise <span class='grp'>(Tibialis)</span></td><td>-</td><td>3×15</td><td class='note'></td></tr>
-      </tbody>
-    </table>
-    </div>
-  </details>
-
-  <details class="card">
-    <summary>
-      <span class="date">2026-09-21</span>
-      <span class="day">Monday</span>
-      <span class="badge" style="background:#4f8ef722;color:#4f8ef7;border-color:#4f8ef744">Upper</span>
-      <span class="count">6 exercises</span>
-    </summary>
-    <div class="tbl-wrap">
-    <table>
-      <thead><tr><th>Exercise</th><th>Weight</th><th>Sets×Reps</th><th>Note</th></tr></thead>
-      <tbody>
-<tr><td>Shoulder press</td><td>55 lbs</td><td>3×15</td><td class='note'></td></tr>
-<tr><td>Barbell bench press</td><td>25 lbs</td><td>4× <span class='rbs'>9/7/7/6</span></td><td class='note'></td></tr>
-<tr><td>Back cable rowing</td><td>60 lbs</td><td>3×15</td><td class='note'></td></tr>
-<tr><td>Lat pulldown</td><td>60 lbs</td><td>3×15</td><td class='note'></td></tr>
-<tr><td>Face pull</td><td>60 lbs</td><td>4×10</td><td class='note'></td></tr>
-<tr><td>Bicep curl</td><td>10 lbs</td><td>3×12</td><td class='note'></td></tr>
-      </tbody>
-    </table>
-    </div>
-  </details>
-
-  <details class="card">
-    <summary>
-      <span class="date">2026-09-21</span>
-      <span class="day">Monday</span>
-      <span class="badge" style="background:#f75f8f22;color:#f75f8f;border-color:#f75f8f44">Core</span>
-      <span class="count">1 exercises</span>
-    </summary>
-    <div class="tbl-wrap">
-    <table>
-      <thead><tr><th>Exercise</th><th>Weight</th><th>Sets×Reps</th><th>Note</th></tr></thead>
-      <tbody>
-<tr><td>* Cable crunch</td><td>40 lbs</td><td>3×12</td><td class='note'></td></tr>
-      </tbody>
-    </table>
-    </div>
-  </details>
-
-  <details class="card">
-    <summary>
-      <span class="date">2026-09-18</span>
-      <span class="day">Friday</span>
-      <span class="badge" style="background:#4f8ef722;color:#4f8ef7;border-color:#4f8ef744">Upper</span>
-      <span class="count">5 exercises</span>
-    </summary>
-    <div class="tbl-wrap">
-    <table>
-      <thead><tr><th>Exercise</th><th>Weight</th><th>Sets×Reps</th><th>Note</th></tr></thead>
-      <tbody>
-<tr><td>Face pull</td><td>50 lbs</td><td>3×15</td><td class='note'></td></tr>
-<tr><td>Bicep curl</td><td>10 lbs</td><td>3×10</td><td class='note'></td></tr>
-<tr><td>Incline bench press</td><td>20 lbs</td><td>4× <span class='rbs'>9/8/8/7</span></td><td class='note'></td></tr>
-<tr><td>Plate front raise</td><td>10 lbs</td><td>3×10</td><td class='note'></td></tr>
-<tr><td>Dumbell rear delt fly</td><td>5 lbs</td><td>3×10</td><td class='note'></td></tr>
-      </tbody>
-    </table>
-    </div>
-  </details>
-
-  <details class="card">
-    <summary>
-      <span class="date">2026-09-16</span>
-      <span class="day">Wednesday</span>
-      <span class="badge" style="background:#e3c04f22;color:#e3c04f;border-color:#e3c04f44">Full body</span>
-      <span class="count">7 exercises</span>
-    </summary>
-    <div class="tbl-wrap">
-    <table>
-      <thead><tr><th>Exercise</th><th>Weight</th><th>Sets×Reps</th><th>Note</th></tr></thead>
-      <tbody>
-<tr><td>* Goblet squat</td><td>30 lbs</td><td>3×10</td><td class='note'></td></tr>
-<tr><td>* Romanian deadlift</td><td>66 lbs</td><td>4×10</td><td class='note'></td></tr>
-<tr><td>Leg extension</td><td>65 lbs</td><td>4×10</td><td class='note'></td></tr>
-<tr><td>* Bent-knee single-leg calf raise</td><td>22 lbs</td><td>3×10</td><td class='note'></td></tr>
-<tr><td>* Tibialis raise</td><td>-</td><td>3×15</td><td class='note'></td></tr>
-<tr><td>Back Hyperextension</td><td>-</td><td>3×10</td><td class='note'></td></tr>
-<tr><td>Cable tricep press down</td><td>50 lbs</td><td>3×10</td><td class='note'></td></tr>
-      </tbody>
-    </table>
-    </div>
-  </details>
-
-  <details class="card more-hidden">
-    <summary>
-      <span class="date">2026-09-14</span>
-      <span class="day">Monday</span>
-      <span class="badge" style="background:#4f8ef722;color:#4f8ef7;border-color:#4f8ef744">Upper</span>
-      <span class="count">6 exercises</span>
-    </summary>
-    <div class="tbl-wrap">
-    <table>
-      <thead><tr><th>Exercise</th><th>Weight</th><th>Sets×Reps</th><th>Note</th></tr></thead>
-      <tbody>
-<tr><td>Shoulder press</td><td>50 lbs</td><td>3×15</td><td class='note'></td></tr>
-<tr><td>Barbell bench press</td><td>20 lbs</td><td>4×10</td><td class='note'></td></tr>
-<tr><td>Back cable rowing</td><td>60 lbs</td><td>4×10</td><td class='note'></td></tr>
-<tr><td>Lat pulldown</td><td>60 lbs</td><td>4×10</td><td class='note'></td></tr>
-<tr><td>Face pull</td><td>50 lbs</td><td>3×15</td><td class='note'></td></tr>
-<tr><td>Bicep curl</td><td>10 lbs</td><td>3×12</td><td class='note'></td></tr>
-      </tbody>
-    </table>
-    </div>
-  </details>
-
-  <details class="card more-hidden">
-    <summary>
-      <span class="date">2026-09-10</span>
-      <span class="day">Thursday</span>
-      <span class="badge" style="background:#f7934f22;color:#f7934f;border-color:#f7934f44">Lower</span>
-      <span class="count">5 exercises</span>
-    </summary>
-    <div class="tbl-wrap">
-    <table>
-      <thead><tr><th>Exercise</th><th>Weight</th><th>Sets×Reps</th><th>Note</th></tr></thead>
-      <tbody>
-<tr><td>Squat <span class='grp'>(Quad/Glute)</span></td><td>44 lbs</td><td>4×10</td><td class='note'></td></tr>
-<tr><td>* Romanian deadlift <span class='grp'>(Hamstring/Glute)</span></td><td>66 lbs</td><td>4×10</td><td class='note'></td></tr>
-<tr><td>Leg extension</td><td>65 lbs</td><td>4×10</td><td class='note'></td></tr>
-<tr><td>* Bent-knee single-leg calf raise <span class='grp'>(Calf)</span></td><td>22 lbs</td><td>3×8</td><td class='note'></td></tr>
-<tr><td>* Tibialis raise <span class='grp'>(Tibialis)</span></td><td>-</td><td>3×15</td><td class='note'></td></tr>
-      </tbody>
-    </table>
-    </div>
-  </details>
-
-  <details class="card more-hidden">
-    <summary>
-      <span class="date">2026-09-08</span>
-      <span class="day">Tuesday</span>
-      <span class="badge" style="background:#4f8ef722;color:#4f8ef7;border-color:#4f8ef744">Upper</span>
-      <span class="count">4 exercises</span>
-    </summary>
-    <div class="tbl-wrap">
-    <table>
-      <thead><tr><th>Exercise</th><th>Weight</th><th>Sets×Reps</th><th>Note</th></tr></thead>
-      <tbody>
-<tr><td>Supine bench press</td><td>20 lbs</td><td>5×8</td><td class='note'></td></tr>
-<tr><td>Shoulder press</td><td>50 lbs</td><td>4×10</td><td class='note'></td></tr>
-<tr><td>Bicep curl</td><td>10 lbs</td><td>3×10</td><td class='note'></td></tr>
-<tr><td>Back cable rowing</td><td>60 lbs</td><td>4×10</td><td class='note'></td></tr>
-      </tbody>
-    </table>
-    </div>
-  </details>
-
-  <details class="card more-hidden">
-    <summary>
-      <span class="date">2026-09-05</span>
-      <span class="day">Saturday</span>
-      <span class="badge" style="background:#f7934f22;color:#f7934f;border-color:#f7934f44">Lower</span>
-      <span class="count">5 exercises</span>
-    </summary>
-    <div class="tbl-wrap">
-    <table>
-      <thead><tr><th>Exercise</th><th>Weight</th><th>Sets×Reps</th><th>Note</th></tr></thead>
-      <tbody>
-<tr><td>Squat <span class='grp'>(Quad/Glute)</span></td><td>44 lbs</td><td>4×10</td><td class='note'></td></tr>
-<tr><td>* Bulgarian split squat <span class='grp'>(Quad/Glute)</span></td><td>20 lbs</td><td>3× <span class='rbs'>10/10/8</span></td><td class='note'></td></tr>
-<tr><td>Single-leg RDL</td><td>-</td><td>3×10</td><td class='note'></td></tr>
-<tr><td>* Bent-knee single-leg calf raise <span class='grp'>(Calf)</span></td><td>22 lbs</td><td>3×10</td><td class='note'></td></tr>
-<tr><td>* Tibialis raise <span class='grp'>(Tibialis)</span></td><td>-</td><td>3×15</td><td class='note'></td></tr>
-      </tbody>
-    </table>
-    </div>
-  </details>
-
-  <details class="card more-hidden">
-    <summary>
-      <span class="date">2026-09-04</span>
-      <span class="day">Friday</span>
-      <span class="badge" style="background:#4f8ef722;color:#4f8ef7;border-color:#4f8ef744">Upper</span>
-      <span class="count">4 exercises</span>
-    </summary>
-    <div class="tbl-wrap">
-    <table>
-      <thead><tr><th>Exercise</th><th>Weight</th><th>Sets×Reps</th><th>Note</th></tr></thead>
-      <tbody>
-<tr><td>Barbell bench press</td><td>20 lbs</td><td>4× <span class='rbs'>10/10/8/8</span></td><td class='note'></td></tr>
-<tr><td>Shoulder press</td><td>50 lbs</td><td>4× <span class='rbs'>10/10/10/10</span></td><td class='note'></td></tr>
-<tr><td>Face pull</td><td>50 lbs</td><td>4× <span class='rbs'>10/10/10/10</span></td><td class='note'></td></tr>
-<tr><td>Back cable rowing</td><td>65 lbs</td><td>4× <span class='rbs'>10/10/10/10</span></td><td class='note'></td></tr>
-      </tbody>
-    </table>
-    </div>
-  </details>
-
-  <details class="card more-hidden">
-    <summary>
-      <span class="date">2026-09-03</span>
-      <span class="day">Thursday</span>
-      <span class="badge" style="background:#4f8ef722;color:#4f8ef7;border-color:#4f8ef744">Upper</span>
-      <span class="count">3 exercises</span>
-    </summary>
-    <div class="tbl-wrap">
-    <table>
-      <thead><tr><th>Exercise</th><th>Weight</th><th>Sets×Reps</th><th>Note</th></tr></thead>
-      <tbody>
-<tr><td>Lat pulldown</td><td>60 lbs</td><td>4× <span class='rbs'>10/10/10/10</span></td><td class='note'></td></tr>
-<tr><td>Incline bench press</td><td>20 lbs</td><td>4× <span class='rbs'>7/7/5/5</span></td><td class='note'></td></tr>
-<tr><td>Back Hyperextension</td><td>5 lbs</td><td>3× <span class='rbs'>10/10/10</span></td><td class='note'></td></tr>
-      </tbody>
-    </table>
-    </div>
-  </details>
-
-  <details class="card more-hidden">
-    <summary>
-      <span class="date">2026-08-28</span>
-      <span class="day">Friday</span>
-      <span class="badge" style="background:#4f8ef722;color:#4f8ef7;border-color:#4f8ef744">Upper</span>
-      <span class="count">3 exercises</span>
-    </summary>
-    <div class="tbl-wrap">
-    <table>
-      <thead><tr><th>Exercise</th><th>Weight</th><th>Sets×Reps</th><th>Note</th></tr></thead>
-      <tbody>
-<tr><td>Back cable rowing</td><td>65 lbs</td><td>4×10</td><td class='note'></td></tr>
-<tr><td>Face pull</td><td>60 lbs</td><td>4×10</td><td class='note'></td></tr>
-<tr><td>Back Hyperextension</td><td>5 lbs</td><td>4×10</td><td class='note'></td></tr>
-      </tbody>
-    </table>
-    </div>
-  </details>
-
-  <details class="card more-hidden">
-    <summary>
-      <span class="date">2026-08-27</span>
-      <span class="day">Thursday</span>
-      <span class="badge" style="background:#f7934f22;color:#f7934f;border-color:#f7934f44">Lower</span>
-      <span class="count">3 exercises</span>
-    </summary>
-    <div class="tbl-wrap">
-    <table>
-      <thead><tr><th>Exercise</th><th>Weight</th><th>Sets×Reps</th><th>Note</th></tr></thead>
-      <tbody>
-<tr><td>Squat <span class='grp'>(Quad/Glute)</span></td><td>22 lbs</td><td>4× <span class='rbs'>10/10/10/10</span></td><td class='note'></td></tr>
-<tr><td>* Romanian deadlift <span class='grp'>(Hamstring/Glute)</span></td><td>66 lbs</td><td>3× <span class='rbs'>10/10/10</span></td><td class='note'></td></tr>
-<tr><td>* Bent-knee single-leg calf raise <span class='grp'>(Calf)</span></td><td>22 lbs</td><td>3× <span class='rbs'>10/10/10</span></td><td class='note'></td></tr>
-      </tbody>
-    </table>
-    </div>
-  </details>
-
-  <details class="card more-hidden">
-    <summary>
-      <span class="date">2026-08-25</span>
-      <span class="day">Tuesday</span>
-      <span class="badge" style="background:#4f8ef722;color:#4f8ef7;border-color:#4f8ef744">Upper</span>
-      <span class="count">4 exercises</span>
-    </summary>
-    <div class="tbl-wrap">
-    <table>
-      <thead><tr><th>Exercise</th><th>Weight</th><th>Sets×Reps</th><th>Note</th></tr></thead>
-      <tbody>
-<tr><td>Incline bench press</td><td>10 lbs</td><td>4× <span class='rbs'>12/10/10/8</span></td><td class='note'></td></tr>
-<tr><td>Lat pulldown</td><td>55 lbs</td><td>4× <span class='rbs'>12/10/10/8</span></td><td class='note'></td></tr>
-<tr><td>Shoulder press</td><td>50 lbs</td><td>4× <span class='rbs'>12/10/10/8</span></td><td class='note'></td></tr>
-<tr><td>Bicep curl</td><td>10 lbs</td><td>4× <span class='rbs'>12/10/10/8</span></td><td class='note'></td></tr>
-      </tbody>
-    </table>
-    </div>
-  </details>
-
-  <details class="card more-hidden">
-    <summary>
-      <span class="date">2026-08-22</span>
-      <span class="day">Saturday</span>
-      <span class="badge" style="background:#4f8ef722;color:#4f8ef7;border-color:#4f8ef744">Upper</span>
-      <span class="count">2 exercises</span>
-    </summary>
-    <div class="tbl-wrap">
-    <table>
-      <thead><tr><th>Exercise</th><th>Weight</th><th>Sets×Reps</th><th>Note</th></tr></thead>
-      <tbody>
-<tr><td>Back cable rowing</td><td>60 lbs</td><td>4×10</td><td class='note'></td></tr>
-<tr><td>Back Hyperextension</td><td>5 lbs</td><td>4×10</td><td class='note'></td></tr>
-      </tbody>
-    </table>
-    </div>
-  </details>
-
-  <details class="card more-hidden">
-    <summary>
-      <span class="date">2026-08-21</span>
-      <span class="day">Thursday</span>
-      <span class="badge" style="background:#4f8ef722;color:#4f8ef7;border-color:#4f8ef744">Upper</span>
-      <span class="count">3 exercises</span>
-    </summary>
-    <div class="tbl-wrap">
-    <table>
-      <thead><tr><th>Exercise</th><th>Weight</th><th>Sets×Reps</th><th>Note</th></tr></thead>
-      <tbody>
-<tr><td>Incline bench press</td><td>11 lbs</td><td>5× <span class='rbs'>12/10/7/7/6</span></td><td class='note'></td></tr>
-<tr><td>Dumbbell front raise</td><td>11 lbs</td><td>3×10</td><td class='note'></td></tr>
-<tr><td>Incline sit up</td><td>-</td><td>3× <span class='rbs'>12/10/8</span></td><td class='note'></td></tr>
-      </tbody>
-    </table>
-    </div>
-  </details>
-
-  <details class="card more-hidden">
-    <summary>
-      <span class="date">2026-08-19</span>
-      <span class="day">Wednesday</span>
-      <span class="badge" style="background:#f7934f22;color:#f7934f;border-color:#f7934f44">Lower</span>
-      <span class="count">5 exercises</span>
-    </summary>
-    <div class="tbl-wrap">
-    <table>
-      <thead><tr><th>Exercise</th><th>Weight</th><th>Sets×Reps</th><th>Note</th></tr></thead>
-      <tbody>
-<tr><td>Squat <span class='grp'>(Quad/Glute)</span></td><td>44 lbs</td><td>3×10</td><td class='note'></td></tr>
-<tr><td>* Romanian deadlift <span class='grp'>(Hamstring/Glute)</span></td><td>66 lbs</td><td>3×15</td><td class='note'></td></tr>
-<tr><td>* Calf raise</td><td>-</td><td>3×8</td><td class='note'></td></tr>
-<tr><td>* Seated calf raise</td><td>33 lbs</td><td>3×8</td><td class='note'></td></tr>
-<tr><td>* Tibialis raise <span class='grp'>(Tibialis)</span></td><td>-</td><td>3×15</td><td class='note'></td></tr>
-      </tbody>
-    </table>
-    </div>
-  </details>
-
-  <details class="card more-hidden">
-    <summary>
-      <span class="date">2026-08-17</span>
-      <span class="day">Monday</span>
-      <span class="badge" style="background:#4f8ef722;color:#4f8ef7;border-color:#4f8ef744">Upper</span>
-      <span class="count">6 exercises</span>
-    </summary>
-    <div class="tbl-wrap">
-    <table>
-      <thead><tr><th>Exercise</th><th>Weight</th><th>Sets×Reps</th><th>Note</th></tr></thead>
-      <tbody>
-<tr><td>Shoulder press</td><td>50 lbs</td><td>3×15</td><td class='note'></td></tr>
-<tr><td>Supine bench press</td><td>20 lbs</td><td>3×10</td><td class='note'></td></tr>
-<tr><td>Back cable rowing</td><td>55 lbs</td><td>3×15</td><td class='note'></td></tr>
-<tr><td>Lat pulldown</td><td>55 lbs</td><td>3×15</td><td class='note'></td></tr>
-<tr><td>Bicep curl</td><td>10 lbs</td><td>3×12</td><td class='note'></td></tr>
-<tr><td>Cable tricep press down</td><td>40 lbs</td><td>3×10</td><td class='note'></td></tr>
-      </tbody>
-    </table>
-    </div>
-  </details>
-
-  <details class="card more-hidden">
-    <summary>
-      <span class="date">2026-08-12</span>
-      <span class="day">Wednesday</span>
-      <span class="badge" style="background:#f7934f22;color:#f7934f;border-color:#f7934f44">Lower</span>
-      <span class="count">2 exercises</span>
-    </summary>
-    <div class="tbl-wrap">
-    <table>
-      <thead><tr><th>Exercise</th><th>Weight</th><th>Sets×Reps</th><th>Note</th></tr></thead>
-      <tbody>
-<tr><td>Squat <span class='grp'>(Quad/Glute)</span></td><td>44 lbs</td><td>3×10</td><td class='note'></td></tr>
-<tr><td>romanian deadlift</td><td>66 lbs</td><td>3×10</td><td class='note'></td></tr>
-      </tbody>
-    </table>
-    </div>
-  </details>
-
-  <details class="card more-hidden">
-    <summary>
-      <span class="date">2026-08-11</span>
-      <span class="day">Tuesday</span>
-      <span class="badge" style="background:#4f8ef722;color:#4f8ef7;border-color:#4f8ef744">Upper</span>
-      <span class="count">5 exercises</span>
-    </summary>
-    <div class="tbl-wrap">
-    <table>
-      <thead><tr><th>Exercise</th><th>Weight</th><th>Sets×Reps</th><th>Note</th></tr></thead>
-      <tbody>
-<tr><td>Shoulder press</td><td>50 lbs</td><td>3×15</td><td class='note'></td></tr>
-<tr><td>Barbell bench press</td><td>20 lbs</td><td>3×10</td><td class='note'></td></tr>
-<tr><td>Chest fly</td><td>55 lbs</td><td>3×15</td><td class='note'></td></tr>
-<tr><td>Lat pulldown</td><td>70 lbs</td><td>3×15</td><td class='note'></td></tr>
-<tr><td>Back Hyperextension</td><td>10 lbs</td><td>3×15</td><td class='note'></td></tr>
-      </tbody>
-    </table>
-    </div>
-  </details>
-
-  <details class="card more-hidden">
-    <summary>
-      <span class="date">2026-08-05</span>
-      <span class="day">Wednesday</span>
-      <span class="badge" style="background:#4f8ef722;color:#4f8ef7;border-color:#4f8ef744">Upper</span>
-      <span class="count">4 exercises</span>
-    </summary>
-    <div class="tbl-wrap">
-    <table>
-      <thead><tr><th>Exercise</th><th>Weight</th><th>Sets×Reps</th><th>Note</th></tr></thead>
-      <tbody>
-<tr><td>Shoulder press</td><td>50 lbs</td><td>3×15</td><td class='note'></td></tr>
-<tr><td>Barbell bench press</td><td>25 lbs</td><td>3×10</td><td class='note'></td></tr>
-<tr><td>Back cable rowing</td><td>65 lbs</td><td>3×15</td><td class='note'></td></tr>
-<tr><td>Face pull</td><td>50 lbs</td><td>3×15</td><td class='note'></td></tr>
-      </tbody>
-    </table>
-    </div>
-  </details>
-
-  <details class="card more-hidden">
-    <summary>
-      <span class="date">2026-08-04</span>
-      <span class="day">Tuesday</span>
-      <span class="badge" style="background:#4f8ef722;color:#4f8ef7;border-color:#4f8ef744">Upper</span>
-      <span class="count">4 exercises</span>
-    </summary>
-    <div class="tbl-wrap">
-    <table>
-      <thead><tr><th>Exercise</th><th>Weight</th><th>Sets×Reps</th><th>Note</th></tr></thead>
-      <tbody>
-<tr><td>Shoulder press</td><td>50 lbs</td><td>3×15</td><td class='note'></td></tr>
-<tr><td>Barbell bench press</td><td>20 lbs</td><td>3×10</td><td class='note'></td></tr>
-<tr><td>Back cable rowing</td><td>65 lbs</td><td>3×15</td><td class='note'></td></tr>
-<tr><td>Face pull</td><td>50 lbs</td><td>3×15</td><td class='note'></td></tr>
-      </tbody>
-    </table>
-    </div>
-  </details>
-
-  <details class="card more-hidden">
-    <summary>
-      <span class="date">2026-07-31</span>
-      <span class="day">Friday</span>
-      <span class="badge" style="background:#4f8ef722;color:#4f8ef7;border-color:#4f8ef744">Upper</span>
-      <span class="count">3 exercises</span>
-    </summary>
-    <div class="tbl-wrap">
-    <table>
-      <thead><tr><th>Exercise</th><th>Weight</th><th>Sets×Reps</th><th>Note</th></tr></thead>
-      <tbody>
-<tr><td>Shoulder press</td><td>50 lbs</td><td>3×10</td><td class='note'></td></tr>
-<tr><td>Chest fly</td><td>55 lbs</td><td>3×15</td><td class='note'></td></tr>
-<tr><td>Lat pulldown</td><td>70 lbs</td><td>3×10</td><td class='note'></td></tr>
-      </tbody>
-    </table>
-    </div>
-  </details>
-
-  <details class="card more-hidden">
-    <summary>
-      <span class="date">2026-07-30</span>
-      <span class="day">Thursday</span>
-      <span class="badge" style="background:#f7934f22;color:#f7934f;border-color:#f7934f44">Lower</span>
-      <span class="count">3 exercises</span>
-    </summary>
-    <div class="tbl-wrap">
-    <table>
-      <thead><tr><th>Exercise</th><th>Weight</th><th>Sets×Reps</th><th>Note</th></tr></thead>
-      <tbody>
-<tr><td>* Goblet squat</td><td>30 lbs</td><td>3×10</td><td class='note'></td></tr>
-<tr><td>* Romanian deadlift <span class='grp'>(Hamstring/Glute)</span></td><td>66 lbs</td><td>3×15</td><td class='note'></td></tr>
-<tr><td>* Bulgarian split squat <span class='grp'>(Quad/Glute)</span></td><td>20 lbs</td><td>3×10</td><td class='note'></td></tr>
-      </tbody>
-    </table>
-    </div>
-  </details>
-
-  <details class="card more-hidden">
-    <summary>
-      <span class="date">2026-07-28</span>
-      <span class="day">Tuesday</span>
-      <span class="badge" style="background:#e3c04f22;color:#e3c04f;border-color:#e3c04f44">Full body</span>
-      <span class="count">4 exercises</span>
-    </summary>
-    <div class="tbl-wrap">
-    <table>
-      <thead><tr><th>Exercise</th><th>Weight</th><th>Sets×Reps</th><th>Note</th></tr></thead>
-      <tbody>
-<tr><td>Squat</td><td>44 lbs</td><td>3×10</td><td class='note'></td></tr>
-<tr><td>Supine bench press</td><td>20 lbs</td><td>3×10</td><td class='note'></td></tr>
-<tr><td>Back cable rowing</td><td>65 lbs</td><td>3×12</td><td class='note'></td></tr>
-<tr><td>Shoulder press</td><td>40 lbs</td><td>3×12</td><td class='note'></td></tr>
-      </tbody>
-    </table>
-    </div>
-  </details>
-
-  <details class="card more-hidden">
-    <summary>
-      <span class="date">2026-07-24</span>
-      <span class="day">Friday</span>
-      <span class="badge" style="background:#4f8ef722;color:#4f8ef7;border-color:#4f8ef744">Upper</span>
-      <span class="count">5 exercises</span>
-    </summary>
-    <div class="tbl-wrap">
-    <table>
-      <thead><tr><th>Exercise</th><th>Weight</th><th>Sets×Reps</th><th>Note</th></tr></thead>
-      <tbody>
-<tr><td>Barbell bench press</td><td>20 lbs</td><td>3×10</td><td class='note'></td></tr>
-<tr><td>Lat pulldown</td><td>65 lbs</td><td>3×15</td><td class='note'></td></tr>
-<tr><td>Face pull</td><td>50 lbs</td><td>3×15</td><td class='note'></td></tr>
-<tr><td>Back Hyperextension</td><td>-</td><td>3×15</td><td class='note'></td></tr>
-<tr><td>Bicep curl</td><td>10 lbs</td><td>3×12</td><td class='note'></td></tr>
-      </tbody>
-    </table>
-    </div>
-  </details>
-
-  <details class="card more-hidden">
-    <summary>
-      <span class="date">2026-07-21</span>
-      <span class="day">Tuesday</span>
-      <span class="badge" style="background:#4f8ef722;color:#4f8ef7;border-color:#4f8ef744">Upper</span>
-      <span class="count">3 exercises</span>
-    </summary>
-    <div class="tbl-wrap">
-    <table>
-      <thead><tr><th>Exercise</th><th>Weight</th><th>Sets×Reps</th><th>Note</th></tr></thead>
-      <tbody>
-<tr><td>Barbell bench press</td><td>20 lbs</td><td>3×10</td><td class='note'></td></tr>
-<tr><td>Machine Chest press</td><td>65 lbs</td><td>3×15</td><td class='note'></td></tr>
-<tr><td>Back cable rowing</td><td>65 lbs</td><td>3×15</td><td class='note'></td></tr>
-      </tbody>
-    </table>
-    </div>
-  </details>
-
-  <details class="card more-hidden">
-    <summary>
-      <span class="date">2026-07-20</span>
-      <span class="day">Monday</span>
-      <span class="badge" style="background:#f7934f22;color:#f7934f;border-color:#f7934f44">Lower</span>
-      <span class="count">3 exercises</span>
-    </summary>
-    <div class="tbl-wrap">
-    <table>
-      <thead><tr><th>Exercise</th><th>Weight</th><th>Sets×Reps</th><th>Note</th></tr></thead>
-      <tbody>
-<tr><td>Squat <span class='grp'>(Quad/Glute)</span></td><td>44 lbs</td><td>3×10</td><td class='note'></td></tr>
-<tr><td>* Romanian deadlift <span class='grp'>(Hamstring/Glute)</span></td><td>66 lbs</td><td>3×15</td><td class='note'></td></tr>
-<tr><td>* Seated calf raise</td><td>33 lbs</td><td>3×8</td><td class='note'></td></tr>
-      </tbody>
-    </table>
-    </div>
-  </details>
-
-  <details class="card more-hidden">
-    <summary>
-      <span class="date">2026-07-14</span>
-      <span class="day">Tuesday</span>
-      <span class="badge" style="background:#4f8ef722;color:#4f8ef7;border-color:#4f8ef744">Upper</span>
-      <span class="count">6 exercises</span>
-    </summary>
-    <div class="tbl-wrap">
-    <table>
-      <thead><tr><th>Exercise</th><th>Weight</th><th>Sets×Reps</th><th>Note</th></tr></thead>
-      <tbody>
-<tr><td>Pull up</td><td>60 lbs</td><td>3×15</td><td class='note'></td></tr>
-<tr><td>Supine bench press</td><td>20 lbs</td><td>3×10</td><td class='note'></td></tr>
-<tr><td>Chest fly</td><td>55 lbs</td><td>3×15</td><td class='note'></td></tr>
-<tr><td>Back cable rowing</td><td>65 lbs</td><td>3×15</td><td class='note'></td></tr>
-<tr><td>Face pull</td><td>50 lbs</td><td>3×15</td><td class='note'></td></tr>
-<tr><td>Cable tricep press down</td><td>40 lbs</td><td>3×10</td><td class='note'></td></tr>
-      </tbody>
-    </table>
-    </div>
-  </details>
-
-  <details class="card more-hidden">
-    <summary>
-      <span class="date">2026-07-12</span>
-      <span class="day">Sunday</span>
-      <span class="badge" style="background:#f7934f22;color:#f7934f;border-color:#f7934f44">Lower</span>
-      <span class="count">6 exercises</span>
-    </summary>
-    <div class="tbl-wrap">
-    <table>
-      <thead><tr><th>Exercise</th><th>Weight</th><th>Sets×Reps</th><th>Note</th></tr></thead>
-      <tbody>
-<tr><td>Squat <span class='grp'>(Quad/Glute)</span></td><td>44 lbs</td><td>3×10</td><td class='note'></td></tr>
-<tr><td>* Romanian deadlift <span class='grp'>(Hamstring/Glute)</span></td><td>66 lbs</td><td>3×15</td><td class='note'></td></tr>
-<tr><td>* Bulgarian split squat <span class='grp'>(Quad/Glute)</span></td><td>20 lbs</td><td>3×10</td><td class='note'></td></tr>
-<tr><td>Leg extension</td><td>60 lbs</td><td>3×15</td><td class='note'></td></tr>
-<tr><td>* Calf raise</td><td>-</td><td>3×10</td><td class='note'></td></tr>
-<tr><td>* Seated calf raise</td><td>33 lbs</td><td>3×15</td><td class='note'></td></tr>
-      </tbody>
-    </table>
-    </div>
-  </details>
-
-  <details class="card more-hidden">
-    <summary>
-      <span class="date">2026-07-10</span>
-      <span class="day">Friday</span>
-      <span class="badge" style="background:#4f8ef722;color:#4f8ef7;border-color:#4f8ef744">Upper</span>
-      <span class="count">4 exercises</span>
-    </summary>
-    <div class="tbl-wrap">
-    <table>
-      <thead><tr><th>Exercise</th><th>Weight</th><th>Sets×Reps</th><th>Note</th></tr></thead>
-      <tbody>
-<tr><td>Deadlift</td><td>30 lbs</td><td>3×10</td><td class='note'></td></tr>
-<tr><td>Back cable rowing</td><td>65 lbs</td><td>3×10</td><td class='note'></td></tr>
-<tr><td>Back Hyperextension</td><td>-</td><td>3×10</td><td class='note'></td></tr>
-<tr><td>Bicep curl</td><td>5 lbs</td><td>3×15</td><td class='note'></td></tr>
-      </tbody>
-    </table>
-    </div>
-  </details>
-
-  <details class="card more-hidden">
-    <summary>
-      <span class="date">2026-07-07</span>
-      <span class="day">Tuesday</span>
-      <span class="badge" style="background:#4f8ef722;color:#4f8ef7;border-color:#4f8ef744">Upper</span>
-      <span class="count">6 exercises</span>
-    </summary>
-    <div class="tbl-wrap">
-    <table>
-      <thead><tr><th>Exercise</th><th>Weight</th><th>Sets×Reps</th><th>Note</th></tr></thead>
-      <tbody>
-<tr><td>Barbell bench press</td><td>25 lbs</td><td>3×10</td><td class='note'></td></tr>
-<tr><td>Supine bench press</td><td>20 lbs</td><td>3×10</td><td class='note'></td></tr>
-<tr><td>Machine Chest press</td><td>65 lbs</td><td>3×15</td><td class='note'></td></tr>
-<tr><td>Lat pulldown</td><td>65 lbs</td><td>3×15</td><td class='note'></td></tr>
-<tr><td>Face pull</td><td>50 lbs</td><td>3×15</td><td class='note'></td></tr>
-<tr><td>Cable tricep press down</td><td>40 lbs</td><td>3×10</td><td class='note'></td></tr>
-      </tbody>
-    </table>
-    </div>
-  </details>
-
-  <details class="card more-hidden">
-    <summary>
-      <span class="date">2026-07-03</span>
-      <span class="day">Friday</span>
-      <span class="badge" style="background:#f7934f22;color:#f7934f;border-color:#f7934f44">Lower</span>
-      <span class="count">5 exercises</span>
-    </summary>
-    <div class="tbl-wrap">
-    <table>
-      <thead><tr><th>Exercise</th><th>Weight</th><th>Sets×Reps</th><th>Note</th></tr></thead>
-      <tbody>
-<tr><td>Squat <span class='grp'>(Quad/Glute)</span></td><td>44 lbs</td><td>3×10</td><td class='note'></td></tr>
-<tr><td>* Romanian deadlift <span class='grp'>(Hamstring/Glute)</span></td><td>33 lbs</td><td>3×15</td><td class='note'></td></tr>
-<tr><td>Leg extension</td><td>55 lbs</td><td>3×15</td><td class='note'></td></tr>
-<tr><td>* Calf raise</td><td>-</td><td>3×8</td><td class='note'>เน้น Gastrocnemius</td></tr>
-<tr><td>* Seated calf raise</td><td>4.5 lbs</td><td>3×8</td><td class='note'>เน้น Soleus</td></tr>
-      </tbody>
-    </table>
-    </div>
-  </details>
-
-  <details class="card more-hidden">
-    <summary>
-      <span class="date">2026-06-30</span>
-      <span class="day">Tuesday</span>
-      <span class="badge" style="background:#4f8ef722;color:#4f8ef7;border-color:#4f8ef744">Upper</span>
-      <span class="count">5 exercises</span>
-    </summary>
-    <div class="tbl-wrap">
-    <table>
-      <thead><tr><th>Exercise</th><th>Weight</th><th>Sets×Reps</th><th>Note</th></tr></thead>
-      <tbody>
-<tr><td>Pull up</td><td>-</td><td>-</td><td class='note'></td></tr>
-<tr><td>Supine bench press</td><td>20 lbs</td><td>3×10</td><td class='note'></td></tr>
-<tr><td>Chest fly</td><td>55 lbs</td><td>3×15</td><td class='note'></td></tr>
-<tr><td>Back cable rowing</td><td>-</td><td>-</td><td class='note'></td></tr>
-<tr><td>Lat pulldown</td><td>-</td><td>-</td><td class='note'></td></tr>
-      </tbody>
-    </table>
-    </div>
-  </details>
-
-  <details class="card more-hidden">
-    <summary>
-      <span class="date">2026-06-26</span>
-      <span class="day">Friday</span>
-      <span class="badge" style="background:#4f8ef722;color:#4f8ef7;border-color:#4f8ef744">Upper</span>
-      <span class="count">2 exercises</span>
-    </summary>
-    <div class="tbl-wrap">
-    <table>
-      <thead><tr><th>Exercise</th><th>Weight</th><th>Sets×Reps</th><th>Note</th></tr></thead>
-      <tbody>
-<tr><td>Overhead face pull</td><td>66 lbs</td><td>3×15</td><td class='note'></td></tr>
-<tr><td>Squat</td><td>53 lbs</td><td>3×10</td><td class='note'></td></tr>
-      </tbody>
-    </table>
-    </div>
-  </details>
-
-  <details class="card more-hidden">
-    <summary>
-      <span class="date">2026-06-23</span>
-      <span class="day">Tuesday</span>
-      <span class="badge" style="background:#4f8ef722;color:#4f8ef7;border-color:#4f8ef744">Upper</span>
-      <span class="count">5 exercises</span>
-    </summary>
-    <div class="tbl-wrap">
-    <table>
-      <thead><tr><th>Exercise</th><th>Weight</th><th>Sets×Reps</th><th>Note</th></tr></thead>
-      <tbody>
-<tr><td>Shoulder press</td><td>40 lbs</td><td>3×15</td><td class='note'></td></tr>
-<tr><td>Supine bench press</td><td>20 lbs</td><td>3×10</td><td class='note'></td></tr>
-<tr><td>Machine Chest press</td><td>-</td><td>-</td><td class='note'></td></tr>
-<tr><td>Face pull</td><td>40 lbs</td><td>3×15</td><td class='note'></td></tr>
-<tr><td>Back Hyperextension</td><td>-</td><td>3×15</td><td class='note'>bodyweight</td></tr>
-      </tbody>
-    </table>
-    </div>
-  </details>
-
-  <details class="card more-hidden">
-    <summary>
-      <span class="date">2026-06-19</span>
-      <span class="day">Friday</span>
-      <span class="badge" style="background:#f7934f22;color:#f7934f;border-color:#f7934f44">Lower</span>
-      <span class="count">2 exercises</span>
-    </summary>
-    <div class="tbl-wrap">
-    <table>
-      <thead><tr><th>Exercise</th><th>Weight</th><th>Sets×Reps</th><th>Note</th></tr></thead>
-      <tbody>
-<tr><td>Squat <span class='grp'>(Quad/Glute)</span></td><td>44 lbs</td><td>3×10</td><td class='note'></td></tr>
-<tr><td>* Romanian deadlift <span class='grp'>(Hamstring/Glute)</span></td><td>33 lbs</td><td>3×15</td><td class='note'></td></tr>
-      </tbody>
-    </table>
-    </div>
-  </details>
-
-  <details class="card more-hidden">
-    <summary>
-      <span class="date">2026-06-18</span>
-      <span class="day">Thursday</span>
-      <span class="badge" style="background:#4f8ef722;color:#4f8ef7;border-color:#4f8ef744">Upper</span>
-      <span class="count">3 exercises</span>
-    </summary>
-    <div class="tbl-wrap">
-    <table>
-      <thead><tr><th>Exercise</th><th>Weight</th><th>Sets×Reps</th><th>Note</th></tr></thead>
-      <tbody>
-<tr><td>Dumbbell shoulder press</td><td>16.5 lbs</td><td>3×15</td><td class='note'></td></tr>
-<tr><td>Machine shoulder press</td><td>45 lbs</td><td>3× <span class='rbs'>15/10/10</span></td><td class='note'></td></tr>
-<tr><td>Barbell curl</td><td>11 lbs</td><td>3×15</td><td class='note'></td></tr>
-      </tbody>
-    </table>
-    </div>
-  </details>
-
-  <details class="card more-hidden">
-    <summary>
-      <span class="date">2026-06-16</span>
-      <span class="day">Tuesday</span>
-      <span class="badge" style="background:#4f8ef722;color:#4f8ef7;border-color:#4f8ef744">Upper</span>
-      <span class="count">5 exercises</span>
-    </summary>
-    <div class="tbl-wrap">
-    <table>
-      <thead><tr><th>Exercise</th><th>Weight</th><th>Sets×Reps</th><th>Note</th></tr></thead>
-      <tbody>
-<tr><td>Pull up</td><td>-</td><td>-</td><td class='note'></td></tr>
-<tr><td>Supine bench press</td><td>20 lbs</td><td>3×10</td><td class='note'></td></tr>
-<tr><td>Machine Chest press</td><td>-</td><td>-</td><td class='note'></td></tr>
-<tr><td>Back cable rowing</td><td>55 lbs</td><td>3×15</td><td class='note'></td></tr>
-<tr><td>Lat pulldown</td><td>-</td><td>-</td><td class='note'></td></tr>
-      </tbody>
-    </table>
-    </div>
-  </details>
-
-  <details class="card more-hidden">
-    <summary>
-      <span class="date">2026-06-13</span>
-      <span class="day">Saturday</span>
-      <span class="badge" style="background:#f7934f22;color:#f7934f;border-color:#f7934f44">Lower</span>
-      <span class="count">5 exercises</span>
-    </summary>
-    <div class="tbl-wrap">
-    <table>
-      <thead><tr><th>Exercise</th><th>Weight</th><th>Sets×Reps</th><th>Note</th></tr></thead>
-      <tbody>
-<tr><td>Squat <span class='grp'>(Quad/Glute)</span></td><td>37.5 lbs</td><td>3×15</td><td class='note'></td></tr>
-<tr><td>* Romanian deadlift <span class='grp'>(Hamstring/Glute)</span></td><td>33 lbs</td><td>3×15</td><td class='note'></td></tr>
-<tr><td>Leg extension</td><td>55 lbs</td><td>3×15</td><td class='note'></td></tr>
-<tr><td>* Calf raise</td><td>-</td><td>3×8</td><td class='note'>เน้น Gastrocnemius</td></tr>
-<tr><td>* Seated calf raise</td><td>4.5 lbs</td><td>3×15</td><td class='note'>เน้น Soleus</td></tr>
-      </tbody>
-    </table>
-    </div>
-  </details>
-
-  <details class="card more-hidden">
-    <summary>
-      <span class="date">2026-06-12</span>
-      <span class="day">Friday</span>
-      <span class="badge" style="background:#4f8ef722;color:#4f8ef7;border-color:#4f8ef744">Upper</span>
-      <span class="count">3 exercises</span>
-    </summary>
-    <div class="tbl-wrap">
-    <table>
-      <thead><tr><th>Exercise</th><th>Weight</th><th>Sets×Reps</th><th>Note</th></tr></thead>
-      <tbody>
-<tr><td>Lat pulldown</td><td>-</td><td>-</td><td class='note'></td></tr>
-<tr><td>Back cable pull</td><td>55 lbs</td><td>3×15</td><td class='note'></td></tr>
-<tr><td>Dumbbell curl</td><td>22 lbs</td><td>3×15</td><td class='note'></td></tr>
-      </tbody>
-    </table>
-    </div>
-  </details>
-
-  <details class="card more-hidden">
-    <summary>
-      <span class="date">2026-06-09</span>
-      <span class="day">Monday</span>
-      <span class="badge" style="background:#4f8ef722;color:#4f8ef7;border-color:#4f8ef744">Upper</span>
-      <span class="count">4 exercises</span>
-    </summary>
-    <div class="tbl-wrap">
-    <table>
-      <thead><tr><th>Exercise</th><th>Weight</th><th>Sets×Reps</th><th>Note</th></tr></thead>
-      <tbody>
-<tr><td>Pull up</td><td>-</td><td>-</td><td class='note'></td></tr>
-<tr><td>Shoulder press</td><td>-</td><td>-</td><td class='note'>เจ็บหลังแขน</td></tr>
-<tr><td>Supine bench press</td><td>-</td><td>-</td><td class='note'></td></tr>
-<tr><td>Machine Chest press</td><td>-</td><td>-</td><td class='note'></td></tr>
-      </tbody>
-    </table>
-    </div>
-  </details>
-            <button class="view-more">View more</button>
-          </section>
-          <section>
-            <div class="section-title">Cardio</div>
-            
-  <details class="card">
-    <summary>
-      <span class="date">2026-10-02</span>
-      <span class="day">Friday</span>
-      <span class="badge" style="background:#4ff7a022;color:#4ff7a0;border-color:#4ff7a044">Running</span>
-      <span class="count">39.58 min · 5.01 km · pace 7:54 min/km · Easy aerobic · return after 14 days off (knee) · avg HR 129 = lowest of any 5 km run (prior 5 km: 135-144) · Strong / Somewhat Hard</span>
-    </summary>
-    <div class="class-detail">
-      <span class="class-name">39.58 min · 5.01 km · pace 7:54 min/km · Easy aerobic · return after 14 days off (knee) · avg HR 129 = lowest of any 5 km run (prior 5 km: 135-144) · Strong / Somewhat Hard<br><small style='color:#7d8590'>❤ 129 bpm · 🔥 250 kcal</small></span>
-    </div>
-  </details>
-
-  <details class="card">
-    <summary>
-      <span class="date">2026-09-18</span>
-      <span class="day">Friday</span>
-      <span class="badge" style="background:#4ff7a022;color:#4ff7a0;border-color:#4ff7a044">Running</span>
-      <span class="count">29.32 min · 5.03 km · pace 5:49 min/km · Tempo (intended) · treadmill · Strong / Somewhat Hard</span>
-    </summary>
-    <div class="class-detail">
-      <span class="class-name">29.32 min · 5.03 km · pace 5:49 min/km · Tempo (intended) · treadmill · Strong / Somewhat Hard<br><small style='color:#7d8590'>❤ 161 bpm · 🔥 302 kcal</small></span>
-    </div>
-  </details>
-
-  <details class="card">
-    <summary>
-      <span class="date">2026-09-06</span>
-      <span class="day">Sunday</span>
-      <span class="badge" style="background:#4ff7a022;color:#4ff7a0;border-color:#4ff7a044">Running</span>
-      <span class="count">1.0h 13.579999999999998min · 9.26 km · pace 7:57 min/km · Base (Low Aerobic), Strong / Somewhat Hard</span>
-    </summary>
-    <div class="class-detail">
-      <span class="class-name">1.0h 13.579999999999998min · 9.26 km · pace 7:57 min/km · Base (Low Aerobic), Strong / Somewhat Hard<br><small style='color:#7d8590'>❤ 132 bpm · 🔥 445 kcal</small></span>
-    </div>
-  </details>
-
-  <details class="card">
-    <summary>
-      <span class="date">2026-09-03</span>
-      <span class="day">Thursday</span>
-      <span class="badge" style="background:#4ff7a022;color:#4ff7a0;border-color:#4ff7a044">Running</span>
-      <span class="count">30 min · 3.68 km · pace 8:09 min/km · Recovery (Low Aerobic), Normal / Moderate</span>
-    </summary>
-    <div class="class-detail">
-      <span class="class-name">30 min · 3.68 km · pace 8:09 min/km · Recovery (Low Aerobic), Normal / Moderate<br><small style='color:#7d8590'>❤ 131 bpm · 🔥 200 kcal</small></span>
-    </div>
-  </details>
-
-  <details class="card">
-    <summary>
-      <span class="date">2026-09-02</span>
-      <span class="day">Wednesday</span>
-      <span class="badge" style="background:#4ff7a022;color:#4ff7a0;border-color:#4ff7a044">Running</span>
-      <span class="count">1.0h 26.269999999999996min · 12.24 km · pace 7:03 min/km · Base (Low Aerobic), Strong / Somewhat Hard</span>
-    </summary>
-    <div class="class-detail">
-      <span class="class-name">1.0h 26.269999999999996min · 12.24 km · pace 7:03 min/km · Base (Low Aerobic), Strong / Somewhat Hard<br><small style='color:#7d8590'>❤ 132 bpm · 🔥 512 kcal</small></span>
-    </div>
-  </details>
-
-  <details class="card">
-    <summary>
-      <span class="date">2026-08-28</span>
-      <span class="day">Friday</span>
-      <span class="badge" style="background:#33c3f022;color:#33c3f0;border-color:#33c3f044">Cycling</span>
-      <span class="count">20.08 min · Recovery (Low Aerobic), Strong / Moderate</span>
-    </summary>
-    <div class="class-detail">
-      <span class="class-name">20.08 min · Recovery (Low Aerobic), Strong / Moderate<br><small style='color:#7d8590'>❤ 129 bpm</small></span>
-    </div>
-  </details>
-
-  <details class="card">
-    <summary>
-      <span class="date">2026-08-27</span>
-      <span class="day">Thursday</span>
-      <span class="badge" style="background:#4ff7a022;color:#4ff7a0;border-color:#4ff7a044">Running</span>
-      <span class="count">1.0h 0.07000000000000028min · 8.16 km · pace 7:22 min/km · Base (Low Aerobic), Strong / Somewhat Hard</span>
-    </summary>
-    <div class="class-detail">
-      <span class="class-name">1.0h 0.07000000000000028min · 8.16 km · pace 7:22 min/km · Base (Low Aerobic), Strong / Somewhat Hard<br><small style='color:#7d8590'>❤ 139 bpm · 🔥 420 kcal</small></span>
-    </div>
-  </details>
-
-  <details class="card">
-    <summary>
-      <span class="date">2026-08-25</span>
-      <span class="day">Tuesday</span>
-      <span class="badge" style="background:#4ff7a022;color:#4ff7a0;border-color:#4ff7a044">Running</span>
-      <span class="count">37.02 min · 5.02 km · pace 7:22 min/km · Base (Low Aerobic), Strong</span>
-    </summary>
-    <div class="class-detail">
-      <span class="class-name">37.02 min · 5.02 km · pace 7:22 min/km · Base (Low Aerobic), Strong<br><small style='color:#7d8590'>❤ 144 bpm · 🔥 301 kcal</small></span>
-    </div>
-  </details>
-
-  <details class="card">
-    <summary>
-      <span class="date">2026-08-23</span>
-      <span class="day">Sunday</span>
-      <span class="badge" style="background:#4ff7a022;color:#4ff7a0;border-color:#4ff7a044">Running</span>
-      <span class="count">35.62 min · 5.01 km · pace 7:06 min/km · Base (Low Aerobic), Somewhat Hard</span>
-    </summary>
-    <div class="class-detail">
-      <span class="class-name">35.62 min · 5.01 km · pace 7:06 min/km · Base (Low Aerobic), Somewhat Hard<br><small style='color:#7d8590'>❤ 135 bpm · 🔥 249 kcal</small></span>
-    </div>
-  </details>
-
-  <details class="card">
-    <summary>
-      <span class="date">2026-08-21</span>
-      <span class="day">Friday</span>
-      <span class="badge" style="background:#4ff7a022;color:#4ff7a0;border-color:#4ff7a044">Running</span>
-      <span class="count">37.38 min · 5.03 km · pace 7:26 min/km</span>
-    </summary>
-    <div class="class-detail">
-      <span class="class-name">37.38 min · 5.03 km · pace 7:26 min/km<br><small style='color:#7d8590'>❤ 148 bpm · 🔥 322 kcal</small></span>
-    </div>
-  </details>
-
-  <details class="card more-hidden">
-    <summary>
-      <span class="date">2026-08-17</span>
-      <span class="day">Monday</span>
-      <span class="badge" style="background:#4ff7a022;color:#4ff7a0;border-color:#4ff7a044">Running</span>
-      <span class="count">37.58 min · 5.02 km · pace 7:29 min/km</span>
-    </summary>
-    <div class="class-detail">
-      <span class="class-name">37.58 min · 5.02 km · pace 7:29 min/km<br><small style='color:#7d8590'>❤ 139 bpm · 🔥 282 kcal</small></span>
-    </div>
-  </details>
-
-  <details class="card more-hidden">
-    <summary>
-      <span class="date">2026-08-13</span>
-      <span class="day">Thursday</span>
-      <span class="badge" style="background:#4ff7a022;color:#4ff7a0;border-color:#4ff7a044">Running</span>
-      <span class="count">37.57 min · 5.02 km · pace 7:29 min/km</span>
-    </summary>
-    <div class="class-detail">
-      <span class="class-name">37.57 min · 5.02 km · pace 7:29 min/km<br><small style='color:#7d8590'>❤ 139 bpm · 🔥 281 kcal</small></span>
-    </div>
-  </details>
-
-  <details class="card more-hidden">
-    <summary>
-      <span class="date">2026-08-12</span>
-      <span class="day">Wednesday</span>
-      <span class="badge" style="background:#4ff7a022;color:#4ff7a0;border-color:#4ff7a044">Running</span>
-      <span class="count">24.45 min · 3.02 km · pace 8:06 min/km</span>
-    </summary>
-    <div class="class-detail">
-      <span class="class-name">24.45 min · 3.02 km · pace 8:06 min/km<br><small style='color:#7d8590'>❤ 148 bpm · 🔥 212 kcal</small></span>
-    </div>
-  </details>
-
-  <details class="card more-hidden">
-    <summary>
-      <span class="date">2026-08-08</span>
-      <span class="day">Saturday</span>
-      <span class="badge" style="background:#4ff7a022;color:#4ff7a0;border-color:#4ff7a044">Running</span>
-      <span class="count">30.17 min · 4.02 km · pace 7:30 min/km</span>
-    </summary>
-    <div class="class-detail">
-      <span class="class-name">30.17 min · 4.02 km · pace 7:30 min/km<br><small style='color:#7d8590'>❤ 146 bpm · 🔥 257 kcal</small></span>
-    </div>
-  </details>
-
-  <details class="card more-hidden">
-    <summary>
-      <span class="date">2026-08-06</span>
-      <span class="day">Thursday</span>
-      <span class="badge" style="background:#4ff7a022;color:#4ff7a0;border-color:#4ff7a044">Running</span>
-      <span class="count">30 min · 4 km</span>
-    </summary>
-    <div class="class-detail">
-      <span class="class-name">30 min · 4 km<br><small style='color:#7d8590'>❤ 140 bpm · 🔥 200 kcal</small></span>
-    </div>
-  </details>
-
-  <details class="card more-hidden">
-    <summary>
-      <span class="date">2026-07-30</span>
-      <span class="day">Thursday</span>
-      <span class="badge" style="background:#4ff7a022;color:#4ff7a0;border-color:#4ff7a044">Running</span>
-      <span class="count">15.5 min · 2.02 km · pace 7.51 min/km</span>
-    </summary>
-    <div class="class-detail">
-      <span class="class-name">15.5 min · 2.02 km · pace 7.51 min/km<br><small style='color:#7d8590'>❤ 128 bpm · 🔥 106 kcal</small></span>
-    </div>
-  </details>
-
-  <details class="card more-hidden">
-    <summary>
-      <span class="date">2026-07-16</span>
-      <span class="day">Thursday</span>
-      <span class="badge" style="background:#4ff7a022;color:#4ff7a0;border-color:#4ff7a044">Running</span>
-      <span class="count">1.22 min · 9.43 km · pace 8.41 min/km</span>
-    </summary>
-    <div class="class-detail">
-      <span class="class-name">1.22 min · 9.43 km · pace 8.41 min/km<br><small style='color:#7d8590'>❤ 164 bpm · 🔥 638 kcal</small></span>
-    </div>
-  </details>
-
-  <details class="card more-hidden">
-    <summary>
-      <span class="date">2026-07-14</span>
-      <span class="day">Tuesday</span>
-      <span class="badge" style="background:#a04ff722;color:#a04ff7;border-color:#a04ff744">Class</span>
-      <span class="count">Breath Work</span>
-    </summary>
-    <div class="class-detail">
-      <span class="class-name">Breath Work</span>
-      <span class='class-duration'>· 60 minutes</span>
-    </div>
-  </details>
-
-  <details class="card more-hidden">
-    <summary>
-      <span class="date">2026-07-11</span>
-      <span class="day">Saturday</span>
-      <span class="badge" style="background:#4ff7a022;color:#4ff7a0;border-color:#4ff7a044">Running</span>
-      <span class="count">1h 5min · 9.17 km · pace 7:04 min/km · Nakhon Ratchasima</span>
-    </summary>
-    <div class="class-detail">
-      <span class="class-name">1h 5min · 9.17 km · pace 7:04 min/km · Nakhon Ratchasima<br><small style='color:#7d8590'>❤ 156 bpm · 🔥 584 kcal</small></span>
-    </div>
-  </details>
-
-  <details class="card more-hidden">
-    <summary>
-      <span class="date">2026-07-08</span>
-      <span class="day">Wednesday</span>
-      <span class="badge" style="background:#4ff7a022;color:#4ff7a0;border-color:#4ff7a044">Running</span>
-      <span class="count">35 min · 5.17 km · pace 6:49 min/km · Treadmill · Interval 40×8</span>
-    </summary>
-    <div class="class-detail">
-      <span class="class-name">35 min · 5.17 km · pace 6:49 min/km · Treadmill · Interval 40×8<br><small style='color:#7d8590'>❤ 152 bpm · 🔥 292 kcal</small></span>
-    </div>
-  </details>
-
-  <details class="card more-hidden">
-    <summary>
-      <span class="date">2026-07-07</span>
-      <span class="day">Tuesday</span>
-      <span class="badge" style="background:#a04ff722;color:#a04ff7;border-color:#a04ff744">Class</span>
-      <span class="count">Core Body</span>
-    </summary>
-    <div class="class-detail">
-      <span class="class-name">Core Body</span>
-      <span class='class-duration'>· 30 minutes</span>
-    </div>
-  </details>
-
-  <details class="card more-hidden">
-    <summary>
-      <span class="date">2026-07-07</span>
-      <span class="day">Tuesday</span>
-      <span class="badge" style="background:#a04ff722;color:#a04ff7;border-color:#a04ff744">Class</span>
-      <span class="count">Breath Work</span>
-    </summary>
-    <div class="class-detail">
-      <span class="class-name">Breath Work</span>
-      <span class='class-duration'>· 60 minutes</span>
-    </div>
-  </details>
-
-  <details class="card more-hidden">
-    <summary>
-      <span class="date">2026-07-04</span>
-      <span class="day">Saturday</span>
-      <span class="badge" style="background:#4ff7a022;color:#4ff7a0;border-color:#4ff7a044">Running</span>
-      <span class="count">2h 5min · 17.02 km · pace 7:21 min/km · Treadmill</span>
-    </summary>
-    <div class="class-detail">
-      <span class="class-name">2h 5min · 17.02 km · pace 7:21 min/km · Treadmill<br><small style='color:#7d8590'>❤ 149 bpm · 🔥 856 kcal</small></span>
-    </div>
-  </details>
-
-  <details class="card more-hidden">
-    <summary>
-      <span class="date">2026-06-30</span>
-      <span class="day">Tuesday</span>
-      <span class="badge" style="background:#a04ff722;color:#a04ff7;border-color:#a04ff744">Class</span>
-      <span class="count">Core Body</span>
-    </summary>
-    <div class="class-detail">
-      <span class="class-name">Core Body</span>
-      <span class='class-duration'>· 30 minutes</span>
-    </div>
-  </details>
-
-  <details class="card more-hidden">
-    <summary>
-      <span class="date">2026-06-23</span>
-      <span class="day">Tuesday</span>
-      <span class="badge" style="background:#a04ff722;color:#a04ff7;border-color:#a04ff744">Class</span>
-      <span class="count">Breath Work</span>
-    </summary>
-    <div class="class-detail">
-      <span class="class-name">Breath Work</span>
-      <span class='class-duration'>· 60 minutes</span>
-    </div>
-  </details>
-
-  <details class="card more-hidden">
-    <summary>
-      <span class="date">2026-06-20</span>
-      <span class="day">Saturday</span>
-      <span class="badge" style="background:#4ff7a022;color:#4ff7a0;border-color:#4ff7a044">Running</span>
-      <span class="count">1h 36min · 12.53 km · pace 7:41 min/km · Zone 2</span>
-    </summary>
-    <div class="class-detail">
-      <span class="class-name">1h 36min · 12.53 km · pace 7:41 min/km · Zone 2</span>
-    </div>
-  </details>
-
-  <details class="card more-hidden">
-    <summary>
-      <span class="date">2026-06-19</span>
-      <span class="day">Friday</span>
-      <span class="badge" style="background:#4ff7a022;color:#4ff7a0;border-color:#4ff7a044">Running</span>
-      <span class="count">Interval 400m × 5</span>
-    </summary>
-    <div class="class-detail">
-      <span class="class-name">Interval 400m × 5</span>
-    </div>
-  </details>
-
-  <details class="card more-hidden">
-    <summary>
-      <span class="date">2026-06-16</span>
-      <span class="day">Tuesday</span>
-      <span class="badge" style="background:#a04ff722;color:#a04ff7;border-color:#a04ff744">Class</span>
-      <span class="count">Core Body</span>
-    </summary>
-    <div class="class-detail">
-      <span class="class-name">Core Body</span>
-      <span class='class-duration'>· 30 minutes</span>
-    </div>
-  </details>
-
-  <details class="card more-hidden">
-    <summary>
-      <span class="date">2026-06-16</span>
-      <span class="day">Tuesday</span>
-      <span class="badge" style="background:#a04ff722;color:#a04ff7;border-color:#a04ff744">Class</span>
-      <span class="count">Breath Work</span>
-    </summary>
-    <div class="class-detail">
-      <span class="class-name">Breath Work</span>
-      <span class='class-duration'>· 60 minutes</span>
-    </div>
-  </details>
-
-  <details class="card more-hidden">
-    <summary>
-      <span class="date">2026-06-12</span>
-      <span class="day">Friday</span>
-      <span class="badge" style="background:#4ff7a022;color:#4ff7a0;border-color:#4ff7a044">Running</span>
-      <span class="count">30 min · Zone 2</span>
-    </summary>
-    <div class="class-detail">
-      <span class="class-name">30 min · Zone 2</span>
-    </div>
-  </details>
-
-  <details class="card more-hidden">
-    <summary>
-      <span class="date">2026-06-09</span>
-      <span class="day">Monday</span>
-      <span class="badge" style="background:#a04ff722;color:#a04ff7;border-color:#a04ff744">Class</span>
-      <span class="count">Core Body</span>
-    </summary>
-    <div class="class-detail">
-      <span class="class-name">Core Body</span>
-      <span class='class-duration'>· 60 minutes</span>
-    </div>
-  </details>
-            <button class="view-more">View more</button>
-          </section>
-          <section>
-            <div class="section-title">Progress</div>
-            
+      <div id="view-weight" class="view on">
+        <div class="page-intro"><h2>Weight Training</h2><p>Strength sessions, exercise progress, and recent training logs.</p></div>
+        <div class="statgrid focus-stats"><div class="stat"><div class="k">Last 30 days</div><div class="v">20</div><div class="d">total sessions</div></div><div class="stat"><div class="k">Weight training</div><div class="v">16</div><div class="d">sessions · 30d</div></div><div class="stat"><div class="k">Exercises tracked</div><div class="v">47</div><div class="d">with progress data</div></div><div class="stat"><div class="k">All-time sessions</div><div class="v">58</div><div class="d">in your log</div></div></div>
+        <section class="focus-section"><div class="section-title">Progress</div>
   <div class="chip-row" id="prog-filters"><span class="chip filter-chip selected" data-filter="all">All</span><span class="chip filter-chip" data-filter="Push A">Push A</span><span class="chip filter-chip" data-filter="Pull B">Pull B</span><span class="chip filter-chip" data-filter="Lower">Lower</span><span class="chip filter-chip" data-filter="Calf & Ankle">Calf & Ankle</span><span class="chip filter-chip" data-filter="Core">Core</span><span class="chip filter-chip" data-filter="Upper">Upper</span><span class="chip filter-chip" data-filter="Lower A">Lower A</span></div>
 
   <details class="card prog-card" data-type="Lower">
@@ -2609,9 +1233,1341 @@
       </tbody>
     </table>
     </div>
+  </details></section>
+        <section class="focus-section"><div class="section-title">Recent sessions</div>
+  <details class="card">
+    <summary>
+      <span class="date">2026-10-01</span>
+      <span class="day">Thursday</span>
+      <span class="badge" style="background:#f7934f22;color:#f7934f;border-color:#f7934f44">Lower A</span>
+      <span class="count">4 exercises</span>
+    </summary>
+    <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Exercise</th><th>Weight</th><th>Sets×Reps</th><th>Note</th></tr></thead>
+      <tbody>
+<tr><td>Squat</td><td>44 lbs</td><td>4×10</td><td class='note'></td></tr>
+<tr><td>* Bulgarian split squat</td><td>20 lbs</td><td>3×8</td><td class='note'></td></tr>
+<tr><td>Leg extension</td><td>65 lbs</td><td>3×12</td><td class='note'></td></tr>
+<tr><td>Hip thrust</td><td>22 lbs</td><td>3×12</td><td class='note'></td></tr>
+      </tbody>
+    </table>
+    </div>
   </details>
-          </section>
-        </div>
+
+  <details class="card">
+    <summary>
+      <span class="date">2026-09-29</span>
+      <span class="day">Tuesday</span>
+      <span class="badge" style="background:#7bb0ff22;color:#7bb0ff;border-color:#7bb0ff44">Pull B</span>
+      <span class="count">5 exercises</span>
+    </summary>
+    <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Exercise</th><th>Weight</th><th>Sets×Reps</th><th>Note</th></tr></thead>
+      <tbody>
+<tr><td>Lat pulldown (Back)</td><td>60 lbs</td><td>3×15</td><td class='note'></td></tr>
+<tr><td>Back cable rowing (Back)</td><td>60 lbs</td><td>3×15</td><td class='note'></td></tr>
+<tr><td>Face pull (Shoulder)</td><td>60 lbs</td><td>3×15</td><td class='note'></td></tr>
+<tr><td>Back Hyperextension (Back)</td><td>10 lbs</td><td>4×10</td><td class='note'></td></tr>
+<tr><td>Bicep curl (Biceps)</td><td>10 lbs</td><td>3×12</td><td class='note'></td></tr>
+      </tbody>
+    </table>
+    </div>
+  </details>
+
+  <details class="card">
+    <summary>
+      <span class="date">2026-09-28</span>
+      <span class="day">Monday</span>
+      <span class="badge" style="background:#4f8ef722;color:#4f8ef7;border-color:#4f8ef744">Push A</span>
+      <span class="count">5 exercises</span>
+    </summary>
+    <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Exercise</th><th>Weight</th><th>Sets×Reps</th><th>Note</th></tr></thead>
+      <tbody>
+<tr><td>Incline bench press (Chest)</td><td>20 lbs</td><td>4× <span class='rbs'>8/8/8/8</span></td><td class='note'></td></tr>
+<tr><td>Shoulder press (Shoulder)</td><td>60 lbs</td><td>3×15</td><td class='note'></td></tr>
+<tr><td>Chest fly (Chest)</td><td>55 lbs</td><td>4×10</td><td class='note'></td></tr>
+<tr><td>Lateral raise (Shoulder)</td><td>10 lbs</td><td>4×10</td><td class='note'></td></tr>
+<tr><td>Cable tricep press down (Triceps)</td><td>50 lbs</td><td>4×10</td><td class='note'></td></tr>
+      </tbody>
+    </table>
+    </div>
+  </details>
+
+  <details class="card">
+    <summary>
+      <span class="date">2026-09-25</span>
+      <span class="day">Friday</span>
+      <span class="badge" style="background:#f7934f22;color:#f7934f;border-color:#f7934f44">Lower</span>
+      <span class="count">3 exercises</span>
+    </summary>
+    <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Exercise</th><th>Weight</th><th>Sets×Reps</th><th>Note</th></tr></thead>
+      <tbody>
+<tr><td>Squat <span class='grp'>(Quad/Glute)</span></td><td>55 lbs</td><td>3×10</td><td class='note'></td></tr>
+<tr><td>* Romanian deadlift <span class='grp'>(Hamstring/Glute)</span></td><td>77 lbs</td><td>4×10</td><td class='note'></td></tr>
+<tr><td>Leg extension</td><td>65 lbs</td><td>3×15</td><td class='note'></td></tr>
+      </tbody>
+    </table>
+    </div>
+  </details>
+
+  <details class="card">
+    <summary>
+      <span class="date">2026-09-24</span>
+      <span class="day">Thursday</span>
+      <span class="badge" style="background:#4f8ef722;color:#4f8ef7;border-color:#4f8ef744">Upper</span>
+      <span class="count">6 exercises</span>
+    </summary>
+    <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Exercise</th><th>Weight</th><th>Sets×Reps</th><th>Note</th></tr></thead>
+      <tbody>
+<tr><td>Shoulder press</td><td>60 lbs</td><td>4×10</td><td class='note'></td></tr>
+<tr><td>Chest fly</td><td>55 lbs</td><td>3×15</td><td class='note'></td></tr>
+<tr><td>Back cable rowing</td><td>60 lbs</td><td>3×15</td><td class='note'></td></tr>
+<tr><td>Lat pulldown</td><td>60 lbs</td><td>3×15</td><td class='note'></td></tr>
+<tr><td>Bicep curl</td><td>10 lbs</td><td>3×12</td><td class='note'></td></tr>
+<tr><td>Incline bench press</td><td>20 lbs</td><td>4× <span class='rbs'>10/10/10/10</span></td><td class='note'></td></tr>
+      </tbody>
+    </table>
+    </div>
+  </details>
+
+  <details class="card">
+    <summary>
+      <span class="date">2026-09-22</span>
+      <span class="day">Tuesday</span>
+      <span class="badge" style="background:#f7934f22;color:#f7934f;border-color:#f7934f44">Lower</span>
+      <span class="count">5 exercises</span>
+    </summary>
+    <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Exercise</th><th>Weight</th><th>Sets×Reps</th><th>Note</th></tr></thead>
+      <tbody>
+<tr><td>* Goblet squat</td><td>38 lbs</td><td>4×10</td><td class='note'></td></tr>
+<tr><td>* Romanian deadlift <span class='grp'>(Hamstring/Glute)</span></td><td>66 lbs</td><td>3×15</td><td class='note'></td></tr>
+<tr><td>Hip thrust <span class='grp'>(Glute)</span></td><td>22 lbs</td><td>3×15</td><td class='note'></td></tr>
+<tr><td>* Bent-knee single-leg calf raise <span class='grp'>(Calf)</span></td><td>22 lbs</td><td>4×10</td><td class='note'></td></tr>
+<tr><td>* Tibialis raise <span class='grp'>(Tibialis)</span></td><td>-</td><td>3×15</td><td class='note'></td></tr>
+      </tbody>
+    </table>
+    </div>
+  </details>
+
+  <details class="card">
+    <summary>
+      <span class="date">2026-09-21</span>
+      <span class="day">Monday</span>
+      <span class="badge" style="background:#4f8ef722;color:#4f8ef7;border-color:#4f8ef744">Upper</span>
+      <span class="count">6 exercises</span>
+    </summary>
+    <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Exercise</th><th>Weight</th><th>Sets×Reps</th><th>Note</th></tr></thead>
+      <tbody>
+<tr><td>Shoulder press</td><td>55 lbs</td><td>3×15</td><td class='note'></td></tr>
+<tr><td>Barbell bench press</td><td>25 lbs</td><td>4× <span class='rbs'>9/7/7/6</span></td><td class='note'></td></tr>
+<tr><td>Back cable rowing</td><td>60 lbs</td><td>3×15</td><td class='note'></td></tr>
+<tr><td>Lat pulldown</td><td>60 lbs</td><td>3×15</td><td class='note'></td></tr>
+<tr><td>Face pull</td><td>60 lbs</td><td>4×10</td><td class='note'></td></tr>
+<tr><td>Bicep curl</td><td>10 lbs</td><td>3×12</td><td class='note'></td></tr>
+      </tbody>
+    </table>
+    </div>
+  </details>
+
+  <details class="card">
+    <summary>
+      <span class="date">2026-09-21</span>
+      <span class="day">Monday</span>
+      <span class="badge" style="background:#f75f8f22;color:#f75f8f;border-color:#f75f8f44">Core</span>
+      <span class="count">1 exercises</span>
+    </summary>
+    <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Exercise</th><th>Weight</th><th>Sets×Reps</th><th>Note</th></tr></thead>
+      <tbody>
+<tr><td>* Cable crunch</td><td>40 lbs</td><td>3×12</td><td class='note'></td></tr>
+      </tbody>
+    </table>
+    </div>
+  </details>
+
+  <details class="card">
+    <summary>
+      <span class="date">2026-09-18</span>
+      <span class="day">Friday</span>
+      <span class="badge" style="background:#4f8ef722;color:#4f8ef7;border-color:#4f8ef744">Upper</span>
+      <span class="count">5 exercises</span>
+    </summary>
+    <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Exercise</th><th>Weight</th><th>Sets×Reps</th><th>Note</th></tr></thead>
+      <tbody>
+<tr><td>Face pull</td><td>50 lbs</td><td>3×15</td><td class='note'></td></tr>
+<tr><td>Bicep curl</td><td>10 lbs</td><td>3×10</td><td class='note'></td></tr>
+<tr><td>Incline bench press</td><td>20 lbs</td><td>4× <span class='rbs'>9/8/8/7</span></td><td class='note'></td></tr>
+<tr><td>Plate front raise</td><td>10 lbs</td><td>3×10</td><td class='note'></td></tr>
+<tr><td>Dumbell rear delt fly</td><td>5 lbs</td><td>3×10</td><td class='note'></td></tr>
+      </tbody>
+    </table>
+    </div>
+  </details>
+
+  <details class="card">
+    <summary>
+      <span class="date">2026-09-16</span>
+      <span class="day">Wednesday</span>
+      <span class="badge" style="background:#e3c04f22;color:#e3c04f;border-color:#e3c04f44">Full body</span>
+      <span class="count">7 exercises</span>
+    </summary>
+    <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Exercise</th><th>Weight</th><th>Sets×Reps</th><th>Note</th></tr></thead>
+      <tbody>
+<tr><td>* Goblet squat</td><td>30 lbs</td><td>3×10</td><td class='note'></td></tr>
+<tr><td>* Romanian deadlift</td><td>66 lbs</td><td>4×10</td><td class='note'></td></tr>
+<tr><td>Leg extension</td><td>65 lbs</td><td>4×10</td><td class='note'></td></tr>
+<tr><td>* Bent-knee single-leg calf raise</td><td>22 lbs</td><td>3×10</td><td class='note'></td></tr>
+<tr><td>* Tibialis raise</td><td>-</td><td>3×15</td><td class='note'></td></tr>
+<tr><td>Back Hyperextension</td><td>-</td><td>3×10</td><td class='note'></td></tr>
+<tr><td>Cable tricep press down</td><td>50 lbs</td><td>3×10</td><td class='note'></td></tr>
+      </tbody>
+    </table>
+    </div>
+  </details>
+
+  <details class="card more-hidden">
+    <summary>
+      <span class="date">2026-09-14</span>
+      <span class="day">Monday</span>
+      <span class="badge" style="background:#4f8ef722;color:#4f8ef7;border-color:#4f8ef744">Upper</span>
+      <span class="count">6 exercises</span>
+    </summary>
+    <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Exercise</th><th>Weight</th><th>Sets×Reps</th><th>Note</th></tr></thead>
+      <tbody>
+<tr><td>Shoulder press</td><td>50 lbs</td><td>3×15</td><td class='note'></td></tr>
+<tr><td>Barbell bench press</td><td>20 lbs</td><td>4×10</td><td class='note'></td></tr>
+<tr><td>Back cable rowing</td><td>60 lbs</td><td>4×10</td><td class='note'></td></tr>
+<tr><td>Lat pulldown</td><td>60 lbs</td><td>4×10</td><td class='note'></td></tr>
+<tr><td>Face pull</td><td>50 lbs</td><td>3×15</td><td class='note'></td></tr>
+<tr><td>Bicep curl</td><td>10 lbs</td><td>3×12</td><td class='note'></td></tr>
+      </tbody>
+    </table>
+    </div>
+  </details>
+
+  <details class="card more-hidden">
+    <summary>
+      <span class="date">2026-09-10</span>
+      <span class="day">Thursday</span>
+      <span class="badge" style="background:#f7934f22;color:#f7934f;border-color:#f7934f44">Lower</span>
+      <span class="count">5 exercises</span>
+    </summary>
+    <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Exercise</th><th>Weight</th><th>Sets×Reps</th><th>Note</th></tr></thead>
+      <tbody>
+<tr><td>Squat <span class='grp'>(Quad/Glute)</span></td><td>44 lbs</td><td>4×10</td><td class='note'></td></tr>
+<tr><td>* Romanian deadlift <span class='grp'>(Hamstring/Glute)</span></td><td>66 lbs</td><td>4×10</td><td class='note'></td></tr>
+<tr><td>Leg extension</td><td>65 lbs</td><td>4×10</td><td class='note'></td></tr>
+<tr><td>* Bent-knee single-leg calf raise <span class='grp'>(Calf)</span></td><td>22 lbs</td><td>3×8</td><td class='note'></td></tr>
+<tr><td>* Tibialis raise <span class='grp'>(Tibialis)</span></td><td>-</td><td>3×15</td><td class='note'></td></tr>
+      </tbody>
+    </table>
+    </div>
+  </details>
+
+  <details class="card more-hidden">
+    <summary>
+      <span class="date">2026-09-08</span>
+      <span class="day">Tuesday</span>
+      <span class="badge" style="background:#4f8ef722;color:#4f8ef7;border-color:#4f8ef744">Upper</span>
+      <span class="count">4 exercises</span>
+    </summary>
+    <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Exercise</th><th>Weight</th><th>Sets×Reps</th><th>Note</th></tr></thead>
+      <tbody>
+<tr><td>Supine bench press</td><td>20 lbs</td><td>5×8</td><td class='note'></td></tr>
+<tr><td>Shoulder press</td><td>50 lbs</td><td>4×10</td><td class='note'></td></tr>
+<tr><td>Bicep curl</td><td>10 lbs</td><td>3×10</td><td class='note'></td></tr>
+<tr><td>Back cable rowing</td><td>60 lbs</td><td>4×10</td><td class='note'></td></tr>
+      </tbody>
+    </table>
+    </div>
+  </details>
+
+  <details class="card more-hidden">
+    <summary>
+      <span class="date">2026-09-05</span>
+      <span class="day">Saturday</span>
+      <span class="badge" style="background:#f7934f22;color:#f7934f;border-color:#f7934f44">Lower</span>
+      <span class="count">5 exercises</span>
+    </summary>
+    <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Exercise</th><th>Weight</th><th>Sets×Reps</th><th>Note</th></tr></thead>
+      <tbody>
+<tr><td>Squat <span class='grp'>(Quad/Glute)</span></td><td>44 lbs</td><td>4×10</td><td class='note'></td></tr>
+<tr><td>* Bulgarian split squat <span class='grp'>(Quad/Glute)</span></td><td>20 lbs</td><td>3× <span class='rbs'>10/10/8</span></td><td class='note'></td></tr>
+<tr><td>Single-leg RDL</td><td>-</td><td>3×10</td><td class='note'></td></tr>
+<tr><td>* Bent-knee single-leg calf raise <span class='grp'>(Calf)</span></td><td>22 lbs</td><td>3×10</td><td class='note'></td></tr>
+<tr><td>* Tibialis raise <span class='grp'>(Tibialis)</span></td><td>-</td><td>3×15</td><td class='note'></td></tr>
+      </tbody>
+    </table>
+    </div>
+  </details>
+
+  <details class="card more-hidden">
+    <summary>
+      <span class="date">2026-09-04</span>
+      <span class="day">Friday</span>
+      <span class="badge" style="background:#4f8ef722;color:#4f8ef7;border-color:#4f8ef744">Upper</span>
+      <span class="count">4 exercises</span>
+    </summary>
+    <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Exercise</th><th>Weight</th><th>Sets×Reps</th><th>Note</th></tr></thead>
+      <tbody>
+<tr><td>Barbell bench press</td><td>20 lbs</td><td>4× <span class='rbs'>10/10/8/8</span></td><td class='note'></td></tr>
+<tr><td>Shoulder press</td><td>50 lbs</td><td>4× <span class='rbs'>10/10/10/10</span></td><td class='note'></td></tr>
+<tr><td>Face pull</td><td>50 lbs</td><td>4× <span class='rbs'>10/10/10/10</span></td><td class='note'></td></tr>
+<tr><td>Back cable rowing</td><td>65 lbs</td><td>4× <span class='rbs'>10/10/10/10</span></td><td class='note'></td></tr>
+      </tbody>
+    </table>
+    </div>
+  </details>
+
+  <details class="card more-hidden">
+    <summary>
+      <span class="date">2026-09-03</span>
+      <span class="day">Thursday</span>
+      <span class="badge" style="background:#4f8ef722;color:#4f8ef7;border-color:#4f8ef744">Upper</span>
+      <span class="count">3 exercises</span>
+    </summary>
+    <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Exercise</th><th>Weight</th><th>Sets×Reps</th><th>Note</th></tr></thead>
+      <tbody>
+<tr><td>Lat pulldown</td><td>60 lbs</td><td>4× <span class='rbs'>10/10/10/10</span></td><td class='note'></td></tr>
+<tr><td>Incline bench press</td><td>20 lbs</td><td>4× <span class='rbs'>7/7/5/5</span></td><td class='note'></td></tr>
+<tr><td>Back Hyperextension</td><td>5 lbs</td><td>3× <span class='rbs'>10/10/10</span></td><td class='note'></td></tr>
+      </tbody>
+    </table>
+    </div>
+  </details>
+
+  <details class="card more-hidden">
+    <summary>
+      <span class="date">2026-08-28</span>
+      <span class="day">Friday</span>
+      <span class="badge" style="background:#4f8ef722;color:#4f8ef7;border-color:#4f8ef744">Upper</span>
+      <span class="count">3 exercises</span>
+    </summary>
+    <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Exercise</th><th>Weight</th><th>Sets×Reps</th><th>Note</th></tr></thead>
+      <tbody>
+<tr><td>Back cable rowing</td><td>65 lbs</td><td>4×10</td><td class='note'></td></tr>
+<tr><td>Face pull</td><td>60 lbs</td><td>4×10</td><td class='note'></td></tr>
+<tr><td>Back Hyperextension</td><td>5 lbs</td><td>4×10</td><td class='note'></td></tr>
+      </tbody>
+    </table>
+    </div>
+  </details>
+
+  <details class="card more-hidden">
+    <summary>
+      <span class="date">2026-08-27</span>
+      <span class="day">Thursday</span>
+      <span class="badge" style="background:#f7934f22;color:#f7934f;border-color:#f7934f44">Lower</span>
+      <span class="count">3 exercises</span>
+    </summary>
+    <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Exercise</th><th>Weight</th><th>Sets×Reps</th><th>Note</th></tr></thead>
+      <tbody>
+<tr><td>Squat <span class='grp'>(Quad/Glute)</span></td><td>22 lbs</td><td>4× <span class='rbs'>10/10/10/10</span></td><td class='note'></td></tr>
+<tr><td>* Romanian deadlift <span class='grp'>(Hamstring/Glute)</span></td><td>66 lbs</td><td>3× <span class='rbs'>10/10/10</span></td><td class='note'></td></tr>
+<tr><td>* Bent-knee single-leg calf raise <span class='grp'>(Calf)</span></td><td>22 lbs</td><td>3× <span class='rbs'>10/10/10</span></td><td class='note'></td></tr>
+      </tbody>
+    </table>
+    </div>
+  </details>
+
+  <details class="card more-hidden">
+    <summary>
+      <span class="date">2026-08-25</span>
+      <span class="day">Tuesday</span>
+      <span class="badge" style="background:#4f8ef722;color:#4f8ef7;border-color:#4f8ef744">Upper</span>
+      <span class="count">4 exercises</span>
+    </summary>
+    <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Exercise</th><th>Weight</th><th>Sets×Reps</th><th>Note</th></tr></thead>
+      <tbody>
+<tr><td>Incline bench press</td><td>10 lbs</td><td>4× <span class='rbs'>12/10/10/8</span></td><td class='note'></td></tr>
+<tr><td>Lat pulldown</td><td>55 lbs</td><td>4× <span class='rbs'>12/10/10/8</span></td><td class='note'></td></tr>
+<tr><td>Shoulder press</td><td>50 lbs</td><td>4× <span class='rbs'>12/10/10/8</span></td><td class='note'></td></tr>
+<tr><td>Bicep curl</td><td>10 lbs</td><td>4× <span class='rbs'>12/10/10/8</span></td><td class='note'></td></tr>
+      </tbody>
+    </table>
+    </div>
+  </details>
+
+  <details class="card more-hidden">
+    <summary>
+      <span class="date">2026-08-22</span>
+      <span class="day">Saturday</span>
+      <span class="badge" style="background:#4f8ef722;color:#4f8ef7;border-color:#4f8ef744">Upper</span>
+      <span class="count">2 exercises</span>
+    </summary>
+    <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Exercise</th><th>Weight</th><th>Sets×Reps</th><th>Note</th></tr></thead>
+      <tbody>
+<tr><td>Back cable rowing</td><td>60 lbs</td><td>4×10</td><td class='note'></td></tr>
+<tr><td>Back Hyperextension</td><td>5 lbs</td><td>4×10</td><td class='note'></td></tr>
+      </tbody>
+    </table>
+    </div>
+  </details>
+
+  <details class="card more-hidden">
+    <summary>
+      <span class="date">2026-08-21</span>
+      <span class="day">Thursday</span>
+      <span class="badge" style="background:#4f8ef722;color:#4f8ef7;border-color:#4f8ef744">Upper</span>
+      <span class="count">3 exercises</span>
+    </summary>
+    <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Exercise</th><th>Weight</th><th>Sets×Reps</th><th>Note</th></tr></thead>
+      <tbody>
+<tr><td>Incline bench press</td><td>11 lbs</td><td>5× <span class='rbs'>12/10/7/7/6</span></td><td class='note'></td></tr>
+<tr><td>Dumbbell front raise</td><td>11 lbs</td><td>3×10</td><td class='note'></td></tr>
+<tr><td>Incline sit up</td><td>-</td><td>3× <span class='rbs'>12/10/8</span></td><td class='note'></td></tr>
+      </tbody>
+    </table>
+    </div>
+  </details>
+
+  <details class="card more-hidden">
+    <summary>
+      <span class="date">2026-08-19</span>
+      <span class="day">Wednesday</span>
+      <span class="badge" style="background:#f7934f22;color:#f7934f;border-color:#f7934f44">Lower</span>
+      <span class="count">5 exercises</span>
+    </summary>
+    <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Exercise</th><th>Weight</th><th>Sets×Reps</th><th>Note</th></tr></thead>
+      <tbody>
+<tr><td>Squat <span class='grp'>(Quad/Glute)</span></td><td>44 lbs</td><td>3×10</td><td class='note'></td></tr>
+<tr><td>* Romanian deadlift <span class='grp'>(Hamstring/Glute)</span></td><td>66 lbs</td><td>3×15</td><td class='note'></td></tr>
+<tr><td>* Calf raise</td><td>-</td><td>3×8</td><td class='note'></td></tr>
+<tr><td>* Seated calf raise</td><td>33 lbs</td><td>3×8</td><td class='note'></td></tr>
+<tr><td>* Tibialis raise <span class='grp'>(Tibialis)</span></td><td>-</td><td>3×15</td><td class='note'></td></tr>
+      </tbody>
+    </table>
+    </div>
+  </details>
+
+  <details class="card more-hidden">
+    <summary>
+      <span class="date">2026-08-17</span>
+      <span class="day">Monday</span>
+      <span class="badge" style="background:#4f8ef722;color:#4f8ef7;border-color:#4f8ef744">Upper</span>
+      <span class="count">6 exercises</span>
+    </summary>
+    <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Exercise</th><th>Weight</th><th>Sets×Reps</th><th>Note</th></tr></thead>
+      <tbody>
+<tr><td>Shoulder press</td><td>50 lbs</td><td>3×15</td><td class='note'></td></tr>
+<tr><td>Supine bench press</td><td>20 lbs</td><td>3×10</td><td class='note'></td></tr>
+<tr><td>Back cable rowing</td><td>55 lbs</td><td>3×15</td><td class='note'></td></tr>
+<tr><td>Lat pulldown</td><td>55 lbs</td><td>3×15</td><td class='note'></td></tr>
+<tr><td>Bicep curl</td><td>10 lbs</td><td>3×12</td><td class='note'></td></tr>
+<tr><td>Cable tricep press down</td><td>40 lbs</td><td>3×10</td><td class='note'></td></tr>
+      </tbody>
+    </table>
+    </div>
+  </details>
+
+  <details class="card more-hidden">
+    <summary>
+      <span class="date">2026-08-12</span>
+      <span class="day">Wednesday</span>
+      <span class="badge" style="background:#f7934f22;color:#f7934f;border-color:#f7934f44">Lower</span>
+      <span class="count">2 exercises</span>
+    </summary>
+    <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Exercise</th><th>Weight</th><th>Sets×Reps</th><th>Note</th></tr></thead>
+      <tbody>
+<tr><td>Squat <span class='grp'>(Quad/Glute)</span></td><td>44 lbs</td><td>3×10</td><td class='note'></td></tr>
+<tr><td>romanian deadlift</td><td>66 lbs</td><td>3×10</td><td class='note'></td></tr>
+      </tbody>
+    </table>
+    </div>
+  </details>
+
+  <details class="card more-hidden">
+    <summary>
+      <span class="date">2026-08-11</span>
+      <span class="day">Tuesday</span>
+      <span class="badge" style="background:#4f8ef722;color:#4f8ef7;border-color:#4f8ef744">Upper</span>
+      <span class="count">5 exercises</span>
+    </summary>
+    <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Exercise</th><th>Weight</th><th>Sets×Reps</th><th>Note</th></tr></thead>
+      <tbody>
+<tr><td>Shoulder press</td><td>50 lbs</td><td>3×15</td><td class='note'></td></tr>
+<tr><td>Barbell bench press</td><td>20 lbs</td><td>3×10</td><td class='note'></td></tr>
+<tr><td>Chest fly</td><td>55 lbs</td><td>3×15</td><td class='note'></td></tr>
+<tr><td>Lat pulldown</td><td>70 lbs</td><td>3×15</td><td class='note'></td></tr>
+<tr><td>Back Hyperextension</td><td>10 lbs</td><td>3×15</td><td class='note'></td></tr>
+      </tbody>
+    </table>
+    </div>
+  </details>
+
+  <details class="card more-hidden">
+    <summary>
+      <span class="date">2026-08-05</span>
+      <span class="day">Wednesday</span>
+      <span class="badge" style="background:#4f8ef722;color:#4f8ef7;border-color:#4f8ef744">Upper</span>
+      <span class="count">4 exercises</span>
+    </summary>
+    <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Exercise</th><th>Weight</th><th>Sets×Reps</th><th>Note</th></tr></thead>
+      <tbody>
+<tr><td>Shoulder press</td><td>50 lbs</td><td>3×15</td><td class='note'></td></tr>
+<tr><td>Barbell bench press</td><td>25 lbs</td><td>3×10</td><td class='note'></td></tr>
+<tr><td>Back cable rowing</td><td>65 lbs</td><td>3×15</td><td class='note'></td></tr>
+<tr><td>Face pull</td><td>50 lbs</td><td>3×15</td><td class='note'></td></tr>
+      </tbody>
+    </table>
+    </div>
+  </details>
+
+  <details class="card more-hidden">
+    <summary>
+      <span class="date">2026-08-04</span>
+      <span class="day">Tuesday</span>
+      <span class="badge" style="background:#4f8ef722;color:#4f8ef7;border-color:#4f8ef744">Upper</span>
+      <span class="count">4 exercises</span>
+    </summary>
+    <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Exercise</th><th>Weight</th><th>Sets×Reps</th><th>Note</th></tr></thead>
+      <tbody>
+<tr><td>Shoulder press</td><td>50 lbs</td><td>3×15</td><td class='note'></td></tr>
+<tr><td>Barbell bench press</td><td>20 lbs</td><td>3×10</td><td class='note'></td></tr>
+<tr><td>Back cable rowing</td><td>65 lbs</td><td>3×15</td><td class='note'></td></tr>
+<tr><td>Face pull</td><td>50 lbs</td><td>3×15</td><td class='note'></td></tr>
+      </tbody>
+    </table>
+    </div>
+  </details>
+
+  <details class="card more-hidden">
+    <summary>
+      <span class="date">2026-07-31</span>
+      <span class="day">Friday</span>
+      <span class="badge" style="background:#4f8ef722;color:#4f8ef7;border-color:#4f8ef744">Upper</span>
+      <span class="count">3 exercises</span>
+    </summary>
+    <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Exercise</th><th>Weight</th><th>Sets×Reps</th><th>Note</th></tr></thead>
+      <tbody>
+<tr><td>Shoulder press</td><td>50 lbs</td><td>3×10</td><td class='note'></td></tr>
+<tr><td>Chest fly</td><td>55 lbs</td><td>3×15</td><td class='note'></td></tr>
+<tr><td>Lat pulldown</td><td>70 lbs</td><td>3×10</td><td class='note'></td></tr>
+      </tbody>
+    </table>
+    </div>
+  </details>
+
+  <details class="card more-hidden">
+    <summary>
+      <span class="date">2026-07-30</span>
+      <span class="day">Thursday</span>
+      <span class="badge" style="background:#f7934f22;color:#f7934f;border-color:#f7934f44">Lower</span>
+      <span class="count">3 exercises</span>
+    </summary>
+    <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Exercise</th><th>Weight</th><th>Sets×Reps</th><th>Note</th></tr></thead>
+      <tbody>
+<tr><td>* Goblet squat</td><td>30 lbs</td><td>3×10</td><td class='note'></td></tr>
+<tr><td>* Romanian deadlift <span class='grp'>(Hamstring/Glute)</span></td><td>66 lbs</td><td>3×15</td><td class='note'></td></tr>
+<tr><td>* Bulgarian split squat <span class='grp'>(Quad/Glute)</span></td><td>20 lbs</td><td>3×10</td><td class='note'></td></tr>
+      </tbody>
+    </table>
+    </div>
+  </details>
+
+  <details class="card more-hidden">
+    <summary>
+      <span class="date">2026-07-28</span>
+      <span class="day">Tuesday</span>
+      <span class="badge" style="background:#e3c04f22;color:#e3c04f;border-color:#e3c04f44">Full body</span>
+      <span class="count">4 exercises</span>
+    </summary>
+    <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Exercise</th><th>Weight</th><th>Sets×Reps</th><th>Note</th></tr></thead>
+      <tbody>
+<tr><td>Squat</td><td>44 lbs</td><td>3×10</td><td class='note'></td></tr>
+<tr><td>Supine bench press</td><td>20 lbs</td><td>3×10</td><td class='note'></td></tr>
+<tr><td>Back cable rowing</td><td>65 lbs</td><td>3×12</td><td class='note'></td></tr>
+<tr><td>Shoulder press</td><td>40 lbs</td><td>3×12</td><td class='note'></td></tr>
+      </tbody>
+    </table>
+    </div>
+  </details>
+
+  <details class="card more-hidden">
+    <summary>
+      <span class="date">2026-07-24</span>
+      <span class="day">Friday</span>
+      <span class="badge" style="background:#4f8ef722;color:#4f8ef7;border-color:#4f8ef744">Upper</span>
+      <span class="count">5 exercises</span>
+    </summary>
+    <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Exercise</th><th>Weight</th><th>Sets×Reps</th><th>Note</th></tr></thead>
+      <tbody>
+<tr><td>Barbell bench press</td><td>20 lbs</td><td>3×10</td><td class='note'></td></tr>
+<tr><td>Lat pulldown</td><td>65 lbs</td><td>3×15</td><td class='note'></td></tr>
+<tr><td>Face pull</td><td>50 lbs</td><td>3×15</td><td class='note'></td></tr>
+<tr><td>Back Hyperextension</td><td>-</td><td>3×15</td><td class='note'></td></tr>
+<tr><td>Bicep curl</td><td>10 lbs</td><td>3×12</td><td class='note'></td></tr>
+      </tbody>
+    </table>
+    </div>
+  </details>
+
+  <details class="card more-hidden">
+    <summary>
+      <span class="date">2026-07-21</span>
+      <span class="day">Tuesday</span>
+      <span class="badge" style="background:#4f8ef722;color:#4f8ef7;border-color:#4f8ef744">Upper</span>
+      <span class="count">3 exercises</span>
+    </summary>
+    <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Exercise</th><th>Weight</th><th>Sets×Reps</th><th>Note</th></tr></thead>
+      <tbody>
+<tr><td>Barbell bench press</td><td>20 lbs</td><td>3×10</td><td class='note'></td></tr>
+<tr><td>Machine Chest press</td><td>65 lbs</td><td>3×15</td><td class='note'></td></tr>
+<tr><td>Back cable rowing</td><td>65 lbs</td><td>3×15</td><td class='note'></td></tr>
+      </tbody>
+    </table>
+    </div>
+  </details>
+
+  <details class="card more-hidden">
+    <summary>
+      <span class="date">2026-07-20</span>
+      <span class="day">Monday</span>
+      <span class="badge" style="background:#f7934f22;color:#f7934f;border-color:#f7934f44">Lower</span>
+      <span class="count">3 exercises</span>
+    </summary>
+    <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Exercise</th><th>Weight</th><th>Sets×Reps</th><th>Note</th></tr></thead>
+      <tbody>
+<tr><td>Squat <span class='grp'>(Quad/Glute)</span></td><td>44 lbs</td><td>3×10</td><td class='note'></td></tr>
+<tr><td>* Romanian deadlift <span class='grp'>(Hamstring/Glute)</span></td><td>66 lbs</td><td>3×15</td><td class='note'></td></tr>
+<tr><td>* Seated calf raise</td><td>33 lbs</td><td>3×8</td><td class='note'></td></tr>
+      </tbody>
+    </table>
+    </div>
+  </details>
+
+  <details class="card more-hidden">
+    <summary>
+      <span class="date">2026-07-14</span>
+      <span class="day">Tuesday</span>
+      <span class="badge" style="background:#4f8ef722;color:#4f8ef7;border-color:#4f8ef744">Upper</span>
+      <span class="count">6 exercises</span>
+    </summary>
+    <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Exercise</th><th>Weight</th><th>Sets×Reps</th><th>Note</th></tr></thead>
+      <tbody>
+<tr><td>Pull up</td><td>60 lbs</td><td>3×15</td><td class='note'></td></tr>
+<tr><td>Supine bench press</td><td>20 lbs</td><td>3×10</td><td class='note'></td></tr>
+<tr><td>Chest fly</td><td>55 lbs</td><td>3×15</td><td class='note'></td></tr>
+<tr><td>Back cable rowing</td><td>65 lbs</td><td>3×15</td><td class='note'></td></tr>
+<tr><td>Face pull</td><td>50 lbs</td><td>3×15</td><td class='note'></td></tr>
+<tr><td>Cable tricep press down</td><td>40 lbs</td><td>3×10</td><td class='note'></td></tr>
+      </tbody>
+    </table>
+    </div>
+  </details>
+
+  <details class="card more-hidden">
+    <summary>
+      <span class="date">2026-07-12</span>
+      <span class="day">Sunday</span>
+      <span class="badge" style="background:#f7934f22;color:#f7934f;border-color:#f7934f44">Lower</span>
+      <span class="count">6 exercises</span>
+    </summary>
+    <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Exercise</th><th>Weight</th><th>Sets×Reps</th><th>Note</th></tr></thead>
+      <tbody>
+<tr><td>Squat <span class='grp'>(Quad/Glute)</span></td><td>44 lbs</td><td>3×10</td><td class='note'></td></tr>
+<tr><td>* Romanian deadlift <span class='grp'>(Hamstring/Glute)</span></td><td>66 lbs</td><td>3×15</td><td class='note'></td></tr>
+<tr><td>* Bulgarian split squat <span class='grp'>(Quad/Glute)</span></td><td>20 lbs</td><td>3×10</td><td class='note'></td></tr>
+<tr><td>Leg extension</td><td>60 lbs</td><td>3×15</td><td class='note'></td></tr>
+<tr><td>* Calf raise</td><td>-</td><td>3×10</td><td class='note'></td></tr>
+<tr><td>* Seated calf raise</td><td>33 lbs</td><td>3×15</td><td class='note'></td></tr>
+      </tbody>
+    </table>
+    </div>
+  </details>
+
+  <details class="card more-hidden">
+    <summary>
+      <span class="date">2026-07-10</span>
+      <span class="day">Friday</span>
+      <span class="badge" style="background:#4f8ef722;color:#4f8ef7;border-color:#4f8ef744">Upper</span>
+      <span class="count">4 exercises</span>
+    </summary>
+    <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Exercise</th><th>Weight</th><th>Sets×Reps</th><th>Note</th></tr></thead>
+      <tbody>
+<tr><td>Deadlift</td><td>30 lbs</td><td>3×10</td><td class='note'></td></tr>
+<tr><td>Back cable rowing</td><td>65 lbs</td><td>3×10</td><td class='note'></td></tr>
+<tr><td>Back Hyperextension</td><td>-</td><td>3×10</td><td class='note'></td></tr>
+<tr><td>Bicep curl</td><td>5 lbs</td><td>3×15</td><td class='note'></td></tr>
+      </tbody>
+    </table>
+    </div>
+  </details>
+
+  <details class="card more-hidden">
+    <summary>
+      <span class="date">2026-07-07</span>
+      <span class="day">Tuesday</span>
+      <span class="badge" style="background:#4f8ef722;color:#4f8ef7;border-color:#4f8ef744">Upper</span>
+      <span class="count">6 exercises</span>
+    </summary>
+    <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Exercise</th><th>Weight</th><th>Sets×Reps</th><th>Note</th></tr></thead>
+      <tbody>
+<tr><td>Barbell bench press</td><td>25 lbs</td><td>3×10</td><td class='note'></td></tr>
+<tr><td>Supine bench press</td><td>20 lbs</td><td>3×10</td><td class='note'></td></tr>
+<tr><td>Machine Chest press</td><td>65 lbs</td><td>3×15</td><td class='note'></td></tr>
+<tr><td>Lat pulldown</td><td>65 lbs</td><td>3×15</td><td class='note'></td></tr>
+<tr><td>Face pull</td><td>50 lbs</td><td>3×15</td><td class='note'></td></tr>
+<tr><td>Cable tricep press down</td><td>40 lbs</td><td>3×10</td><td class='note'></td></tr>
+      </tbody>
+    </table>
+    </div>
+  </details>
+
+  <details class="card more-hidden">
+    <summary>
+      <span class="date">2026-07-03</span>
+      <span class="day">Friday</span>
+      <span class="badge" style="background:#f7934f22;color:#f7934f;border-color:#f7934f44">Lower</span>
+      <span class="count">5 exercises</span>
+    </summary>
+    <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Exercise</th><th>Weight</th><th>Sets×Reps</th><th>Note</th></tr></thead>
+      <tbody>
+<tr><td>Squat <span class='grp'>(Quad/Glute)</span></td><td>44 lbs</td><td>3×10</td><td class='note'></td></tr>
+<tr><td>* Romanian deadlift <span class='grp'>(Hamstring/Glute)</span></td><td>33 lbs</td><td>3×15</td><td class='note'></td></tr>
+<tr><td>Leg extension</td><td>55 lbs</td><td>3×15</td><td class='note'></td></tr>
+<tr><td>* Calf raise</td><td>-</td><td>3×8</td><td class='note'>เน้น Gastrocnemius</td></tr>
+<tr><td>* Seated calf raise</td><td>4.5 lbs</td><td>3×8</td><td class='note'>เน้น Soleus</td></tr>
+      </tbody>
+    </table>
+    </div>
+  </details>
+
+  <details class="card more-hidden">
+    <summary>
+      <span class="date">2026-06-30</span>
+      <span class="day">Tuesday</span>
+      <span class="badge" style="background:#4f8ef722;color:#4f8ef7;border-color:#4f8ef744">Upper</span>
+      <span class="count">5 exercises</span>
+    </summary>
+    <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Exercise</th><th>Weight</th><th>Sets×Reps</th><th>Note</th></tr></thead>
+      <tbody>
+<tr><td>Pull up</td><td>-</td><td>-</td><td class='note'></td></tr>
+<tr><td>Supine bench press</td><td>20 lbs</td><td>3×10</td><td class='note'></td></tr>
+<tr><td>Chest fly</td><td>55 lbs</td><td>3×15</td><td class='note'></td></tr>
+<tr><td>Back cable rowing</td><td>-</td><td>-</td><td class='note'></td></tr>
+<tr><td>Lat pulldown</td><td>-</td><td>-</td><td class='note'></td></tr>
+      </tbody>
+    </table>
+    </div>
+  </details>
+
+  <details class="card more-hidden">
+    <summary>
+      <span class="date">2026-06-26</span>
+      <span class="day">Friday</span>
+      <span class="badge" style="background:#4f8ef722;color:#4f8ef7;border-color:#4f8ef744">Upper</span>
+      <span class="count">2 exercises</span>
+    </summary>
+    <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Exercise</th><th>Weight</th><th>Sets×Reps</th><th>Note</th></tr></thead>
+      <tbody>
+<tr><td>Overhead face pull</td><td>66 lbs</td><td>3×15</td><td class='note'></td></tr>
+<tr><td>Squat</td><td>53 lbs</td><td>3×10</td><td class='note'></td></tr>
+      </tbody>
+    </table>
+    </div>
+  </details>
+
+  <details class="card more-hidden">
+    <summary>
+      <span class="date">2026-06-23</span>
+      <span class="day">Tuesday</span>
+      <span class="badge" style="background:#4f8ef722;color:#4f8ef7;border-color:#4f8ef744">Upper</span>
+      <span class="count">5 exercises</span>
+    </summary>
+    <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Exercise</th><th>Weight</th><th>Sets×Reps</th><th>Note</th></tr></thead>
+      <tbody>
+<tr><td>Shoulder press</td><td>40 lbs</td><td>3×15</td><td class='note'></td></tr>
+<tr><td>Supine bench press</td><td>20 lbs</td><td>3×10</td><td class='note'></td></tr>
+<tr><td>Machine Chest press</td><td>-</td><td>-</td><td class='note'></td></tr>
+<tr><td>Face pull</td><td>40 lbs</td><td>3×15</td><td class='note'></td></tr>
+<tr><td>Back Hyperextension</td><td>-</td><td>3×15</td><td class='note'>bodyweight</td></tr>
+      </tbody>
+    </table>
+    </div>
+  </details>
+
+  <details class="card more-hidden">
+    <summary>
+      <span class="date">2026-06-19</span>
+      <span class="day">Friday</span>
+      <span class="badge" style="background:#f7934f22;color:#f7934f;border-color:#f7934f44">Lower</span>
+      <span class="count">2 exercises</span>
+    </summary>
+    <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Exercise</th><th>Weight</th><th>Sets×Reps</th><th>Note</th></tr></thead>
+      <tbody>
+<tr><td>Squat <span class='grp'>(Quad/Glute)</span></td><td>44 lbs</td><td>3×10</td><td class='note'></td></tr>
+<tr><td>* Romanian deadlift <span class='grp'>(Hamstring/Glute)</span></td><td>33 lbs</td><td>3×15</td><td class='note'></td></tr>
+      </tbody>
+    </table>
+    </div>
+  </details>
+
+  <details class="card more-hidden">
+    <summary>
+      <span class="date">2026-06-18</span>
+      <span class="day">Thursday</span>
+      <span class="badge" style="background:#4f8ef722;color:#4f8ef7;border-color:#4f8ef744">Upper</span>
+      <span class="count">3 exercises</span>
+    </summary>
+    <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Exercise</th><th>Weight</th><th>Sets×Reps</th><th>Note</th></tr></thead>
+      <tbody>
+<tr><td>Dumbbell shoulder press</td><td>16.5 lbs</td><td>3×15</td><td class='note'></td></tr>
+<tr><td>Machine shoulder press</td><td>45 lbs</td><td>3× <span class='rbs'>15/10/10</span></td><td class='note'></td></tr>
+<tr><td>Barbell curl</td><td>11 lbs</td><td>3×15</td><td class='note'></td></tr>
+      </tbody>
+    </table>
+    </div>
+  </details>
+
+  <details class="card more-hidden">
+    <summary>
+      <span class="date">2026-06-16</span>
+      <span class="day">Tuesday</span>
+      <span class="badge" style="background:#4f8ef722;color:#4f8ef7;border-color:#4f8ef744">Upper</span>
+      <span class="count">5 exercises</span>
+    </summary>
+    <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Exercise</th><th>Weight</th><th>Sets×Reps</th><th>Note</th></tr></thead>
+      <tbody>
+<tr><td>Pull up</td><td>-</td><td>-</td><td class='note'></td></tr>
+<tr><td>Supine bench press</td><td>20 lbs</td><td>3×10</td><td class='note'></td></tr>
+<tr><td>Machine Chest press</td><td>-</td><td>-</td><td class='note'></td></tr>
+<tr><td>Back cable rowing</td><td>55 lbs</td><td>3×15</td><td class='note'></td></tr>
+<tr><td>Lat pulldown</td><td>-</td><td>-</td><td class='note'></td></tr>
+      </tbody>
+    </table>
+    </div>
+  </details>
+
+  <details class="card more-hidden">
+    <summary>
+      <span class="date">2026-06-13</span>
+      <span class="day">Saturday</span>
+      <span class="badge" style="background:#f7934f22;color:#f7934f;border-color:#f7934f44">Lower</span>
+      <span class="count">5 exercises</span>
+    </summary>
+    <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Exercise</th><th>Weight</th><th>Sets×Reps</th><th>Note</th></tr></thead>
+      <tbody>
+<tr><td>Squat <span class='grp'>(Quad/Glute)</span></td><td>37.5 lbs</td><td>3×15</td><td class='note'></td></tr>
+<tr><td>* Romanian deadlift <span class='grp'>(Hamstring/Glute)</span></td><td>33 lbs</td><td>3×15</td><td class='note'></td></tr>
+<tr><td>Leg extension</td><td>55 lbs</td><td>3×15</td><td class='note'></td></tr>
+<tr><td>* Calf raise</td><td>-</td><td>3×8</td><td class='note'>เน้น Gastrocnemius</td></tr>
+<tr><td>* Seated calf raise</td><td>4.5 lbs</td><td>3×15</td><td class='note'>เน้น Soleus</td></tr>
+      </tbody>
+    </table>
+    </div>
+  </details>
+
+  <details class="card more-hidden">
+    <summary>
+      <span class="date">2026-06-12</span>
+      <span class="day">Friday</span>
+      <span class="badge" style="background:#4f8ef722;color:#4f8ef7;border-color:#4f8ef744">Upper</span>
+      <span class="count">3 exercises</span>
+    </summary>
+    <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Exercise</th><th>Weight</th><th>Sets×Reps</th><th>Note</th></tr></thead>
+      <tbody>
+<tr><td>Lat pulldown</td><td>-</td><td>-</td><td class='note'></td></tr>
+<tr><td>Back cable pull</td><td>55 lbs</td><td>3×15</td><td class='note'></td></tr>
+<tr><td>Dumbbell curl</td><td>22 lbs</td><td>3×15</td><td class='note'></td></tr>
+      </tbody>
+    </table>
+    </div>
+  </details>
+
+  <details class="card more-hidden">
+    <summary>
+      <span class="date">2026-06-09</span>
+      <span class="day">Monday</span>
+      <span class="badge" style="background:#4f8ef722;color:#4f8ef7;border-color:#4f8ef744">Upper</span>
+      <span class="count">4 exercises</span>
+    </summary>
+    <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Exercise</th><th>Weight</th><th>Sets×Reps</th><th>Note</th></tr></thead>
+      <tbody>
+<tr><td>Pull up</td><td>-</td><td>-</td><td class='note'></td></tr>
+<tr><td>Shoulder press</td><td>-</td><td>-</td><td class='note'>เจ็บหลังแขน</td></tr>
+<tr><td>Supine bench press</td><td>-</td><td>-</td><td class='note'></td></tr>
+<tr><td>Machine Chest press</td><td>-</td><td>-</td><td class='note'></td></tr>
+      </tbody>
+    </table>
+    </div>
+  </details><button class="view-more">View more</button></section>
+      </div>
+
+      <div id="view-cardio" class="view">
+        <div class="page-intro"><h2>Cardio</h2><p>Running and other cardio sessions, with distance and weekly momentum at a glance.</p></div>
+        <div class="statgrid focus-stats"><div class="stat"><div class="k">Cardio sessions</div><div class="v">4</div><div class="d">last 30 days</div></div><div class="stat"><div class="k">Distance</div><div class="v">23.0 km</div><div class="d">last 30 days</div></div><div class="stat"><div class="k">This week</div><div class="v">5.0 km</div><div class="d">Mon → today</div></div><div class="stat"><div class="k">All-time sessions</div><div class="v">58</div><div class="d">in your log</div></div></div>
+        <section class="focus-section"><div class="section-title">Recent sessions</div>
+  <details class="card">
+    <summary>
+      <span class="date">2026-10-02</span>
+      <span class="day">Friday</span>
+      <span class="badge" style="background:#4ff7a022;color:#4ff7a0;border-color:#4ff7a044">Running</span>
+      <span class="count">40 min · 5.01 km · pace 7:54 min/km</span>
+    </summary>
+    <div class="class-detail">
+      <span class="class-name">40 min · 5.01 km · pace 7:54 min/km · Easy aerobic · return after 14 days off (knee) · avg HR 129 = lowest of any 5 km run (prior 5 km: 135-144) · Strong / Somewhat Hard<br><small style='color:#7d8590'>❤ 129 bpm · 🔥 250 kcal</small></span>
+    </div>
+  </details>
+
+  <details class="card">
+    <summary>
+      <span class="date">2026-09-18</span>
+      <span class="day">Friday</span>
+      <span class="badge" style="background:#4ff7a022;color:#4ff7a0;border-color:#4ff7a044">Running</span>
+      <span class="count">29 min · 5.03 km · pace 5:49 min/km</span>
+    </summary>
+    <div class="class-detail">
+      <span class="class-name">29 min · 5.03 km · pace 5:49 min/km · Tempo (intended) · treadmill · Strong / Somewhat Hard<br><small style='color:#7d8590'>❤ 161 bpm · 🔥 302 kcal</small></span>
+    </div>
+  </details>
+
+  <details class="card">
+    <summary>
+      <span class="date">2026-09-06</span>
+      <span class="day">Sunday</span>
+      <span class="badge" style="background:#4ff7a022;color:#4ff7a0;border-color:#4ff7a044">Running</span>
+      <span class="count">1h 14min · 9.26 km · pace 7:57 min/km</span>
+    </summary>
+    <div class="class-detail">
+      <span class="class-name">1h 14min · 9.26 km · pace 7:57 min/km · Base (Low Aerobic), Strong / Somewhat Hard<br><small style='color:#7d8590'>❤ 132 bpm · 🔥 445 kcal</small></span>
+    </div>
+  </details>
+
+  <details class="card">
+    <summary>
+      <span class="date">2026-09-03</span>
+      <span class="day">Thursday</span>
+      <span class="badge" style="background:#4ff7a022;color:#4ff7a0;border-color:#4ff7a044">Running</span>
+      <span class="count">30 min · 3.68 km · pace 8:09 min/km</span>
+    </summary>
+    <div class="class-detail">
+      <span class="class-name">30 min · 3.68 km · pace 8:09 min/km · Recovery (Low Aerobic), Normal / Moderate<br><small style='color:#7d8590'>❤ 131 bpm · 🔥 200 kcal</small></span>
+    </div>
+  </details>
+
+  <details class="card">
+    <summary>
+      <span class="date">2026-09-02</span>
+      <span class="day">Wednesday</span>
+      <span class="badge" style="background:#4ff7a022;color:#4ff7a0;border-color:#4ff7a044">Running</span>
+      <span class="count">1h 26min · 12.24 km · pace 7:03 min/km</span>
+    </summary>
+    <div class="class-detail">
+      <span class="class-name">1h 26min · 12.24 km · pace 7:03 min/km · Base (Low Aerobic), Strong / Somewhat Hard<br><small style='color:#7d8590'>❤ 132 bpm · 🔥 512 kcal</small></span>
+    </div>
+  </details>
+
+  <details class="card">
+    <summary>
+      <span class="date">2026-08-28</span>
+      <span class="day">Friday</span>
+      <span class="badge" style="background:#33c3f022;color:#33c3f0;border-color:#33c3f044">Cycling</span>
+      <span class="count">20 min</span>
+    </summary>
+    <div class="class-detail">
+      <span class="class-name">20 min · Recovery (Low Aerobic), Strong / Moderate<br><small style='color:#7d8590'>❤ 129 bpm</small></span>
+    </div>
+  </details>
+
+  <details class="card">
+    <summary>
+      <span class="date">2026-08-27</span>
+      <span class="day">Thursday</span>
+      <span class="badge" style="background:#4ff7a022;color:#4ff7a0;border-color:#4ff7a044">Running</span>
+      <span class="count">1h 0min · 8.16 km · pace 7:22 min/km</span>
+    </summary>
+    <div class="class-detail">
+      <span class="class-name">1h 0min · 8.16 km · pace 7:22 min/km · Base (Low Aerobic), Strong / Somewhat Hard<br><small style='color:#7d8590'>❤ 139 bpm · 🔥 420 kcal</small></span>
+    </div>
+  </details>
+
+  <details class="card">
+    <summary>
+      <span class="date">2026-08-25</span>
+      <span class="day">Tuesday</span>
+      <span class="badge" style="background:#4ff7a022;color:#4ff7a0;border-color:#4ff7a044">Running</span>
+      <span class="count">37 min · 5.02 km · pace 7:22 min/km</span>
+    </summary>
+    <div class="class-detail">
+      <span class="class-name">37 min · 5.02 km · pace 7:22 min/km · Base (Low Aerobic), Strong<br><small style='color:#7d8590'>❤ 144 bpm · 🔥 301 kcal</small></span>
+    </div>
+  </details>
+
+  <details class="card">
+    <summary>
+      <span class="date">2026-08-23</span>
+      <span class="day">Sunday</span>
+      <span class="badge" style="background:#4ff7a022;color:#4ff7a0;border-color:#4ff7a044">Running</span>
+      <span class="count">36 min · 5.01 km · pace 7:06 min/km</span>
+    </summary>
+    <div class="class-detail">
+      <span class="class-name">36 min · 5.01 km · pace 7:06 min/km · Base (Low Aerobic), Somewhat Hard<br><small style='color:#7d8590'>❤ 135 bpm · 🔥 249 kcal</small></span>
+    </div>
+  </details>
+
+  <details class="card">
+    <summary>
+      <span class="date">2026-08-21</span>
+      <span class="day">Friday</span>
+      <span class="badge" style="background:#4ff7a022;color:#4ff7a0;border-color:#4ff7a044">Running</span>
+      <span class="count">37 min · 5.03 km · pace 7:26 min/km</span>
+    </summary>
+    <div class="class-detail">
+      <span class="class-name">37 min · 5.03 km · pace 7:26 min/km<br><small style='color:#7d8590'>❤ 148 bpm · 🔥 322 kcal</small></span>
+    </div>
+  </details>
+
+  <details class="card more-hidden">
+    <summary>
+      <span class="date">2026-08-17</span>
+      <span class="day">Monday</span>
+      <span class="badge" style="background:#4ff7a022;color:#4ff7a0;border-color:#4ff7a044">Running</span>
+      <span class="count">38 min · 5.02 km · pace 7:29 min/km</span>
+    </summary>
+    <div class="class-detail">
+      <span class="class-name">38 min · 5.02 km · pace 7:29 min/km<br><small style='color:#7d8590'>❤ 139 bpm · 🔥 282 kcal</small></span>
+    </div>
+  </details>
+
+  <details class="card more-hidden">
+    <summary>
+      <span class="date">2026-08-13</span>
+      <span class="day">Thursday</span>
+      <span class="badge" style="background:#4ff7a022;color:#4ff7a0;border-color:#4ff7a044">Running</span>
+      <span class="count">38 min · 5.02 km · pace 7:29 min/km</span>
+    </summary>
+    <div class="class-detail">
+      <span class="class-name">38 min · 5.02 km · pace 7:29 min/km<br><small style='color:#7d8590'>❤ 139 bpm · 🔥 281 kcal</small></span>
+    </div>
+  </details>
+
+  <details class="card more-hidden">
+    <summary>
+      <span class="date">2026-08-12</span>
+      <span class="day">Wednesday</span>
+      <span class="badge" style="background:#4ff7a022;color:#4ff7a0;border-color:#4ff7a044">Running</span>
+      <span class="count">24 min · 3.02 km · pace 8:06 min/km</span>
+    </summary>
+    <div class="class-detail">
+      <span class="class-name">24 min · 3.02 km · pace 8:06 min/km<br><small style='color:#7d8590'>❤ 148 bpm · 🔥 212 kcal</small></span>
+    </div>
+  </details>
+
+  <details class="card more-hidden">
+    <summary>
+      <span class="date">2026-08-08</span>
+      <span class="day">Saturday</span>
+      <span class="badge" style="background:#4ff7a022;color:#4ff7a0;border-color:#4ff7a044">Running</span>
+      <span class="count">30 min · 4.02 km · pace 7:30 min/km</span>
+    </summary>
+    <div class="class-detail">
+      <span class="class-name">30 min · 4.02 km · pace 7:30 min/km<br><small style='color:#7d8590'>❤ 146 bpm · 🔥 257 kcal</small></span>
+    </div>
+  </details>
+
+  <details class="card more-hidden">
+    <summary>
+      <span class="date">2026-08-06</span>
+      <span class="day">Thursday</span>
+      <span class="badge" style="background:#4ff7a022;color:#4ff7a0;border-color:#4ff7a044">Running</span>
+      <span class="count">30 min · 4 km</span>
+    </summary>
+    <div class="class-detail">
+      <span class="class-name">30 min · 4 km<br><small style='color:#7d8590'>❤ 140 bpm · 🔥 200 kcal</small></span>
+    </div>
+  </details>
+
+  <details class="card more-hidden">
+    <summary>
+      <span class="date">2026-07-30</span>
+      <span class="day">Thursday</span>
+      <span class="badge" style="background:#4ff7a022;color:#4ff7a0;border-color:#4ff7a044">Running</span>
+      <span class="count">16 min · 2.02 km · pace 7.51 min/km</span>
+    </summary>
+    <div class="class-detail">
+      <span class="class-name">16 min · 2.02 km · pace 7.51 min/km<br><small style='color:#7d8590'>❤ 128 bpm · 🔥 106 kcal</small></span>
+    </div>
+  </details>
+
+  <details class="card more-hidden">
+    <summary>
+      <span class="date">2026-07-16</span>
+      <span class="day">Thursday</span>
+      <span class="badge" style="background:#4ff7a022;color:#4ff7a0;border-color:#4ff7a044">Running</span>
+      <span class="count">1 min · 9.43 km · pace 8.41 min/km</span>
+    </summary>
+    <div class="class-detail">
+      <span class="class-name">1 min · 9.43 km · pace 8.41 min/km<br><small style='color:#7d8590'>❤ 164 bpm · 🔥 638 kcal</small></span>
+    </div>
+  </details>
+
+  <details class="card more-hidden">
+    <summary>
+      <span class="date">2026-07-14</span>
+      <span class="day">Tuesday</span>
+      <span class="badge" style="background:#a04ff722;color:#a04ff7;border-color:#a04ff744">Class</span>
+      <span class="count">Breath Work</span>
+    </summary>
+    <div class="class-detail">
+      <span class="class-name">Breath Work</span>
+      <span class='class-duration'>· 60 minutes</span>
+    </div>
+  </details>
+
+  <details class="card more-hidden">
+    <summary>
+      <span class="date">2026-07-11</span>
+      <span class="day">Saturday</span>
+      <span class="badge" style="background:#4ff7a022;color:#4ff7a0;border-color:#4ff7a044">Running</span>
+      <span class="count">1h 5min · 9.17 km · pace 7:04 min/km</span>
+    </summary>
+    <div class="class-detail">
+      <span class="class-name">1h 5min · 9.17 km · pace 7:04 min/km · Nakhon Ratchasima<br><small style='color:#7d8590'>❤ 156 bpm · 🔥 584 kcal</small></span>
+    </div>
+  </details>
+
+  <details class="card more-hidden">
+    <summary>
+      <span class="date">2026-07-08</span>
+      <span class="day">Wednesday</span>
+      <span class="badge" style="background:#4ff7a022;color:#4ff7a0;border-color:#4ff7a044">Running</span>
+      <span class="count">35 min · 5.17 km · pace 6:49 min/km</span>
+    </summary>
+    <div class="class-detail">
+      <span class="class-name">35 min · 5.17 km · pace 6:49 min/km · Treadmill · Interval 40×8<br><small style='color:#7d8590'>❤ 152 bpm · 🔥 292 kcal</small></span>
+    </div>
+  </details>
+
+  <details class="card more-hidden">
+    <summary>
+      <span class="date">2026-07-07</span>
+      <span class="day">Tuesday</span>
+      <span class="badge" style="background:#a04ff722;color:#a04ff7;border-color:#a04ff744">Class</span>
+      <span class="count">Core Body</span>
+    </summary>
+    <div class="class-detail">
+      <span class="class-name">Core Body</span>
+      <span class='class-duration'>· 30 minutes</span>
+    </div>
+  </details>
+
+  <details class="card more-hidden">
+    <summary>
+      <span class="date">2026-07-07</span>
+      <span class="day">Tuesday</span>
+      <span class="badge" style="background:#a04ff722;color:#a04ff7;border-color:#a04ff744">Class</span>
+      <span class="count">Breath Work</span>
+    </summary>
+    <div class="class-detail">
+      <span class="class-name">Breath Work</span>
+      <span class='class-duration'>· 60 minutes</span>
+    </div>
+  </details>
+
+  <details class="card more-hidden">
+    <summary>
+      <span class="date">2026-07-04</span>
+      <span class="day">Saturday</span>
+      <span class="badge" style="background:#4ff7a022;color:#4ff7a0;border-color:#4ff7a044">Running</span>
+      <span class="count">2h 5min · 17.02 km · pace 7:21 min/km</span>
+    </summary>
+    <div class="class-detail">
+      <span class="class-name">2h 5min · 17.02 km · pace 7:21 min/km · Treadmill<br><small style='color:#7d8590'>❤ 149 bpm · 🔥 856 kcal</small></span>
+    </div>
+  </details>
+
+  <details class="card more-hidden">
+    <summary>
+      <span class="date">2026-06-30</span>
+      <span class="day">Tuesday</span>
+      <span class="badge" style="background:#a04ff722;color:#a04ff7;border-color:#a04ff744">Class</span>
+      <span class="count">Core Body</span>
+    </summary>
+    <div class="class-detail">
+      <span class="class-name">Core Body</span>
+      <span class='class-duration'>· 30 minutes</span>
+    </div>
+  </details>
+
+  <details class="card more-hidden">
+    <summary>
+      <span class="date">2026-06-23</span>
+      <span class="day">Tuesday</span>
+      <span class="badge" style="background:#a04ff722;color:#a04ff7;border-color:#a04ff744">Class</span>
+      <span class="count">Breath Work</span>
+    </summary>
+    <div class="class-detail">
+      <span class="class-name">Breath Work</span>
+      <span class='class-duration'>· 60 minutes</span>
+    </div>
+  </details>
+
+  <details class="card more-hidden">
+    <summary>
+      <span class="date">2026-06-20</span>
+      <span class="day">Saturday</span>
+      <span class="badge" style="background:#4ff7a022;color:#4ff7a0;border-color:#4ff7a044">Running</span>
+      <span class="count">1h 36min · 12.53 km · pace 7:41 min/km</span>
+    </summary>
+    <div class="class-detail">
+      <span class="class-name">1h 36min · 12.53 km · pace 7:41 min/km · Zone 2</span>
+    </div>
+  </details>
+
+  <details class="card more-hidden">
+    <summary>
+      <span class="date">2026-06-19</span>
+      <span class="day">Friday</span>
+      <span class="badge" style="background:#4ff7a022;color:#4ff7a0;border-color:#4ff7a044">Running</span>
+      <span class="count"></span>
+    </summary>
+    <div class="class-detail">
+      <span class="class-name">Interval 400m × 5</span>
+    </div>
+  </details>
+
+  <details class="card more-hidden">
+    <summary>
+      <span class="date">2026-06-16</span>
+      <span class="day">Tuesday</span>
+      <span class="badge" style="background:#a04ff722;color:#a04ff7;border-color:#a04ff744">Class</span>
+      <span class="count">Core Body</span>
+    </summary>
+    <div class="class-detail">
+      <span class="class-name">Core Body</span>
+      <span class='class-duration'>· 30 minutes</span>
+    </div>
+  </details>
+
+  <details class="card more-hidden">
+    <summary>
+      <span class="date">2026-06-16</span>
+      <span class="day">Tuesday</span>
+      <span class="badge" style="background:#a04ff722;color:#a04ff7;border-color:#a04ff744">Class</span>
+      <span class="count">Breath Work</span>
+    </summary>
+    <div class="class-detail">
+      <span class="class-name">Breath Work</span>
+      <span class='class-duration'>· 60 minutes</span>
+    </div>
+  </details>
+
+  <details class="card more-hidden">
+    <summary>
+      <span class="date">2026-06-12</span>
+      <span class="day">Friday</span>
+      <span class="badge" style="background:#4ff7a022;color:#4ff7a0;border-color:#4ff7a044">Running</span>
+      <span class="count">30 min</span>
+    </summary>
+    <div class="class-detail">
+      <span class="class-name">30 min · Zone 2</span>
+    </div>
+  </details>
+
+  <details class="card more-hidden">
+    <summary>
+      <span class="date">2026-06-09</span>
+      <span class="day">Monday</span>
+      <span class="badge" style="background:#a04ff722;color:#a04ff7;border-color:#a04ff744">Class</span>
+      <span class="count">Core Body</span>
+    </summary>
+    <div class="class-detail">
+      <span class="class-name">Core Body</span>
+      <span class='class-duration'>· 60 minutes</span>
+    </div>
+  </details><button class="view-more">View more</button></section>
       </div>
 
       <div id="view-templates" class="view">
@@ -2835,14 +2791,9 @@
         <div style="height:9rem"></div>
       </div>
 
-      <footer>Updated 2026-10-02 19:08 (Bangkok)</footer>
+      <footer>Updated 2026-10-03 00:28 (Bangkok)</footer>
     </div>
   </div>
-
-  <nav class="bmob">
-    <button class="on" data-view="dashboard"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>Dashboard</button>
-    <button data-view="templates"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M3 9h18M8 2v4M16 2v4"/></svg>Plan</button>
-  </nav>
 
   <div id="savebar">
     <span id="savecount"></span>
@@ -2912,12 +2863,9 @@
       return items;
     }
 
-    // Keep the save bar clear of the mobile bottom nav (nav stays at the very
-    // bottom, the bar floats just above it) so both stay tappable.
+    // The page now uses one top navigation on every viewport.
     function syncNavHeight() {
-      const nav = document.querySelector('.bmob');
-      const shown = nav && getComputedStyle(nav).display !== 'none';
-      document.documentElement.style.setProperty('--nav-h', (shown ? nav.offsetHeight : 0) + 'px');
+      document.documentElement.style.setProperty('--nav-h', '0px');
     }
     syncNavHeight();
     window.addEventListener('resize', syncNavHeight);
@@ -3127,32 +3075,23 @@
       }));
 </script>
   <script>
-    var views = ['dashboard','templates'];
-    var titles = {'dashboard':'Dashboard','templates':'Plan'};
+    var views = ['weight','cardio','templates'];
+    var titles = {'weight':'Weight Training','cardio':'Cardio','templates':'Plan'};
     function showView(v) {
       views.forEach(function(x) {
         document.getElementById('view-' + x).classList.toggle('on', x === v);
       });
-      document.querySelectorAll('.side a,.bmob button').forEach(function(el) {
+      document.querySelectorAll('.top-nav a').forEach(function(el) {
         el.classList.toggle('on', el.dataset.view === v);
       });
       var t = document.getElementById('page-title');
       if (t) t.textContent = titles[v] || 'Log';
+      history.replaceState(null, '', '#' + v);
     }
-    function closeMenu() {
-      document.querySelector('.side').classList.remove('open');
-      document.getElementById('overlay').classList.remove('show');
-    }
-    document.getElementById('menu-btn').addEventListener('click', function() {
-      document.querySelector('.side').classList.toggle('open');
-      document.getElementById('overlay').classList.toggle('show');
-    });
-    document.getElementById('overlay').addEventListener('click', closeMenu);
-    document.querySelectorAll('.side a,.bmob button[data-view]').forEach(function(el) {
+    document.querySelectorAll('.top-nav a').forEach(function(el) {
       el.addEventListener('click', function(e) {
         e.preventDefault();
         if (el.dataset.view) showView(el.dataset.view);
-        closeMenu();
       });
     });
     document.querySelectorAll('.btn[data-go]').forEach(function(b) {
@@ -3170,7 +3109,7 @@
       });
     });
     // restore last view
-    var last = localStorage.getItem('gr_view');
+    var last = location.hash.slice(1);
     if (last && views.indexOf(last) >= 0) showView(last);
 
     // pull-to-refresh

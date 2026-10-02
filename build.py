@@ -137,10 +137,11 @@ def build_card_html(entry):
         note = entry.get("note", "")
         parts = []
         if duration:
-            h, m = divmod(duration, 60)
+            h, m = divmod(int(round(duration)), 60)
             parts.append(f"{h}h {m}min" if h else f"{m} min")
         if distance:  parts.append(f"{distance} km")
         if pace:      parts.append(f"pace {pace}")
+        summary_str = " · ".join(parts)
         if note:      parts.append(note)
         detail_str = " · ".join(parts)
         extra_parts = []
@@ -154,7 +155,7 @@ def build_card_html(entry):
       <span class="date">{date}</span>
       <span class="day">{day}</span>
       <span class="badge" style="background:{color}22;color:{color};border-color:{color}44">{workout_type}</span>
-      <span class="count">{detail_str}</span>
+      <span class="count">{summary_str}</span>
     </summary>
     <div class="class-detail">
       <span class="class-name">{detail_body}</span>
@@ -769,12 +770,9 @@ SAVE_SCRIPT = """
       return items;
     }
 
-    // Keep the save bar clear of the mobile bottom nav (nav stays at the very
-    // bottom, the bar floats just above it) so both stay tappable.
+    // The page now uses one top navigation on every viewport.
     function syncNavHeight() {
-      const nav = document.querySelector('.bmob');
-      const shown = nav && getComputedStyle(nav).display !== 'none';
-      document.documentElement.style.setProperty('--nav-h', (shown ? nav.offsetHeight : 0) + 'px');
+      document.documentElement.style.setProperty('--nav-h', '0px');
     }
     syncNavHeight();
     window.addEventListener('resize', syncNavHeight);
@@ -1024,17 +1022,28 @@ def compute_summary(entries, raw_entries):
     }
 
 
-def build_statgrid(entries, raw_entries):
+def build_focus_statgrid(entries, raw_entries, templates, focus):
     s = compute_summary(entries, raw_entries)
-    dist_disp = f"{s['distance']:.1f}" if s["distance"] else "0"
-    return f"""
-    <div class="statgrid">
-      <div class="stat"><div class="k">Last 30 days</div><div class="v">{s['last30']}</div><div class="d">total sessions</div></div>
-      <div class="stat"><div class="k">Weight training</div><div class="v">{s['weight']}</div><div class="d">sessions · 30d</div></div>
-      <div class="stat"><div class="k">Cardio</div><div class="v">{s['cardio']}</div><div class="d">sessions · 30d</div></div>
-      <div class="stat"><div class="k">Run distance</div><div class="v">{dist_disp}&nbsp;km</div><div class="d">last 30 days</div></div>
-      <div class="stat stat-week"><div class="k">Run · this week</div><div class="v">{s['run_week']}&nbsp;km</div><div class="d">Mon → today</div></div>
-    </div>"""
+    history_count = len(collect_progress(raw_entries, templates))
+    if focus == "weight":
+        stats = [
+            ("Last 30 days", s["last30"], "total sessions"),
+            ("Weight training", s["weight"], "sessions · 30d"),
+            ("Exercises tracked", history_count, "with progress data"),
+            ("All-time sessions", s["total"], "in your log"),
+        ]
+    else:
+        stats = [
+            ("Cardio sessions", s["cardio"], "last 30 days"),
+            ("Distance", f"{s['distance']:.1f}\u00a0km", "last 30 days"),
+            ("This week", f"{s['run_week']:.1f}\u00a0km", "Mon → today"),
+            ("All-time sessions", s["total"], "in your log"),
+        ]
+    cards = "".join(
+        f'<div class="stat"><div class="k">{label}</div><div class="v">{value}</div><div class="d">{detail}</div></div>'
+        for label, value, detail in stats
+    )
+    return f'<div class="statgrid focus-stats">{cards}</div>'
 
 
 STYLE = """
@@ -1052,45 +1061,26 @@ STYLE = """
   a{color:inherit;text-decoration:none}
   .layout{min-height:100vh}
 
-  /* ---- Slide-out drawer (replaces desktop sidebar) ---- */
-  .side{position:fixed;top:0;left:0;bottom:0;width:250px;background:var(--panel);border-right:1px solid var(--line);padding:16px 12px calc(16px + env(safe-area-inset-bottom));display:flex;flex-direction:column;gap:2px;transform:translateX(-105%);transition:transform .22s ease;z-index:60;overflow:auto}
-  .side.open{transform:translateX(0)}
-  .side .brand{display:flex;align-items:center;gap:9px;padding:4px 10px 18px;font-weight:700;font-size:13.5px;letter-spacing:-.01em}
-  .side .brand .logo{width:20px;height:20px;border-radius:6px;background:linear-gradient(135deg,var(--accent),var(--accent2))}
-  .side a{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:8px;color:var(--mut);font-size:13px;font-weight:550}
-  .side a svg{width:16px;height:16px;flex:none}
-  .side a.on{background:var(--hover);color:var(--ink)}
-  .side a:hover{background:var(--hover);color:var(--ink)}
-  .side hr{border:none;border-top:1px solid var(--line);margin:12px 8px}
-  .side .foot{padding:10px 12px;font-size:10.5px;color:var(--dim);margin-top:auto}
-  .side .foot b{display:block;color:var(--mut);font-weight:600}
-  .overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);opacity:0;pointer-events:none;transition:opacity .2s;z-index:55}
-  .overlay.show{opacity:1;pointer-events:auto}
-
-  /* ---- Hamburger menu button ---- */
-  .hamburger{display:none;align-items:center;justify-content:center;border:1px solid var(--line2);background:var(--panel2);color:var(--ink);border-radius:8px;padding:8px 12px}
-  .hamburger:hover{border-color:var(--accent)}
-  .hamburger svg{width:18px;height:18px}
-
-  /* ---- Mobile bottom nav ---- */
-  .bmob{position:fixed;left:0;right:0;bottom:0;background:rgba(8,9,12,.94);backdrop-filter:blur(10px);border-top:1px solid var(--line);display:grid;grid-template-columns:repeat(2,1fr);z-index:30}
-  .bmob button{color:var(--mut);font-size:10.5px;font-weight:600;padding:12px 0 14px;display:flex;flex-direction:column;align-items:center;gap:4px}
-  .bmob button.on{color:var(--accent)}
-  .bmob svg{width:20px;height:20px}
-
   /* ---- Main ---- */
-  .main{width:100%;max-width:1500px;margin:0 auto;padding:18px 18px 92px}
+  .main{width:100%;max-width:1500px;margin:0 auto;padding:18px 18px 40px}
   .view{display:none}
   .view.on{display:block}
-  .dash-cols{display:block}
-  .dash-cols section{min-width:0}
-  .topbar{display:flex;align-items:center;justify-content:space-between;gap:10px;padding-bottom:16px}
+  .topbar{display:flex;align-items:center;justify-content:space-between;gap:20px;padding-bottom:24px}
   .topbar h1{font-size:17px;font-weight:700;letter-spacing:-.02em;margin:0}
   .topbar .meta{font-size:12px;color:var(--mut);margin-top:2px}
-  .topbar .actions{display:flex;gap:8px}
+  .topbar .actions{display:flex;gap:8px;margin-left:auto}
+  .top-nav{display:flex;align-items:center;gap:4px;white-space:nowrap}
+  .top-nav a{color:var(--mut);font-size:12.5px;font-weight:600;padding:8px 11px;border-radius:8px}
+  .top-nav a:hover{background:var(--hover);color:var(--ink)}
+  .top-nav a.on{background:var(--accent);color:#fff}
+  .top-nav a:focus-visible{outline:2px solid var(--accent2);outline-offset:2px}
+  .page-intro{margin-bottom:18px}
+  .page-intro h2{font-size:20px;letter-spacing:-.025em;margin:0 0 4px}
+  .page-intro p{font-size:13px;color:var(--mut);max-width:52rem}
+  .focus-section{margin-top:24px}
 
   .statgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
-  .statgrid .stat-week{grid-column:1 / -1}
+  .focus-stats{grid-template-columns:repeat(4,1fr);margin-bottom:24px}
   .stat{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:13px 15px}
   .stat .k{font-size:11px;color:var(--mut);text-transform:uppercase;letter-spacing:.06em;font-weight:600}
   .stat .v{font-family:var(--mono);font-size:22px;font-weight:700;letter-spacing:-.02em;margin-top:6px}
@@ -1119,7 +1109,7 @@ STYLE = """
   .date{font-family:var(--mono);font-size:12.5px;color:var(--mut);min-width:78px}
   .day{font-size:11px;color:var(--dim);text-transform:uppercase;letter-spacing:.05em;flex:none;width:34px}
   .badge{font-size:10.5px;font-weight:700;padding:2.5px 9px;border-radius:20px;border:1px solid;flex:none;letter-spacing:.02em;margin-left:auto}
-  .count{font-size:12.5px;color:var(--mut);text-align:right;font-variant-numeric:tabular-nums}
+  .count{font-size:12.5px;color:var(--mut);text-align:right;font-variant-numeric:tabular-nums;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
   .detail{padding:4px 15px 15px;border-top:1px solid var(--line)}
   .detail .tbl-wrap{margin-top:12px}
   .class-detail{padding:12px 15px 15px 30px;display:flex;align-items:center;gap:8px}
@@ -1211,17 +1201,18 @@ STYLE = """
 
   /* responsive */
   @media(min-width:900px){
-    .bmob{display:none}
-    .hamburger{display:inline-flex}
     .main{width:80%;max-width:1500px;padding:22px 28px 40px}
-    .statgrid{grid-template-columns:repeat(5,1fr)}
-    .statgrid .stat-week{grid-column:auto}
+    .statgrid{grid-template-columns:repeat(4,1fr)}
     .stats{grid-template-columns:repeat(3,1fr)}
-    .dash-cols{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;align-items:start}
-    #savebar{bottom:0;padding:11px 16px calc(11px + env(safe-area-inset-bottom))}
   }
-  @media(max-width:480px){
-    .statgrid{grid-template-columns:1fr 1fr}
+  @media(max-width:600px){
+    .main{padding:16px 14px 28px}
+    .topbar{align-items:flex-start;flex-direction:column;gap:14px;padding-bottom:20px}
+    .topbar .actions{width:100%;margin-left:0;overflow-x:auto;padding:2px}
+    .top-nav{width:max-content}
+    .top-nav a{padding:8px 10px}
+    .page-intro h2{font-size:18px}
+    .focus-stats{grid-template-columns:1fr 1fr;margin-bottom:20px}
     .stats{grid-template-columns:1fr 1fr}
     .stats .stat:first-child{grid-column:1 / -1}
     .spark{display:none}
@@ -1251,8 +1242,6 @@ def build_html(entries, templates, raw_entries):
     template_sections = "\n".join(
         s for s in (build_template_section(t) for t in ordered) if s
     )
-    statgrid = build_statgrid(entries, raw_entries)
-
     latest_date = entries[0].get("date", "—") if entries else "—"
     n = len(entries)
     updated = datetime.now(BKK).strftime("%Y-%m-%d %H:%M (Bangkok)")
@@ -1273,48 +1262,29 @@ def build_html(entries, templates, raw_entries):
     Refreshing…
   </div>
   <div class="layout">
-    <aside class="side">
-      <div class="brand"><span class="logo"></span> Gym Recording</div>
-      <a class="on" data-view="dashboard" href="#">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>Dashboard
-      </a>
-      <a data-view="templates" href="#">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M3 9h18M8 2v4M16 2v4"/></svg>Plan
-      </a>
-      <hr>
-      <a href="#">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg>Settings
-      </a>
-      <div class="foot"><b>{n} workouts</b>updated {updated}</div>
-    </aside>
-    <div class="overlay" id="overlay"></div>
-
     <div class="main">
       <div class="topbar">
-        <div><h1 id="page-title">Dashboard</h1><div class="meta">latest session {latest_date}</div></div>
+        <div><h1 id="page-title">Weight Training</h1><div class="meta">latest session {latest_date} · {n} workouts</div></div>
         <div class="actions">
-          <button class="hamburger" id="menu-btn" aria-label="Menu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 6h18M3 12h18M3 18h18"/></svg></button>
+          <nav class="top-nav" aria-label="Primary navigation">
+            <a class="on" data-view="weight" href="#weight">Weight Training</a>
+            <a data-view="cardio" href="#cardio">Cardio</a>
+            <a data-view="templates" href="#plan">Plan</a>
+          </nav>
         </div>
       </div>
 
-      <div id="view-dashboard" class="view on">
-        {statgrid}
-        <div class="dash-cols">
-          <section>
-            <div class="section-title">Weight training</div>
-            {weight_cards}
-            {weight_more}
-          </section>
-          <section>
-            <div class="section-title">Cardio</div>
-            {cardio_cards}
-            {cardio_more}
-          </section>
-          <section>
-            <div class="section-title">Progress</div>
-            {progress_view}
-          </section>
-        </div>
+      <div id="view-weight" class="view on">
+        <div class="page-intro"><h2>Weight Training</h2><p>Strength sessions, exercise progress, and recent training logs.</p></div>
+        {build_focus_statgrid(entries, raw_entries, templates, "weight")}
+        <section class="focus-section"><div class="section-title">Progress</div>{progress_view}</section>
+        <section class="focus-section"><div class="section-title">Recent sessions</div>{weight_cards}{weight_more}</section>
+      </div>
+
+      <div id="view-cardio" class="view">
+        <div class="page-intro"><h2>Cardio</h2><p>Running and other cardio sessions, with distance and weekly momentum at a glance.</p></div>
+        {build_focus_statgrid(entries, raw_entries, templates, "cardio")}
+        <section class="focus-section"><div class="section-title">Recent sessions</div>{cardio_cards}{cardio_more}</section>
       </div>
 
       <div id="view-templates" class="view">
@@ -1328,11 +1298,6 @@ def build_html(entries, templates, raw_entries):
     </div>
   </div>
 
-  <nav class="bmob">
-    <button class="on" data-view="dashboard"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>Dashboard</button>
-    <button data-view="templates"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M3 9h18M8 2v4M16 2v4"/></svg>Plan</button>
-  </nav>
-
   <div id="savebar">
     <span id="savecount"></span>
     <button id="savebtn">Save to Log</button>
@@ -1342,32 +1307,23 @@ def build_html(entries, templates, raw_entries):
   <script>{SAVE_SCRIPT}</script>
   <script>{PROGRESS_SCRIPT}</script>
   <script>
-    var views = ['dashboard','templates'];
-    var titles = {{'dashboard':'Dashboard','templates':'Plan'}};
+    var views = ['weight','cardio','templates'];
+    var titles = {{'weight':'Weight Training','cardio':'Cardio','templates':'Plan'}};
     function showView(v) {{
       views.forEach(function(x) {{
         document.getElementById('view-' + x).classList.toggle('on', x === v);
       }});
-      document.querySelectorAll('.side a,.bmob button').forEach(function(el) {{
+      document.querySelectorAll('.top-nav a').forEach(function(el) {{
         el.classList.toggle('on', el.dataset.view === v);
       }});
       var t = document.getElementById('page-title');
       if (t) t.textContent = titles[v] || 'Log';
+      history.replaceState(null, '', '#' + v);
     }}
-    function closeMenu() {{
-      document.querySelector('.side').classList.remove('open');
-      document.getElementById('overlay').classList.remove('show');
-    }}
-    document.getElementById('menu-btn').addEventListener('click', function() {{
-      document.querySelector('.side').classList.toggle('open');
-      document.getElementById('overlay').classList.toggle('show');
-    }});
-    document.getElementById('overlay').addEventListener('click', closeMenu);
-    document.querySelectorAll('.side a,.bmob button[data-view]').forEach(function(el) {{
+    document.querySelectorAll('.top-nav a').forEach(function(el) {{
       el.addEventListener('click', function(e) {{
         e.preventDefault();
         if (el.dataset.view) showView(el.dataset.view);
-        closeMenu();
       }});
     }});
     document.querySelectorAll('.btn[data-go]').forEach(function(b) {{
@@ -1385,7 +1341,7 @@ def build_html(entries, templates, raw_entries):
       }});
     }});
     // restore last view
-    var last = localStorage.getItem('gr_view');
+    var last = location.hash.slice(1);
     if (last && views.indexOf(last) >= 0) showView(last);
 
     // pull-to-refresh
