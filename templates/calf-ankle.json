@@ -19,6 +19,12 @@
       "group": "Tibialis",
       "default_sets": 3,
       "default_reps": 15
+    },
+    {
+      "name": "* Lateral band walk",
+      "group": "Hip Abductor",
+      "default_sets": 2,
+      "default_reps": 15
     }
   ]
 }
