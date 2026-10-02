@@ -1,0 +1,38 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "GymRecording Data-to-Page Architecture",
+    "output": "diagrams/gymrecording.architecture.html",
+    "quality_profile": "showcase"
+  },
+  "components": [
+    { "id": "owner", "type": "external", "label": "Workout Owner", "sublabel": "adds workout JSON", "pos": [40, 300], "size": [150, 64] },
+    { "id": "workouts", "type": "database", "label": "workouts/*.json", "sublabel": "dated sessions", "pos": [250, 220], "size": [160, 64] },
+    { "id": "templates", "type": "database", "label": "templates/*.json", "sublabel": "type defaults", "pos": [250, 390], "size": [160, 64] },
+    { "id": "actions", "type": "cloud", "label": "GitHub Actions", "sublabel": "push trigger", "pos": [465, 300], "size": [160, 64], "tag": "update-log.yml" },
+    { "id": "builder", "type": "backend", "label": "build.py", "sublabel": "Python 3 stdlib", "pos": [710, 300], "size": [150, 64], "tag": "resolve + merge" },
+    { "id": "progress", "type": "backend", "label": "Progress Views", "sublabel": "trend + sparkline cards", "pos": [885, 205], "size": [170, 64] },
+    { "id": "html", "type": "backend", "label": "index.html", "sublabel": "generated artifact", "pos": [885, 390], "size": [170, 64] },
+    { "id": "browser", "type": "external", "label": "GitHub Pages", "sublabel": "published log", "pos": [1110, 300], "size": [150, 64] }
+  ],
+  "boundaries": [
+    { "kind": "region", "label": "Repository: GymRecording", "wraps": ["workouts", "templates", "actions", "builder", "progress", "html"] }
+  ],
+  "connections": [
+    { "id": "owner-workouts", "from": "owner", "to": "workouts", "label": "add session", "variant": "emphasis" },
+    { "id": "workouts-actions", "from": "workouts", "to": "actions", "label": "push change", "variant": "dashed" },
+    { "id": "templates-builder", "from": "templates", "to": "builder", "label": "defaults" },
+    { "id": "workouts-builder", "from": "workouts", "to": "builder", "label": "load_workouts", "fromSide": "right", "toSide": "top" },
+    { "id": "actions-builder", "from": "actions", "to": "builder", "label": "run build.py" },
+    { "id": "builder-progress", "from": "builder", "to": "progress", "label": "build_progress_view", "fromSide": "right", "toSide": "left" },
+    { "id": "builder-html", "from": "builder", "to": "html", "label": "build_html", "fromSide": "right", "toSide": "left" },
+    { "id": "progress-html", "from": "progress", "to": "html", "label": "render cards", "variant": "dashed", "fromSide": "bottom", "toSide": "top" },
+    { "id": "html-browser", "from": "html", "to": "browser", "label": "serve static page", "variant": "emphasis" }
+  ],
+  "cards": [
+    { "dot": "cyan", "title": "Input", "items": ["Workout sessions are dated JSON files", "Templates provide type-specific defaults", "kg and lbs remain intentional mixed units"] },
+    { "dot": "emerald", "title": "Build path", "items": ["resolve_session keeps completed exercises", "merge_exercises combines session data with templates", "Progress views connect trends, points, and cards"] },
+    { "dot": "rose", "title": "Delivery", "items": ["index.html is a generated artifact", "GitHub Actions rebuilds after workout pushes", "GitHub Pages serves the published log"] }
+  ]
+}
