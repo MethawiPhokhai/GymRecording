@@ -2,6 +2,12 @@
   "type": "Lower",
   "exercises": [
     {
+      "name": "* Jump squat",
+      "group": "Quad/Glute",
+      "default_sets": 3,
+      "default_reps": 6
+    },
+    {
       "name": "Squat",
       "group": "Quad/Glute",
       "default_weight_lbs": 44,
