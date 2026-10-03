@@ -183,10 +183,7 @@ def build_card_html(entry):
     exercises = entry.get("exercises", [])
     rows = ""
     for e in exercises:
-        if e.get("weight_lbs"):
-            weight = f"{e['weight_lbs']:g} lbs"
-        else:
-            weight = "-"
+        weight = wspan(e.get("weight_lbs"))
         rows += (
             f"<tr>"
             f"<td>{e['name']}{group_tag(e.get('group'))}</td>"
@@ -215,9 +212,7 @@ def build_card_html(entry):
 
 
 def format_default_weight(ex):
-    if ex.get("default_weight_lbs"):
-        return f"{ex['default_weight_lbs']:g} lbs"
-    return "-"
+    return wspan(ex.get("default_weight_lbs"))
 
 
 def build_template_section(template):
@@ -272,7 +267,6 @@ def build_template_section(template):
     rows = ""
     for e in exercises:
         num = e.get("default_weight_lbs")
-        kgv = f"{round(num * LBS_TO_KG * 2) / 2:g}" if num else ""
         num = f"{num:g}" if num else ""
         sets = e.get("default_sets") or ""
         reps = e.get("default_reps") or ""
@@ -281,9 +275,7 @@ def build_template_section(template):
             f"<td class='selcell'><input type='checkbox' class='sel'></td>"
             f"<td class='exname'>{e['name']}{group_tag(e.get('group'))}</td>"
             f"<td class='wcell'><input type='number' class='w-num' step='0.5' value='{num}' placeholder='-'>"
-            f"<span class='w-unit'>{UNIT}</span>"
-            f"<input type='number' class='w-kg' step='0.5' value='{kgv}' placeholder='-'>"
-            f"<span class='w-unit w-unit2'>{KG_UNIT}</span></td>"
+            f"<span class='w-unit'>{UNIT}</span></td>"
             f"<td class='srcell'><input type='number' class='sr-sets' value='{sets}'>×"
             f"<input type='text' class='sr-reps' value='{reps}' placeholder='12 10 10 8'></td>"
             f"</tr>\n"
@@ -322,6 +314,17 @@ UNIT = "lbs"
 KG_UNIT = "kg"
 
 
+def wspan(lbs):
+    """Read-only weight that follows the page's lbs/kg switch (JS re-renders .wv)."""
+    if lbs is None or lbs == "":
+        return "-"
+    try:
+        v = float(lbs)
+    except (TypeError, ValueError):
+        return str(lbs)
+    return f'<span class="wv" data-lbs="{v:g}">{v:g} {UNIT}</span>'
+
+
 def norm_weight_lbs(ex):
     """Weight in lbs, whichever field the entry happens to carry."""
     if ex.get("weight_lbs"):
@@ -333,7 +336,7 @@ def norm_weight_lbs(ex):
 
 def display_weight(ex):
     v = norm_weight_lbs(ex)
-    return "BW" if v is None else f"{v:g} lbs"
+    return "BW" if v is None else wspan(v)
 
 
 def format_sets_reps(sets, reps, reps_by_set=None):
@@ -724,7 +727,7 @@ SAVE_SCRIPT = """
       const name = (nameEl.value !== undefined ? nameEl.value : nameEl.textContent).trim();
       const ex = { name, completed: true };
       const w = parseFloat(tr.querySelector('.w-num').value);
-      if (w > 0) ex.weight_lbs = w;   // lbs-only log; nothing writes weight_kg
+      if (w > 0) ex.weight_lbs = inLbs(w);   // typed unit -> lbs for storage
       const sets = parseInt(tr.querySelector('.sr-sets').value);
       const repsRaw = tr.querySelector('.sr-reps').value.trim();
       const reps = parseInt(repsRaw);
@@ -815,35 +818,48 @@ SAVE_SCRIPT = """
           <td class='selcell'><input type='checkbox' class='sel' checked></td>
           <td class='exname'><input type='text' placeholder='Exercise name'></td>
           <td class='wcell'><input type='number' class='w-num' step='0.5' placeholder='-'>
-            <span class='w-unit'>lbs</span>
-            <input type='number' class='w-kg' step='0.5' placeholder='-'>
-            <span class='w-unit w-unit2'>kg</span></td>
+            <span class='w-unit'>lbs</span></td>
           <td class='srcell'><input type='number' class='sr-sets' value='3'>×<input type='text' class='sr-reps' value='15' placeholder='12 10 10 8'></td>`;
         tbody.appendChild(tr);
         bindRow(tr);
+        paintUnit();
         tr.querySelector('.exname input').focus();
         refreshBar();
       }));
 
-    // lbs <-> kg mirror. Both fields stay visible; editing either fills the
-    // other. Delegated on document so rows from "+ Add exercise" are covered
-    // too. Only .w-num (lbs) is ever persisted.
+    // ---- Weight unit: ONE field, switch lbs <-> kg in the header ----------
+    // The log stays lbs-only (`weight_lbs`). Whatever unit is selected, the
+    // single visible number is in that unit, and saving converts back to lbs.
     const LB_PER_KG = 2.20462262;
     const r05 = v => Math.round(v * 2) / 2;
-    document.addEventListener('input', e => {
-      const td = e.target.closest && e.target.closest('.wcell');
-      if (!td) return;
-      const lb = td.querySelector('.w-num');
-      const kg = td.querySelector('.w-kg');
-      if (!lb || !kg) return;
-      if (e.target === lb) {
-        const v = parseFloat(lb.value);
-        kg.value = isNaN(v) ? '' : r05(v / LB_PER_KG);
-      } else if (e.target === kg) {
-        const v = parseFloat(kg.value);
-        lb.value = isNaN(v) ? '' : r05(v * LB_PER_KG);
-      }
-    });
+    let UNIT_SEL = (localStorage.getItem('wunit') === 'kg') ? 'kg' : 'lbs';
+    const inLbs   = v => UNIT_SEL === 'kg' ? r05(v * LB_PER_KG) : v;
+    const fromLbs = v => UNIT_SEL === 'kg' ? r05(v / LB_PER_KG) : v;
+
+    function paintUnit() {
+      document.querySelectorAll('.w-unit').forEach(el => { el.textContent = UNIT_SEL; });
+      document.querySelectorAll('.w-tgl').forEach(b =>
+        b.classList.toggle('on', b.dataset.u === UNIT_SEL));
+      document.querySelectorAll('.wv').forEach(el => {
+        const lbs = parseFloat(el.dataset.lbs);
+        if (!isNaN(lbs)) el.textContent = fromLbs(lbs) + ' ' + UNIT_SEL;
+      });
+    }
+
+    function setUnit(u) {
+      if (u === UNIT_SEL) return;
+      document.querySelectorAll('.w-num').forEach(i => {
+        const v = parseFloat(i.value);
+        if (!isNaN(v)) i.value = (u === 'kg') ? r05(v / LB_PER_KG) : r05(v * LB_PER_KG);
+      });
+      UNIT_SEL = u;
+      localStorage.setItem('wunit', u);
+      paintUnit();
+    }
+
+    paintUnit();
+    document.querySelectorAll('.w-tgl').forEach(b =>
+      b.addEventListener('click', () => setUnit(b.dataset.u)));
 
     function getToken(force) {
       let t = localStorage.getItem('gh_token');
@@ -1159,6 +1175,11 @@ STYLE = """
   }
   .rfield{width:100%}
   .w-num{width:4.2rem}
+  .unit-switch{display:inline-flex;border:1px solid var(--line);border-radius:8px;overflow:hidden;flex-shrink:0}
+  .unit-switch button{background:var(--panel2);border:0;color:var(--mut);font:inherit;font-size:12.5px;padding:9px 12px;cursor:pointer;line-height:1}
+  .unit-switch button+button{border-left:1px solid var(--line)}
+  .unit-switch button.on{background:var(--accent);color:#fff}
+  .wv{font-variant-numeric:tabular-nums}
   .sr-sets,.sr-reps{width:2.6rem;text-align:center}
   .sr-reps{width:5.6rem;font-family:var(--mono)}
   .rbs{color:var(--accent2);font-family:var(--mono)}
@@ -1266,6 +1287,10 @@ def build_html(entries, templates, raw_entries):
       <div class="topbar">
         <div><h1 id="page-title">Weight Training</h1><div class="meta">latest session {latest_date} · {n} workouts</div></div>
         <div class="actions">
+          <div class="unit-switch" id="unitsw" role="group" aria-label="Weight unit">
+            <button type="button" class="w-tgl on" data-u="lbs">lbs</button>
+            <button type="button" class="w-tgl" data-u="kg">kg</button>
+          </div>
           <nav class="top-nav" aria-label="Primary navigation">
             <a class="on" data-view="weight" href="#weight">Weight Training</a>
             <a data-view="cardio" href="#cardio">Cardio</a>

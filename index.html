@@ -117,6 +117,11 @@
   }
   .rfield{width:100%}
   .w-num{width:4.2rem}
+  .unit-switch{display:inline-flex;border:1px solid var(--line);border-radius:8px;overflow:hidden;flex-shrink:0}
+  .unit-switch button{background:var(--panel2);border:0;color:var(--mut);font:inherit;font-size:12.5px;padding:9px 12px;cursor:pointer;line-height:1}
+  .unit-switch button+button{border-left:1px solid var(--line)}
+  .unit-switch button.on{background:var(--accent);color:#fff}
+  .wv{font-variant-numeric:tabular-nums}
   .sr-sets,.sr-reps{width:2.6rem;text-align:center}
   .sr-reps{width:5.6rem;font-family:var(--mono)}
   .rbs{color:var(--accent2);font-family:var(--mono)}
@@ -190,6 +195,10 @@
       <div class="topbar">
         <div><h1 id="page-title">Weight Training</h1><div class="meta">latest session 2026-10-02 · 78 workouts</div></div>
         <div class="actions">
+          <div class="unit-switch" id="unitsw" role="group" aria-label="Weight unit">
+            <button type="button" class="w-tgl on" data-u="lbs">lbs</button>
+            <button type="button" class="w-tgl" data-u="kg">kg</button>
+          </div>
           <nav class="top-nav" aria-label="Primary navigation">
             <a class="on" data-view="weight" href="#weight">Weight Training</a>
             <a data-view="cardio" href="#cardio">Cardio</a>
@@ -208,7 +217,7 @@
     <summary>
       <div class="prog-main">
         <div class="prog-head"><span class="prog-name">Squat</span><span class="badge" style="background:#f7934f22;color:#f7934f;border-color:#f7934f44">Lower</span></div>
-        <div class="prog-latest">44 lbs · 4×10 · 2026-10-01</div>
+        <div class="prog-latest"><span class="wv" data-lbs="44">44 lbs</span> · 4×10 · 2026-10-01</div>
       </div>
       <svg class="spark" width="88" height="26" viewBox="0 0 88 26" aria-hidden="true"><polyline points="5.0,13.0 13.7,13.0 22.3,13.0 31.0,13.0 39.7,13.0 48.3,21.0 57.0,5.0 65.7,5.0 74.3,7.0 83.0,5.0" fill="none" stroke="#5e6ad2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="83.0" cy="5.0" r="4" fill="#5e6ad2" stroke="#0f1014" stroke-width="2"/></svg>
       <span class="trend down">▼ -11 lbs</span>
@@ -217,20 +226,20 @@
     <table>
       <thead><tr><th>Date</th><th>Weight</th><th>Sets×Reps</th><th>Volume</th><th>Δ</th></tr></thead>
       <tbody>
-<tr><td>2026-10-01</td><td>44 lbs</td><td>4×10</td><td>1760 lbs</td><td><span class='trend down'>▼ -11 lbs</span></td></tr>
-<tr><td>2026-09-25</td><td>55 lbs</td><td>3×10</td><td>1650 lbs</td><td><span class='trend up'>▲ +11 lbs</span></td></tr>
-<tr><td>2026-09-10</td><td>44 lbs</td><td>4×10</td><td>1760 lbs</td><td><span class='trend flat'>— same</span></td></tr>
-<tr><td>2026-09-05</td><td>44 lbs</td><td>4×10</td><td>1760 lbs</td><td><span class='trend up'>▲ +22 lbs</span></td></tr>
-<tr><td>2026-08-27</td><td>22 lbs</td><td>4× <span class='rbs'>10/10/10/10</span></td><td>880 lbs</td><td><span class='trend down'>▼ -22 lbs</span></td></tr>
-<tr><td>2026-08-19</td><td>44 lbs</td><td>3×10</td><td>1320 lbs</td><td><span class='trend flat'>— same</span></td></tr>
-<tr><td>2026-08-12</td><td>44 lbs</td><td>3×10</td><td>1320 lbs</td><td><span class='trend flat'>— same</span></td></tr>
-<tr><td>2026-07-28</td><td>44 lbs</td><td>3×10</td><td>1320 lbs</td><td><span class='trend flat'>— same</span></td></tr>
-<tr><td>2026-07-20</td><td>44 lbs</td><td>3×10</td><td>1320 lbs</td><td><span class='trend flat'>— same</span></td></tr>
-<tr><td>2026-07-12</td><td>44 lbs</td><td>3×10</td><td>1320 lbs</td><td><span class='trend flat'>— same</span></td></tr>
-<tr><td>2026-07-03</td><td>44 lbs</td><td>3×10</td><td>1320 lbs</td><td><span class='trend down'>▼ -9 lbs</span></td></tr>
-<tr><td>2026-06-26</td><td>53 lbs</td><td>3×10</td><td>1590 lbs</td><td><span class='trend up'>▲ +9 lbs</span></td></tr>
-<tr><td>2026-06-19</td><td>44 lbs</td><td>3×10</td><td>1320 lbs</td><td><span class='trend up'>▲ +6.5 lbs</span></td></tr>
-<tr><td>2026-06-13</td><td>37.5 lbs</td><td>3×15</td><td>1687.5 lbs</td><td><span class='trend new'>● new</span></td></tr>
+<tr><td>2026-10-01</td><td><span class="wv" data-lbs="44">44 lbs</span></td><td>4×10</td><td>1760 lbs</td><td><span class='trend down'>▼ -11 lbs</span></td></tr>
+<tr><td>2026-09-25</td><td><span class="wv" data-lbs="55">55 lbs</span></td><td>3×10</td><td>1650 lbs</td><td><span class='trend up'>▲ +11 lbs</span></td></tr>
+<tr><td>2026-09-10</td><td><span class="wv" data-lbs="44">44 lbs</span></td><td>4×10</td><td>1760 lbs</td><td><span class='trend flat'>— same</span></td></tr>
+<tr><td>2026-09-05</td><td><span class="wv" data-lbs="44">44 lbs</span></td><td>4×10</td><td>1760 lbs</td><td><span class='trend up'>▲ +22 lbs</span></td></tr>
+<tr><td>2026-08-27</td><td><span class="wv" data-lbs="22">22 lbs</span></td><td>4× <span class='rbs'>10/10/10/10</span></td><td>880 lbs</td><td><span class='trend down'>▼ -22 lbs</span></td></tr>
+<tr><td>2026-08-19</td><td><span class="wv" data-lbs="44">44 lbs</span></td><td>3×10</td><td>1320 lbs</td><td><span class='trend flat'>— same</span></td></tr>
+<tr><td>2026-08-12</td><td><span class="wv" data-lbs="44">44 lbs</span></td><td>3×10</td><td>1320 lbs</td><td><span class='trend flat'>— same</span></td></tr>
+<tr><td>2026-07-28</td><td><span class="wv" data-lbs="44">44 lbs</span></td><td>3×10</td><td>1320 lbs</td><td><span class='trend flat'>— same</span></td></tr>
+<tr><td>2026-07-20</td><td><span class="wv" data-lbs="44">44 lbs</span></td><td>3×10</td><td>1320 lbs</td><td><span class='trend flat'>— same</span></td></tr>
+<tr><td>2026-07-12</td><td><span class="wv" data-lbs="44">44 lbs</span></td><td>3×10</td><td>1320 lbs</td><td><span class='trend flat'>— same</span></td></tr>
+<tr><td>2026-07-03</td><td><span class="wv" data-lbs="44">44 lbs</span></td><td>3×10</td><td>1320 lbs</td><td><span class='trend down'>▼ -9 lbs</span></td></tr>
+<tr><td>2026-06-26</td><td><span class="wv" data-lbs="53">53 lbs</span></td><td>3×10</td><td>1590 lbs</td><td><span class='trend up'>▲ +9 lbs</span></td></tr>
+<tr><td>2026-06-19</td><td><span class="wv" data-lbs="44">44 lbs</span></td><td>3×10</td><td>1320 lbs</td><td><span class='trend up'>▲ +6.5 lbs</span></td></tr>
+<tr><td>2026-06-13</td><td><span class="wv" data-lbs="37.5">37.5 lbs</span></td><td>3×15</td><td>1687.5 lbs</td><td><span class='trend new'>● new</span></td></tr>
       </tbody>
     </table>
     </div>
@@ -240,7 +249,7 @@
     <summary>
       <div class="prog-main">
         <div class="prog-head"><span class="prog-name">Leg extension</span><span class="badge" style="background:#f7934f22;color:#f7934f;border-color:#f7934f44">Lower A</span></div>
-        <div class="prog-latest">65 lbs · 3×12 · 2026-10-01</div>
+        <div class="prog-latest"><span class="wv" data-lbs="65">65 lbs</span> · 3×12 · 2026-10-01</div>
       </div>
       <svg class="spark" width="88" height="26" viewBox="0 0 88 26" aria-hidden="true"><polyline points="5.0,17.3 18.0,17.3 31.0,11.2 44.0,13.9 57.0,13.9 70.0,5.0 83.0,21.0" fill="none" stroke="#5e6ad2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="83.0" cy="21.0" r="4" fill="#5e6ad2" stroke="#0f1014" stroke-width="2"/></svg>
       <span class="trend down">▼ -20%</span>
@@ -249,13 +258,13 @@
     <table>
       <thead><tr><th>Date</th><th>Weight</th><th>Sets×Reps</th><th>Volume</th><th>Δ</th></tr></thead>
       <tbody>
-<tr><td>2026-10-01</td><td>65 lbs</td><td>3×12</td><td>2340 lbs</td><td><span class='trend down'>▼ -20%</span></td></tr>
-<tr><td>2026-09-25</td><td>65 lbs</td><td>3×15</td><td>2925 lbs</td><td><span class='trend up'>▲ +12%</span></td></tr>
-<tr><td>2026-09-16</td><td>65 lbs</td><td>4×10</td><td>2600 lbs</td><td><span class='trend flat'>— same</span></td></tr>
-<tr><td>2026-09-10</td><td>65 lbs</td><td>4×10</td><td>2600 lbs</td><td><span class='trend up'>▲ +5 lbs</span></td></tr>
-<tr><td>2026-07-12</td><td>60 lbs</td><td>3×15</td><td>2700 lbs</td><td><span class='trend up'>▲ +5 lbs</span></td></tr>
-<tr><td>2026-07-03</td><td>55 lbs</td><td>3×15</td><td>2475 lbs</td><td><span class='trend flat'>— same</span></td></tr>
-<tr><td>2026-06-13</td><td>55 lbs</td><td>3×15</td><td>2475 lbs</td><td><span class='trend new'>● new</span></td></tr>
+<tr><td>2026-10-01</td><td><span class="wv" data-lbs="65">65 lbs</span></td><td>3×12</td><td>2340 lbs</td><td><span class='trend down'>▼ -20%</span></td></tr>
+<tr><td>2026-09-25</td><td><span class="wv" data-lbs="65">65 lbs</span></td><td>3×15</td><td>2925 lbs</td><td><span class='trend up'>▲ +12%</span></td></tr>
+<tr><td>2026-09-16</td><td><span class="wv" data-lbs="65">65 lbs</span></td><td>4×10</td><td>2600 lbs</td><td><span class='trend flat'>— same</span></td></tr>
+<tr><td>2026-09-10</td><td><span class="wv" data-lbs="65">65 lbs</span></td><td>4×10</td><td>2600 lbs</td><td><span class='trend up'>▲ +5 lbs</span></td></tr>
+<tr><td>2026-07-12</td><td><span class="wv" data-lbs="60">60 lbs</span></td><td>3×15</td><td>2700 lbs</td><td><span class='trend up'>▲ +5 lbs</span></td></tr>
+<tr><td>2026-07-03</td><td><span class="wv" data-lbs="55">55 lbs</span></td><td>3×15</td><td>2475 lbs</td><td><span class='trend flat'>— same</span></td></tr>
+<tr><td>2026-06-13</td><td><span class="wv" data-lbs="55">55 lbs</span></td><td>3×15</td><td>2475 lbs</td><td><span class='trend new'>● new</span></td></tr>
       </tbody>
     </table>
     </div>
@@ -265,7 +274,7 @@
     <summary>
       <div class="prog-main">
         <div class="prog-head"><span class="prog-name">* Bulgarian split squat</span><span class="badge" style="background:#f7934f22;color:#f7934f;border-color:#f7934f44">Lower</span></div>
-        <div class="prog-latest">20 lbs · 3×8 · 2026-10-01</div>
+        <div class="prog-latest"><span class="wv" data-lbs="20">20 lbs</span> · 3×8 · 2026-10-01</div>
       </div>
       <svg class="spark" width="88" height="26" viewBox="0 0 88 26" aria-hidden="true"><polyline points="5.0,5.0 31.0,5.0 57.0,10.3 83.0,21.0" fill="none" stroke="#5e6ad2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="83.0" cy="21.0" r="4" fill="#5e6ad2" stroke="#0f1014" stroke-width="2"/></svg>
       <span class="trend down">▼ -14%</span>
@@ -274,10 +283,10 @@
     <table>
       <thead><tr><th>Date</th><th>Weight</th><th>Sets×Reps</th><th>Volume</th><th>Δ</th></tr></thead>
       <tbody>
-<tr><td>2026-10-01</td><td>20 lbs</td><td>3×8</td><td>480 lbs</td><td><span class='trend down'>▼ -14%</span></td></tr>
-<tr><td>2026-09-05</td><td>20 lbs</td><td>3× <span class='rbs'>10/10/8</span></td><td>560 lbs</td><td><span class='trend down'>▼ -7%</span></td></tr>
-<tr><td>2026-07-30</td><td>20 lbs</td><td>3×10</td><td>600 lbs</td><td><span class='trend flat'>— same</span></td></tr>
-<tr><td>2026-07-12</td><td>20 lbs</td><td>3×10</td><td>600 lbs</td><td><span class='trend new'>● new</span></td></tr>
+<tr><td>2026-10-01</td><td><span class="wv" data-lbs="20">20 lbs</span></td><td>3×8</td><td>480 lbs</td><td><span class='trend down'>▼ -14%</span></td></tr>
+<tr><td>2026-09-05</td><td><span class="wv" data-lbs="20">20 lbs</span></td><td>3× <span class='rbs'>10/10/8</span></td><td>560 lbs</td><td><span class='trend down'>▼ -7%</span></td></tr>
+<tr><td>2026-07-30</td><td><span class="wv" data-lbs="20">20 lbs</span></td><td>3×10</td><td>600 lbs</td><td><span class='trend flat'>— same</span></td></tr>
+<tr><td>2026-07-12</td><td><span class="wv" data-lbs="20">20 lbs</span></td><td>3×10</td><td>600 lbs</td><td><span class='trend new'>● new</span></td></tr>
       </tbody>
     </table>
     </div>
@@ -287,7 +296,7 @@
     <summary>
       <div class="prog-main">
         <div class="prog-head"><span class="prog-name">Hip thrust</span><span class="badge" style="background:#f7934f22;color:#f7934f;border-color:#f7934f44">Lower A</span></div>
-        <div class="prog-latest">22 lbs · 3×12 · 2026-10-01</div>
+        <div class="prog-latest"><span class="wv" data-lbs="22">22 lbs</span> · 3×12 · 2026-10-01</div>
       </div>
       <svg class="spark" width="88" height="26" viewBox="0 0 88 26" aria-hidden="true"><polyline points="5.0,5.0 83.0,21.0" fill="none" stroke="#5e6ad2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="83.0" cy="21.0" r="4" fill="#5e6ad2" stroke="#0f1014" stroke-width="2"/></svg>
       <span class="trend down">▼ -20%</span>
@@ -296,8 +305,8 @@
     <table>
       <thead><tr><th>Date</th><th>Weight</th><th>Sets×Reps</th><th>Volume</th><th>Δ</th></tr></thead>
       <tbody>
-<tr><td>2026-10-01</td><td>22 lbs</td><td>3×12</td><td>792 lbs</td><td><span class='trend down'>▼ -20%</span></td></tr>
-<tr><td>2026-09-22</td><td>22 lbs</td><td>3×15</td><td>990 lbs</td><td><span class='trend new'>● new</span></td></tr>
+<tr><td>2026-10-01</td><td><span class="wv" data-lbs="22">22 lbs</span></td><td>3×12</td><td>792 lbs</td><td><span class='trend down'>▼ -20%</span></td></tr>
+<tr><td>2026-09-22</td><td><span class="wv" data-lbs="22">22 lbs</span></td><td>3×15</td><td>990 lbs</td><td><span class='trend new'>● new</span></td></tr>
       </tbody>
     </table>
     </div>
@@ -307,7 +316,7 @@
     <summary>
       <div class="prog-main">
         <div class="prog-head"><span class="prog-name">Lat pulldown (Back)</span><span class="badge" style="background:#7bb0ff22;color:#7bb0ff;border-color:#7bb0ff44">Pull B</span></div>
-        <div class="prog-latest">60 lbs · 3×15 · 2026-09-29</div>
+        <div class="prog-latest"><span class="wv" data-lbs="60">60 lbs</span> · 3×15 · 2026-09-29</div>
       </div>
       
       <span class="trend new">● new</span>
@@ -316,7 +325,7 @@
     <table>
       <thead><tr><th>Date</th><th>Weight</th><th>Sets×Reps</th><th>Volume</th><th>Δ</th></tr></thead>
       <tbody>
-<tr><td>2026-09-29</td><td>60 lbs</td><td>3×15</td><td>2700 lbs</td><td><span class='trend new'>● new</span></td></tr>
+<tr><td>2026-09-29</td><td><span class="wv" data-lbs="60">60 lbs</span></td><td>3×15</td><td>2700 lbs</td><td><span class='trend new'>● new</span></td></tr>
       </tbody>
     </table>
     </div>
@@ -326,7 +335,7 @@
     <summary>
       <div class="prog-main">
         <div class="prog-head"><span class="prog-name">Back cable rowing (Back)</span><span class="badge" style="background:#7bb0ff22;color:#7bb0ff;border-color:#7bb0ff44">Pull B</span></div>
-        <div class="prog-latest">60 lbs · 3×15 · 2026-09-29</div>
+        <div class="prog-latest"><span class="wv" data-lbs="60">60 lbs</span> · 3×15 · 2026-09-29</div>
       </div>
       
       <span class="trend new">● new</span>
@@ -335,7 +344,7 @@
     <table>
       <thead><tr><th>Date</th><th>Weight</th><th>Sets×Reps</th><th>Volume</th><th>Δ</th></tr></thead>
       <tbody>
-<tr><td>2026-09-29</td><td>60 lbs</td><td>3×15</td><td>2700 lbs</td><td><span class='trend new'>● new</span></td></tr>
+<tr><td>2026-09-29</td><td><span class="wv" data-lbs="60">60 lbs</span></td><td>3×15</td><td>2700 lbs</td><td><span class='trend new'>● new</span></td></tr>
       </tbody>
     </table>
     </div>
@@ -345,7 +354,7 @@
     <summary>
       <div class="prog-main">
         <div class="prog-head"><span class="prog-name">Face pull (Shoulder)</span><span class="badge" style="background:#7bb0ff22;color:#7bb0ff;border-color:#7bb0ff44">Pull B</span></div>
-        <div class="prog-latest">60 lbs · 3×15 · 2026-09-29</div>
+        <div class="prog-latest"><span class="wv" data-lbs="60">60 lbs</span> · 3×15 · 2026-09-29</div>
       </div>
       
       <span class="trend new">● new</span>
@@ -354,7 +363,7 @@
     <table>
       <thead><tr><th>Date</th><th>Weight</th><th>Sets×Reps</th><th>Volume</th><th>Δ</th></tr></thead>
       <tbody>
-<tr><td>2026-09-29</td><td>60 lbs</td><td>3×15</td><td>2700 lbs</td><td><span class='trend new'>● new</span></td></tr>
+<tr><td>2026-09-29</td><td><span class="wv" data-lbs="60">60 lbs</span></td><td>3×15</td><td>2700 lbs</td><td><span class='trend new'>● new</span></td></tr>
       </tbody>
     </table>
     </div>
@@ -364,7 +373,7 @@
     <summary>
       <div class="prog-main">
         <div class="prog-head"><span class="prog-name">Back Hyperextension (Back)</span><span class="badge" style="background:#7bb0ff22;color:#7bb0ff;border-color:#7bb0ff44">Pull B</span></div>
-        <div class="prog-latest">10 lbs · 4×10 · 2026-09-29</div>
+        <div class="prog-latest"><span class="wv" data-lbs="10">10 lbs</span> · 4×10 · 2026-09-29</div>
       </div>
       
       <span class="trend new">● new</span>
@@ -373,7 +382,7 @@
     <table>
       <thead><tr><th>Date</th><th>Weight</th><th>Sets×Reps</th><th>Volume</th><th>Δ</th></tr></thead>
       <tbody>
-<tr><td>2026-09-29</td><td>10 lbs</td><td>4×10</td><td>400 lbs</td><td><span class='trend new'>● new</span></td></tr>
+<tr><td>2026-09-29</td><td><span class="wv" data-lbs="10">10 lbs</span></td><td>4×10</td><td>400 lbs</td><td><span class='trend new'>● new</span></td></tr>
       </tbody>
     </table>
     </div>
@@ -383,7 +392,7 @@
     <summary>
       <div class="prog-main">
         <div class="prog-head"><span class="prog-name">Bicep curl (Biceps)</span><span class="badge" style="background:#7bb0ff22;color:#7bb0ff;border-color:#7bb0ff44">Pull B</span></div>
-        <div class="prog-latest">10 lbs · 3×12 · 2026-09-29</div>
+        <div class="prog-latest"><span class="wv" data-lbs="10">10 lbs</span> · 3×12 · 2026-09-29</div>
       </div>
       
       <span class="trend new">● new</span>
@@ -392,7 +401,7 @@
     <table>
       <thead><tr><th>Date</th><th>Weight</th><th>Sets×Reps</th><th>Volume</th><th>Δ</th></tr></thead>
       <tbody>
-<tr><td>2026-09-29</td><td>10 lbs</td><td>3×12</td><td>360 lbs</td><td><span class='trend new'>● new</span></td></tr>
+<tr><td>2026-09-29</td><td><span class="wv" data-lbs="10">10 lbs</span></td><td>3×12</td><td>360 lbs</td><td><span class='trend new'>● new</span></td></tr>
       </tbody>
     </table>
     </div>
@@ -402,7 +411,7 @@
     <summary>
       <div class="prog-main">
         <div class="prog-head"><span class="prog-name">Incline bench press (Chest)</span><span class="badge" style="background:#4f8ef722;color:#4f8ef7;border-color:#4f8ef744">Push A</span></div>
-        <div class="prog-latest">20 lbs · 4× <span class='rbs'>8/8/8/8</span> · 2026-09-28</div>
+        <div class="prog-latest"><span class="wv" data-lbs="20">20 lbs</span> · 4× <span class='rbs'>8/8/8/8</span> · 2026-09-28</div>
       </div>
       
       <span class="trend new">● new</span>
@@ -411,7 +420,7 @@
     <table>
       <thead><tr><th>Date</th><th>Weight</th><th>Sets×Reps</th><th>Volume</th><th>Δ</th></tr></thead>
       <tbody>
-<tr><td>2026-09-28</td><td>20 lbs</td><td>4× <span class='rbs'>8/8/8/8</span></td><td>640 lbs</td><td><span class='trend new'>● new</span></td></tr>
+<tr><td>2026-09-28</td><td><span class="wv" data-lbs="20">20 lbs</span></td><td>4× <span class='rbs'>8/8/8/8</span></td><td>640 lbs</td><td><span class='trend new'>● new</span></td></tr>
       </tbody>
     </table>
     </div>
@@ -421,7 +430,7 @@
     <summary>
       <div class="prog-main">
         <div class="prog-head"><span class="prog-name">Shoulder press (Shoulder)</span><span class="badge" style="background:#4f8ef722;color:#4f8ef7;border-color:#4f8ef744">Push A</span></div>
-        <div class="prog-latest">60 lbs · 3×15 · 2026-09-28</div>
+        <div class="prog-latest"><span class="wv" data-lbs="60">60 lbs</span> · 3×15 · 2026-09-28</div>
       </div>
       
       <span class="trend new">● new</span>
@@ -430,7 +439,7 @@
     <table>
       <thead><tr><th>Date</th><th>Weight</th><th>Sets×Reps</th><th>Volume</th><th>Δ</th></tr></thead>
       <tbody>
-<tr><td>2026-09-28</td><td>60 lbs</td><td>3×15</td><td>2700 lbs</td><td><span class='trend new'>● new</span></td></tr>
+<tr><td>2026-09-28</td><td><span class="wv" data-lbs="60">60 lbs</span></td><td>3×15</td><td>2700 lbs</td><td><span class='trend new'>● new</span></td></tr>
       </tbody>
     </table>
     </div>
@@ -440,7 +449,7 @@
     <summary>
       <div class="prog-main">
         <div class="prog-head"><span class="prog-name">Chest fly (Chest)</span><span class="badge" style="background:#4f8ef722;color:#4f8ef7;border-color:#4f8ef744">Push A</span></div>
-        <div class="prog-latest">55 lbs · 4×10 · 2026-09-28</div>
+        <div class="prog-latest"><span class="wv" data-lbs="55">55 lbs</span> · 4×10 · 2026-09-28</div>
       </div>
       
       <span class="trend new">● new</span>
@@ -449,7 +458,7 @@
     <table>
       <thead><tr><th>Date</th><th>Weight</th><th>Sets×Reps</th><th>Volume</th><th>Δ</th></tr></thead>
       <tbody>
-<tr><td>2026-09-28</td><td>55 lbs</td><td>4×10</td><td>2200 lbs</td><td><span class='trend new'>● new</span></td></tr>
+<tr><td>2026-09-28</td><td><span class="wv" data-lbs="55">55 lbs</span></td><td>4×10</td><td>2200 lbs</td><td><span class='trend new'>● new</span></td></tr>
       </tbody>
     </table>
     </div>
@@ -459,7 +468,7 @@
     <summary>
       <div class="prog-main">
         <div class="prog-head"><span class="prog-name">Lateral raise (Shoulder)</span><span class="badge" style="background:#4f8ef722;color:#4f8ef7;border-color:#4f8ef744">Push A</span></div>
-        <div class="prog-latest">10 lbs · 4×10 · 2026-09-28</div>
+        <div class="prog-latest"><span class="wv" data-lbs="10">10 lbs</span> · 4×10 · 2026-09-28</div>
       </div>
       
       <span class="trend new">● new</span>
@@ -468,7 +477,7 @@
     <table>
       <thead><tr><th>Date</th><th>Weight</th><th>Sets×Reps</th><th>Volume</th><th>Δ</th></tr></thead>
       <tbody>
-<tr><td>2026-09-28</td><td>10 lbs</td><td>4×10</td><td>400 lbs</td><td><span class='trend new'>● new</span></td></tr>
+<tr><td>2026-09-28</td><td><span class="wv" data-lbs="10">10 lbs</span></td><td>4×10</td><td>400 lbs</td><td><span class='trend new'>● new</span></td></tr>
       </tbody>
     </table>
     </div>
@@ -478,7 +487,7 @@
     <summary>
       <div class="prog-main">
         <div class="prog-head"><span class="prog-name">Cable tricep press down (Triceps)</span><span class="badge" style="background:#4f8ef722;color:#4f8ef7;border-color:#4f8ef744">Push A</span></div>
-        <div class="prog-latest">50 lbs · 4×10 · 2026-09-28</div>
+        <div class="prog-latest"><span class="wv" data-lbs="50">50 lbs</span> · 4×10 · 2026-09-28</div>
       </div>
       
       <span class="trend new">● new</span>
@@ -487,7 +496,7 @@
     <table>
       <thead><tr><th>Date</th><th>Weight</th><th>Sets×Reps</th><th>Volume</th><th>Δ</th></tr></thead>
       <tbody>
-<tr><td>2026-09-28</td><td>50 lbs</td><td>4×10</td><td>2000 lbs</td><td><span class='trend new'>● new</span></td></tr>
+<tr><td>2026-09-28</td><td><span class="wv" data-lbs="50">50 lbs</span></td><td>4×10</td><td>2000 lbs</td><td><span class='trend new'>● new</span></td></tr>
       </tbody>
     </table>
     </div>
@@ -497,7 +506,7 @@
     <summary>
       <div class="prog-main">
         <div class="prog-head"><span class="prog-name">* Romanian deadlift</span><span class="badge" style="background:#e3c04f22;color:#e3c04f;border-color:#e3c04f44">Full body</span></div>
-        <div class="prog-latest">77 lbs · 4×10 · 2026-09-25</div>
+        <div class="prog-latest"><span class="wv" data-lbs="77">77 lbs</span> · 4×10 · 2026-09-25</div>
       </div>
       <svg class="spark" width="88" height="26" viewBox="0 0 88 26" aria-hidden="true"><polyline points="5.0,21.0 13.7,6.1 22.3,6.1 31.0,6.1 39.7,6.1 48.3,16.0 57.0,9.4 65.7,9.4 74.3,6.1 83.0,5.0" fill="none" stroke="#5e6ad2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="83.0" cy="5.0" r="4" fill="#5e6ad2" stroke="#0f1014" stroke-width="2"/></svg>
       <span class="trend up">▲ +11 lbs</span>
@@ -506,18 +515,18 @@
     <table>
       <thead><tr><th>Date</th><th>Weight</th><th>Sets×Reps</th><th>Volume</th><th>Δ</th></tr></thead>
       <tbody>
-<tr><td>2026-09-25</td><td>77 lbs</td><td>4×10</td><td>3080 lbs</td><td><span class='trend up'>▲ +11 lbs</span></td></tr>
-<tr><td>2026-09-22</td><td>66 lbs</td><td>3×15</td><td>2970 lbs</td><td><span class='trend up'>▲ +12%</span></td></tr>
-<tr><td>2026-09-16</td><td>66 lbs</td><td>4×10</td><td>2640 lbs</td><td><span class='trend flat'>— same</span></td></tr>
-<tr><td>2026-09-10</td><td>66 lbs</td><td>4×10</td><td>2640 lbs</td><td><span class='trend up'>▲ +33%</span></td></tr>
-<tr><td>2026-08-27</td><td>66 lbs</td><td>3× <span class='rbs'>10/10/10</span></td><td>1980 lbs</td><td><span class='trend down'>▼ -33%</span></td></tr>
-<tr><td>2026-08-19</td><td>66 lbs</td><td>3×15</td><td>2970 lbs</td><td><span class='trend flat'>— same</span></td></tr>
-<tr><td>2026-07-30</td><td>66 lbs</td><td>3×15</td><td>2970 lbs</td><td><span class='trend flat'>— same</span></td></tr>
-<tr><td>2026-07-20</td><td>66 lbs</td><td>3×15</td><td>2970 lbs</td><td><span class='trend flat'>— same</span></td></tr>
-<tr><td>2026-07-12</td><td>66 lbs</td><td>3×15</td><td>2970 lbs</td><td><span class='trend up'>▲ +33 lbs</span></td></tr>
-<tr><td>2026-07-03</td><td>33 lbs</td><td>3×15</td><td>1485 lbs</td><td><span class='trend flat'>— same</span></td></tr>
-<tr><td>2026-06-19</td><td>33 lbs</td><td>3×15</td><td>1485 lbs</td><td><span class='trend flat'>— same</span></td></tr>
-<tr><td>2026-06-13</td><td>33 lbs</td><td>3×15</td><td>1485 lbs</td><td><span class='trend new'>● new</span></td></tr>
+<tr><td>2026-09-25</td><td><span class="wv" data-lbs="77">77 lbs</span></td><td>4×10</td><td>3080 lbs</td><td><span class='trend up'>▲ +11 lbs</span></td></tr>
+<tr><td>2026-09-22</td><td><span class="wv" data-lbs="66">66 lbs</span></td><td>3×15</td><td>2970 lbs</td><td><span class='trend up'>▲ +12%</span></td></tr>
+<tr><td>2026-09-16</td><td><span class="wv" data-lbs="66">66 lbs</span></td><td>4×10</td><td>2640 lbs</td><td><span class='trend flat'>— same</span></td></tr>
+<tr><td>2026-09-10</td><td><span class="wv" data-lbs="66">66 lbs</span></td><td>4×10</td><td>2640 lbs</td><td><span class='trend up'>▲ +33%</span></td></tr>
+<tr><td>2026-08-27</td><td><span class="wv" data-lbs="66">66 lbs</span></td><td>3× <span class='rbs'>10/10/10</span></td><td>1980 lbs</td><td><span class='trend down'>▼ -33%</span></td></tr>
+<tr><td>2026-08-19</td><td><span class="wv" data-lbs="66">66 lbs</span></td><td>3×15</td><td>2970 lbs</td><td><span class='trend flat'>— same</span></td></tr>
+<tr><td>2026-07-30</td><td><span class="wv" data-lbs="66">66 lbs</span></td><td>3×15</td><td>2970 lbs</td><td><span class='trend flat'>— same</span></td></tr>
+<tr><td>2026-07-20</td><td><span class="wv" data-lbs="66">66 lbs</span></td><td>3×15</td><td>2970 lbs</td><td><span class='trend flat'>— same</span></td></tr>
+<tr><td>2026-07-12</td><td><span class="wv" data-lbs="66">66 lbs</span></td><td>3×15</td><td>2970 lbs</td><td><span class='trend up'>▲ +33 lbs</span></td></tr>
+<tr><td>2026-07-03</td><td><span class="wv" data-lbs="33">33 lbs</span></td><td>3×15</td><td>1485 lbs</td><td><span class='trend flat'>— same</span></td></tr>
+<tr><td>2026-06-19</td><td><span class="wv" data-lbs="33">33 lbs</span></td><td>3×15</td><td>1485 lbs</td><td><span class='trend flat'>— same</span></td></tr>
+<tr><td>2026-06-13</td><td><span class="wv" data-lbs="33">33 lbs</span></td><td>3×15</td><td>1485 lbs</td><td><span class='trend new'>● new</span></td></tr>
       </tbody>
     </table>
     </div>
@@ -527,7 +536,7 @@
     <summary>
       <div class="prog-main">
         <div class="prog-head"><span class="prog-name">Back cable rowing</span><span class="badge" style="background:#7bb0ff22;color:#7bb0ff;border-color:#7bb0ff44">Pull B</span></div>
-        <div class="prog-latest">60 lbs · 3×15 · 2026-09-24</div>
+        <div class="prog-latest"><span class="wv" data-lbs="60">60 lbs</span> · 3×15 · 2026-09-24</div>
       </div>
       <svg class="spark" width="88" height="26" viewBox="0 0 88 26" aria-hidden="true"><polyline points="5.0,5.0 13.7,5.0 22.3,18.7 31.0,21.0 39.7,14.9 48.3,14.9 57.0,21.0 65.7,21.0 74.3,11.9 83.0,11.9" fill="none" stroke="#5e6ad2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="83.0" cy="11.9" r="4" fill="#5e6ad2" stroke="#0f1014" stroke-width="2"/></svg>
       <span class="trend flat">— same</span>
@@ -536,21 +545,21 @@
     <table>
       <thead><tr><th>Date</th><th>Weight</th><th>Sets×Reps</th><th>Volume</th><th>Δ</th></tr></thead>
       <tbody>
-<tr><td>2026-09-24</td><td>60 lbs</td><td>3×15</td><td>2700 lbs</td><td><span class='trend flat'>— same</span></td></tr>
-<tr><td>2026-09-21</td><td>60 lbs</td><td>3×15</td><td>2700 lbs</td><td><span class='trend up'>▲ +12%</span></td></tr>
-<tr><td>2026-09-14</td><td>60 lbs</td><td>4×10</td><td>2400 lbs</td><td><span class='trend flat'>— same</span></td></tr>
-<tr><td>2026-09-08</td><td>60 lbs</td><td>4×10</td><td>2400 lbs</td><td><span class='trend down'>▼ -5 lbs</span></td></tr>
-<tr><td>2026-09-04</td><td>65 lbs</td><td>4× <span class='rbs'>10/10/10/10</span></td><td>2600 lbs</td><td><span class='trend flat'>— same</span></td></tr>
-<tr><td>2026-08-28</td><td>65 lbs</td><td>4×10</td><td>2600 lbs</td><td><span class='trend up'>▲ +5 lbs</span></td></tr>
-<tr><td>2026-08-22</td><td>60 lbs</td><td>4×10</td><td>2400 lbs</td><td><span class='trend up'>▲ +5 lbs</span></td></tr>
-<tr><td>2026-08-17</td><td>55 lbs</td><td>3×15</td><td>2475 lbs</td><td><span class='trend down'>▼ -10 lbs</span></td></tr>
-<tr><td>2026-08-05</td><td>65 lbs</td><td>3×15</td><td>2925 lbs</td><td><span class='trend flat'>— same</span></td></tr>
-<tr><td>2026-08-04</td><td>65 lbs</td><td>3×15</td><td>2925 lbs</td><td><span class='trend up'>▲ +25%</span></td></tr>
-<tr><td>2026-07-28</td><td>65 lbs</td><td>3×12</td><td>2340 lbs</td><td><span class='trend down'>▼ -20%</span></td></tr>
-<tr><td>2026-07-21</td><td>65 lbs</td><td>3×15</td><td>2925 lbs</td><td><span class='trend flat'>— same</span></td></tr>
-<tr><td>2026-07-14</td><td>65 lbs</td><td>3×15</td><td>2925 lbs</td><td><span class='trend up'>▲ +50%</span></td></tr>
-<tr><td>2026-07-10</td><td>65 lbs</td><td>3×10</td><td>1950 lbs</td><td><span class='trend up'>▲ +10 lbs</span></td></tr>
-<tr><td>2026-06-16</td><td>55 lbs</td><td>3×15</td><td>2475 lbs</td><td><span class='trend new'>● new</span></td></tr>
+<tr><td>2026-09-24</td><td><span class="wv" data-lbs="60">60 lbs</span></td><td>3×15</td><td>2700 lbs</td><td><span class='trend flat'>— same</span></td></tr>
+<tr><td>2026-09-21</td><td><span class="wv" data-lbs="60">60 lbs</span></td><td>3×15</td><td>2700 lbs</td><td><span class='trend up'>▲ +12%</span></td></tr>
+<tr><td>2026-09-14</td><td><span class="wv" data-lbs="60">60 lbs</span></td><td>4×10</td><td>2400 lbs</td><td><span class='trend flat'>— same</span></td></tr>
+<tr><td>2026-09-08</td><td><span class="wv" data-lbs="60">60 lbs</span></td><td>4×10</td><td>2400 lbs</td><td><span class='trend down'>▼ -5 lbs</span></td></tr>
+<tr><td>2026-09-04</td><td><span class="wv" data-lbs="65">65 lbs</span></td><td>4× <span class='rbs'>10/10/10/10</span></td><td>2600 lbs</td><td><span class='trend flat'>— same</span></td></tr>
+<tr><td>2026-08-28</td><td><span class="wv" data-lbs="65">65 lbs</span></td><td>4×10</td><td>2600 lbs</td><td><span class='trend up'>▲ +5 lbs</span></td></tr>
+<tr><td>2026-08-22</td><td><span class="wv" data-lbs="60">60 lbs</span></td><td>4×10</td><td>2400 lbs</td><td><span class='trend up'>▲ +5 lbs</span></td></tr>
+<tr><td>2026-08-17</td><td><span class="wv" data-lbs="55">55 lbs</span></td><td>3×15</td><td>2475 lbs</td><td><span class='trend down'>▼ -10 lbs</span></td></tr>
+<tr><td>2026-08-05</td><td><span class="wv" data-lbs="65">65 lbs</span></td><td>3×15</td><td>2925 lbs</td><td><span class='trend flat'>— same</span></td></tr>
+<tr><td>2026-08-04</td><td><span class="wv" data-lbs="65">65 lbs</span></td><td>3×15</td><td>2925 lbs</td><td><span class='trend up'>▲ +25%</span></td></tr>
+<tr><td>2026-07-28</td><td><span class="wv" data-lbs="65">65 lbs</span></td><td>3×12</td><td>2340 lbs</td><td><span class='trend down'>▼ -20%</span></td></tr>
+<tr><td>2026-07-21</td><td><span class="wv" data-lbs="65">65 lbs</span></td><td>3×15</td><td>2925 lbs</td><td><span class='trend flat'>— same</span></td></tr>
+<tr><td>2026-07-14</td><td><span class="wv" data-lbs="65">65 lbs</span></td><td>3×15</td><td>2925 lbs</td><td><span class='trend up'>▲ +50%</span></td></tr>
+<tr><td>2026-07-10</td><td><span class="wv" data-lbs="65">65 lbs</span></td><td>3×10</td><td>1950 lbs</td><td><span class='trend up'>▲ +10 lbs</span></td></tr>
+<tr><td>2026-06-16</td><td><span class="wv" data-lbs="55">55 lbs</span></td><td>3×15</td><td>2475 lbs</td><td><span class='trend new'>● new</span></td></tr>
       </tbody>
     </table>
     </div>
@@ -560,7 +569,7 @@
     <summary>
       <div class="prog-main">
         <div class="prog-head"><span class="prog-name">Shoulder press</span><span class="badge" style="background:#4f8ef722;color:#4f8ef7;border-color:#4f8ef744">Push A</span></div>
-        <div class="prog-latest">60 lbs · 4×10 · 2026-09-24</div>
+        <div class="prog-latest"><span class="wv" data-lbs="60">60 lbs</span> · 4×10 · 2026-09-24</div>
       </div>
       <svg class="spark" width="88" height="26" viewBox="0 0 88 26" aria-hidden="true"><polyline points="5.0,12.6 13.7,12.6 22.3,12.6 31.0,12.6 39.7,21.0 48.3,21.0 57.0,21.0 65.7,12.6 74.3,5.0 83.0,7.5" fill="none" stroke="#5e6ad2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="83.0" cy="7.5" r="4" fill="#5e6ad2" stroke="#0f1014" stroke-width="2"/></svg>
       <span class="trend up">▲ +5 lbs</span>
@@ -569,19 +578,19 @@
     <table>
       <thead><tr><th>Date</th><th>Weight</th><th>Sets×Reps</th><th>Volume</th><th>Δ</th></tr></thead>
       <tbody>
-<tr><td>2026-09-24</td><td>60 lbs</td><td>4×10</td><td>2400 lbs</td><td><span class='trend up'>▲ +5 lbs</span></td></tr>
-<tr><td>2026-09-21</td><td>55 lbs</td><td>3×15</td><td>2475 lbs</td><td><span class='trend up'>▲ +5 lbs</span></td></tr>
-<tr><td>2026-09-14</td><td>50 lbs</td><td>3×15</td><td>2250 lbs</td><td><span class='trend up'>▲ +12%</span></td></tr>
-<tr><td>2026-09-08</td><td>50 lbs</td><td>4×10</td><td>2000 lbs</td><td><span class='trend flat'>— same</span></td></tr>
-<tr><td>2026-09-04</td><td>50 lbs</td><td>4× <span class='rbs'>10/10/10/10</span></td><td>2000 lbs</td><td><span class='trend flat'>— same</span></td></tr>
-<tr><td>2026-08-25</td><td>50 lbs</td><td>4× <span class='rbs'>12/10/10/8</span></td><td>2000 lbs</td><td><span class='trend down'>▼ -11%</span></td></tr>
-<tr><td>2026-08-17</td><td>50 lbs</td><td>3×15</td><td>2250 lbs</td><td><span class='trend flat'>— same</span></td></tr>
-<tr><td>2026-08-11</td><td>50 lbs</td><td>3×15</td><td>2250 lbs</td><td><span class='trend flat'>— same</span></td></tr>
-<tr><td>2026-08-05</td><td>50 lbs</td><td>3×15</td><td>2250 lbs</td><td><span class='trend flat'>— same</span></td></tr>
-<tr><td>2026-08-04</td><td>50 lbs</td><td>3×15</td><td>2250 lbs</td><td><span class='trend up'>▲ +50%</span></td></tr>
-<tr><td>2026-07-31</td><td>50 lbs</td><td>3×10</td><td>1500 lbs</td><td><span class='trend up'>▲ +10 lbs</span></td></tr>
-<tr><td>2026-07-28</td><td>40 lbs</td><td>3×12</td><td>1440 lbs</td><td><span class='trend down'>▼ -20%</span></td></tr>
-<tr><td>2026-06-23</td><td>40 lbs</td><td>3×15</td><td>1800 lbs</td><td><span class='trend new'>● new</span></td></tr>
+<tr><td>2026-09-24</td><td><span class="wv" data-lbs="60">60 lbs</span></td><td>4×10</td><td>2400 lbs</td><td><span class='trend up'>▲ +5 lbs</span></td></tr>
+<tr><td>2026-09-21</td><td><span class="wv" data-lbs="55">55 lbs</span></td><td>3×15</td><td>2475 lbs</td><td><span class='trend up'>▲ +5 lbs</span></td></tr>
+<tr><td>2026-09-14</td><td><span class="wv" data-lbs="50">50 lbs</span></td><td>3×15</td><td>2250 lbs</td><td><span class='trend up'>▲ +12%</span></td></tr>
+<tr><td>2026-09-08</td><td><span class="wv" data-lbs="50">50 lbs</span></td><td>4×10</td><td>2000 lbs</td><td><span class='trend flat'>— same</span></td></tr>
+<tr><td>2026-09-04</td><td><span class="wv" data-lbs="50">50 lbs</span></td><td>4× <span class='rbs'>10/10/10/10</span></td><td>2000 lbs</td><td><span class='trend flat'>— same</span></td></tr>
+<tr><td>2026-08-25</td><td><span class="wv" data-lbs="50">50 lbs</span></td><td>4× <span class='rbs'>12/10/10/8</span></td><td>2000 lbs</td><td><span class='trend down'>▼ -11%</span></td></tr>
+<tr><td>2026-08-17</td><td><span class="wv" data-lbs="50">50 lbs</span></td><td>3×15</td><td>2250 lbs</td><td><span class='trend flat'>— same</span></td></tr>
+<tr><td>2026-08-11</td><td><span class="wv" data-lbs="50">50 lbs</span></td><td>3×15</td><td>2250 lbs</td><td><span class='trend flat'>— same</span></td></tr>
+<tr><td>2026-08-05</td><td><span class="wv" data-lbs="50">50 lbs</span></td><td>3×15</td><td>2250 lbs</td><td><span class='trend flat'>— same</span></td></tr>
+<tr><td>2026-08-04</td><td><span class="wv" data-lbs="50">50 lbs</span></td><td>3×15</td><td>2250 lbs</td><td><span class='trend up'>▲ +50%</span></td></tr>
+<tr><td>2026-07-31</td><td><span class="wv" data-lbs="50">50 lbs</span></td><td>3×10</td><td>1500 lbs</td><td><span class='trend up'>▲ +10 lbs</span></td></tr>
+<tr><td>2026-07-28</td><td><span class="wv" data-lbs="40">40 lbs</span></td><td>3×12</td><td>1440 lbs</td><td><span class='trend down'>▼ -20%</span></td></tr>
+<tr><td>2026-06-23</td><td><span class="wv" data-lbs="40">40 lbs</span></td><td>3×15</td><td>1800 lbs</td><td><span class='trend new'>● new</span></td></tr>
       </tbody>
     </table>
     </div>
@@ -591,7 +600,7 @@
     <summary>
       <div class="prog-main">
         <div class="prog-head"><span class="prog-name">Chest fly</span><span class="badge" style="background:#4f8ef722;color:#4f8ef7;border-color:#4f8ef744">Push A</span></div>
-        <div class="prog-latest">55 lbs · 3×15 · 2026-09-24</div>
+        <div class="prog-latest"><span class="wv" data-lbs="55">55 lbs</span> · 3×15 · 2026-09-24</div>
       </div>
       <svg class="spark" width="88" height="26" viewBox="0 0 88 26" aria-hidden="true"><polyline points="5.0,21.0 24.5,21.0 44.0,21.0 63.5,21.0 83.0,21.0" fill="none" stroke="#5e6ad2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="83.0" cy="21.0" r="4" fill="#5e6ad2" stroke="#0f1014" stroke-width="2"/></svg>
       <span class="trend flat">— same</span>
@@ -600,11 +609,11 @@
     <table>
       <thead><tr><th>Date</th><th>Weight</th><th>Sets×Reps</th><th>Volume</th><th>Δ</th></tr></thead>
       <tbody>
-<tr><td>2026-09-24</td><td>55 lbs</td><td>3×15</td><td>2475 lbs</td><td><span class='trend flat'>— same</span></td></tr>
-<tr><td>2026-08-11</td><td>55 lbs</td><td>3×15</td><td>2475 lbs</td><td><span class='trend flat'>— same</span></td></tr>
-<tr><td>2026-07-31</td><td>55 lbs</td><td>3×15</td><td>2475 lbs</td><td><span class='trend flat'>— same</span></td></tr>
-<tr><td>2026-07-14</td><td>55 lbs</td><td>3×15</td><td>2475 lbs</td><td><span class='trend flat'>— same</span></td></tr>
-<tr><td>2026-06-30</td><td>55 lbs</td><td>3×15</td><td>2475 lbs</td><td><span class='trend new'>● new</span></td></tr>
+<tr><td>2026-09-24</td><td><span class="wv" data-lbs="55">55 lbs</span></td><td>3×15</td><td>2475 lbs</td><td><span class='trend flat'>— same</span></td></tr>
+<tr><td>2026-08-11</td><td><span class="wv" data-lbs="55">55 lbs</span></td><td>3×15</td><td>2475 lbs</td><td><span class='trend flat'>— same</span></td></tr>
+<tr><td>2026-07-31</td><td><span class="wv" data-lbs="55">55 lbs</span></td><td>3×15</td><td>2475 lbs</td><td><span class='trend flat'>— same</span></td></tr>
+<tr><td>2026-07-14</td><td><span class="wv" data-lbs="55">55 lbs</span></td><td>3×15</td><td>2475 lbs</td><td><span class='trend flat'>— same</span></td></tr>
+<tr><td>2026-06-30</td><td><span class="wv" data-lbs="55">55 lbs</span></td><td>3×15</td><td>2475 lbs</td><td><span class='trend new'>● new</span></td></tr>
       </tbody>
     </table>
     </div>
@@ -614,7 +623,7 @@
     <summary>
       <div class="prog-main">
         <div class="prog-head"><span class="prog-name">Lat pulldown</span><span class="badge" style="background:#7bb0ff22;color:#7bb0ff;border-color:#7bb0ff44">Pull B</span></div>
-        <div class="prog-latest">60 lbs · 3×15 · 2026-09-24</div>
+        <div class="prog-latest"><span class="wv" data-lbs="60">60 lbs</span> · 3×15 · 2026-09-24</div>
       </div>
       <svg class="spark" width="88" height="26" viewBox="0 0 88 26" aria-hidden="true"><polyline points="5.0,8.4 13.7,8.4 22.3,21.0 31.0,5.0 39.7,15.3 48.3,19.5 57.0,16.4 65.7,16.4 74.3,11.9 83.0,11.9" fill="none" stroke="#5e6ad2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="83.0" cy="11.9" r="4" fill="#5e6ad2" stroke="#0f1014" stroke-width="2"/></svg>
       <span class="trend flat">— same</span>
@@ -623,16 +632,16 @@
     <table>
       <thead><tr><th>Date</th><th>Weight</th><th>Sets×Reps</th><th>Volume</th><th>Δ</th></tr></thead>
       <tbody>
-<tr><td>2026-09-24</td><td>60 lbs</td><td>3×15</td><td>2700 lbs</td><td><span class='trend flat'>— same</span></td></tr>
-<tr><td>2026-09-21</td><td>60 lbs</td><td>3×15</td><td>2700 lbs</td><td><span class='trend up'>▲ +12%</span></td></tr>
-<tr><td>2026-09-14</td><td>60 lbs</td><td>4×10</td><td>2400 lbs</td><td><span class='trend flat'>— same</span></td></tr>
-<tr><td>2026-09-03</td><td>60 lbs</td><td>4× <span class='rbs'>10/10/10/10</span></td><td>2400 lbs</td><td><span class='trend up'>▲ +5 lbs</span></td></tr>
-<tr><td>2026-08-25</td><td>55 lbs</td><td>4× <span class='rbs'>12/10/10/8</span></td><td>2200 lbs</td><td><span class='trend down'>▼ -11%</span></td></tr>
-<tr><td>2026-08-17</td><td>55 lbs</td><td>3×15</td><td>2475 lbs</td><td><span class='trend down'>▼ -15 lbs</span></td></tr>
-<tr><td>2026-08-11</td><td>70 lbs</td><td>3×15</td><td>3150 lbs</td><td><span class='trend up'>▲ +50%</span></td></tr>
-<tr><td>2026-07-31</td><td>70 lbs</td><td>3×10</td><td>2100 lbs</td><td><span class='trend up'>▲ +5 lbs</span></td></tr>
-<tr><td>2026-07-24</td><td>65 lbs</td><td>3×15</td><td>2925 lbs</td><td><span class='trend flat'>— same</span></td></tr>
-<tr><td>2026-07-07</td><td>65 lbs</td><td>3×15</td><td>2925 lbs</td><td><span class='trend new'>● new</span></td></tr>
+<tr><td>2026-09-24</td><td><span class="wv" data-lbs="60">60 lbs</span></td><td>3×15</td><td>2700 lbs</td><td><span class='trend flat'>— same</span></td></tr>
+<tr><td>2026-09-21</td><td><span class="wv" data-lbs="60">60 lbs</span></td><td>3×15</td><td>2700 lbs</td><td><span class='trend up'>▲ +12%</span></td></tr>
+<tr><td>2026-09-14</td><td><span class="wv" data-lbs="60">60 lbs</span></td><td>4×10</td><td>2400 lbs</td><td><span class='trend flat'>— same</span></td></tr>
+<tr><td>2026-09-03</td><td><span class="wv" data-lbs="60">60 lbs</span></td><td>4× <span class='rbs'>10/10/10/10</span></td><td>2400 lbs</td><td><span class='trend up'>▲ +5 lbs</span></td></tr>
+<tr><td>2026-08-25</td><td><span class="wv" data-lbs="55">55 lbs</span></td><td>4× <span class='rbs'>12/10/10/8</span></td><td>2200 lbs</td><td><span class='trend down'>▼ -11%</span></td></tr>
+<tr><td>2026-08-17</td><td><span class="wv" data-lbs="55">55 lbs</span></td><td>3×15</td><td>2475 lbs</td><td><span class='trend down'>▼ -15 lbs</span></td></tr>
+<tr><td>2026-08-11</td><td><span class="wv" data-lbs="70">70 lbs</span></td><td>3×15</td><td>3150 lbs</td><td><span class='trend up'>▲ +50%</span></td></tr>
+<tr><td>2026-07-31</td><td><span class="wv" data-lbs="70">70 lbs</span></td><td>3×10</td><td>2100 lbs</td><td><span class='trend up'>▲ +5 lbs</span></td></tr>
+<tr><td>2026-07-24</td><td><span class="wv" data-lbs="65">65 lbs</span></td><td>3×15</td><td>2925 lbs</td><td><span class='trend flat'>— same</span></td></tr>
+<tr><td>2026-07-07</td><td><span class="wv" data-lbs="65">65 lbs</span></td><td>3×15</td><td>2925 lbs</td><td><span class='trend new'>● new</span></td></tr>
       </tbody>
     </table>
     </div>
@@ -642,7 +651,7 @@
     <summary>
       <div class="prog-main">
         <div class="prog-head"><span class="prog-name">Bicep curl</span><span class="badge" style="background:#7bb0ff22;color:#7bb0ff;border-color:#7bb0ff44">Pull B</span></div>
-        <div class="prog-latest">10 lbs · 3×12 · 2026-09-24</div>
+        <div class="prog-latest"><span class="wv" data-lbs="10">10 lbs</span> · 3×12 · 2026-09-24</div>
       </div>
       <svg class="spark" width="88" height="26" viewBox="0 0 88 26" aria-hidden="true"><polyline points="5.0,21.0 14.8,8.7 24.5,8.7 34.2,5.0 44.0,14.1 53.8,8.7 63.5,14.1 73.2,8.7 83.0,8.7" fill="none" stroke="#5e6ad2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="83.0" cy="8.7" r="4" fill="#5e6ad2" stroke="#0f1014" stroke-width="2"/></svg>
       <span class="trend flat">— same</span>
@@ -651,15 +660,15 @@
     <table>
       <thead><tr><th>Date</th><th>Weight</th><th>Sets×Reps</th><th>Volume</th><th>Δ</th></tr></thead>
       <tbody>
-<tr><td>2026-09-24</td><td>10 lbs</td><td>3×12</td><td>360 lbs</td><td><span class='trend flat'>— same</span></td></tr>
-<tr><td>2026-09-21</td><td>10 lbs</td><td>3×12</td><td>360 lbs</td><td><span class='trend up'>▲ +20%</span></td></tr>
-<tr><td>2026-09-18</td><td>10 lbs</td><td>3×10</td><td>300 lbs</td><td><span class='trend down'>▼ -17%</span></td></tr>
-<tr><td>2026-09-14</td><td>10 lbs</td><td>3×12</td><td>360 lbs</td><td><span class='trend up'>▲ +20%</span></td></tr>
-<tr><td>2026-09-08</td><td>10 lbs</td><td>3×10</td><td>300 lbs</td><td><span class='trend down'>▼ -25%</span></td></tr>
-<tr><td>2026-08-25</td><td>10 lbs</td><td>4× <span class='rbs'>12/10/10/8</span></td><td>400 lbs</td><td><span class='trend up'>▲ +11%</span></td></tr>
-<tr><td>2026-08-17</td><td>10 lbs</td><td>3×12</td><td>360 lbs</td><td><span class='trend flat'>— same</span></td></tr>
-<tr><td>2026-07-24</td><td>10 lbs</td><td>3×12</td><td>360 lbs</td><td><span class='trend up'>▲ +5 lbs</span></td></tr>
-<tr><td>2026-07-10</td><td>5 lbs</td><td>3×15</td><td>225 lbs</td><td><span class='trend new'>● new</span></td></tr>
+<tr><td>2026-09-24</td><td><span class="wv" data-lbs="10">10 lbs</span></td><td>3×12</td><td>360 lbs</td><td><span class='trend flat'>— same</span></td></tr>
+<tr><td>2026-09-21</td><td><span class="wv" data-lbs="10">10 lbs</span></td><td>3×12</td><td>360 lbs</td><td><span class='trend up'>▲ +20%</span></td></tr>
+<tr><td>2026-09-18</td><td><span class="wv" data-lbs="10">10 lbs</span></td><td>3×10</td><td>300 lbs</td><td><span class='trend down'>▼ -17%</span></td></tr>
+<tr><td>2026-09-14</td><td><span class="wv" data-lbs="10">10 lbs</span></td><td>3×12</td><td>360 lbs</td><td><span class='trend up'>▲ +20%</span></td></tr>
+<tr><td>2026-09-08</td><td><span class="wv" data-lbs="10">10 lbs</span></td><td>3×10</td><td>300 lbs</td><td><span class='trend down'>▼ -25%</span></td></tr>
+<tr><td>2026-08-25</td><td><span class="wv" data-lbs="10">10 lbs</span></td><td>4× <span class='rbs'>12/10/10/8</span></td><td>400 lbs</td><td><span class='trend up'>▲ +11%</span></td></tr>
+<tr><td>2026-08-17</td><td><span class="wv" data-lbs="10">10 lbs</span></td><td>3×12</td><td>360 lbs</td><td><span class='trend flat'>— same</span></td></tr>
+<tr><td>2026-07-24</td><td><span class="wv" data-lbs="10">10 lbs</span></td><td>3×12</td><td>360 lbs</td><td><span class='trend up'>▲ +5 lbs</span></td></tr>
+<tr><td>2026-07-10</td><td><span class="wv" data-lbs="5">5 lbs</span></td><td>3×15</td><td>225 lbs</td><td><span class='trend new'>● new</span></td></tr>
       </tbody>
     </table>
     </div>
@@ -669,7 +678,7 @@
     <summary>
       <div class="prog-main">
         <div class="prog-head"><span class="prog-name">Incline bench press</span><span class="badge" style="background:#4f8ef722;color:#4f8ef7;border-color:#4f8ef744">Push A</span></div>
-        <div class="prog-latest">20 lbs · 4× <span class='rbs'>10/10/10/10</span> · 2026-09-24</div>
+        <div class="prog-latest"><span class="wv" data-lbs="20">20 lbs</span> · 4× <span class='rbs'>10/10/10/10</span> · 2026-09-24</div>
       </div>
       <svg class="spark" width="88" height="26" viewBox="0 0 88 26" aria-hidden="true"><polyline points="5.0,18.5 24.5,21.0 44.0,17.8 63.5,11.4 83.0,5.0" fill="none" stroke="#5e6ad2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="83.0" cy="5.0" r="4" fill="#5e6ad2" stroke="#0f1014" stroke-width="2"/></svg>
       <span class="trend up">▲ +25%</span>
@@ -678,11 +687,11 @@
     <table>
       <thead><tr><th>Date</th><th>Weight</th><th>Sets×Reps</th><th>Volume</th><th>Δ</th></tr></thead>
       <tbody>
-<tr><td>2026-09-24</td><td>20 lbs</td><td>4× <span class='rbs'>10/10/10/10</span></td><td>800 lbs</td><td><span class='trend up'>▲ +25%</span></td></tr>
-<tr><td>2026-09-18</td><td>20 lbs</td><td>4× <span class='rbs'>9/8/8/7</span></td><td>640 lbs</td><td><span class='trend up'>▲ +33%</span></td></tr>
-<tr><td>2026-09-03</td><td>20 lbs</td><td>4× <span class='rbs'>7/7/5/5</span></td><td>480 lbs</td><td><span class='trend up'>▲ +10 lbs</span></td></tr>
-<tr><td>2026-08-25</td><td>10 lbs</td><td>4× <span class='rbs'>12/10/10/8</span></td><td>400 lbs</td><td><span class='trend down'>▼ -1 lbs</span></td></tr>
-<tr><td>2026-08-21</td><td>11 lbs</td><td>5× <span class='rbs'>12/10/7/7/6</span></td><td>462 lbs</td><td><span class='trend new'>● new</span></td></tr>
+<tr><td>2026-09-24</td><td><span class="wv" data-lbs="20">20 lbs</span></td><td>4× <span class='rbs'>10/10/10/10</span></td><td>800 lbs</td><td><span class='trend up'>▲ +25%</span></td></tr>
+<tr><td>2026-09-18</td><td><span class="wv" data-lbs="20">20 lbs</span></td><td>4× <span class='rbs'>9/8/8/7</span></td><td>640 lbs</td><td><span class='trend up'>▲ +33%</span></td></tr>
+<tr><td>2026-09-03</td><td><span class="wv" data-lbs="20">20 lbs</span></td><td>4× <span class='rbs'>7/7/5/5</span></td><td>480 lbs</td><td><span class='trend up'>▲ +10 lbs</span></td></tr>
+<tr><td>2026-08-25</td><td><span class="wv" data-lbs="10">10 lbs</span></td><td>4× <span class='rbs'>12/10/10/8</span></td><td>400 lbs</td><td><span class='trend down'>▼ -1 lbs</span></td></tr>
+<tr><td>2026-08-21</td><td><span class="wv" data-lbs="11">11 lbs</span></td><td>5× <span class='rbs'>12/10/7/7/6</span></td><td>462 lbs</td><td><span class='trend new'>● new</span></td></tr>
       </tbody>
     </table>
     </div>
@@ -692,7 +701,7 @@
     <summary>
       <div class="prog-main">
         <div class="prog-head"><span class="prog-name">* Goblet squat</span><span class="badge" style="background:#f7934f22;color:#f7934f;border-color:#f7934f44">Lower</span></div>
-        <div class="prog-latest">38 lbs · 4×10 · 2026-09-22</div>
+        <div class="prog-latest"><span class="wv" data-lbs="38">38 lbs</span> · 4×10 · 2026-09-22</div>
       </div>
       <svg class="spark" width="88" height="26" viewBox="0 0 88 26" aria-hidden="true"><polyline points="5.0,21.0 44.0,21.0 83.0,5.0" fill="none" stroke="#5e6ad2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="83.0" cy="5.0" r="4" fill="#5e6ad2" stroke="#0f1014" stroke-width="2"/></svg>
       <span class="trend up">▲ +8 lbs</span>
@@ -701,9 +710,9 @@
     <table>
       <thead><tr><th>Date</th><th>Weight</th><th>Sets×Reps</th><th>Volume</th><th>Δ</th></tr></thead>
       <tbody>
-<tr><td>2026-09-22</td><td>38 lbs</td><td>4×10</td><td>1520 lbs</td><td><span class='trend up'>▲ +8 lbs</span></td></tr>
-<tr><td>2026-09-16</td><td>30 lbs</td><td>3×10</td><td>900 lbs</td><td><span class='trend flat'>— same</span></td></tr>
-<tr><td>2026-07-30</td><td>30 lbs</td><td>3×10</td><td>900 lbs</td><td><span class='trend new'>● new</span></td></tr>
+<tr><td>2026-09-22</td><td><span class="wv" data-lbs="38">38 lbs</span></td><td>4×10</td><td>1520 lbs</td><td><span class='trend up'>▲ +8 lbs</span></td></tr>
+<tr><td>2026-09-16</td><td><span class="wv" data-lbs="30">30 lbs</span></td><td>3×10</td><td>900 lbs</td><td><span class='trend flat'>— same</span></td></tr>
+<tr><td>2026-07-30</td><td><span class="wv" data-lbs="30">30 lbs</span></td><td>3×10</td><td>900 lbs</td><td><span class='trend new'>● new</span></td></tr>
       </tbody>
     </table>
     </div>
@@ -736,7 +745,7 @@
     <summary>
       <div class="prog-main">
         <div class="prog-head"><span class="prog-name">* Bent-knee single-leg calf raise</span><span class="badge" style="background:#f7934f22;color:#f7934f;border-color:#f7934f44">Lower</span></div>
-        <div class="prog-latest">22 lbs · 4×10 · 2026-09-22</div>
+        <div class="prog-latest"><span class="wv" data-lbs="22">22 lbs</span> · 4×10 · 2026-09-22</div>
       </div>
       <svg class="spark" width="88" height="26" viewBox="0 0 88 26" aria-hidden="true"><polyline points="5.0,15.0 24.5,15.0 44.0,21.0 63.5,15.0 83.0,5.0" fill="none" stroke="#5e6ad2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="83.0" cy="5.0" r="4" fill="#5e6ad2" stroke="#0f1014" stroke-width="2"/></svg>
       <span class="trend up">▲ +33%</span>
@@ -745,11 +754,11 @@
     <table>
       <thead><tr><th>Date</th><th>Weight</th><th>Sets×Reps</th><th>Volume</th><th>Δ</th></tr></thead>
       <tbody>
-<tr><td>2026-09-22</td><td>22 lbs</td><td>4×10</td><td>880 lbs</td><td><span class='trend up'>▲ +33%</span></td></tr>
-<tr><td>2026-09-16</td><td>22 lbs</td><td>3×10</td><td>660 lbs</td><td><span class='trend up'>▲ +25%</span></td></tr>
-<tr><td>2026-09-10</td><td>22 lbs</td><td>3×8</td><td>528 lbs</td><td><span class='trend down'>▼ -20%</span></td></tr>
-<tr><td>2026-09-05</td><td>22 lbs</td><td>3×10</td><td>660 lbs</td><td><span class='trend flat'>— same</span></td></tr>
-<tr><td>2026-08-27</td><td>22 lbs</td><td>3× <span class='rbs'>10/10/10</span></td><td>660 lbs</td><td><span class='trend new'>● new</span></td></tr>
+<tr><td>2026-09-22</td><td><span class="wv" data-lbs="22">22 lbs</span></td><td>4×10</td><td>880 lbs</td><td><span class='trend up'>▲ +33%</span></td></tr>
+<tr><td>2026-09-16</td><td><span class="wv" data-lbs="22">22 lbs</span></td><td>3×10</td><td>660 lbs</td><td><span class='trend up'>▲ +25%</span></td></tr>
+<tr><td>2026-09-10</td><td><span class="wv" data-lbs="22">22 lbs</span></td><td>3×8</td><td>528 lbs</td><td><span class='trend down'>▼ -20%</span></td></tr>
+<tr><td>2026-09-05</td><td><span class="wv" data-lbs="22">22 lbs</span></td><td>3×10</td><td>660 lbs</td><td><span class='trend flat'>— same</span></td></tr>
+<tr><td>2026-08-27</td><td><span class="wv" data-lbs="22">22 lbs</span></td><td>3× <span class='rbs'>10/10/10</span></td><td>660 lbs</td><td><span class='trend new'>● new</span></td></tr>
       </tbody>
     </table>
     </div>
@@ -759,7 +768,7 @@
     <summary>
       <div class="prog-main">
         <div class="prog-head"><span class="prog-name">Face pull</span><span class="badge" style="background:#7bb0ff22;color:#7bb0ff;border-color:#7bb0ff44">Pull B</span></div>
-        <div class="prog-latest">60 lbs · 4×10 · 2026-09-21</div>
+        <div class="prog-latest"><span class="wv" data-lbs="60">60 lbs</span> · 4×10 · 2026-09-21</div>
       </div>
       <svg class="spark" width="88" height="26" viewBox="0 0 88 26" aria-hidden="true"><polyline points="5.0,11.0 13.7,11.0 22.3,11.0 31.0,11.0 39.7,11.0 48.3,5.0 57.0,21.0 65.7,11.0 74.3,11.0 83.0,5.0" fill="none" stroke="#5e6ad2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="83.0" cy="5.0" r="4" fill="#5e6ad2" stroke="#0f1014" stroke-width="2"/></svg>
       <span class="trend up">▲ +10 lbs</span>
@@ -768,17 +777,17 @@
     <table>
       <thead><tr><th>Date</th><th>Weight</th><th>Sets×Reps</th><th>Volume</th><th>Δ</th></tr></thead>
       <tbody>
-<tr><td>2026-09-21</td><td>60 lbs</td><td>4×10</td><td>2400 lbs</td><td><span class='trend up'>▲ +10 lbs</span></td></tr>
-<tr><td>2026-09-18</td><td>50 lbs</td><td>3×15</td><td>2250 lbs</td><td><span class='trend flat'>— same</span></td></tr>
-<tr><td>2026-09-14</td><td>50 lbs</td><td>3×15</td><td>2250 lbs</td><td><span class='trend up'>▲ +12%</span></td></tr>
-<tr><td>2026-09-04</td><td>50 lbs</td><td>4× <span class='rbs'>10/10/10/10</span></td><td>2000 lbs</td><td><span class='trend down'>▼ -10 lbs</span></td></tr>
-<tr><td>2026-08-28</td><td>60 lbs</td><td>4×10</td><td>2400 lbs</td><td><span class='trend up'>▲ +10 lbs</span></td></tr>
-<tr><td>2026-08-05</td><td>50 lbs</td><td>3×15</td><td>2250 lbs</td><td><span class='trend flat'>— same</span></td></tr>
-<tr><td>2026-08-04</td><td>50 lbs</td><td>3×15</td><td>2250 lbs</td><td><span class='trend flat'>— same</span></td></tr>
-<tr><td>2026-07-24</td><td>50 lbs</td><td>3×15</td><td>2250 lbs</td><td><span class='trend flat'>— same</span></td></tr>
-<tr><td>2026-07-14</td><td>50 lbs</td><td>3×15</td><td>2250 lbs</td><td><span class='trend flat'>— same</span></td></tr>
-<tr><td>2026-07-07</td><td>50 lbs</td><td>3×15</td><td>2250 lbs</td><td><span class='trend up'>▲ +10 lbs</span></td></tr>
-<tr><td>2026-06-23</td><td>40 lbs</td><td>3×15</td><td>1800 lbs</td><td><span class='trend new'>● new</span></td></tr>
+<tr><td>2026-09-21</td><td><span class="wv" data-lbs="60">60 lbs</span></td><td>4×10</td><td>2400 lbs</td><td><span class='trend up'>▲ +10 lbs</span></td></tr>
+<tr><td>2026-09-18</td><td><span class="wv" data-lbs="50">50 lbs</span></td><td>3×15</td><td>2250 lbs</td><td><span class='trend flat'>— same</span></td></tr>
+<tr><td>2026-09-14</td><td><span class="wv" data-lbs="50">50 lbs</span></td><td>3×15</td><td>2250 lbs</td><td><span class='trend up'>▲ +12%</span></td></tr>
+<tr><td>2026-09-04</td><td><span class="wv" data-lbs="50">50 lbs</span></td><td>4× <span class='rbs'>10/10/10/10</span></td><td>2000 lbs</td><td><span class='trend down'>▼ -10 lbs</span></td></tr>
+<tr><td>2026-08-28</td><td><span class="wv" data-lbs="60">60 lbs</span></td><td>4×10</td><td>2400 lbs</td><td><span class='trend up'>▲ +10 lbs</span></td></tr>
+<tr><td>2026-08-05</td><td><span class="wv" data-lbs="50">50 lbs</span></td><td>3×15</td><td>2250 lbs</td><td><span class='trend flat'>— same</span></td></tr>
+<tr><td>2026-08-04</td><td><span class="wv" data-lbs="50">50 lbs</span></td><td>3×15</td><td>2250 lbs</td><td><span class='trend flat'>— same</span></td></tr>
+<tr><td>2026-07-24</td><td><span class="wv" data-lbs="50">50 lbs</span></td><td>3×15</td><td>2250 lbs</td><td><span class='trend flat'>— same</span></td></tr>
+<tr><td>2026-07-14</td><td><span class="wv" data-lbs="50">50 lbs</span></td><td>3×15</td><td>2250 lbs</td><td><span class='trend flat'>— same</span></td></tr>
+<tr><td>2026-07-07</td><td><span class="wv" data-lbs="50">50 lbs</span></td><td>3×15</td><td>2250 lbs</td><td><span class='trend up'>▲ +10 lbs</span></td></tr>
+<tr><td>2026-06-23</td><td><span class="wv" data-lbs="40">40 lbs</span></td><td>3×15</td><td>1800 lbs</td><td><span class='trend new'>● new</span></td></tr>
       </tbody>
     </table>
     </div>
@@ -788,7 +797,7 @@
     <summary>
       <div class="prog-main">
         <div class="prog-head"><span class="prog-name">Barbell bench press</span><span class="badge" style="background:#4f8ef722;color:#4f8ef7;border-color:#4f8ef744">Push A</span></div>
-        <div class="prog-latest">25 lbs · 4× <span class='rbs'>9/7/7/6</span> · 2026-09-21</div>
+        <div class="prog-latest"><span class="wv" data-lbs="25">25 lbs</span> · 4× <span class='rbs'>9/7/7/6</span> · 2026-09-21</div>
       </div>
       <svg class="spark" width="88" height="26" viewBox="0 0 88 26" aria-hidden="true"><polyline points="5.0,9.0 14.8,21.0 24.5,21.0 34.2,21.0 44.0,9.0 53.8,21.0 63.5,11.4 73.2,5.0 83.0,11.0" fill="none" stroke="#5e6ad2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="83.0" cy="11.0" r="4" fill="#5e6ad2" stroke="#0f1014" stroke-width="2"/></svg>
       <span class="trend up">▲ +5 lbs</span>
@@ -797,15 +806,15 @@
     <table>
       <thead><tr><th>Date</th><th>Weight</th><th>Sets×Reps</th><th>Volume</th><th>Δ</th></tr></thead>
       <tbody>
-<tr><td>2026-09-21</td><td>25 lbs</td><td>4× <span class='rbs'>9/7/7/6</span></td><td>725 lbs</td><td><span class='trend up'>▲ +5 lbs</span></td></tr>
-<tr><td>2026-09-14</td><td>20 lbs</td><td>4×10</td><td>800 lbs</td><td><span class='trend up'>▲ +11%</span></td></tr>
-<tr><td>2026-09-04</td><td>20 lbs</td><td>4× <span class='rbs'>10/10/8/8</span></td><td>720 lbs</td><td><span class='trend up'>▲ +20%</span></td></tr>
-<tr><td>2026-08-11</td><td>20 lbs</td><td>3×10</td><td>600 lbs</td><td><span class='trend down'>▼ -5 lbs</span></td></tr>
-<tr><td>2026-08-05</td><td>25 lbs</td><td>3×10</td><td>750 lbs</td><td><span class='trend up'>▲ +5 lbs</span></td></tr>
-<tr><td>2026-08-04</td><td>20 lbs</td><td>3×10</td><td>600 lbs</td><td><span class='trend flat'>— same</span></td></tr>
-<tr><td>2026-07-24</td><td>20 lbs</td><td>3×10</td><td>600 lbs</td><td><span class='trend flat'>— same</span></td></tr>
-<tr><td>2026-07-21</td><td>20 lbs</td><td>3×10</td><td>600 lbs</td><td><span class='trend down'>▼ -5 lbs</span></td></tr>
-<tr><td>2026-07-07</td><td>25 lbs</td><td>3×10</td><td>750 lbs</td><td><span class='trend new'>● new</span></td></tr>
+<tr><td>2026-09-21</td><td><span class="wv" data-lbs="25">25 lbs</span></td><td>4× <span class='rbs'>9/7/7/6</span></td><td>725 lbs</td><td><span class='trend up'>▲ +5 lbs</span></td></tr>
+<tr><td>2026-09-14</td><td><span class="wv" data-lbs="20">20 lbs</span></td><td>4×10</td><td>800 lbs</td><td><span class='trend up'>▲ +11%</span></td></tr>
+<tr><td>2026-09-04</td><td><span class="wv" data-lbs="20">20 lbs</span></td><td>4× <span class='rbs'>10/10/8/8</span></td><td>720 lbs</td><td><span class='trend up'>▲ +20%</span></td></tr>
+<tr><td>2026-08-11</td><td><span class="wv" data-lbs="20">20 lbs</span></td><td>3×10</td><td>600 lbs</td><td><span class='trend down'>▼ -5 lbs</span></td></tr>
+<tr><td>2026-08-05</td><td><span class="wv" data-lbs="25">25 lbs</span></td><td>3×10</td><td>750 lbs</td><td><span class='trend up'>▲ +5 lbs</span></td></tr>
+<tr><td>2026-08-04</td><td><span class="wv" data-lbs="20">20 lbs</span></td><td>3×10</td><td>600 lbs</td><td><span class='trend flat'>— same</span></td></tr>
+<tr><td>2026-07-24</td><td><span class="wv" data-lbs="20">20 lbs</span></td><td>3×10</td><td>600 lbs</td><td><span class='trend flat'>— same</span></td></tr>
+<tr><td>2026-07-21</td><td><span class="wv" data-lbs="20">20 lbs</span></td><td>3×10</td><td>600 lbs</td><td><span class='trend down'>▼ -5 lbs</span></td></tr>
+<tr><td>2026-07-07</td><td><span class="wv" data-lbs="25">25 lbs</span></td><td>3×10</td><td>750 lbs</td><td><span class='trend new'>● new</span></td></tr>
       </tbody>
     </table>
     </div>
@@ -815,7 +824,7 @@
     <summary>
       <div class="prog-main">
         <div class="prog-head"><span class="prog-name">* Cable crunch</span><span class="badge" style="background:#f75f8f22;color:#f75f8f;border-color:#f75f8f44">Core</span></div>
-        <div class="prog-latest">40 lbs · 3×12 · 2026-09-21</div>
+        <div class="prog-latest"><span class="wv" data-lbs="40">40 lbs</span> · 3×12 · 2026-09-21</div>
       </div>
       
       <span class="trend new">● new</span>
@@ -824,7 +833,7 @@
     <table>
       <thead><tr><th>Date</th><th>Weight</th><th>Sets×Reps</th><th>Volume</th><th>Δ</th></tr></thead>
       <tbody>
-<tr><td>2026-09-21</td><td>40 lbs</td><td>3×12</td><td>1440 lbs</td><td><span class='trend new'>● new</span></td></tr>
+<tr><td>2026-09-21</td><td><span class="wv" data-lbs="40">40 lbs</span></td><td>3×12</td><td>1440 lbs</td><td><span class='trend new'>● new</span></td></tr>
       </tbody>
     </table>
     </div>
@@ -834,7 +843,7 @@
     <summary>
       <div class="prog-main">
         <div class="prog-head"><span class="prog-name">Plate front raise</span><span class="badge" style="background:#4f8ef722;color:#4f8ef7;border-color:#4f8ef744">Upper</span></div>
-        <div class="prog-latest">10 lbs · 3×10 · 2026-09-18</div>
+        <div class="prog-latest"><span class="wv" data-lbs="10">10 lbs</span> · 3×10 · 2026-09-18</div>
       </div>
       
       <span class="trend new">● new</span>
@@ -843,7 +852,7 @@
     <table>
       <thead><tr><th>Date</th><th>Weight</th><th>Sets×Reps</th><th>Volume</th><th>Δ</th></tr></thead>
       <tbody>
-<tr><td>2026-09-18</td><td>10 lbs</td><td>3×10</td><td>300 lbs</td><td><span class='trend new'>● new</span></td></tr>
+<tr><td>2026-09-18</td><td><span class="wv" data-lbs="10">10 lbs</span></td><td>3×10</td><td>300 lbs</td><td><span class='trend new'>● new</span></td></tr>
       </tbody>
     </table>
     </div>
@@ -853,7 +862,7 @@
     <summary>
       <div class="prog-main">
         <div class="prog-head"><span class="prog-name">Dumbell rear delt fly</span><span class="badge" style="background:#4f8ef722;color:#4f8ef7;border-color:#4f8ef744">Upper</span></div>
-        <div class="prog-latest">5 lbs · 3×10 · 2026-09-18</div>
+        <div class="prog-latest"><span class="wv" data-lbs="5">5 lbs</span> · 3×10 · 2026-09-18</div>
       </div>
       
       <span class="trend new">● new</span>
@@ -862,7 +871,7 @@
     <table>
       <thead><tr><th>Date</th><th>Weight</th><th>Sets×Reps</th><th>Volume</th><th>Δ</th></tr></thead>
       <tbody>
-<tr><td>2026-09-18</td><td>5 lbs</td><td>3×10</td><td>150 lbs</td><td><span class='trend new'>● new</span></td></tr>
+<tr><td>2026-09-18</td><td><span class="wv" data-lbs="5">5 lbs</span></td><td>3×10</td><td>150 lbs</td><td><span class='trend new'>● new</span></td></tr>
       </tbody>
     </table>
     </div>
@@ -882,10 +891,10 @@
       <thead><tr><th>Date</th><th>Weight</th><th>Sets×Reps</th><th>Volume</th><th>Δ</th></tr></thead>
       <tbody>
 <tr><td>2026-09-16</td><td>BW</td><td>3×10</td><td>30 reps</td><td><span class='trend down'>▼ −weight</span></td></tr>
-<tr><td>2026-09-03</td><td>5 lbs</td><td>3× <span class='rbs'>10/10/10</span></td><td>150 lbs</td><td><span class='trend down'>▼ -25%</span></td></tr>
-<tr><td>2026-08-28</td><td>5 lbs</td><td>4×10</td><td>200 lbs</td><td><span class='trend flat'>— same</span></td></tr>
-<tr><td>2026-08-22</td><td>5 lbs</td><td>4×10</td><td>200 lbs</td><td><span class='trend down'>▼ -5 lbs</span></td></tr>
-<tr><td>2026-08-11</td><td>10 lbs</td><td>3×15</td><td>450 lbs</td><td><span class='trend up'>▲ +weight</span></td></tr>
+<tr><td>2026-09-03</td><td><span class="wv" data-lbs="5">5 lbs</span></td><td>3× <span class='rbs'>10/10/10</span></td><td>150 lbs</td><td><span class='trend down'>▼ -25%</span></td></tr>
+<tr><td>2026-08-28</td><td><span class="wv" data-lbs="5">5 lbs</span></td><td>4×10</td><td>200 lbs</td><td><span class='trend flat'>— same</span></td></tr>
+<tr><td>2026-08-22</td><td><span class="wv" data-lbs="5">5 lbs</span></td><td>4×10</td><td>200 lbs</td><td><span class='trend down'>▼ -5 lbs</span></td></tr>
+<tr><td>2026-08-11</td><td><span class="wv" data-lbs="10">10 lbs</span></td><td>3×15</td><td>450 lbs</td><td><span class='trend up'>▲ +weight</span></td></tr>
 <tr><td>2026-07-24</td><td>BW</td><td>3×15</td><td>45 reps</td><td><span class='trend up'>▲ +50%</span></td></tr>
 <tr><td>2026-07-10</td><td>BW</td><td>3×10</td><td>30 reps</td><td><span class='trend down'>▼ -33%</span></td></tr>
 <tr><td>2026-06-23</td><td>BW</td><td>3×15</td><td>45 reps</td><td><span class='trend new'>● new</span></td></tr>
@@ -898,7 +907,7 @@
     <summary>
       <div class="prog-main">
         <div class="prog-head"><span class="prog-name">Cable tricep press down</span><span class="badge" style="background:#4f8ef722;color:#4f8ef7;border-color:#4f8ef744">Push A</span></div>
-        <div class="prog-latest">50 lbs · 3×10 · 2026-09-16</div>
+        <div class="prog-latest"><span class="wv" data-lbs="50">50 lbs</span> · 3×10 · 2026-09-16</div>
       </div>
       <svg class="spark" width="88" height="26" viewBox="0 0 88 26" aria-hidden="true"><polyline points="5.0,21.0 31.0,21.0 57.0,21.0 83.0,5.0" fill="none" stroke="#5e6ad2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="83.0" cy="5.0" r="4" fill="#5e6ad2" stroke="#0f1014" stroke-width="2"/></svg>
       <span class="trend up">▲ +10 lbs</span>
@@ -907,10 +916,10 @@
     <table>
       <thead><tr><th>Date</th><th>Weight</th><th>Sets×Reps</th><th>Volume</th><th>Δ</th></tr></thead>
       <tbody>
-<tr><td>2026-09-16</td><td>50 lbs</td><td>3×10</td><td>1500 lbs</td><td><span class='trend up'>▲ +10 lbs</span></td></tr>
-<tr><td>2026-08-17</td><td>40 lbs</td><td>3×10</td><td>1200 lbs</td><td><span class='trend flat'>— same</span></td></tr>
-<tr><td>2026-07-14</td><td>40 lbs</td><td>3×10</td><td>1200 lbs</td><td><span class='trend flat'>— same</span></td></tr>
-<tr><td>2026-07-07</td><td>40 lbs</td><td>3×10</td><td>1200 lbs</td><td><span class='trend new'>● new</span></td></tr>
+<tr><td>2026-09-16</td><td><span class="wv" data-lbs="50">50 lbs</span></td><td>3×10</td><td>1500 lbs</td><td><span class='trend up'>▲ +10 lbs</span></td></tr>
+<tr><td>2026-08-17</td><td><span class="wv" data-lbs="40">40 lbs</span></td><td>3×10</td><td>1200 lbs</td><td><span class='trend flat'>— same</span></td></tr>
+<tr><td>2026-07-14</td><td><span class="wv" data-lbs="40">40 lbs</span></td><td>3×10</td><td>1200 lbs</td><td><span class='trend flat'>— same</span></td></tr>
+<tr><td>2026-07-07</td><td><span class="wv" data-lbs="40">40 lbs</span></td><td>3×10</td><td>1200 lbs</td><td><span class='trend new'>● new</span></td></tr>
       </tbody>
     </table>
     </div>
@@ -920,7 +929,7 @@
     <summary>
       <div class="prog-main">
         <div class="prog-head"><span class="prog-name">Supine bench press</span><span class="badge" style="background:#4f8ef722;color:#4f8ef7;border-color:#4f8ef744">Push A</span></div>
-        <div class="prog-latest">20 lbs · 5×8 · 2026-09-08</div>
+        <div class="prog-latest"><span class="wv" data-lbs="20">20 lbs</span> · 5×8 · 2026-09-08</div>
       </div>
       <svg class="spark" width="88" height="26" viewBox="0 0 88 26" aria-hidden="true"><polyline points="5.0,21.0 16.1,21.0 27.3,21.0 38.4,21.0 49.6,21.0 60.7,21.0 71.9,21.0 83.0,5.0" fill="none" stroke="#5e6ad2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="83.0" cy="5.0" r="4" fill="#5e6ad2" stroke="#0f1014" stroke-width="2"/></svg>
       <span class="trend up">▲ +33%</span>
@@ -929,14 +938,14 @@
     <table>
       <thead><tr><th>Date</th><th>Weight</th><th>Sets×Reps</th><th>Volume</th><th>Δ</th></tr></thead>
       <tbody>
-<tr><td>2026-09-08</td><td>20 lbs</td><td>5×8</td><td>800 lbs</td><td><span class='trend up'>▲ +33%</span></td></tr>
-<tr><td>2026-08-17</td><td>20 lbs</td><td>3×10</td><td>600 lbs</td><td><span class='trend flat'>— same</span></td></tr>
-<tr><td>2026-07-28</td><td>20 lbs</td><td>3×10</td><td>600 lbs</td><td><span class='trend flat'>— same</span></td></tr>
-<tr><td>2026-07-14</td><td>20 lbs</td><td>3×10</td><td>600 lbs</td><td><span class='trend flat'>— same</span></td></tr>
-<tr><td>2026-07-07</td><td>20 lbs</td><td>3×10</td><td>600 lbs</td><td><span class='trend flat'>— same</span></td></tr>
-<tr><td>2026-06-30</td><td>20 lbs</td><td>3×10</td><td>600 lbs</td><td><span class='trend flat'>— same</span></td></tr>
-<tr><td>2026-06-23</td><td>20 lbs</td><td>3×10</td><td>600 lbs</td><td><span class='trend flat'>— same</span></td></tr>
-<tr><td>2026-06-16</td><td>20 lbs</td><td>3×10</td><td>600 lbs</td><td><span class='trend new'>● new</span></td></tr>
+<tr><td>2026-09-08</td><td><span class="wv" data-lbs="20">20 lbs</span></td><td>5×8</td><td>800 lbs</td><td><span class='trend up'>▲ +33%</span></td></tr>
+<tr><td>2026-08-17</td><td><span class="wv" data-lbs="20">20 lbs</span></td><td>3×10</td><td>600 lbs</td><td><span class='trend flat'>— same</span></td></tr>
+<tr><td>2026-07-28</td><td><span class="wv" data-lbs="20">20 lbs</span></td><td>3×10</td><td>600 lbs</td><td><span class='trend flat'>— same</span></td></tr>
+<tr><td>2026-07-14</td><td><span class="wv" data-lbs="20">20 lbs</span></td><td>3×10</td><td>600 lbs</td><td><span class='trend flat'>— same</span></td></tr>
+<tr><td>2026-07-07</td><td><span class="wv" data-lbs="20">20 lbs</span></td><td>3×10</td><td>600 lbs</td><td><span class='trend flat'>— same</span></td></tr>
+<tr><td>2026-06-30</td><td><span class="wv" data-lbs="20">20 lbs</span></td><td>3×10</td><td>600 lbs</td><td><span class='trend flat'>— same</span></td></tr>
+<tr><td>2026-06-23</td><td><span class="wv" data-lbs="20">20 lbs</span></td><td>3×10</td><td>600 lbs</td><td><span class='trend flat'>— same</span></td></tr>
+<tr><td>2026-06-16</td><td><span class="wv" data-lbs="20">20 lbs</span></td><td>3×10</td><td>600 lbs</td><td><span class='trend new'>● new</span></td></tr>
       </tbody>
     </table>
     </div>
@@ -965,7 +974,7 @@
     <summary>
       <div class="prog-main">
         <div class="prog-head"><span class="prog-name">Dumbbell front raise</span><span class="badge" style="background:#4f8ef722;color:#4f8ef7;border-color:#4f8ef744">Upper</span></div>
-        <div class="prog-latest">11 lbs · 3×10 · 2026-08-21</div>
+        <div class="prog-latest"><span class="wv" data-lbs="11">11 lbs</span> · 3×10 · 2026-08-21</div>
       </div>
       
       <span class="trend new">● new</span>
@@ -974,7 +983,7 @@
     <table>
       <thead><tr><th>Date</th><th>Weight</th><th>Sets×Reps</th><th>Volume</th><th>Δ</th></tr></thead>
       <tbody>
-<tr><td>2026-08-21</td><td>11 lbs</td><td>3×10</td><td>330 lbs</td><td><span class='trend new'>● new</span></td></tr>
+<tr><td>2026-08-21</td><td><span class="wv" data-lbs="11">11 lbs</span></td><td>3×10</td><td>330 lbs</td><td><span class='trend new'>● new</span></td></tr>
       </tbody>
     </table>
     </div>
@@ -1025,7 +1034,7 @@
     <summary>
       <div class="prog-main">
         <div class="prog-head"><span class="prog-name">* Seated calf raise</span><span class="badge" style="background:#f7934f22;color:#f7934f;border-color:#f7934f44">Lower</span></div>
-        <div class="prog-latest">33 lbs · 3×8 · 2026-08-19</div>
+        <div class="prog-latest"><span class="wv" data-lbs="33">33 lbs</span> · 3×8 · 2026-08-19</div>
       </div>
       <svg class="spark" width="88" height="26" viewBox="0 0 88 26" aria-hidden="true"><polyline points="5.0,19.9 24.5,21.0 44.0,5.0 63.5,13.1 83.0,13.1" fill="none" stroke="#5e6ad2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="83.0" cy="13.1" r="4" fill="#5e6ad2" stroke="#0f1014" stroke-width="2"/></svg>
       <span class="trend flat">— same</span>
@@ -1034,11 +1043,11 @@
     <table>
       <thead><tr><th>Date</th><th>Weight</th><th>Sets×Reps</th><th>Volume</th><th>Δ</th></tr></thead>
       <tbody>
-<tr><td>2026-08-19</td><td>33 lbs</td><td>3×8</td><td>792 lbs</td><td><span class='trend flat'>— same</span></td></tr>
-<tr><td>2026-07-20</td><td>33 lbs</td><td>3×8</td><td>792 lbs</td><td><span class='trend down'>▼ -47%</span></td></tr>
-<tr><td>2026-07-12</td><td>33 lbs</td><td>3×15</td><td>1485 lbs</td><td><span class='trend up'>▲ +28.5 lbs</span></td></tr>
-<tr><td>2026-07-03</td><td>4.5 lbs</td><td>3×8</td><td>108 lbs</td><td><span class='trend down'>▼ -47%</span></td></tr>
-<tr><td>2026-06-13</td><td>4.5 lbs</td><td>3×15</td><td>202.5 lbs</td><td><span class='trend new'>● new</span></td></tr>
+<tr><td>2026-08-19</td><td><span class="wv" data-lbs="33">33 lbs</span></td><td>3×8</td><td>792 lbs</td><td><span class='trend flat'>— same</span></td></tr>
+<tr><td>2026-07-20</td><td><span class="wv" data-lbs="33">33 lbs</span></td><td>3×8</td><td>792 lbs</td><td><span class='trend down'>▼ -47%</span></td></tr>
+<tr><td>2026-07-12</td><td><span class="wv" data-lbs="33">33 lbs</span></td><td>3×15</td><td>1485 lbs</td><td><span class='trend up'>▲ +28.5 lbs</span></td></tr>
+<tr><td>2026-07-03</td><td><span class="wv" data-lbs="4.5">4.5 lbs</span></td><td>3×8</td><td>108 lbs</td><td><span class='trend down'>▼ -47%</span></td></tr>
+<tr><td>2026-06-13</td><td><span class="wv" data-lbs="4.5">4.5 lbs</span></td><td>3×15</td><td>202.5 lbs</td><td><span class='trend new'>● new</span></td></tr>
       </tbody>
     </table>
     </div>
@@ -1048,7 +1057,7 @@
     <summary>
       <div class="prog-main">
         <div class="prog-head"><span class="prog-name">romanian deadlift</span><span class="badge" style="background:#f7934f22;color:#f7934f;border-color:#f7934f44">Lower</span></div>
-        <div class="prog-latest">66 lbs · 3×10 · 2026-08-12</div>
+        <div class="prog-latest"><span class="wv" data-lbs="66">66 lbs</span> · 3×10 · 2026-08-12</div>
       </div>
       
       <span class="trend new">● new</span>
@@ -1057,7 +1066,7 @@
     <table>
       <thead><tr><th>Date</th><th>Weight</th><th>Sets×Reps</th><th>Volume</th><th>Δ</th></tr></thead>
       <tbody>
-<tr><td>2026-08-12</td><td>66 lbs</td><td>3×10</td><td>1980 lbs</td><td><span class='trend new'>● new</span></td></tr>
+<tr><td>2026-08-12</td><td><span class="wv" data-lbs="66">66 lbs</span></td><td>3×10</td><td>1980 lbs</td><td><span class='trend new'>● new</span></td></tr>
       </tbody>
     </table>
     </div>
@@ -1067,7 +1076,7 @@
     <summary>
       <div class="prog-main">
         <div class="prog-head"><span class="prog-name">Machine Chest press</span><span class="badge" style="background:#4f8ef722;color:#4f8ef7;border-color:#4f8ef744">Push A</span></div>
-        <div class="prog-latest">65 lbs · 3×15 · 2026-07-21</div>
+        <div class="prog-latest"><span class="wv" data-lbs="65">65 lbs</span> · 3×15 · 2026-07-21</div>
       </div>
       <svg class="spark" width="88" height="26" viewBox="0 0 88 26" aria-hidden="true"><polyline points="5.0,21.0 83.0,21.0" fill="none" stroke="#5e6ad2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="83.0" cy="21.0" r="4" fill="#5e6ad2" stroke="#0f1014" stroke-width="2"/></svg>
       <span class="trend flat">— same</span>
@@ -1076,8 +1085,8 @@
     <table>
       <thead><tr><th>Date</th><th>Weight</th><th>Sets×Reps</th><th>Volume</th><th>Δ</th></tr></thead>
       <tbody>
-<tr><td>2026-07-21</td><td>65 lbs</td><td>3×15</td><td>2925 lbs</td><td><span class='trend flat'>— same</span></td></tr>
-<tr><td>2026-07-07</td><td>65 lbs</td><td>3×15</td><td>2925 lbs</td><td><span class='trend new'>● new</span></td></tr>
+<tr><td>2026-07-21</td><td><span class="wv" data-lbs="65">65 lbs</span></td><td>3×15</td><td>2925 lbs</td><td><span class='trend flat'>— same</span></td></tr>
+<tr><td>2026-07-07</td><td><span class="wv" data-lbs="65">65 lbs</span></td><td>3×15</td><td>2925 lbs</td><td><span class='trend new'>● new</span></td></tr>
       </tbody>
     </table>
     </div>
@@ -1087,7 +1096,7 @@
     <summary>
       <div class="prog-main">
         <div class="prog-head"><span class="prog-name">Pull up</span><span class="badge" style="background:#7bb0ff22;color:#7bb0ff;border-color:#7bb0ff44">Pull B</span></div>
-        <div class="prog-latest">60 lbs · 3×15 · 2026-07-14</div>
+        <div class="prog-latest"><span class="wv" data-lbs="60">60 lbs</span> · 3×15 · 2026-07-14</div>
       </div>
       
       <span class="trend new">● new</span>
@@ -1096,7 +1105,7 @@
     <table>
       <thead><tr><th>Date</th><th>Weight</th><th>Sets×Reps</th><th>Volume</th><th>Δ</th></tr></thead>
       <tbody>
-<tr><td>2026-07-14</td><td>60 lbs</td><td>3×15</td><td>2700 lbs</td><td><span class='trend new'>● new</span></td></tr>
+<tr><td>2026-07-14</td><td><span class="wv" data-lbs="60">60 lbs</span></td><td>3×15</td><td>2700 lbs</td><td><span class='trend new'>● new</span></td></tr>
       </tbody>
     </table>
     </div>
@@ -1106,7 +1115,7 @@
     <summary>
       <div class="prog-main">
         <div class="prog-head"><span class="prog-name">Deadlift</span><span class="badge" style="background:#7bb0ff22;color:#7bb0ff;border-color:#7bb0ff44">Pull B</span></div>
-        <div class="prog-latest">30 lbs · 3×10 · 2026-07-10</div>
+        <div class="prog-latest"><span class="wv" data-lbs="30">30 lbs</span> · 3×10 · 2026-07-10</div>
       </div>
       
       <span class="trend new">● new</span>
@@ -1115,7 +1124,7 @@
     <table>
       <thead><tr><th>Date</th><th>Weight</th><th>Sets×Reps</th><th>Volume</th><th>Δ</th></tr></thead>
       <tbody>
-<tr><td>2026-07-10</td><td>30 lbs</td><td>3×10</td><td>900 lbs</td><td><span class='trend new'>● new</span></td></tr>
+<tr><td>2026-07-10</td><td><span class="wv" data-lbs="30">30 lbs</span></td><td>3×10</td><td>900 lbs</td><td><span class='trend new'>● new</span></td></tr>
       </tbody>
     </table>
     </div>
@@ -1125,7 +1134,7 @@
     <summary>
       <div class="prog-main">
         <div class="prog-head"><span class="prog-name">Overhead face pull</span><span class="badge" style="background:#4f8ef722;color:#4f8ef7;border-color:#4f8ef744">Upper</span></div>
-        <div class="prog-latest">66 lbs · 3×15 · 2026-06-26</div>
+        <div class="prog-latest"><span class="wv" data-lbs="66">66 lbs</span> · 3×15 · 2026-06-26</div>
       </div>
       
       <span class="trend new">● new</span>
@@ -1134,7 +1143,7 @@
     <table>
       <thead><tr><th>Date</th><th>Weight</th><th>Sets×Reps</th><th>Volume</th><th>Δ</th></tr></thead>
       <tbody>
-<tr><td>2026-06-26</td><td>66 lbs</td><td>3×15</td><td>2970 lbs</td><td><span class='trend new'>● new</span></td></tr>
+<tr><td>2026-06-26</td><td><span class="wv" data-lbs="66">66 lbs</span></td><td>3×15</td><td>2970 lbs</td><td><span class='trend new'>● new</span></td></tr>
       </tbody>
     </table>
     </div>
@@ -1144,7 +1153,7 @@
     <summary>
       <div class="prog-main">
         <div class="prog-head"><span class="prog-name">Dumbbell shoulder press</span><span class="badge" style="background:#4f8ef722;color:#4f8ef7;border-color:#4f8ef744">Upper</span></div>
-        <div class="prog-latest">16.5 lbs · 3×15 · 2026-06-18</div>
+        <div class="prog-latest"><span class="wv" data-lbs="16.5">16.5 lbs</span> · 3×15 · 2026-06-18</div>
       </div>
       
       <span class="trend new">● new</span>
@@ -1153,7 +1162,7 @@
     <table>
       <thead><tr><th>Date</th><th>Weight</th><th>Sets×Reps</th><th>Volume</th><th>Δ</th></tr></thead>
       <tbody>
-<tr><td>2026-06-18</td><td>16.5 lbs</td><td>3×15</td><td>742.5 lbs</td><td><span class='trend new'>● new</span></td></tr>
+<tr><td>2026-06-18</td><td><span class="wv" data-lbs="16.5">16.5 lbs</span></td><td>3×15</td><td>742.5 lbs</td><td><span class='trend new'>● new</span></td></tr>
       </tbody>
     </table>
     </div>
@@ -1163,7 +1172,7 @@
     <summary>
       <div class="prog-main">
         <div class="prog-head"><span class="prog-name">Machine shoulder press</span><span class="badge" style="background:#4f8ef722;color:#4f8ef7;border-color:#4f8ef744">Upper</span></div>
-        <div class="prog-latest">45 lbs · 3× <span class='rbs'>15/10/10</span> · 2026-06-18</div>
+        <div class="prog-latest"><span class="wv" data-lbs="45">45 lbs</span> · 3× <span class='rbs'>15/10/10</span> · 2026-06-18</div>
       </div>
       
       <span class="trend new">● new</span>
@@ -1172,7 +1181,7 @@
     <table>
       <thead><tr><th>Date</th><th>Weight</th><th>Sets×Reps</th><th>Volume</th><th>Δ</th></tr></thead>
       <tbody>
-<tr><td>2026-06-18</td><td>45 lbs</td><td>3× <span class='rbs'>15/10/10</span></td><td>1575 lbs</td><td><span class='trend new'>● new</span></td></tr>
+<tr><td>2026-06-18</td><td><span class="wv" data-lbs="45">45 lbs</span></td><td>3× <span class='rbs'>15/10/10</span></td><td>1575 lbs</td><td><span class='trend new'>● new</span></td></tr>
       </tbody>
     </table>
     </div>
@@ -1182,7 +1191,7 @@
     <summary>
       <div class="prog-main">
         <div class="prog-head"><span class="prog-name">Barbell curl</span><span class="badge" style="background:#4f8ef722;color:#4f8ef7;border-color:#4f8ef744">Upper</span></div>
-        <div class="prog-latest">11 lbs · 3×15 · 2026-06-18</div>
+        <div class="prog-latest"><span class="wv" data-lbs="11">11 lbs</span> · 3×15 · 2026-06-18</div>
       </div>
       
       <span class="trend new">● new</span>
@@ -1191,7 +1200,7 @@
     <table>
       <thead><tr><th>Date</th><th>Weight</th><th>Sets×Reps</th><th>Volume</th><th>Δ</th></tr></thead>
       <tbody>
-<tr><td>2026-06-18</td><td>11 lbs</td><td>3×15</td><td>495 lbs</td><td><span class='trend new'>● new</span></td></tr>
+<tr><td>2026-06-18</td><td><span class="wv" data-lbs="11">11 lbs</span></td><td>3×15</td><td>495 lbs</td><td><span class='trend new'>● new</span></td></tr>
       </tbody>
     </table>
     </div>
@@ -1201,7 +1210,7 @@
     <summary>
       <div class="prog-main">
         <div class="prog-head"><span class="prog-name">Back cable pull</span><span class="badge" style="background:#4f8ef722;color:#4f8ef7;border-color:#4f8ef744">Upper</span></div>
-        <div class="prog-latest">55 lbs · 3×15 · 2026-06-12</div>
+        <div class="prog-latest"><span class="wv" data-lbs="55">55 lbs</span> · 3×15 · 2026-06-12</div>
       </div>
       
       <span class="trend new">● new</span>
@@ -1210,7 +1219,7 @@
     <table>
       <thead><tr><th>Date</th><th>Weight</th><th>Sets×Reps</th><th>Volume</th><th>Δ</th></tr></thead>
       <tbody>
-<tr><td>2026-06-12</td><td>55 lbs</td><td>3×15</td><td>2475 lbs</td><td><span class='trend new'>● new</span></td></tr>
+<tr><td>2026-06-12</td><td><span class="wv" data-lbs="55">55 lbs</span></td><td>3×15</td><td>2475 lbs</td><td><span class='trend new'>● new</span></td></tr>
       </tbody>
     </table>
     </div>
@@ -1220,7 +1229,7 @@
     <summary>
       <div class="prog-main">
         <div class="prog-head"><span class="prog-name">Dumbbell curl</span><span class="badge" style="background:#4f8ef722;color:#4f8ef7;border-color:#4f8ef744">Upper</span></div>
-        <div class="prog-latest">22 lbs · 3×15 · 2026-06-12</div>
+        <div class="prog-latest"><span class="wv" data-lbs="22">22 lbs</span> · 3×15 · 2026-06-12</div>
       </div>
       
       <span class="trend new">● new</span>
@@ -1229,7 +1238,7 @@
     <table>
       <thead><tr><th>Date</th><th>Weight</th><th>Sets×Reps</th><th>Volume</th><th>Δ</th></tr></thead>
       <tbody>
-<tr><td>2026-06-12</td><td>22 lbs</td><td>3×15</td><td>990 lbs</td><td><span class='trend new'>● new</span></td></tr>
+<tr><td>2026-06-12</td><td><span class="wv" data-lbs="22">22 lbs</span></td><td>3×15</td><td>990 lbs</td><td><span class='trend new'>● new</span></td></tr>
       </tbody>
     </table>
     </div>
@@ -1246,10 +1255,10 @@
     <table>
       <thead><tr><th>Exercise</th><th>Weight</th><th>Sets×Reps</th><th>Note</th></tr></thead>
       <tbody>
-<tr><td>Squat</td><td>44 lbs</td><td>4×10</td><td class='note'></td></tr>
-<tr><td>* Bulgarian split squat</td><td>20 lbs</td><td>3×8</td><td class='note'></td></tr>
-<tr><td>Leg extension</td><td>65 lbs</td><td>3×12</td><td class='note'></td></tr>
-<tr><td>Hip thrust</td><td>22 lbs</td><td>3×12</td><td class='note'></td></tr>
+<tr><td>Squat</td><td><span class="wv" data-lbs="44">44 lbs</span></td><td>4×10</td><td class='note'></td></tr>
+<tr><td>* Bulgarian split squat</td><td><span class="wv" data-lbs="20">20 lbs</span></td><td>3×8</td><td class='note'></td></tr>
+<tr><td>Leg extension</td><td><span class="wv" data-lbs="65">65 lbs</span></td><td>3×12</td><td class='note'></td></tr>
+<tr><td>Hip thrust</td><td><span class="wv" data-lbs="22">22 lbs</span></td><td>3×12</td><td class='note'></td></tr>
       </tbody>
     </table>
     </div>
@@ -1266,11 +1275,11 @@
     <table>
       <thead><tr><th>Exercise</th><th>Weight</th><th>Sets×Reps</th><th>Note</th></tr></thead>
       <tbody>
-<tr><td>Lat pulldown (Back)</td><td>60 lbs</td><td>3×15</td><td class='note'></td></tr>
-<tr><td>Back cable rowing (Back)</td><td>60 lbs</td><td>3×15</td><td class='note'></td></tr>
-<tr><td>Face pull (Shoulder)</td><td>60 lbs</td><td>3×15</td><td class='note'></td></tr>
-<tr><td>Back Hyperextension (Back)</td><td>10 lbs</td><td>4×10</td><td class='note'></td></tr>
-<tr><td>Bicep curl (Biceps)</td><td>10 lbs</td><td>3×12</td><td class='note'></td></tr>
+<tr><td>Lat pulldown (Back)</td><td><span class="wv" data-lbs="60">60 lbs</span></td><td>3×15</td><td class='note'></td></tr>
+<tr><td>Back cable rowing (Back)</td><td><span class="wv" data-lbs="60">60 lbs</span></td><td>3×15</td><td class='note'></td></tr>
+<tr><td>Face pull (Shoulder)</td><td><span class="wv" data-lbs="60">60 lbs</span></td><td>3×15</td><td class='note'></td></tr>
+<tr><td>Back Hyperextension (Back)</td><td><span class="wv" data-lbs="10">10 lbs</span></td><td>4×10</td><td class='note'></td></tr>
+<tr><td>Bicep curl (Biceps)</td><td><span class="wv" data-lbs="10">10 lbs</span></td><td>3×12</td><td class='note'></td></tr>
       </tbody>
     </table>
     </div>
@@ -1287,11 +1296,11 @@
     <table>
       <thead><tr><th>Exercise</th><th>Weight</th><th>Sets×Reps</th><th>Note</th></tr></thead>
       <tbody>
-<tr><td>Incline bench press (Chest)</td><td>20 lbs</td><td>4× <span class='rbs'>8/8/8/8</span></td><td class='note'></td></tr>
-<tr><td>Shoulder press (Shoulder)</td><td>60 lbs</td><td>3×15</td><td class='note'></td></tr>
-<tr><td>Chest fly (Chest)</td><td>55 lbs</td><td>4×10</td><td class='note'></td></tr>
-<tr><td>Lateral raise (Shoulder)</td><td>10 lbs</td><td>4×10</td><td class='note'></td></tr>
-<tr><td>Cable tricep press down (Triceps)</td><td>50 lbs</td><td>4×10</td><td class='note'></td></tr>
+<tr><td>Incline bench press (Chest)</td><td><span class="wv" data-lbs="20">20 lbs</span></td><td>4× <span class='rbs'>8/8/8/8</span></td><td class='note'></td></tr>
+<tr><td>Shoulder press (Shoulder)</td><td><span class="wv" data-lbs="60">60 lbs</span></td><td>3×15</td><td class='note'></td></tr>
+<tr><td>Chest fly (Chest)</td><td><span class="wv" data-lbs="55">55 lbs</span></td><td>4×10</td><td class='note'></td></tr>
+<tr><td>Lateral raise (Shoulder)</td><td><span class="wv" data-lbs="10">10 lbs</span></td><td>4×10</td><td class='note'></td></tr>
+<tr><td>Cable tricep press down (Triceps)</td><td><span class="wv" data-lbs="50">50 lbs</span></td><td>4×10</td><td class='note'></td></tr>
       </tbody>
     </table>
     </div>
@@ -1308,9 +1317,9 @@
     <table>
       <thead><tr><th>Exercise</th><th>Weight</th><th>Sets×Reps</th><th>Note</th></tr></thead>
       <tbody>
-<tr><td>Squat <span class='grp'>(Quad/Glute)</span></td><td>55 lbs</td><td>3×10</td><td class='note'></td></tr>
-<tr><td>* Romanian deadlift</td><td>77 lbs</td><td>4×10</td><td class='note'></td></tr>
-<tr><td>Leg extension</td><td>65 lbs</td><td>3×15</td><td class='note'></td></tr>
+<tr><td>Squat <span class='grp'>(Quad/Glute)</span></td><td><span class="wv" data-lbs="55">55 lbs</span></td><td>3×10</td><td class='note'></td></tr>
+<tr><td>* Romanian deadlift</td><td><span class="wv" data-lbs="77">77 lbs</span></td><td>4×10</td><td class='note'></td></tr>
+<tr><td>Leg extension</td><td><span class="wv" data-lbs="65">65 lbs</span></td><td>3×15</td><td class='note'></td></tr>
       </tbody>
     </table>
     </div>
@@ -1327,12 +1336,12 @@
     <table>
       <thead><tr><th>Exercise</th><th>Weight</th><th>Sets×Reps</th><th>Note</th></tr></thead>
       <tbody>
-<tr><td>Shoulder press</td><td>60 lbs</td><td>4×10</td><td class='note'></td></tr>
-<tr><td>Chest fly</td><td>55 lbs</td><td>3×15</td><td class='note'></td></tr>
-<tr><td>Back cable rowing</td><td>60 lbs</td><td>3×15</td><td class='note'></td></tr>
-<tr><td>Lat pulldown</td><td>60 lbs</td><td>3×15</td><td class='note'></td></tr>
-<tr><td>Bicep curl</td><td>10 lbs</td><td>3×12</td><td class='note'></td></tr>
-<tr><td>Incline bench press</td><td>20 lbs</td><td>4× <span class='rbs'>10/10/10/10</span></td><td class='note'></td></tr>
+<tr><td>Shoulder press</td><td><span class="wv" data-lbs="60">60 lbs</span></td><td>4×10</td><td class='note'></td></tr>
+<tr><td>Chest fly</td><td><span class="wv" data-lbs="55">55 lbs</span></td><td>3×15</td><td class='note'></td></tr>
+<tr><td>Back cable rowing</td><td><span class="wv" data-lbs="60">60 lbs</span></td><td>3×15</td><td class='note'></td></tr>
+<tr><td>Lat pulldown</td><td><span class="wv" data-lbs="60">60 lbs</span></td><td>3×15</td><td class='note'></td></tr>
+<tr><td>Bicep curl</td><td><span class="wv" data-lbs="10">10 lbs</span></td><td>3×12</td><td class='note'></td></tr>
+<tr><td>Incline bench press</td><td><span class="wv" data-lbs="20">20 lbs</span></td><td>4× <span class='rbs'>10/10/10/10</span></td><td class='note'></td></tr>
       </tbody>
     </table>
     </div>
@@ -1349,10 +1358,10 @@
     <table>
       <thead><tr><th>Exercise</th><th>Weight</th><th>Sets×Reps</th><th>Note</th></tr></thead>
       <tbody>
-<tr><td>* Goblet squat</td><td>38 lbs</td><td>4×10</td><td class='note'></td></tr>
-<tr><td>* Romanian deadlift</td><td>66 lbs</td><td>3×15</td><td class='note'></td></tr>
-<tr><td>Hip thrust</td><td>22 lbs</td><td>3×15</td><td class='note'></td></tr>
-<tr><td>* Bent-knee single-leg calf raise <span class='grp'>(Calf)</span></td><td>22 lbs</td><td>4×10</td><td class='note'></td></tr>
+<tr><td>* Goblet squat</td><td><span class="wv" data-lbs="38">38 lbs</span></td><td>4×10</td><td class='note'></td></tr>
+<tr><td>* Romanian deadlift</td><td><span class="wv" data-lbs="66">66 lbs</span></td><td>3×15</td><td class='note'></td></tr>
+<tr><td>Hip thrust</td><td><span class="wv" data-lbs="22">22 lbs</span></td><td>3×15</td><td class='note'></td></tr>
+<tr><td>* Bent-knee single-leg calf raise <span class='grp'>(Calf)</span></td><td><span class="wv" data-lbs="22">22 lbs</span></td><td>4×10</td><td class='note'></td></tr>
 <tr><td>* Tibialis raise <span class='grp'>(Tibialis)</span></td><td>-</td><td>3×15</td><td class='note'></td></tr>
       </tbody>
     </table>
@@ -1370,12 +1379,12 @@
     <table>
       <thead><tr><th>Exercise</th><th>Weight</th><th>Sets×Reps</th><th>Note</th></tr></thead>
       <tbody>
-<tr><td>Shoulder press</td><td>55 lbs</td><td>3×15</td><td class='note'></td></tr>
-<tr><td>Barbell bench press</td><td>25 lbs</td><td>4× <span class='rbs'>9/7/7/6</span></td><td class='note'></td></tr>
-<tr><td>Back cable rowing</td><td>60 lbs</td><td>3×15</td><td class='note'></td></tr>
-<tr><td>Lat pulldown</td><td>60 lbs</td><td>3×15</td><td class='note'></td></tr>
-<tr><td>Face pull</td><td>60 lbs</td><td>4×10</td><td class='note'></td></tr>
-<tr><td>Bicep curl</td><td>10 lbs</td><td>3×12</td><td class='note'></td></tr>
+<tr><td>Shoulder press</td><td><span class="wv" data-lbs="55">55 lbs</span></td><td>3×15</td><td class='note'></td></tr>
+<tr><td>Barbell bench press</td><td><span class="wv" data-lbs="25">25 lbs</span></td><td>4× <span class='rbs'>9/7/7/6</span></td><td class='note'></td></tr>
+<tr><td>Back cable rowing</td><td><span class="wv" data-lbs="60">60 lbs</span></td><td>3×15</td><td class='note'></td></tr>
+<tr><td>Lat pulldown</td><td><span class="wv" data-lbs="60">60 lbs</span></td><td>3×15</td><td class='note'></td></tr>
+<tr><td>Face pull</td><td><span class="wv" data-lbs="60">60 lbs</span></td><td>4×10</td><td class='note'></td></tr>
+<tr><td>Bicep curl</td><td><span class="wv" data-lbs="10">10 lbs</span></td><td>3×12</td><td class='note'></td></tr>
       </tbody>
     </table>
     </div>
@@ -1392,7 +1401,7 @@
     <table>
       <thead><tr><th>Exercise</th><th>Weight</th><th>Sets×Reps</th><th>Note</th></tr></thead>
       <tbody>
-<tr><td>* Cable crunch</td><td>40 lbs</td><td>3×12</td><td class='note'></td></tr>
+<tr><td>* Cable crunch</td><td><span class="wv" data-lbs="40">40 lbs</span></td><td>3×12</td><td class='note'></td></tr>
       </tbody>
     </table>
     </div>
@@ -1409,11 +1418,11 @@
     <table>
       <thead><tr><th>Exercise</th><th>Weight</th><th>Sets×Reps</th><th>Note</th></tr></thead>
       <tbody>
-<tr><td>Face pull</td><td>50 lbs</td><td>3×15</td><td class='note'></td></tr>
-<tr><td>Bicep curl</td><td>10 lbs</td><td>3×10</td><td class='note'></td></tr>
-<tr><td>Incline bench press</td><td>20 lbs</td><td>4× <span class='rbs'>9/8/8/7</span></td><td class='note'></td></tr>
-<tr><td>Plate front raise</td><td>10 lbs</td><td>3×10</td><td class='note'></td></tr>
-<tr><td>Dumbell rear delt fly</td><td>5 lbs</td><td>3×10</td><td class='note'></td></tr>
+<tr><td>Face pull</td><td><span class="wv" data-lbs="50">50 lbs</span></td><td>3×15</td><td class='note'></td></tr>
+<tr><td>Bicep curl</td><td><span class="wv" data-lbs="10">10 lbs</span></td><td>3×10</td><td class='note'></td></tr>
+<tr><td>Incline bench press</td><td><span class="wv" data-lbs="20">20 lbs</span></td><td>4× <span class='rbs'>9/8/8/7</span></td><td class='note'></td></tr>
+<tr><td>Plate front raise</td><td><span class="wv" data-lbs="10">10 lbs</span></td><td>3×10</td><td class='note'></td></tr>
+<tr><td>Dumbell rear delt fly</td><td><span class="wv" data-lbs="5">5 lbs</span></td><td>3×10</td><td class='note'></td></tr>
       </tbody>
     </table>
     </div>
@@ -1430,13 +1439,13 @@
     <table>
       <thead><tr><th>Exercise</th><th>Weight</th><th>Sets×Reps</th><th>Note</th></tr></thead>
       <tbody>
-<tr><td>* Goblet squat</td><td>30 lbs</td><td>3×10</td><td class='note'></td></tr>
-<tr><td>* Romanian deadlift</td><td>66 lbs</td><td>4×10</td><td class='note'></td></tr>
-<tr><td>Leg extension</td><td>65 lbs</td><td>4×10</td><td class='note'></td></tr>
-<tr><td>* Bent-knee single-leg calf raise</td><td>22 lbs</td><td>3×10</td><td class='note'></td></tr>
+<tr><td>* Goblet squat</td><td><span class="wv" data-lbs="30">30 lbs</span></td><td>3×10</td><td class='note'></td></tr>
+<tr><td>* Romanian deadlift</td><td><span class="wv" data-lbs="66">66 lbs</span></td><td>4×10</td><td class='note'></td></tr>
+<tr><td>Leg extension</td><td><span class="wv" data-lbs="65">65 lbs</span></td><td>4×10</td><td class='note'></td></tr>
+<tr><td>* Bent-knee single-leg calf raise</td><td><span class="wv" data-lbs="22">22 lbs</span></td><td>3×10</td><td class='note'></td></tr>
 <tr><td>* Tibialis raise</td><td>-</td><td>3×15</td><td class='note'></td></tr>
 <tr><td>Back Hyperextension</td><td>-</td><td>3×10</td><td class='note'></td></tr>
-<tr><td>Cable tricep press down</td><td>50 lbs</td><td>3×10</td><td class='note'></td></tr>
+<tr><td>Cable tricep press down</td><td><span class="wv" data-lbs="50">50 lbs</span></td><td>3×10</td><td class='note'></td></tr>
       </tbody>
     </table>
     </div>
@@ -1453,12 +1462,12 @@
     <table>
       <thead><tr><th>Exercise</th><th>Weight</th><th>Sets×Reps</th><th>Note</th></tr></thead>
       <tbody>
-<tr><td>Shoulder press</td><td>50 lbs</td><td>3×15</td><td class='note'></td></tr>
-<tr><td>Barbell bench press</td><td>20 lbs</td><td>4×10</td><td class='note'></td></tr>
-<tr><td>Back cable rowing</td><td>60 lbs</td><td>4×10</td><td class='note'></td></tr>
-<tr><td>Lat pulldown</td><td>60 lbs</td><td>4×10</td><td class='note'></td></tr>
-<tr><td>Face pull</td><td>50 lbs</td><td>3×15</td><td class='note'></td></tr>
-<tr><td>Bicep curl</td><td>10 lbs</td><td>3×12</td><td class='note'></td></tr>
+<tr><td>Shoulder press</td><td><span class="wv" data-lbs="50">50 lbs</span></td><td>3×15</td><td class='note'></td></tr>
+<tr><td>Barbell bench press</td><td><span class="wv" data-lbs="20">20 lbs</span></td><td>4×10</td><td class='note'></td></tr>
+<tr><td>Back cable rowing</td><td><span class="wv" data-lbs="60">60 lbs</span></td><td>4×10</td><td class='note'></td></tr>
+<tr><td>Lat pulldown</td><td><span class="wv" data-lbs="60">60 lbs</span></td><td>4×10</td><td class='note'></td></tr>
+<tr><td>Face pull</td><td><span class="wv" data-lbs="50">50 lbs</span></td><td>3×15</td><td class='note'></td></tr>
+<tr><td>Bicep curl</td><td><span class="wv" data-lbs="10">10 lbs</span></td><td>3×12</td><td class='note'></td></tr>
       </tbody>
     </table>
     </div>
@@ -1475,10 +1484,10 @@
     <table>
       <thead><tr><th>Exercise</th><th>Weight</th><th>Sets×Reps</th><th>Note</th></tr></thead>
       <tbody>
-<tr><td>Squat <span class='grp'>(Quad/Glute)</span></td><td>44 lbs</td><td>4×10</td><td class='note'></td></tr>
-<tr><td>* Romanian deadlift</td><td>66 lbs</td><td>4×10</td><td class='note'></td></tr>
-<tr><td>Leg extension</td><td>65 lbs</td><td>4×10</td><td class='note'></td></tr>
-<tr><td>* Bent-knee single-leg calf raise <span class='grp'>(Calf)</span></td><td>22 lbs</td><td>3×8</td><td class='note'></td></tr>
+<tr><td>Squat <span class='grp'>(Quad/Glute)</span></td><td><span class="wv" data-lbs="44">44 lbs</span></td><td>4×10</td><td class='note'></td></tr>
+<tr><td>* Romanian deadlift</td><td><span class="wv" data-lbs="66">66 lbs</span></td><td>4×10</td><td class='note'></td></tr>
+<tr><td>Leg extension</td><td><span class="wv" data-lbs="65">65 lbs</span></td><td>4×10</td><td class='note'></td></tr>
+<tr><td>* Bent-knee single-leg calf raise <span class='grp'>(Calf)</span></td><td><span class="wv" data-lbs="22">22 lbs</span></td><td>3×8</td><td class='note'></td></tr>
 <tr><td>* Tibialis raise <span class='grp'>(Tibialis)</span></td><td>-</td><td>3×15</td><td class='note'></td></tr>
       </tbody>
     </table>
@@ -1496,10 +1505,10 @@
     <table>
       <thead><tr><th>Exercise</th><th>Weight</th><th>Sets×Reps</th><th>Note</th></tr></thead>
       <tbody>
-<tr><td>Supine bench press</td><td>20 lbs</td><td>5×8</td><td class='note'></td></tr>
-<tr><td>Shoulder press</td><td>50 lbs</td><td>4×10</td><td class='note'></td></tr>
-<tr><td>Bicep curl</td><td>10 lbs</td><td>3×10</td><td class='note'></td></tr>
-<tr><td>Back cable rowing</td><td>60 lbs</td><td>4×10</td><td class='note'></td></tr>
+<tr><td>Supine bench press</td><td><span class="wv" data-lbs="20">20 lbs</span></td><td>5×8</td><td class='note'></td></tr>
+<tr><td>Shoulder press</td><td><span class="wv" data-lbs="50">50 lbs</span></td><td>4×10</td><td class='note'></td></tr>
+<tr><td>Bicep curl</td><td><span class="wv" data-lbs="10">10 lbs</span></td><td>3×10</td><td class='note'></td></tr>
+<tr><td>Back cable rowing</td><td><span class="wv" data-lbs="60">60 lbs</span></td><td>4×10</td><td class='note'></td></tr>
       </tbody>
     </table>
     </div>
@@ -1516,10 +1525,10 @@
     <table>
       <thead><tr><th>Exercise</th><th>Weight</th><th>Sets×Reps</th><th>Note</th></tr></thead>
       <tbody>
-<tr><td>Squat <span class='grp'>(Quad/Glute)</span></td><td>44 lbs</td><td>4×10</td><td class='note'></td></tr>
-<tr><td>* Bulgarian split squat <span class='grp'>(Quad/Glute)</span></td><td>20 lbs</td><td>3× <span class='rbs'>10/10/8</span></td><td class='note'></td></tr>
+<tr><td>Squat <span class='grp'>(Quad/Glute)</span></td><td><span class="wv" data-lbs="44">44 lbs</span></td><td>4×10</td><td class='note'></td></tr>
+<tr><td>* Bulgarian split squat <span class='grp'>(Quad/Glute)</span></td><td><span class="wv" data-lbs="20">20 lbs</span></td><td>3× <span class='rbs'>10/10/8</span></td><td class='note'></td></tr>
 <tr><td>Single-leg RDL</td><td>-</td><td>3×10</td><td class='note'></td></tr>
-<tr><td>* Bent-knee single-leg calf raise <span class='grp'>(Calf)</span></td><td>22 lbs</td><td>3×10</td><td class='note'></td></tr>
+<tr><td>* Bent-knee single-leg calf raise <span class='grp'>(Calf)</span></td><td><span class="wv" data-lbs="22">22 lbs</span></td><td>3×10</td><td class='note'></td></tr>
 <tr><td>* Tibialis raise <span class='grp'>(Tibialis)</span></td><td>-</td><td>3×15</td><td class='note'></td></tr>
       </tbody>
     </table>
@@ -1537,10 +1546,10 @@
     <table>
       <thead><tr><th>Exercise</th><th>Weight</th><th>Sets×Reps</th><th>Note</th></tr></thead>
       <tbody>
-<tr><td>Barbell bench press</td><td>20 lbs</td><td>4× <span class='rbs'>10/10/8/8</span></td><td class='note'></td></tr>
-<tr><td>Shoulder press</td><td>50 lbs</td><td>4× <span class='rbs'>10/10/10/10</span></td><td class='note'></td></tr>
-<tr><td>Face pull</td><td>50 lbs</td><td>4× <span class='rbs'>10/10/10/10</span></td><td class='note'></td></tr>
-<tr><td>Back cable rowing</td><td>65 lbs</td><td>4× <span class='rbs'>10/10/10/10</span></td><td class='note'></td></tr>
+<tr><td>Barbell bench press</td><td><span class="wv" data-lbs="20">20 lbs</span></td><td>4× <span class='rbs'>10/10/8/8</span></td><td class='note'></td></tr>
+<tr><td>Shoulder press</td><td><span class="wv" data-lbs="50">50 lbs</span></td><td>4× <span class='rbs'>10/10/10/10</span></td><td class='note'></td></tr>
+<tr><td>Face pull</td><td><span class="wv" data-lbs="50">50 lbs</span></td><td>4× <span class='rbs'>10/10/10/10</span></td><td class='note'></td></tr>
+<tr><td>Back cable rowing</td><td><span class="wv" data-lbs="65">65 lbs</span></td><td>4× <span class='rbs'>10/10/10/10</span></td><td class='note'></td></tr>
       </tbody>
     </table>
     </div>
@@ -1557,9 +1566,9 @@
     <table>
       <thead><tr><th>Exercise</th><th>Weight</th><th>Sets×Reps</th><th>Note</th></tr></thead>
       <tbody>
-<tr><td>Lat pulldown</td><td>60 lbs</td><td>4× <span class='rbs'>10/10/10/10</span></td><td class='note'></td></tr>
-<tr><td>Incline bench press</td><td>20 lbs</td><td>4× <span class='rbs'>7/7/5/5</span></td><td class='note'></td></tr>
-<tr><td>Back Hyperextension</td><td>5 lbs</td><td>3× <span class='rbs'>10/10/10</span></td><td class='note'></td></tr>
+<tr><td>Lat pulldown</td><td><span class="wv" data-lbs="60">60 lbs</span></td><td>4× <span class='rbs'>10/10/10/10</span></td><td class='note'></td></tr>
+<tr><td>Incline bench press</td><td><span class="wv" data-lbs="20">20 lbs</span></td><td>4× <span class='rbs'>7/7/5/5</span></td><td class='note'></td></tr>
+<tr><td>Back Hyperextension</td><td><span class="wv" data-lbs="5">5 lbs</span></td><td>3× <span class='rbs'>10/10/10</span></td><td class='note'></td></tr>
       </tbody>
     </table>
     </div>
@@ -1576,9 +1585,9 @@
     <table>
       <thead><tr><th>Exercise</th><th>Weight</th><th>Sets×Reps</th><th>Note</th></tr></thead>
       <tbody>
-<tr><td>Back cable rowing</td><td>65 lbs</td><td>4×10</td><td class='note'></td></tr>
-<tr><td>Face pull</td><td>60 lbs</td><td>4×10</td><td class='note'></td></tr>
-<tr><td>Back Hyperextension</td><td>5 lbs</td><td>4×10</td><td class='note'></td></tr>
+<tr><td>Back cable rowing</td><td><span class="wv" data-lbs="65">65 lbs</span></td><td>4×10</td><td class='note'></td></tr>
+<tr><td>Face pull</td><td><span class="wv" data-lbs="60">60 lbs</span></td><td>4×10</td><td class='note'></td></tr>
+<tr><td>Back Hyperextension</td><td><span class="wv" data-lbs="5">5 lbs</span></td><td>4×10</td><td class='note'></td></tr>
       </tbody>
     </table>
     </div>
@@ -1595,9 +1604,9 @@
     <table>
       <thead><tr><th>Exercise</th><th>Weight</th><th>Sets×Reps</th><th>Note</th></tr></thead>
       <tbody>
-<tr><td>Squat <span class='grp'>(Quad/Glute)</span></td><td>22 lbs</td><td>4× <span class='rbs'>10/10/10/10</span></td><td class='note'></td></tr>
-<tr><td>* Romanian deadlift</td><td>66 lbs</td><td>3× <span class='rbs'>10/10/10</span></td><td class='note'></td></tr>
-<tr><td>* Bent-knee single-leg calf raise <span class='grp'>(Calf)</span></td><td>22 lbs</td><td>3× <span class='rbs'>10/10/10</span></td><td class='note'></td></tr>
+<tr><td>Squat <span class='grp'>(Quad/Glute)</span></td><td><span class="wv" data-lbs="22">22 lbs</span></td><td>4× <span class='rbs'>10/10/10/10</span></td><td class='note'></td></tr>
+<tr><td>* Romanian deadlift</td><td><span class="wv" data-lbs="66">66 lbs</span></td><td>3× <span class='rbs'>10/10/10</span></td><td class='note'></td></tr>
+<tr><td>* Bent-knee single-leg calf raise <span class='grp'>(Calf)</span></td><td><span class="wv" data-lbs="22">22 lbs</span></td><td>3× <span class='rbs'>10/10/10</span></td><td class='note'></td></tr>
       </tbody>
     </table>
     </div>
@@ -1614,10 +1623,10 @@
     <table>
       <thead><tr><th>Exercise</th><th>Weight</th><th>Sets×Reps</th><th>Note</th></tr></thead>
       <tbody>
-<tr><td>Incline bench press</td><td>10 lbs</td><td>4× <span class='rbs'>12/10/10/8</span></td><td class='note'></td></tr>
-<tr><td>Lat pulldown</td><td>55 lbs</td><td>4× <span class='rbs'>12/10/10/8</span></td><td class='note'></td></tr>
-<tr><td>Shoulder press</td><td>50 lbs</td><td>4× <span class='rbs'>12/10/10/8</span></td><td class='note'></td></tr>
-<tr><td>Bicep curl</td><td>10 lbs</td><td>4× <span class='rbs'>12/10/10/8</span></td><td class='note'></td></tr>
+<tr><td>Incline bench press</td><td><span class="wv" data-lbs="10">10 lbs</span></td><td>4× <span class='rbs'>12/10/10/8</span></td><td class='note'></td></tr>
+<tr><td>Lat pulldown</td><td><span class="wv" data-lbs="55">55 lbs</span></td><td>4× <span class='rbs'>12/10/10/8</span></td><td class='note'></td></tr>
+<tr><td>Shoulder press</td><td><span class="wv" data-lbs="50">50 lbs</span></td><td>4× <span class='rbs'>12/10/10/8</span></td><td class='note'></td></tr>
+<tr><td>Bicep curl</td><td><span class="wv" data-lbs="10">10 lbs</span></td><td>4× <span class='rbs'>12/10/10/8</span></td><td class='note'></td></tr>
       </tbody>
     </table>
     </div>
@@ -1634,8 +1643,8 @@
     <table>
       <thead><tr><th>Exercise</th><th>Weight</th><th>Sets×Reps</th><th>Note</th></tr></thead>
       <tbody>
-<tr><td>Back cable rowing</td><td>60 lbs</td><td>4×10</td><td class='note'></td></tr>
-<tr><td>Back Hyperextension</td><td>5 lbs</td><td>4×10</td><td class='note'></td></tr>
+<tr><td>Back cable rowing</td><td><span class="wv" data-lbs="60">60 lbs</span></td><td>4×10</td><td class='note'></td></tr>
+<tr><td>Back Hyperextension</td><td><span class="wv" data-lbs="5">5 lbs</span></td><td>4×10</td><td class='note'></td></tr>
       </tbody>
     </table>
     </div>
@@ -1652,8 +1661,8 @@
     <table>
       <thead><tr><th>Exercise</th><th>Weight</th><th>Sets×Reps</th><th>Note</th></tr></thead>
       <tbody>
-<tr><td>Incline bench press</td><td>11 lbs</td><td>5× <span class='rbs'>12/10/7/7/6</span></td><td class='note'></td></tr>
-<tr><td>Dumbbell front raise</td><td>11 lbs</td><td>3×10</td><td class='note'></td></tr>
+<tr><td>Incline bench press</td><td><span class="wv" data-lbs="11">11 lbs</span></td><td>5× <span class='rbs'>12/10/7/7/6</span></td><td class='note'></td></tr>
+<tr><td>Dumbbell front raise</td><td><span class="wv" data-lbs="11">11 lbs</span></td><td>3×10</td><td class='note'></td></tr>
 <tr><td>Incline sit up</td><td>-</td><td>3× <span class='rbs'>12/10/8</span></td><td class='note'></td></tr>
       </tbody>
     </table>
@@ -1671,10 +1680,10 @@
     <table>
       <thead><tr><th>Exercise</th><th>Weight</th><th>Sets×Reps</th><th>Note</th></tr></thead>
       <tbody>
-<tr><td>Squat <span class='grp'>(Quad/Glute)</span></td><td>44 lbs</td><td>3×10</td><td class='note'></td></tr>
-<tr><td>* Romanian deadlift</td><td>66 lbs</td><td>3×15</td><td class='note'></td></tr>
+<tr><td>Squat <span class='grp'>(Quad/Glute)</span></td><td><span class="wv" data-lbs="44">44 lbs</span></td><td>3×10</td><td class='note'></td></tr>
+<tr><td>* Romanian deadlift</td><td><span class="wv" data-lbs="66">66 lbs</span></td><td>3×15</td><td class='note'></td></tr>
 <tr><td>* Calf raise</td><td>-</td><td>3×8</td><td class='note'></td></tr>
-<tr><td>* Seated calf raise</td><td>33 lbs</td><td>3×8</td><td class='note'></td></tr>
+<tr><td>* Seated calf raise</td><td><span class="wv" data-lbs="33">33 lbs</span></td><td>3×8</td><td class='note'></td></tr>
 <tr><td>* Tibialis raise <span class='grp'>(Tibialis)</span></td><td>-</td><td>3×15</td><td class='note'></td></tr>
       </tbody>
     </table>
@@ -1692,12 +1701,12 @@
     <table>
       <thead><tr><th>Exercise</th><th>Weight</th><th>Sets×Reps</th><th>Note</th></tr></thead>
       <tbody>
-<tr><td>Shoulder press</td><td>50 lbs</td><td>3×15</td><td class='note'></td></tr>
-<tr><td>Supine bench press</td><td>20 lbs</td><td>3×10</td><td class='note'></td></tr>
-<tr><td>Back cable rowing</td><td>55 lbs</td><td>3×15</td><td class='note'></td></tr>
-<tr><td>Lat pulldown</td><td>55 lbs</td><td>3×15</td><td class='note'></td></tr>
-<tr><td>Bicep curl</td><td>10 lbs</td><td>3×12</td><td class='note'></td></tr>
-<tr><td>Cable tricep press down</td><td>40 lbs</td><td>3×10</td><td class='note'></td></tr>
+<tr><td>Shoulder press</td><td><span class="wv" data-lbs="50">50 lbs</span></td><td>3×15</td><td class='note'></td></tr>
+<tr><td>Supine bench press</td><td><span class="wv" data-lbs="20">20 lbs</span></td><td>3×10</td><td class='note'></td></tr>
+<tr><td>Back cable rowing</td><td><span class="wv" data-lbs="55">55 lbs</span></td><td>3×15</td><td class='note'></td></tr>
+<tr><td>Lat pulldown</td><td><span class="wv" data-lbs="55">55 lbs</span></td><td>3×15</td><td class='note'></td></tr>
+<tr><td>Bicep curl</td><td><span class="wv" data-lbs="10">10 lbs</span></td><td>3×12</td><td class='note'></td></tr>
+<tr><td>Cable tricep press down</td><td><span class="wv" data-lbs="40">40 lbs</span></td><td>3×10</td><td class='note'></td></tr>
       </tbody>
     </table>
     </div>
@@ -1714,8 +1723,8 @@
     <table>
       <thead><tr><th>Exercise</th><th>Weight</th><th>Sets×Reps</th><th>Note</th></tr></thead>
       <tbody>
-<tr><td>Squat <span class='grp'>(Quad/Glute)</span></td><td>44 lbs</td><td>3×10</td><td class='note'></td></tr>
-<tr><td>romanian deadlift</td><td>66 lbs</td><td>3×10</td><td class='note'></td></tr>
+<tr><td>Squat <span class='grp'>(Quad/Glute)</span></td><td><span class="wv" data-lbs="44">44 lbs</span></td><td>3×10</td><td class='note'></td></tr>
+<tr><td>romanian deadlift</td><td><span class="wv" data-lbs="66">66 lbs</span></td><td>3×10</td><td class='note'></td></tr>
       </tbody>
     </table>
     </div>
@@ -1732,11 +1741,11 @@
     <table>
       <thead><tr><th>Exercise</th><th>Weight</th><th>Sets×Reps</th><th>Note</th></tr></thead>
       <tbody>
-<tr><td>Shoulder press</td><td>50 lbs</td><td>3×15</td><td class='note'></td></tr>
-<tr><td>Barbell bench press</td><td>20 lbs</td><td>3×10</td><td class='note'></td></tr>
-<tr><td>Chest fly</td><td>55 lbs</td><td>3×15</td><td class='note'></td></tr>
-<tr><td>Lat pulldown</td><td>70 lbs</td><td>3×15</td><td class='note'></td></tr>
-<tr><td>Back Hyperextension</td><td>10 lbs</td><td>3×15</td><td class='note'></td></tr>
+<tr><td>Shoulder press</td><td><span class="wv" data-lbs="50">50 lbs</span></td><td>3×15</td><td class='note'></td></tr>
+<tr><td>Barbell bench press</td><td><span class="wv" data-lbs="20">20 lbs</span></td><td>3×10</td><td class='note'></td></tr>
+<tr><td>Chest fly</td><td><span class="wv" data-lbs="55">55 lbs</span></td><td>3×15</td><td class='note'></td></tr>
+<tr><td>Lat pulldown</td><td><span class="wv" data-lbs="70">70 lbs</span></td><td>3×15</td><td class='note'></td></tr>
+<tr><td>Back Hyperextension</td><td><span class="wv" data-lbs="10">10 lbs</span></td><td>3×15</td><td class='note'></td></tr>
       </tbody>
     </table>
     </div>
@@ -1753,10 +1762,10 @@
     <table>
       <thead><tr><th>Exercise</th><th>Weight</th><th>Sets×Reps</th><th>Note</th></tr></thead>
       <tbody>
-<tr><td>Shoulder press</td><td>50 lbs</td><td>3×15</td><td class='note'></td></tr>
-<tr><td>Barbell bench press</td><td>25 lbs</td><td>3×10</td><td class='note'></td></tr>
-<tr><td>Back cable rowing</td><td>65 lbs</td><td>3×15</td><td class='note'></td></tr>
-<tr><td>Face pull</td><td>50 lbs</td><td>3×15</td><td class='note'></td></tr>
+<tr><td>Shoulder press</td><td><span class="wv" data-lbs="50">50 lbs</span></td><td>3×15</td><td class='note'></td></tr>
+<tr><td>Barbell bench press</td><td><span class="wv" data-lbs="25">25 lbs</span></td><td>3×10</td><td class='note'></td></tr>
+<tr><td>Back cable rowing</td><td><span class="wv" data-lbs="65">65 lbs</span></td><td>3×15</td><td class='note'></td></tr>
+<tr><td>Face pull</td><td><span class="wv" data-lbs="50">50 lbs</span></td><td>3×15</td><td class='note'></td></tr>
       </tbody>
     </table>
     </div>
@@ -1773,10 +1782,10 @@
     <table>
       <thead><tr><th>Exercise</th><th>Weight</th><th>Sets×Reps</th><th>Note</th></tr></thead>
       <tbody>
-<tr><td>Shoulder press</td><td>50 lbs</td><td>3×15</td><td class='note'></td></tr>
-<tr><td>Barbell bench press</td><td>20 lbs</td><td>3×10</td><td class='note'></td></tr>
-<tr><td>Back cable rowing</td><td>65 lbs</td><td>3×15</td><td class='note'></td></tr>
-<tr><td>Face pull</td><td>50 lbs</td><td>3×15</td><td class='note'></td></tr>
+<tr><td>Shoulder press</td><td><span class="wv" data-lbs="50">50 lbs</span></td><td>3×15</td><td class='note'></td></tr>
+<tr><td>Barbell bench press</td><td><span class="wv" data-lbs="20">20 lbs</span></td><td>3×10</td><td class='note'></td></tr>
+<tr><td>Back cable rowing</td><td><span class="wv" data-lbs="65">65 lbs</span></td><td>3×15</td><td class='note'></td></tr>
+<tr><td>Face pull</td><td><span class="wv" data-lbs="50">50 lbs</span></td><td>3×15</td><td class='note'></td></tr>
       </tbody>
     </table>
     </div>
@@ -1793,9 +1802,9 @@
     <table>
       <thead><tr><th>Exercise</th><th>Weight</th><th>Sets×Reps</th><th>Note</th></tr></thead>
       <tbody>
-<tr><td>Shoulder press</td><td>50 lbs</td><td>3×10</td><td class='note'></td></tr>
-<tr><td>Chest fly</td><td>55 lbs</td><td>3×15</td><td class='note'></td></tr>
-<tr><td>Lat pulldown</td><td>70 lbs</td><td>3×10</td><td class='note'></td></tr>
+<tr><td>Shoulder press</td><td><span class="wv" data-lbs="50">50 lbs</span></td><td>3×10</td><td class='note'></td></tr>
+<tr><td>Chest fly</td><td><span class="wv" data-lbs="55">55 lbs</span></td><td>3×15</td><td class='note'></td></tr>
+<tr><td>Lat pulldown</td><td><span class="wv" data-lbs="70">70 lbs</span></td><td>3×10</td><td class='note'></td></tr>
       </tbody>
     </table>
     </div>
@@ -1812,9 +1821,9 @@
     <table>
       <thead><tr><th>Exercise</th><th>Weight</th><th>Sets×Reps</th><th>Note</th></tr></thead>
       <tbody>
-<tr><td>* Goblet squat</td><td>30 lbs</td><td>3×10</td><td class='note'></td></tr>
-<tr><td>* Romanian deadlift</td><td>66 lbs</td><td>3×15</td><td class='note'></td></tr>
-<tr><td>* Bulgarian split squat <span class='grp'>(Quad/Glute)</span></td><td>20 lbs</td><td>3×10</td><td class='note'></td></tr>
+<tr><td>* Goblet squat</td><td><span class="wv" data-lbs="30">30 lbs</span></td><td>3×10</td><td class='note'></td></tr>
+<tr><td>* Romanian deadlift</td><td><span class="wv" data-lbs="66">66 lbs</span></td><td>3×15</td><td class='note'></td></tr>
+<tr><td>* Bulgarian split squat <span class='grp'>(Quad/Glute)</span></td><td><span class="wv" data-lbs="20">20 lbs</span></td><td>3×10</td><td class='note'></td></tr>
       </tbody>
     </table>
     </div>
@@ -1831,10 +1840,10 @@
     <table>
       <thead><tr><th>Exercise</th><th>Weight</th><th>Sets×Reps</th><th>Note</th></tr></thead>
       <tbody>
-<tr><td>Squat</td><td>44 lbs</td><td>3×10</td><td class='note'></td></tr>
-<tr><td>Supine bench press</td><td>20 lbs</td><td>3×10</td><td class='note'></td></tr>
-<tr><td>Back cable rowing</td><td>65 lbs</td><td>3×12</td><td class='note'></td></tr>
-<tr><td>Shoulder press</td><td>40 lbs</td><td>3×12</td><td class='note'></td></tr>
+<tr><td>Squat</td><td><span class="wv" data-lbs="44">44 lbs</span></td><td>3×10</td><td class='note'></td></tr>
+<tr><td>Supine bench press</td><td><span class="wv" data-lbs="20">20 lbs</span></td><td>3×10</td><td class='note'></td></tr>
+<tr><td>Back cable rowing</td><td><span class="wv" data-lbs="65">65 lbs</span></td><td>3×12</td><td class='note'></td></tr>
+<tr><td>Shoulder press</td><td><span class="wv" data-lbs="40">40 lbs</span></td><td>3×12</td><td class='note'></td></tr>
       </tbody>
     </table>
     </div>
@@ -1851,11 +1860,11 @@
     <table>
       <thead><tr><th>Exercise</th><th>Weight</th><th>Sets×Reps</th><th>Note</th></tr></thead>
       <tbody>
-<tr><td>Barbell bench press</td><td>20 lbs</td><td>3×10</td><td class='note'></td></tr>
-<tr><td>Lat pulldown</td><td>65 lbs</td><td>3×15</td><td class='note'></td></tr>
-<tr><td>Face pull</td><td>50 lbs</td><td>3×15</td><td class='note'></td></tr>
+<tr><td>Barbell bench press</td><td><span class="wv" data-lbs="20">20 lbs</span></td><td>3×10</td><td class='note'></td></tr>
+<tr><td>Lat pulldown</td><td><span class="wv" data-lbs="65">65 lbs</span></td><td>3×15</td><td class='note'></td></tr>
+<tr><td>Face pull</td><td><span class="wv" data-lbs="50">50 lbs</span></td><td>3×15</td><td class='note'></td></tr>
 <tr><td>Back Hyperextension</td><td>-</td><td>3×15</td><td class='note'></td></tr>
-<tr><td>Bicep curl</td><td>10 lbs</td><td>3×12</td><td class='note'></td></tr>
+<tr><td>Bicep curl</td><td><span class="wv" data-lbs="10">10 lbs</span></td><td>3×12</td><td class='note'></td></tr>
       </tbody>
     </table>
     </div>
@@ -1872,9 +1881,9 @@
     <table>
       <thead><tr><th>Exercise</th><th>Weight</th><th>Sets×Reps</th><th>Note</th></tr></thead>
       <tbody>
-<tr><td>Barbell bench press</td><td>20 lbs</td><td>3×10</td><td class='note'></td></tr>
-<tr><td>Machine Chest press</td><td>65 lbs</td><td>3×15</td><td class='note'></td></tr>
-<tr><td>Back cable rowing</td><td>65 lbs</td><td>3×15</td><td class='note'></td></tr>
+<tr><td>Barbell bench press</td><td><span class="wv" data-lbs="20">20 lbs</span></td><td>3×10</td><td class='note'></td></tr>
+<tr><td>Machine Chest press</td><td><span class="wv" data-lbs="65">65 lbs</span></td><td>3×15</td><td class='note'></td></tr>
+<tr><td>Back cable rowing</td><td><span class="wv" data-lbs="65">65 lbs</span></td><td>3×15</td><td class='note'></td></tr>
       </tbody>
     </table>
     </div>
@@ -1891,9 +1900,9 @@
     <table>
       <thead><tr><th>Exercise</th><th>Weight</th><th>Sets×Reps</th><th>Note</th></tr></thead>
       <tbody>
-<tr><td>Squat <span class='grp'>(Quad/Glute)</span></td><td>44 lbs</td><td>3×10</td><td class='note'></td></tr>
-<tr><td>* Romanian deadlift</td><td>66 lbs</td><td>3×15</td><td class='note'></td></tr>
-<tr><td>* Seated calf raise</td><td>33 lbs</td><td>3×8</td><td class='note'></td></tr>
+<tr><td>Squat <span class='grp'>(Quad/Glute)</span></td><td><span class="wv" data-lbs="44">44 lbs</span></td><td>3×10</td><td class='note'></td></tr>
+<tr><td>* Romanian deadlift</td><td><span class="wv" data-lbs="66">66 lbs</span></td><td>3×15</td><td class='note'></td></tr>
+<tr><td>* Seated calf raise</td><td><span class="wv" data-lbs="33">33 lbs</span></td><td>3×8</td><td class='note'></td></tr>
       </tbody>
     </table>
     </div>
@@ -1910,12 +1919,12 @@
     <table>
       <thead><tr><th>Exercise</th><th>Weight</th><th>Sets×Reps</th><th>Note</th></tr></thead>
       <tbody>
-<tr><td>Pull up</td><td>60 lbs</td><td>3×15</td><td class='note'></td></tr>
-<tr><td>Supine bench press</td><td>20 lbs</td><td>3×10</td><td class='note'></td></tr>
-<tr><td>Chest fly</td><td>55 lbs</td><td>3×15</td><td class='note'></td></tr>
-<tr><td>Back cable rowing</td><td>65 lbs</td><td>3×15</td><td class='note'></td></tr>
-<tr><td>Face pull</td><td>50 lbs</td><td>3×15</td><td class='note'></td></tr>
-<tr><td>Cable tricep press down</td><td>40 lbs</td><td>3×10</td><td class='note'></td></tr>
+<tr><td>Pull up</td><td><span class="wv" data-lbs="60">60 lbs</span></td><td>3×15</td><td class='note'></td></tr>
+<tr><td>Supine bench press</td><td><span class="wv" data-lbs="20">20 lbs</span></td><td>3×10</td><td class='note'></td></tr>
+<tr><td>Chest fly</td><td><span class="wv" data-lbs="55">55 lbs</span></td><td>3×15</td><td class='note'></td></tr>
+<tr><td>Back cable rowing</td><td><span class="wv" data-lbs="65">65 lbs</span></td><td>3×15</td><td class='note'></td></tr>
+<tr><td>Face pull</td><td><span class="wv" data-lbs="50">50 lbs</span></td><td>3×15</td><td class='note'></td></tr>
+<tr><td>Cable tricep press down</td><td><span class="wv" data-lbs="40">40 lbs</span></td><td>3×10</td><td class='note'></td></tr>
       </tbody>
     </table>
     </div>
@@ -1932,12 +1941,12 @@
     <table>
       <thead><tr><th>Exercise</th><th>Weight</th><th>Sets×Reps</th><th>Note</th></tr></thead>
       <tbody>
-<tr><td>Squat <span class='grp'>(Quad/Glute)</span></td><td>44 lbs</td><td>3×10</td><td class='note'></td></tr>
-<tr><td>* Romanian deadlift</td><td>66 lbs</td><td>3×15</td><td class='note'></td></tr>
-<tr><td>* Bulgarian split squat <span class='grp'>(Quad/Glute)</span></td><td>20 lbs</td><td>3×10</td><td class='note'></td></tr>
-<tr><td>Leg extension</td><td>60 lbs</td><td>3×15</td><td class='note'></td></tr>
+<tr><td>Squat <span class='grp'>(Quad/Glute)</span></td><td><span class="wv" data-lbs="44">44 lbs</span></td><td>3×10</td><td class='note'></td></tr>
+<tr><td>* Romanian deadlift</td><td><span class="wv" data-lbs="66">66 lbs</span></td><td>3×15</td><td class='note'></td></tr>
+<tr><td>* Bulgarian split squat <span class='grp'>(Quad/Glute)</span></td><td><span class="wv" data-lbs="20">20 lbs</span></td><td>3×10</td><td class='note'></td></tr>
+<tr><td>Leg extension</td><td><span class="wv" data-lbs="60">60 lbs</span></td><td>3×15</td><td class='note'></td></tr>
 <tr><td>* Calf raise</td><td>-</td><td>3×10</td><td class='note'></td></tr>
-<tr><td>* Seated calf raise</td><td>33 lbs</td><td>3×15</td><td class='note'></td></tr>
+<tr><td>* Seated calf raise</td><td><span class="wv" data-lbs="33">33 lbs</span></td><td>3×15</td><td class='note'></td></tr>
       </tbody>
     </table>
     </div>
@@ -1954,10 +1963,10 @@
     <table>
       <thead><tr><th>Exercise</th><th>Weight</th><th>Sets×Reps</th><th>Note</th></tr></thead>
       <tbody>
-<tr><td>Deadlift</td><td>30 lbs</td><td>3×10</td><td class='note'></td></tr>
-<tr><td>Back cable rowing</td><td>65 lbs</td><td>3×10</td><td class='note'></td></tr>
+<tr><td>Deadlift</td><td><span class="wv" data-lbs="30">30 lbs</span></td><td>3×10</td><td class='note'></td></tr>
+<tr><td>Back cable rowing</td><td><span class="wv" data-lbs="65">65 lbs</span></td><td>3×10</td><td class='note'></td></tr>
 <tr><td>Back Hyperextension</td><td>-</td><td>3×10</td><td class='note'></td></tr>
-<tr><td>Bicep curl</td><td>5 lbs</td><td>3×15</td><td class='note'></td></tr>
+<tr><td>Bicep curl</td><td><span class="wv" data-lbs="5">5 lbs</span></td><td>3×15</td><td class='note'></td></tr>
       </tbody>
     </table>
     </div>
@@ -1974,12 +1983,12 @@
     <table>
       <thead><tr><th>Exercise</th><th>Weight</th><th>Sets×Reps</th><th>Note</th></tr></thead>
       <tbody>
-<tr><td>Barbell bench press</td><td>25 lbs</td><td>3×10</td><td class='note'></td></tr>
-<tr><td>Supine bench press</td><td>20 lbs</td><td>3×10</td><td class='note'></td></tr>
-<tr><td>Machine Chest press</td><td>65 lbs</td><td>3×15</td><td class='note'></td></tr>
-<tr><td>Lat pulldown</td><td>65 lbs</td><td>3×15</td><td class='note'></td></tr>
-<tr><td>Face pull</td><td>50 lbs</td><td>3×15</td><td class='note'></td></tr>
-<tr><td>Cable tricep press down</td><td>40 lbs</td><td>3×10</td><td class='note'></td></tr>
+<tr><td>Barbell bench press</td><td><span class="wv" data-lbs="25">25 lbs</span></td><td>3×10</td><td class='note'></td></tr>
+<tr><td>Supine bench press</td><td><span class="wv" data-lbs="20">20 lbs</span></td><td>3×10</td><td class='note'></td></tr>
+<tr><td>Machine Chest press</td><td><span class="wv" data-lbs="65">65 lbs</span></td><td>3×15</td><td class='note'></td></tr>
+<tr><td>Lat pulldown</td><td><span class="wv" data-lbs="65">65 lbs</span></td><td>3×15</td><td class='note'></td></tr>
+<tr><td>Face pull</td><td><span class="wv" data-lbs="50">50 lbs</span></td><td>3×15</td><td class='note'></td></tr>
+<tr><td>Cable tricep press down</td><td><span class="wv" data-lbs="40">40 lbs</span></td><td>3×10</td><td class='note'></td></tr>
       </tbody>
     </table>
     </div>
@@ -1996,11 +2005,11 @@
     <table>
       <thead><tr><th>Exercise</th><th>Weight</th><th>Sets×Reps</th><th>Note</th></tr></thead>
       <tbody>
-<tr><td>Squat <span class='grp'>(Quad/Glute)</span></td><td>44 lbs</td><td>3×10</td><td class='note'></td></tr>
-<tr><td>* Romanian deadlift</td><td>33 lbs</td><td>3×15</td><td class='note'></td></tr>
-<tr><td>Leg extension</td><td>55 lbs</td><td>3×15</td><td class='note'></td></tr>
+<tr><td>Squat <span class='grp'>(Quad/Glute)</span></td><td><span class="wv" data-lbs="44">44 lbs</span></td><td>3×10</td><td class='note'></td></tr>
+<tr><td>* Romanian deadlift</td><td><span class="wv" data-lbs="33">33 lbs</span></td><td>3×15</td><td class='note'></td></tr>
+<tr><td>Leg extension</td><td><span class="wv" data-lbs="55">55 lbs</span></td><td>3×15</td><td class='note'></td></tr>
 <tr><td>* Calf raise</td><td>-</td><td>3×8</td><td class='note'>เน้น Gastrocnemius</td></tr>
-<tr><td>* Seated calf raise</td><td>4.5 lbs</td><td>3×8</td><td class='note'>เน้น Soleus</td></tr>
+<tr><td>* Seated calf raise</td><td><span class="wv" data-lbs="4.5">4.5 lbs</span></td><td>3×8</td><td class='note'>เน้น Soleus</td></tr>
       </tbody>
     </table>
     </div>
@@ -2018,8 +2027,8 @@
       <thead><tr><th>Exercise</th><th>Weight</th><th>Sets×Reps</th><th>Note</th></tr></thead>
       <tbody>
 <tr><td>Pull up</td><td>-</td><td>-</td><td class='note'></td></tr>
-<tr><td>Supine bench press</td><td>20 lbs</td><td>3×10</td><td class='note'></td></tr>
-<tr><td>Chest fly</td><td>55 lbs</td><td>3×15</td><td class='note'></td></tr>
+<tr><td>Supine bench press</td><td><span class="wv" data-lbs="20">20 lbs</span></td><td>3×10</td><td class='note'></td></tr>
+<tr><td>Chest fly</td><td><span class="wv" data-lbs="55">55 lbs</span></td><td>3×15</td><td class='note'></td></tr>
 <tr><td>Back cable rowing</td><td>-</td><td>-</td><td class='note'></td></tr>
 <tr><td>Lat pulldown</td><td>-</td><td>-</td><td class='note'></td></tr>
       </tbody>
@@ -2038,8 +2047,8 @@
     <table>
       <thead><tr><th>Exercise</th><th>Weight</th><th>Sets×Reps</th><th>Note</th></tr></thead>
       <tbody>
-<tr><td>Overhead face pull</td><td>66 lbs</td><td>3×15</td><td class='note'></td></tr>
-<tr><td>Squat</td><td>53 lbs</td><td>3×10</td><td class='note'></td></tr>
+<tr><td>Overhead face pull</td><td><span class="wv" data-lbs="66">66 lbs</span></td><td>3×15</td><td class='note'></td></tr>
+<tr><td>Squat</td><td><span class="wv" data-lbs="53">53 lbs</span></td><td>3×10</td><td class='note'></td></tr>
       </tbody>
     </table>
     </div>
@@ -2056,10 +2065,10 @@
     <table>
       <thead><tr><th>Exercise</th><th>Weight</th><th>Sets×Reps</th><th>Note</th></tr></thead>
       <tbody>
-<tr><td>Shoulder press</td><td>40 lbs</td><td>3×15</td><td class='note'></td></tr>
-<tr><td>Supine bench press</td><td>20 lbs</td><td>3×10</td><td class='note'></td></tr>
+<tr><td>Shoulder press</td><td><span class="wv" data-lbs="40">40 lbs</span></td><td>3×15</td><td class='note'></td></tr>
+<tr><td>Supine bench press</td><td><span class="wv" data-lbs="20">20 lbs</span></td><td>3×10</td><td class='note'></td></tr>
 <tr><td>Machine Chest press</td><td>-</td><td>-</td><td class='note'></td></tr>
-<tr><td>Face pull</td><td>40 lbs</td><td>3×15</td><td class='note'></td></tr>
+<tr><td>Face pull</td><td><span class="wv" data-lbs="40">40 lbs</span></td><td>3×15</td><td class='note'></td></tr>
 <tr><td>Back Hyperextension</td><td>-</td><td>3×15</td><td class='note'>bodyweight</td></tr>
       </tbody>
     </table>
@@ -2077,8 +2086,8 @@
     <table>
       <thead><tr><th>Exercise</th><th>Weight</th><th>Sets×Reps</th><th>Note</th></tr></thead>
       <tbody>
-<tr><td>Squat <span class='grp'>(Quad/Glute)</span></td><td>44 lbs</td><td>3×10</td><td class='note'></td></tr>
-<tr><td>* Romanian deadlift</td><td>33 lbs</td><td>3×15</td><td class='note'></td></tr>
+<tr><td>Squat <span class='grp'>(Quad/Glute)</span></td><td><span class="wv" data-lbs="44">44 lbs</span></td><td>3×10</td><td class='note'></td></tr>
+<tr><td>* Romanian deadlift</td><td><span class="wv" data-lbs="33">33 lbs</span></td><td>3×15</td><td class='note'></td></tr>
       </tbody>
     </table>
     </div>
@@ -2095,9 +2104,9 @@
     <table>
       <thead><tr><th>Exercise</th><th>Weight</th><th>Sets×Reps</th><th>Note</th></tr></thead>
       <tbody>
-<tr><td>Dumbbell shoulder press</td><td>16.5 lbs</td><td>3×15</td><td class='note'></td></tr>
-<tr><td>Machine shoulder press</td><td>45 lbs</td><td>3× <span class='rbs'>15/10/10</span></td><td class='note'></td></tr>
-<tr><td>Barbell curl</td><td>11 lbs</td><td>3×15</td><td class='note'></td></tr>
+<tr><td>Dumbbell shoulder press</td><td><span class="wv" data-lbs="16.5">16.5 lbs</span></td><td>3×15</td><td class='note'></td></tr>
+<tr><td>Machine shoulder press</td><td><span class="wv" data-lbs="45">45 lbs</span></td><td>3× <span class='rbs'>15/10/10</span></td><td class='note'></td></tr>
+<tr><td>Barbell curl</td><td><span class="wv" data-lbs="11">11 lbs</span></td><td>3×15</td><td class='note'></td></tr>
       </tbody>
     </table>
     </div>
@@ -2115,9 +2124,9 @@
       <thead><tr><th>Exercise</th><th>Weight</th><th>Sets×Reps</th><th>Note</th></tr></thead>
       <tbody>
 <tr><td>Pull up</td><td>-</td><td>-</td><td class='note'></td></tr>
-<tr><td>Supine bench press</td><td>20 lbs</td><td>3×10</td><td class='note'></td></tr>
+<tr><td>Supine bench press</td><td><span class="wv" data-lbs="20">20 lbs</span></td><td>3×10</td><td class='note'></td></tr>
 <tr><td>Machine Chest press</td><td>-</td><td>-</td><td class='note'></td></tr>
-<tr><td>Back cable rowing</td><td>55 lbs</td><td>3×15</td><td class='note'></td></tr>
+<tr><td>Back cable rowing</td><td><span class="wv" data-lbs="55">55 lbs</span></td><td>3×15</td><td class='note'></td></tr>
 <tr><td>Lat pulldown</td><td>-</td><td>-</td><td class='note'></td></tr>
       </tbody>
     </table>
@@ -2135,11 +2144,11 @@
     <table>
       <thead><tr><th>Exercise</th><th>Weight</th><th>Sets×Reps</th><th>Note</th></tr></thead>
       <tbody>
-<tr><td>Squat <span class='grp'>(Quad/Glute)</span></td><td>37.5 lbs</td><td>3×15</td><td class='note'></td></tr>
-<tr><td>* Romanian deadlift</td><td>33 lbs</td><td>3×15</td><td class='note'></td></tr>
-<tr><td>Leg extension</td><td>55 lbs</td><td>3×15</td><td class='note'></td></tr>
+<tr><td>Squat <span class='grp'>(Quad/Glute)</span></td><td><span class="wv" data-lbs="37.5">37.5 lbs</span></td><td>3×15</td><td class='note'></td></tr>
+<tr><td>* Romanian deadlift</td><td><span class="wv" data-lbs="33">33 lbs</span></td><td>3×15</td><td class='note'></td></tr>
+<tr><td>Leg extension</td><td><span class="wv" data-lbs="55">55 lbs</span></td><td>3×15</td><td class='note'></td></tr>
 <tr><td>* Calf raise</td><td>-</td><td>3×8</td><td class='note'>เน้น Gastrocnemius</td></tr>
-<tr><td>* Seated calf raise</td><td>4.5 lbs</td><td>3×15</td><td class='note'>เน้น Soleus</td></tr>
+<tr><td>* Seated calf raise</td><td><span class="wv" data-lbs="4.5">4.5 lbs</span></td><td>3×15</td><td class='note'>เน้น Soleus</td></tr>
       </tbody>
     </table>
     </div>
@@ -2157,8 +2166,8 @@
       <thead><tr><th>Exercise</th><th>Weight</th><th>Sets×Reps</th><th>Note</th></tr></thead>
       <tbody>
 <tr><td>Lat pulldown</td><td>-</td><td>-</td><td class='note'></td></tr>
-<tr><td>Back cable pull</td><td>55 lbs</td><td>3×15</td><td class='note'></td></tr>
-<tr><td>Dumbbell curl</td><td>22 lbs</td><td>3×15</td><td class='note'></td></tr>
+<tr><td>Back cable pull</td><td><span class="wv" data-lbs="55">55 lbs</span></td><td>3×15</td><td class='note'></td></tr>
+<tr><td>Dumbbell curl</td><td><span class="wv" data-lbs="22">22 lbs</span></td><td>3×15</td><td class='note'></td></tr>
       </tbody>
     </table>
     </div>
@@ -2581,14 +2590,14 @@
       <table>
         <thead><tr><th></th><th>Exercise</th><th>Weight</th><th>Sets×Reps</th></tr></thead>
         <tbody data-type="Push A">
-<tr class='sel-row'><td class='selcell'><input type='checkbox' class='sel'></td><td class='exname'>Incline bench press <span class='grp'>(Chest)</span></td><td class='wcell'><input type='number' class='w-num' step='0.5' value='20' placeholder='-'><span class='w-unit'>lbs</span><input type='number' class='w-kg' step='0.5' value='9' placeholder='-'><span class='w-unit w-unit2'>kg</span></td><td class='srcell'><input type='number' class='sr-sets' value='4'>×<input type='text' class='sr-reps' value='10' placeholder='12 10 10 8'></td></tr>
-<tr class='sel-row'><td class='selcell'><input type='checkbox' class='sel'></td><td class='exname'>Barbell bench press <span class='grp'>(Chest)</span></td><td class='wcell'><input type='number' class='w-num' step='0.5' value='25' placeholder='-'><span class='w-unit'>lbs</span><input type='number' class='w-kg' step='0.5' value='11.5' placeholder='-'><span class='w-unit w-unit2'>kg</span></td><td class='srcell'><input type='number' class='sr-sets' value='3'>×<input type='text' class='sr-reps' value='10' placeholder='12 10 10 8'></td></tr>
-<tr class='sel-row'><td class='selcell'><input type='checkbox' class='sel'></td><td class='exname'>Supine bench press <span class='grp'>(Chest)</span></td><td class='wcell'><input type='number' class='w-num' step='0.5' value='20' placeholder='-'><span class='w-unit'>lbs</span><input type='number' class='w-kg' step='0.5' value='9' placeholder='-'><span class='w-unit w-unit2'>kg</span></td><td class='srcell'><input type='number' class='sr-sets' value='3'>×<input type='text' class='sr-reps' value='10' placeholder='12 10 10 8'></td></tr>
-<tr class='sel-row'><td class='selcell'><input type='checkbox' class='sel'></td><td class='exname'>Shoulder press <span class='grp'>(Shoulder)</span></td><td class='wcell'><input type='number' class='w-num' step='0.5' value='60' placeholder='-'><span class='w-unit'>lbs</span><input type='number' class='w-kg' step='0.5' value='27' placeholder='-'><span class='w-unit w-unit2'>kg</span></td><td class='srcell'><input type='number' class='sr-sets' value='3'>×<input type='text' class='sr-reps' value='15' placeholder='12 10 10 8'></td></tr>
-<tr class='sel-row'><td class='selcell'><input type='checkbox' class='sel'></td><td class='exname'>Machine Chest press <span class='grp'>(Chest)</span></td><td class='wcell'><input type='number' class='w-num' step='0.5' value='65' placeholder='-'><span class='w-unit'>lbs</span><input type='number' class='w-kg' step='0.5' value='29.5' placeholder='-'><span class='w-unit w-unit2'>kg</span></td><td class='srcell'><input type='number' class='sr-sets' value='3'>×<input type='text' class='sr-reps' value='15' placeholder='12 10 10 8'></td></tr>
-<tr class='sel-row'><td class='selcell'><input type='checkbox' class='sel'></td><td class='exname'>Chest fly <span class='grp'>(Chest)</span></td><td class='wcell'><input type='number' class='w-num' step='0.5' value='55' placeholder='-'><span class='w-unit'>lbs</span><input type='number' class='w-kg' step='0.5' value='25' placeholder='-'><span class='w-unit w-unit2'>kg</span></td><td class='srcell'><input type='number' class='sr-sets' value='3'>×<input type='text' class='sr-reps' value='15' placeholder='12 10 10 8'></td></tr>
-<tr class='sel-row'><td class='selcell'><input type='checkbox' class='sel'></td><td class='exname'>Lateral raise <span class='grp'>(Shoulder)</span></td><td class='wcell'><input type='number' class='w-num' step='0.5' value='10' placeholder='-'><span class='w-unit'>lbs</span><input type='number' class='w-kg' step='0.5' value='4.5' placeholder='-'><span class='w-unit w-unit2'>kg</span></td><td class='srcell'><input type='number' class='sr-sets' value='3'>×<input type='text' class='sr-reps' value='15' placeholder='12 10 10 8'></td></tr>
-<tr class='sel-row'><td class='selcell'><input type='checkbox' class='sel'></td><td class='exname'>Cable tricep press down <span class='grp'>(Triceps)</span></td><td class='wcell'><input type='number' class='w-num' step='0.5' value='50' placeholder='-'><span class='w-unit'>lbs</span><input type='number' class='w-kg' step='0.5' value='22.5' placeholder='-'><span class='w-unit w-unit2'>kg</span></td><td class='srcell'><input type='number' class='sr-sets' value='3'>×<input type='text' class='sr-reps' value='10' placeholder='12 10 10 8'></td></tr>
+<tr class='sel-row'><td class='selcell'><input type='checkbox' class='sel'></td><td class='exname'>Incline bench press <span class='grp'>(Chest)</span></td><td class='wcell'><input type='number' class='w-num' step='0.5' value='20' placeholder='-'><span class='w-unit'>lbs</span></td><td class='srcell'><input type='number' class='sr-sets' value='4'>×<input type='text' class='sr-reps' value='10' placeholder='12 10 10 8'></td></tr>
+<tr class='sel-row'><td class='selcell'><input type='checkbox' class='sel'></td><td class='exname'>Barbell bench press <span class='grp'>(Chest)</span></td><td class='wcell'><input type='number' class='w-num' step='0.5' value='25' placeholder='-'><span class='w-unit'>lbs</span></td><td class='srcell'><input type='number' class='sr-sets' value='3'>×<input type='text' class='sr-reps' value='10' placeholder='12 10 10 8'></td></tr>
+<tr class='sel-row'><td class='selcell'><input type='checkbox' class='sel'></td><td class='exname'>Supine bench press <span class='grp'>(Chest)</span></td><td class='wcell'><input type='number' class='w-num' step='0.5' value='20' placeholder='-'><span class='w-unit'>lbs</span></td><td class='srcell'><input type='number' class='sr-sets' value='3'>×<input type='text' class='sr-reps' value='10' placeholder='12 10 10 8'></td></tr>
+<tr class='sel-row'><td class='selcell'><input type='checkbox' class='sel'></td><td class='exname'>Shoulder press <span class='grp'>(Shoulder)</span></td><td class='wcell'><input type='number' class='w-num' step='0.5' value='60' placeholder='-'><span class='w-unit'>lbs</span></td><td class='srcell'><input type='number' class='sr-sets' value='3'>×<input type='text' class='sr-reps' value='15' placeholder='12 10 10 8'></td></tr>
+<tr class='sel-row'><td class='selcell'><input type='checkbox' class='sel'></td><td class='exname'>Machine Chest press <span class='grp'>(Chest)</span></td><td class='wcell'><input type='number' class='w-num' step='0.5' value='65' placeholder='-'><span class='w-unit'>lbs</span></td><td class='srcell'><input type='number' class='sr-sets' value='3'>×<input type='text' class='sr-reps' value='15' placeholder='12 10 10 8'></td></tr>
+<tr class='sel-row'><td class='selcell'><input type='checkbox' class='sel'></td><td class='exname'>Chest fly <span class='grp'>(Chest)</span></td><td class='wcell'><input type='number' class='w-num' step='0.5' value='55' placeholder='-'><span class='w-unit'>lbs</span></td><td class='srcell'><input type='number' class='sr-sets' value='3'>×<input type='text' class='sr-reps' value='15' placeholder='12 10 10 8'></td></tr>
+<tr class='sel-row'><td class='selcell'><input type='checkbox' class='sel'></td><td class='exname'>Lateral raise <span class='grp'>(Shoulder)</span></td><td class='wcell'><input type='number' class='w-num' step='0.5' value='10' placeholder='-'><span class='w-unit'>lbs</span></td><td class='srcell'><input type='number' class='sr-sets' value='3'>×<input type='text' class='sr-reps' value='15' placeholder='12 10 10 8'></td></tr>
+<tr class='sel-row'><td class='selcell'><input type='checkbox' class='sel'></td><td class='exname'>Cable tricep press down <span class='grp'>(Triceps)</span></td><td class='wcell'><input type='number' class='w-num' step='0.5' value='50' placeholder='-'><span class='w-unit'>lbs</span></td><td class='srcell'><input type='number' class='sr-sets' value='3'>×<input type='text' class='sr-reps' value='10' placeholder='12 10 10 8'></td></tr>
         </tbody>
       </table>
       </div>
@@ -2603,13 +2612,13 @@
       <table>
         <thead><tr><th></th><th>Exercise</th><th>Weight</th><th>Sets×Reps</th></tr></thead>
         <tbody data-type="Pull B">
-<tr class='sel-row'><td class='selcell'><input type='checkbox' class='sel'></td><td class='exname'>Deadlift <span class='grp'>(Back)</span></td><td class='wcell'><input type='number' class='w-num' step='0.5' value='30' placeholder='-'><span class='w-unit'>lbs</span><input type='number' class='w-kg' step='0.5' value='13.5' placeholder='-'><span class='w-unit w-unit2'>kg</span></td><td class='srcell'><input type='number' class='sr-sets' value='3'>×<input type='text' class='sr-reps' value='10' placeholder='12 10 10 8'></td></tr>
-<tr class='sel-row'><td class='selcell'><input type='checkbox' class='sel'></td><td class='exname'>Pull up <span class='grp'>(Back)</span></td><td class='wcell'><input type='number' class='w-num' step='0.5' value='60' placeholder='-'><span class='w-unit'>lbs</span><input type='number' class='w-kg' step='0.5' value='27' placeholder='-'><span class='w-unit w-unit2'>kg</span></td><td class='srcell'><input type='number' class='sr-sets' value='3'>×<input type='text' class='sr-reps' value='15' placeholder='12 10 10 8'></td></tr>
-<tr class='sel-row'><td class='selcell'><input type='checkbox' class='sel'></td><td class='exname'>Lat pulldown <span class='grp'>(Back)</span></td><td class='wcell'><input type='number' class='w-num' step='0.5' value='60' placeholder='-'><span class='w-unit'>lbs</span><input type='number' class='w-kg' step='0.5' value='27' placeholder='-'><span class='w-unit w-unit2'>kg</span></td><td class='srcell'><input type='number' class='sr-sets' value='3'>×<input type='text' class='sr-reps' value='15' placeholder='12 10 10 8'></td></tr>
-<tr class='sel-row'><td class='selcell'><input type='checkbox' class='sel'></td><td class='exname'>Back cable rowing <span class='grp'>(Back)</span></td><td class='wcell'><input type='number' class='w-num' step='0.5' value='60' placeholder='-'><span class='w-unit'>lbs</span><input type='number' class='w-kg' step='0.5' value='27' placeholder='-'><span class='w-unit w-unit2'>kg</span></td><td class='srcell'><input type='number' class='sr-sets' value='3'>×<input type='text' class='sr-reps' value='15' placeholder='12 10 10 8'></td></tr>
-<tr class='sel-row'><td class='selcell'><input type='checkbox' class='sel'></td><td class='exname'>Face pull <span class='grp'>(Shoulder)</span></td><td class='wcell'><input type='number' class='w-num' step='0.5' value='60' placeholder='-'><span class='w-unit'>lbs</span><input type='number' class='w-kg' step='0.5' value='27' placeholder='-'><span class='w-unit w-unit2'>kg</span></td><td class='srcell'><input type='number' class='sr-sets' value='3'>×<input type='text' class='sr-reps' value='15' placeholder='12 10 10 8'></td></tr>
-<tr class='sel-row'><td class='selcell'><input type='checkbox' class='sel'></td><td class='exname'>Back Hyperextension <span class='grp'>(Back)</span></td><td class='wcell'><input type='number' class='w-num' step='0.5' value='5' placeholder='-'><span class='w-unit'>lbs</span><input type='number' class='w-kg' step='0.5' value='2.5' placeholder='-'><span class='w-unit w-unit2'>kg</span></td><td class='srcell'><input type='number' class='sr-sets' value='3'>×<input type='text' class='sr-reps' value='15' placeholder='12 10 10 8'></td></tr>
-<tr class='sel-row'><td class='selcell'><input type='checkbox' class='sel'></td><td class='exname'>Bicep curl <span class='grp'>(Biceps)</span></td><td class='wcell'><input type='number' class='w-num' step='0.5' value='10' placeholder='-'><span class='w-unit'>lbs</span><input type='number' class='w-kg' step='0.5' value='4.5' placeholder='-'><span class='w-unit w-unit2'>kg</span></td><td class='srcell'><input type='number' class='sr-sets' value='3'>×<input type='text' class='sr-reps' value='12' placeholder='12 10 10 8'></td></tr>
+<tr class='sel-row'><td class='selcell'><input type='checkbox' class='sel'></td><td class='exname'>Deadlift <span class='grp'>(Back)</span></td><td class='wcell'><input type='number' class='w-num' step='0.5' value='30' placeholder='-'><span class='w-unit'>lbs</span></td><td class='srcell'><input type='number' class='sr-sets' value='3'>×<input type='text' class='sr-reps' value='10' placeholder='12 10 10 8'></td></tr>
+<tr class='sel-row'><td class='selcell'><input type='checkbox' class='sel'></td><td class='exname'>Pull up <span class='grp'>(Back)</span></td><td class='wcell'><input type='number' class='w-num' step='0.5' value='60' placeholder='-'><span class='w-unit'>lbs</span></td><td class='srcell'><input type='number' class='sr-sets' value='3'>×<input type='text' class='sr-reps' value='15' placeholder='12 10 10 8'></td></tr>
+<tr class='sel-row'><td class='selcell'><input type='checkbox' class='sel'></td><td class='exname'>Lat pulldown <span class='grp'>(Back)</span></td><td class='wcell'><input type='number' class='w-num' step='0.5' value='60' placeholder='-'><span class='w-unit'>lbs</span></td><td class='srcell'><input type='number' class='sr-sets' value='3'>×<input type='text' class='sr-reps' value='15' placeholder='12 10 10 8'></td></tr>
+<tr class='sel-row'><td class='selcell'><input type='checkbox' class='sel'></td><td class='exname'>Back cable rowing <span class='grp'>(Back)</span></td><td class='wcell'><input type='number' class='w-num' step='0.5' value='60' placeholder='-'><span class='w-unit'>lbs</span></td><td class='srcell'><input type='number' class='sr-sets' value='3'>×<input type='text' class='sr-reps' value='15' placeholder='12 10 10 8'></td></tr>
+<tr class='sel-row'><td class='selcell'><input type='checkbox' class='sel'></td><td class='exname'>Face pull <span class='grp'>(Shoulder)</span></td><td class='wcell'><input type='number' class='w-num' step='0.5' value='60' placeholder='-'><span class='w-unit'>lbs</span></td><td class='srcell'><input type='number' class='sr-sets' value='3'>×<input type='text' class='sr-reps' value='15' placeholder='12 10 10 8'></td></tr>
+<tr class='sel-row'><td class='selcell'><input type='checkbox' class='sel'></td><td class='exname'>Back Hyperextension <span class='grp'>(Back)</span></td><td class='wcell'><input type='number' class='w-num' step='0.5' value='5' placeholder='-'><span class='w-unit'>lbs</span></td><td class='srcell'><input type='number' class='sr-sets' value='3'>×<input type='text' class='sr-reps' value='15' placeholder='12 10 10 8'></td></tr>
+<tr class='sel-row'><td class='selcell'><input type='checkbox' class='sel'></td><td class='exname'>Bicep curl <span class='grp'>(Biceps)</span></td><td class='wcell'><input type='number' class='w-num' step='0.5' value='10' placeholder='-'><span class='w-unit'>lbs</span></td><td class='srcell'><input type='number' class='sr-sets' value='3'>×<input type='text' class='sr-reps' value='12' placeholder='12 10 10 8'></td></tr>
         </tbody>
       </table>
       </div>
@@ -2624,13 +2633,13 @@
       <table>
         <thead><tr><th></th><th>Exercise</th><th>Weight</th><th>Sets×Reps</th></tr></thead>
         <tbody data-type="Lower">
-<tr class='sel-row'><td class='selcell'><input type='checkbox' class='sel'></td><td class='exname'>* Jump squat <span class='grp'>(Quad/Glute)</span></td><td class='wcell'><input type='number' class='w-num' step='0.5' value='' placeholder='-'><span class='w-unit'>lbs</span><input type='number' class='w-kg' step='0.5' value='' placeholder='-'><span class='w-unit w-unit2'>kg</span></td><td class='srcell'><input type='number' class='sr-sets' value='3'>×<input type='text' class='sr-reps' value='6' placeholder='12 10 10 8'></td></tr>
-<tr class='sel-row'><td class='selcell'><input type='checkbox' class='sel'></td><td class='exname'>Squat <span class='grp'>(Quad/Glute)</span></td><td class='wcell'><input type='number' class='w-num' step='0.5' value='44' placeholder='-'><span class='w-unit'>lbs</span><input type='number' class='w-kg' step='0.5' value='20' placeholder='-'><span class='w-unit w-unit2'>kg</span></td><td class='srcell'><input type='number' class='sr-sets' value='4'>×<input type='text' class='sr-reps' value='8' placeholder='12 10 10 8'></td></tr>
-<tr class='sel-row'><td class='selcell'><input type='checkbox' class='sel'></td><td class='exname'>* Single-leg RDL <span class='grp'>(Hamstring/Glute)</span></td><td class='wcell'><input type='number' class='w-num' step='0.5' value='' placeholder='-'><span class='w-unit'>lbs</span><input type='number' class='w-kg' step='0.5' value='' placeholder='-'><span class='w-unit w-unit2'>kg</span></td><td class='srcell'><input type='number' class='sr-sets' value='3'>×<input type='text' class='sr-reps' value='8' placeholder='12 10 10 8'></td></tr>
-<tr class='sel-row'><td class='selcell'><input type='checkbox' class='sel'></td><td class='exname'>* Bulgarian split squat <span class='grp'>(Quad/Glute)</span></td><td class='wcell'><input type='number' class='w-num' step='0.5' value='20' placeholder='-'><span class='w-unit'>lbs</span><input type='number' class='w-kg' step='0.5' value='9' placeholder='-'><span class='w-unit w-unit2'>kg</span></td><td class='srcell'><input type='number' class='sr-sets' value='3'>×<input type='text' class='sr-reps' value='8' placeholder='12 10 10 8'></td></tr>
-<tr class='sel-row'><td class='selcell'><input type='checkbox' class='sel'></td><td class='exname'>* Single-leg glute bridge <span class='grp'>(Glute)</span></td><td class='wcell'><input type='number' class='w-num' step='0.5' value='' placeholder='-'><span class='w-unit'>lbs</span><input type='number' class='w-kg' step='0.5' value='' placeholder='-'><span class='w-unit w-unit2'>kg</span></td><td class='srcell'><input type='number' class='sr-sets' value='3'>×<input type='text' class='sr-reps' value='15' placeholder='12 10 10 8'></td></tr>
-<tr class='sel-row'><td class='selcell'><input type='checkbox' class='sel'></td><td class='exname'>* Bent-knee single-leg calf raise <span class='grp'>(Calf)</span></td><td class='wcell'><input type='number' class='w-num' step='0.5' value='22' placeholder='-'><span class='w-unit'>lbs</span><input type='number' class='w-kg' step='0.5' value='10' placeholder='-'><span class='w-unit w-unit2'>kg</span></td><td class='srcell'><input type='number' class='sr-sets' value='3'>×<input type='text' class='sr-reps' value='10' placeholder='12 10 10 8'></td></tr>
-<tr class='sel-row'><td class='selcell'><input type='checkbox' class='sel'></td><td class='exname'>* Tibialis raise <span class='grp'>(Tibialis)</span></td><td class='wcell'><input type='number' class='w-num' step='0.5' value='' placeholder='-'><span class='w-unit'>lbs</span><input type='number' class='w-kg' step='0.5' value='' placeholder='-'><span class='w-unit w-unit2'>kg</span></td><td class='srcell'><input type='number' class='sr-sets' value='3'>×<input type='text' class='sr-reps' value='15' placeholder='12 10 10 8'></td></tr>
+<tr class='sel-row'><td class='selcell'><input type='checkbox' class='sel'></td><td class='exname'>* Jump squat <span class='grp'>(Quad/Glute)</span></td><td class='wcell'><input type='number' class='w-num' step='0.5' value='' placeholder='-'><span class='w-unit'>lbs</span></td><td class='srcell'><input type='number' class='sr-sets' value='3'>×<input type='text' class='sr-reps' value='6' placeholder='12 10 10 8'></td></tr>
+<tr class='sel-row'><td class='selcell'><input type='checkbox' class='sel'></td><td class='exname'>Squat <span class='grp'>(Quad/Glute)</span></td><td class='wcell'><input type='number' class='w-num' step='0.5' value='44' placeholder='-'><span class='w-unit'>lbs</span></td><td class='srcell'><input type='number' class='sr-sets' value='4'>×<input type='text' class='sr-reps' value='8' placeholder='12 10 10 8'></td></tr>
+<tr class='sel-row'><td class='selcell'><input type='checkbox' class='sel'></td><td class='exname'>* Single-leg RDL <span class='grp'>(Hamstring/Glute)</span></td><td class='wcell'><input type='number' class='w-num' step='0.5' value='' placeholder='-'><span class='w-unit'>lbs</span></td><td class='srcell'><input type='number' class='sr-sets' value='3'>×<input type='text' class='sr-reps' value='8' placeholder='12 10 10 8'></td></tr>
+<tr class='sel-row'><td class='selcell'><input type='checkbox' class='sel'></td><td class='exname'>* Bulgarian split squat <span class='grp'>(Quad/Glute)</span></td><td class='wcell'><input type='number' class='w-num' step='0.5' value='20' placeholder='-'><span class='w-unit'>lbs</span></td><td class='srcell'><input type='number' class='sr-sets' value='3'>×<input type='text' class='sr-reps' value='8' placeholder='12 10 10 8'></td></tr>
+<tr class='sel-row'><td class='selcell'><input type='checkbox' class='sel'></td><td class='exname'>* Single-leg glute bridge <span class='grp'>(Glute)</span></td><td class='wcell'><input type='number' class='w-num' step='0.5' value='' placeholder='-'><span class='w-unit'>lbs</span></td><td class='srcell'><input type='number' class='sr-sets' value='3'>×<input type='text' class='sr-reps' value='15' placeholder='12 10 10 8'></td></tr>
+<tr class='sel-row'><td class='selcell'><input type='checkbox' class='sel'></td><td class='exname'>* Bent-knee single-leg calf raise <span class='grp'>(Calf)</span></td><td class='wcell'><input type='number' class='w-num' step='0.5' value='22' placeholder='-'><span class='w-unit'>lbs</span></td><td class='srcell'><input type='number' class='sr-sets' value='3'>×<input type='text' class='sr-reps' value='10' placeholder='12 10 10 8'></td></tr>
+<tr class='sel-row'><td class='selcell'><input type='checkbox' class='sel'></td><td class='exname'>* Tibialis raise <span class='grp'>(Tibialis)</span></td><td class='wcell'><input type='number' class='w-num' step='0.5' value='' placeholder='-'><span class='w-unit'>lbs</span></td><td class='srcell'><input type='number' class='sr-sets' value='3'>×<input type='text' class='sr-reps' value='15' placeholder='12 10 10 8'></td></tr>
         </tbody>
       </table>
       </div>
@@ -2645,10 +2654,10 @@
       <table>
         <thead><tr><th></th><th>Exercise</th><th>Weight</th><th>Sets×Reps</th></tr></thead>
         <tbody data-type="Calf & Ankle">
-<tr class='sel-row'><td class='selcell'><input type='checkbox' class='sel'></td><td class='exname'>* Calf raise <span class='grp'>(Calf)</span></td><td class='wcell'><input type='number' class='w-num' step='0.5' value='' placeholder='-'><span class='w-unit'>lbs</span><input type='number' class='w-kg' step='0.5' value='' placeholder='-'><span class='w-unit w-unit2'>kg</span></td><td class='srcell'><input type='number' class='sr-sets' value='3'>×<input type='text' class='sr-reps' value='12' placeholder='12 10 10 8'></td></tr>
-<tr class='sel-row'><td class='selcell'><input type='checkbox' class='sel'></td><td class='exname'>* Bent-knee single-leg calf raise <span class='grp'>(Soleus)</span></td><td class='wcell'><input type='number' class='w-num' step='0.5' value='22' placeholder='-'><span class='w-unit'>lbs</span><input type='number' class='w-kg' step='0.5' value='10' placeholder='-'><span class='w-unit w-unit2'>kg</span></td><td class='srcell'><input type='number' class='sr-sets' value='3'>×<input type='text' class='sr-reps' value='10' placeholder='12 10 10 8'></td></tr>
-<tr class='sel-row'><td class='selcell'><input type='checkbox' class='sel'></td><td class='exname'>* Tibialis raise <span class='grp'>(Tibialis)</span></td><td class='wcell'><input type='number' class='w-num' step='0.5' value='' placeholder='-'><span class='w-unit'>lbs</span><input type='number' class='w-kg' step='0.5' value='' placeholder='-'><span class='w-unit w-unit2'>kg</span></td><td class='srcell'><input type='number' class='sr-sets' value='3'>×<input type='text' class='sr-reps' value='15' placeholder='12 10 10 8'></td></tr>
-<tr class='sel-row'><td class='selcell'><input type='checkbox' class='sel'></td><td class='exname'>* Lateral band walk <span class='grp'>(Hip Abductor)</span></td><td class='wcell'><input type='number' class='w-num' step='0.5' value='' placeholder='-'><span class='w-unit'>lbs</span><input type='number' class='w-kg' step='0.5' value='' placeholder='-'><span class='w-unit w-unit2'>kg</span></td><td class='srcell'><input type='number' class='sr-sets' value='2'>×<input type='text' class='sr-reps' value='15' placeholder='12 10 10 8'></td></tr>
+<tr class='sel-row'><td class='selcell'><input type='checkbox' class='sel'></td><td class='exname'>* Calf raise <span class='grp'>(Calf)</span></td><td class='wcell'><input type='number' class='w-num' step='0.5' value='' placeholder='-'><span class='w-unit'>lbs</span></td><td class='srcell'><input type='number' class='sr-sets' value='3'>×<input type='text' class='sr-reps' value='12' placeholder='12 10 10 8'></td></tr>
+<tr class='sel-row'><td class='selcell'><input type='checkbox' class='sel'></td><td class='exname'>* Bent-knee single-leg calf raise <span class='grp'>(Soleus)</span></td><td class='wcell'><input type='number' class='w-num' step='0.5' value='22' placeholder='-'><span class='w-unit'>lbs</span></td><td class='srcell'><input type='number' class='sr-sets' value='3'>×<input type='text' class='sr-reps' value='10' placeholder='12 10 10 8'></td></tr>
+<tr class='sel-row'><td class='selcell'><input type='checkbox' class='sel'></td><td class='exname'>* Tibialis raise <span class='grp'>(Tibialis)</span></td><td class='wcell'><input type='number' class='w-num' step='0.5' value='' placeholder='-'><span class='w-unit'>lbs</span></td><td class='srcell'><input type='number' class='sr-sets' value='3'>×<input type='text' class='sr-reps' value='15' placeholder='12 10 10 8'></td></tr>
+<tr class='sel-row'><td class='selcell'><input type='checkbox' class='sel'></td><td class='exname'>* Lateral band walk <span class='grp'>(Hip Abductor)</span></td><td class='wcell'><input type='number' class='w-num' step='0.5' value='' placeholder='-'><span class='w-unit'>lbs</span></td><td class='srcell'><input type='number' class='sr-sets' value='2'>×<input type='text' class='sr-reps' value='15' placeholder='12 10 10 8'></td></tr>
         </tbody>
       </table>
       </div>
@@ -2663,12 +2672,12 @@
       <table>
         <thead><tr><th></th><th>Exercise</th><th>Weight</th><th>Sets×Reps</th></tr></thead>
         <tbody data-type="Full body">
-<tr class='sel-row'><td class='selcell'><input type='checkbox' class='sel'></td><td class='exname'>Squat</td><td class='wcell'><input type='number' class='w-num' step='0.5' value='44' placeholder='-'><span class='w-unit'>lbs</span><input type='number' class='w-kg' step='0.5' value='20' placeholder='-'><span class='w-unit w-unit2'>kg</span></td><td class='srcell'><input type='number' class='sr-sets' value='3'>×<input type='text' class='sr-reps' value='10' placeholder='12 10 10 8'></td></tr>
-<tr class='sel-row'><td class='selcell'><input type='checkbox' class='sel'></td><td class='exname'>* Romanian deadlift</td><td class='wcell'><input type='number' class='w-num' step='0.5' value='77' placeholder='-'><span class='w-unit'>lbs</span><input type='number' class='w-kg' step='0.5' value='35' placeholder='-'><span class='w-unit w-unit2'>kg</span></td><td class='srcell'><input type='number' class='sr-sets' value='3'>×<input type='text' class='sr-reps' value='12' placeholder='12 10 10 8'></td></tr>
-<tr class='sel-row'><td class='selcell'><input type='checkbox' class='sel'></td><td class='exname'>Supine bench press</td><td class='wcell'><input type='number' class='w-num' step='0.5' value='20' placeholder='-'><span class='w-unit'>lbs</span><input type='number' class='w-kg' step='0.5' value='9' placeholder='-'><span class='w-unit w-unit2'>kg</span></td><td class='srcell'><input type='number' class='sr-sets' value='3'>×<input type='text' class='sr-reps' value='10' placeholder='12 10 10 8'></td></tr>
-<tr class='sel-row'><td class='selcell'><input type='checkbox' class='sel'></td><td class='exname'>Back cable rowing</td><td class='wcell'><input type='number' class='w-num' step='0.5' value='60' placeholder='-'><span class='w-unit'>lbs</span><input type='number' class='w-kg' step='0.5' value='27' placeholder='-'><span class='w-unit w-unit2'>kg</span></td><td class='srcell'><input type='number' class='sr-sets' value='3'>×<input type='text' class='sr-reps' value='12' placeholder='12 10 10 8'></td></tr>
-<tr class='sel-row'><td class='selcell'><input type='checkbox' class='sel'></td><td class='exname'>Shoulder press</td><td class='wcell'><input type='number' class='w-num' step='0.5' value='60' placeholder='-'><span class='w-unit'>lbs</span><input type='number' class='w-kg' step='0.5' value='27' placeholder='-'><span class='w-unit w-unit2'>kg</span></td><td class='srcell'><input type='number' class='sr-sets' value='3'>×<input type='text' class='sr-reps' value='12' placeholder='12 10 10 8'></td></tr>
-<tr class='sel-row'><td class='selcell'><input type='checkbox' class='sel'></td><td class='exname'>Lat pulldown</td><td class='wcell'><input type='number' class='w-num' step='0.5' value='60' placeholder='-'><span class='w-unit'>lbs</span><input type='number' class='w-kg' step='0.5' value='27' placeholder='-'><span class='w-unit w-unit2'>kg</span></td><td class='srcell'><input type='number' class='sr-sets' value='3'>×<input type='text' class='sr-reps' value='10' placeholder='12 10 10 8'></td></tr>
+<tr class='sel-row'><td class='selcell'><input type='checkbox' class='sel'></td><td class='exname'>Squat</td><td class='wcell'><input type='number' class='w-num' step='0.5' value='44' placeholder='-'><span class='w-unit'>lbs</span></td><td class='srcell'><input type='number' class='sr-sets' value='3'>×<input type='text' class='sr-reps' value='10' placeholder='12 10 10 8'></td></tr>
+<tr class='sel-row'><td class='selcell'><input type='checkbox' class='sel'></td><td class='exname'>* Romanian deadlift</td><td class='wcell'><input type='number' class='w-num' step='0.5' value='77' placeholder='-'><span class='w-unit'>lbs</span></td><td class='srcell'><input type='number' class='sr-sets' value='3'>×<input type='text' class='sr-reps' value='12' placeholder='12 10 10 8'></td></tr>
+<tr class='sel-row'><td class='selcell'><input type='checkbox' class='sel'></td><td class='exname'>Supine bench press</td><td class='wcell'><input type='number' class='w-num' step='0.5' value='20' placeholder='-'><span class='w-unit'>lbs</span></td><td class='srcell'><input type='number' class='sr-sets' value='3'>×<input type='text' class='sr-reps' value='10' placeholder='12 10 10 8'></td></tr>
+<tr class='sel-row'><td class='selcell'><input type='checkbox' class='sel'></td><td class='exname'>Back cable rowing</td><td class='wcell'><input type='number' class='w-num' step='0.5' value='60' placeholder='-'><span class='w-unit'>lbs</span></td><td class='srcell'><input type='number' class='sr-sets' value='3'>×<input type='text' class='sr-reps' value='12' placeholder='12 10 10 8'></td></tr>
+<tr class='sel-row'><td class='selcell'><input type='checkbox' class='sel'></td><td class='exname'>Shoulder press</td><td class='wcell'><input type='number' class='w-num' step='0.5' value='60' placeholder='-'><span class='w-unit'>lbs</span></td><td class='srcell'><input type='number' class='sr-sets' value='3'>×<input type='text' class='sr-reps' value='12' placeholder='12 10 10 8'></td></tr>
+<tr class='sel-row'><td class='selcell'><input type='checkbox' class='sel'></td><td class='exname'>Lat pulldown</td><td class='wcell'><input type='number' class='w-num' step='0.5' value='60' placeholder='-'><span class='w-unit'>lbs</span></td><td class='srcell'><input type='number' class='sr-sets' value='3'>×<input type='text' class='sr-reps' value='10' placeholder='12 10 10 8'></td></tr>
         </tbody>
       </table>
       </div>
@@ -2683,16 +2692,16 @@
       <table>
         <thead><tr><th></th><th>Exercise</th><th>Weight</th><th>Sets×Reps</th></tr></thead>
         <tbody data-type="Core">
-<tr class='sel-row'><td class='selcell'><input type='checkbox' class='sel'></td><td class='exname'>Bird dog</td><td class='wcell'><input type='number' class='w-num' step='0.5' value='' placeholder='-'><span class='w-unit'>lbs</span><input type='number' class='w-kg' step='0.5' value='' placeholder='-'><span class='w-unit w-unit2'>kg</span></td><td class='srcell'><input type='number' class='sr-sets' value='3'>×<input type='text' class='sr-reps' value='8' placeholder='12 10 10 8'></td></tr>
-<tr class='sel-row'><td class='selcell'><input type='checkbox' class='sel'></td><td class='exname'>Side plank</td><td class='wcell'><input type='number' class='w-num' step='0.5' value='' placeholder='-'><span class='w-unit'>lbs</span><input type='number' class='w-kg' step='0.5' value='' placeholder='-'><span class='w-unit w-unit2'>kg</span></td><td class='srcell'><input type='number' class='sr-sets' value='3'>×<input type='text' class='sr-reps' value='8' placeholder='12 10 10 8'></td></tr>
-<tr class='sel-row'><td class='selcell'><input type='checkbox' class='sel'></td><td class='exname'>* Copenhagen adductor <span class='grp'>(Adductor)</span></td><td class='wcell'><input type='number' class='w-num' step='0.5' value='' placeholder='-'><span class='w-unit'>lbs</span><input type='number' class='w-kg' step='0.5' value='' placeholder='-'><span class='w-unit w-unit2'>kg</span></td><td class='srcell'><input type='number' class='sr-sets' value='3'>×<input type='text' class='sr-reps' value='6' placeholder='12 10 10 8'></td></tr>
-<tr class='sel-row'><td class='selcell'><input type='checkbox' class='sel'></td><td class='exname'>Curl-up</td><td class='wcell'><input type='number' class='w-num' step='0.5' value='' placeholder='-'><span class='w-unit'>lbs</span><input type='number' class='w-kg' step='0.5' value='' placeholder='-'><span class='w-unit w-unit2'>kg</span></td><td class='srcell'><input type='number' class='sr-sets' value='3'>×<input type='text' class='sr-reps' value='8' placeholder='12 10 10 8'></td></tr>
-<tr class='sel-row'><td class='selcell'><input type='checkbox' class='sel'></td><td class='exname'>Cat-cow</td><td class='wcell'><input type='number' class='w-num' step='0.5' value='' placeholder='-'><span class='w-unit'>lbs</span><input type='number' class='w-kg' step='0.5' value='' placeholder='-'><span class='w-unit w-unit2'>kg</span></td><td class='srcell'><input type='number' class='sr-sets' value='1'>×<input type='text' class='sr-reps' value='10' placeholder='12 10 10 8'></td></tr>
-<tr class='sel-row'><td class='selcell'><input type='checkbox' class='sel'></td><td class='exname'>* Dead bug (long lever)</td><td class='wcell'><input type='number' class='w-num' step='0.5' value='' placeholder='-'><span class='w-unit'>lbs</span><input type='number' class='w-kg' step='0.5' value='' placeholder='-'><span class='w-unit w-unit2'>kg</span></td><td class='srcell'><input type='number' class='sr-sets' value='3'>×<input type='text' class='sr-reps' value='8' placeholder='12 10 10 8'></td></tr>
-<tr class='sel-row'><td class='selcell'><input type='checkbox' class='sel'></td><td class='exname'>* Pallof march</td><td class='wcell'><input type='number' class='w-num' step='0.5' value='' placeholder='-'><span class='w-unit'>lbs</span><input type='number' class='w-kg' step='0.5' value='' placeholder='-'><span class='w-unit w-unit2'>kg</span></td><td class='srcell'><input type='number' class='sr-sets' value='3'>×<input type='text' class='sr-reps' value='10' placeholder='12 10 10 8'></td></tr>
-<tr class='sel-row'><td class='selcell'><input type='checkbox' class='sel'></td><td class='exname'>* Cable crunch</td><td class='wcell'><input type='number' class='w-num' step='0.5' value='40' placeholder='-'><span class='w-unit'>lbs</span><input type='number' class='w-kg' step='0.5' value='18' placeholder='-'><span class='w-unit w-unit2'>kg</span></td><td class='srcell'><input type='number' class='sr-sets' value='3'>×<input type='text' class='sr-reps' value='12' placeholder='12 10 10 8'></td></tr>
-<tr class='sel-row'><td class='selcell'><input type='checkbox' class='sel'></td><td class='exname'>* Hanging leg raise</td><td class='wcell'><input type='number' class='w-num' step='0.5' value='' placeholder='-'><span class='w-unit'>lbs</span><input type='number' class='w-kg' step='0.5' value='' placeholder='-'><span class='w-unit w-unit2'>kg</span></td><td class='srcell'><input type='number' class='sr-sets' value='3'>×<input type='text' class='sr-reps' value='10' placeholder='12 10 10 8'></td></tr>
-<tr class='sel-row'><td class='selcell'><input type='checkbox' class='sel'></td><td class='exname'>* Reverse crunch</td><td class='wcell'><input type='number' class='w-num' step='0.5' value='' placeholder='-'><span class='w-unit'>lbs</span><input type='number' class='w-kg' step='0.5' value='' placeholder='-'><span class='w-unit w-unit2'>kg</span></td><td class='srcell'><input type='number' class='sr-sets' value='3'>×<input type='text' class='sr-reps' value='12' placeholder='12 10 10 8'></td></tr>
+<tr class='sel-row'><td class='selcell'><input type='checkbox' class='sel'></td><td class='exname'>Bird dog</td><td class='wcell'><input type='number' class='w-num' step='0.5' value='' placeholder='-'><span class='w-unit'>lbs</span></td><td class='srcell'><input type='number' class='sr-sets' value='3'>×<input type='text' class='sr-reps' value='8' placeholder='12 10 10 8'></td></tr>
+<tr class='sel-row'><td class='selcell'><input type='checkbox' class='sel'></td><td class='exname'>Side plank</td><td class='wcell'><input type='number' class='w-num' step='0.5' value='' placeholder='-'><span class='w-unit'>lbs</span></td><td class='srcell'><input type='number' class='sr-sets' value='3'>×<input type='text' class='sr-reps' value='8' placeholder='12 10 10 8'></td></tr>
+<tr class='sel-row'><td class='selcell'><input type='checkbox' class='sel'></td><td class='exname'>* Copenhagen adductor <span class='grp'>(Adductor)</span></td><td class='wcell'><input type='number' class='w-num' step='0.5' value='' placeholder='-'><span class='w-unit'>lbs</span></td><td class='srcell'><input type='number' class='sr-sets' value='3'>×<input type='text' class='sr-reps' value='6' placeholder='12 10 10 8'></td></tr>
+<tr class='sel-row'><td class='selcell'><input type='checkbox' class='sel'></td><td class='exname'>Curl-up</td><td class='wcell'><input type='number' class='w-num' step='0.5' value='' placeholder='-'><span class='w-unit'>lbs</span></td><td class='srcell'><input type='number' class='sr-sets' value='3'>×<input type='text' class='sr-reps' value='8' placeholder='12 10 10 8'></td></tr>
+<tr class='sel-row'><td class='selcell'><input type='checkbox' class='sel'></td><td class='exname'>Cat-cow</td><td class='wcell'><input type='number' class='w-num' step='0.5' value='' placeholder='-'><span class='w-unit'>lbs</span></td><td class='srcell'><input type='number' class='sr-sets' value='1'>×<input type='text' class='sr-reps' value='10' placeholder='12 10 10 8'></td></tr>
+<tr class='sel-row'><td class='selcell'><input type='checkbox' class='sel'></td><td class='exname'>* Dead bug (long lever)</td><td class='wcell'><input type='number' class='w-num' step='0.5' value='' placeholder='-'><span class='w-unit'>lbs</span></td><td class='srcell'><input type='number' class='sr-sets' value='3'>×<input type='text' class='sr-reps' value='8' placeholder='12 10 10 8'></td></tr>
+<tr class='sel-row'><td class='selcell'><input type='checkbox' class='sel'></td><td class='exname'>* Pallof march</td><td class='wcell'><input type='number' class='w-num' step='0.5' value='' placeholder='-'><span class='w-unit'>lbs</span></td><td class='srcell'><input type='number' class='sr-sets' value='3'>×<input type='text' class='sr-reps' value='10' placeholder='12 10 10 8'></td></tr>
+<tr class='sel-row'><td class='selcell'><input type='checkbox' class='sel'></td><td class='exname'>* Cable crunch</td><td class='wcell'><input type='number' class='w-num' step='0.5' value='40' placeholder='-'><span class='w-unit'>lbs</span></td><td class='srcell'><input type='number' class='sr-sets' value='3'>×<input type='text' class='sr-reps' value='12' placeholder='12 10 10 8'></td></tr>
+<tr class='sel-row'><td class='selcell'><input type='checkbox' class='sel'></td><td class='exname'>* Hanging leg raise</td><td class='wcell'><input type='number' class='w-num' step='0.5' value='' placeholder='-'><span class='w-unit'>lbs</span></td><td class='srcell'><input type='number' class='sr-sets' value='3'>×<input type='text' class='sr-reps' value='10' placeholder='12 10 10 8'></td></tr>
+<tr class='sel-row'><td class='selcell'><input type='checkbox' class='sel'></td><td class='exname'>* Reverse crunch</td><td class='wcell'><input type='number' class='w-num' step='0.5' value='' placeholder='-'><span class='w-unit'>lbs</span></td><td class='srcell'><input type='number' class='sr-sets' value='3'>×<input type='text' class='sr-reps' value='12' placeholder='12 10 10 8'></td></tr>
         </tbody>
       </table>
       </div>
@@ -2707,11 +2716,11 @@
       <table>
         <thead><tr><th></th><th>Exercise</th><th>Weight</th><th>Sets×Reps</th></tr></thead>
         <tbody data-type="Mobility">
-<tr class='sel-row'><td class='selcell'><input type='checkbox' class='sel'></td><td class='exname'>Runner's lunge</td><td class='wcell'><input type='number' class='w-num' step='0.5' value='' placeholder='-'><span class='w-unit'>lbs</span><input type='number' class='w-kg' step='0.5' value='' placeholder='-'><span class='w-unit w-unit2'>kg</span></td><td class='srcell'><input type='number' class='sr-sets' value='2'>×<input type='text' class='sr-reps' value='8' placeholder='12 10 10 8'></td></tr>
-<tr class='sel-row'><td class='selcell'><input type='checkbox' class='sel'></td><td class='exname'>Deep squat</td><td class='wcell'><input type='number' class='w-num' step='0.5' value='' placeholder='-'><span class='w-unit'>lbs</span><input type='number' class='w-kg' step='0.5' value='' placeholder='-'><span class='w-unit w-unit2'>kg</span></td><td class='srcell'><input type='number' class='sr-sets' value='2'>×<input type='text' class='sr-reps' value='10' placeholder='12 10 10 8'></td></tr>
-<tr class='sel-row'><td class='selcell'><input type='checkbox' class='sel'></td><td class='exname'>Windshield wipers</td><td class='wcell'><input type='number' class='w-num' step='0.5' value='' placeholder='-'><span class='w-unit'>lbs</span><input type='number' class='w-kg' step='0.5' value='' placeholder='-'><span class='w-unit w-unit2'>kg</span></td><td class='srcell'><input type='number' class='sr-sets' value='2'>×<input type='text' class='sr-reps' value='10' placeholder='12 10 10 8'></td></tr>
-<tr class='sel-row'><td class='selcell'><input type='checkbox' class='sel'></td><td class='exname'>Cobra flow</td><td class='wcell'><input type='number' class='w-num' step='0.5' value='' placeholder='-'><span class='w-unit'>lbs</span><input type='number' class='w-kg' step='0.5' value='' placeholder='-'><span class='w-unit w-unit2'>kg</span></td><td class='srcell'><input type='number' class='sr-sets' value='2'>×<input type='text' class='sr-reps' value='10' placeholder='12 10 10 8'></td></tr>
-<tr class='sel-row'><td class='selcell'><input type='checkbox' class='sel'></td><td class='exname'>Cossack squat</td><td class='wcell'><input type='number' class='w-num' step='0.5' value='' placeholder='-'><span class='w-unit'>lbs</span><input type='number' class='w-kg' step='0.5' value='' placeholder='-'><span class='w-unit w-unit2'>kg</span></td><td class='srcell'><input type='number' class='sr-sets' value='2'>×<input type='text' class='sr-reps' value='8' placeholder='12 10 10 8'></td></tr>
+<tr class='sel-row'><td class='selcell'><input type='checkbox' class='sel'></td><td class='exname'>Runner's lunge</td><td class='wcell'><input type='number' class='w-num' step='0.5' value='' placeholder='-'><span class='w-unit'>lbs</span></td><td class='srcell'><input type='number' class='sr-sets' value='2'>×<input type='text' class='sr-reps' value='8' placeholder='12 10 10 8'></td></tr>
+<tr class='sel-row'><td class='selcell'><input type='checkbox' class='sel'></td><td class='exname'>Deep squat</td><td class='wcell'><input type='number' class='w-num' step='0.5' value='' placeholder='-'><span class='w-unit'>lbs</span></td><td class='srcell'><input type='number' class='sr-sets' value='2'>×<input type='text' class='sr-reps' value='10' placeholder='12 10 10 8'></td></tr>
+<tr class='sel-row'><td class='selcell'><input type='checkbox' class='sel'></td><td class='exname'>Windshield wipers</td><td class='wcell'><input type='number' class='w-num' step='0.5' value='' placeholder='-'><span class='w-unit'>lbs</span></td><td class='srcell'><input type='number' class='sr-sets' value='2'>×<input type='text' class='sr-reps' value='10' placeholder='12 10 10 8'></td></tr>
+<tr class='sel-row'><td class='selcell'><input type='checkbox' class='sel'></td><td class='exname'>Cobra flow</td><td class='wcell'><input type='number' class='w-num' step='0.5' value='' placeholder='-'><span class='w-unit'>lbs</span></td><td class='srcell'><input type='number' class='sr-sets' value='2'>×<input type='text' class='sr-reps' value='10' placeholder='12 10 10 8'></td></tr>
+<tr class='sel-row'><td class='selcell'><input type='checkbox' class='sel'></td><td class='exname'>Cossack squat</td><td class='wcell'><input type='number' class='w-num' step='0.5' value='' placeholder='-'><span class='w-unit'>lbs</span></td><td class='srcell'><input type='number' class='sr-sets' value='2'>×<input type='text' class='sr-reps' value='8' placeholder='12 10 10 8'></td></tr>
         </tbody>
       </table>
       </div>
@@ -2726,11 +2735,11 @@
       <table>
         <thead><tr><th></th><th>Exercise</th><th>Weight</th><th>Sets×Reps</th></tr></thead>
         <tbody data-type="Hip Flexor">
-<tr class='sel-row'><td class='selcell'><input type='checkbox' class='sel'></td><td class='exname'>Hip flexor stretch</td><td class='wcell'><input type='number' class='w-num' step='0.5' value='' placeholder='-'><span class='w-unit'>lbs</span><input type='number' class='w-kg' step='0.5' value='' placeholder='-'><span class='w-unit w-unit2'>kg</span></td><td class='srcell'><input type='number' class='sr-sets' value='2'>×<input type='text' class='sr-reps' value='2' placeholder='12 10 10 8'></td></tr>
-<tr class='sel-row'><td class='selcell'><input type='checkbox' class='sel'></td><td class='exname'>Kneeling lunge stretch</td><td class='wcell'><input type='number' class='w-num' step='0.5' value='' placeholder='-'><span class='w-unit'>lbs</span><input type='number' class='w-kg' step='0.5' value='' placeholder='-'><span class='w-unit w-unit2'>kg</span></td><td class='srcell'><input type='number' class='sr-sets' value='2'>×<input type='text' class='sr-reps' value='2' placeholder='12 10 10 8'></td></tr>
-<tr class='sel-row'><td class='selcell'><input type='checkbox' class='sel'></td><td class='exname'>Glute bridge</td><td class='wcell'><input type='number' class='w-num' step='0.5' value='' placeholder='-'><span class='w-unit'>lbs</span><input type='number' class='w-kg' step='0.5' value='' placeholder='-'><span class='w-unit w-unit2'>kg</span></td><td class='srcell'><input type='number' class='sr-sets' value='3'>×<input type='text' class='sr-reps' value='12' placeholder='12 10 10 8'></td></tr>
-<tr class='sel-row'><td class='selcell'><input type='checkbox' class='sel'></td><td class='exname'>Dead bug</td><td class='wcell'><input type='number' class='w-num' step='0.5' value='' placeholder='-'><span class='w-unit'>lbs</span><input type='number' class='w-kg' step='0.5' value='' placeholder='-'><span class='w-unit w-unit2'>kg</span></td><td class='srcell'><input type='number' class='sr-sets' value='3'>×<input type='text' class='sr-reps' value='8' placeholder='12 10 10 8'></td></tr>
-<tr class='sel-row'><td class='selcell'><input type='checkbox' class='sel'></td><td class='exname'>Bird dog</td><td class='wcell'><input type='number' class='w-num' step='0.5' value='' placeholder='-'><span class='w-unit'>lbs</span><input type='number' class='w-kg' step='0.5' value='' placeholder='-'><span class='w-unit w-unit2'>kg</span></td><td class='srcell'><input type='number' class='sr-sets' value='3'>×<input type='text' class='sr-reps' value='8' placeholder='12 10 10 8'></td></tr>
+<tr class='sel-row'><td class='selcell'><input type='checkbox' class='sel'></td><td class='exname'>Hip flexor stretch</td><td class='wcell'><input type='number' class='w-num' step='0.5' value='' placeholder='-'><span class='w-unit'>lbs</span></td><td class='srcell'><input type='number' class='sr-sets' value='2'>×<input type='text' class='sr-reps' value='2' placeholder='12 10 10 8'></td></tr>
+<tr class='sel-row'><td class='selcell'><input type='checkbox' class='sel'></td><td class='exname'>Kneeling lunge stretch</td><td class='wcell'><input type='number' class='w-num' step='0.5' value='' placeholder='-'><span class='w-unit'>lbs</span></td><td class='srcell'><input type='number' class='sr-sets' value='2'>×<input type='text' class='sr-reps' value='2' placeholder='12 10 10 8'></td></tr>
+<tr class='sel-row'><td class='selcell'><input type='checkbox' class='sel'></td><td class='exname'>Glute bridge</td><td class='wcell'><input type='number' class='w-num' step='0.5' value='' placeholder='-'><span class='w-unit'>lbs</span></td><td class='srcell'><input type='number' class='sr-sets' value='3'>×<input type='text' class='sr-reps' value='12' placeholder='12 10 10 8'></td></tr>
+<tr class='sel-row'><td class='selcell'><input type='checkbox' class='sel'></td><td class='exname'>Dead bug</td><td class='wcell'><input type='number' class='w-num' step='0.5' value='' placeholder='-'><span class='w-unit'>lbs</span></td><td class='srcell'><input type='number' class='sr-sets' value='3'>×<input type='text' class='sr-reps' value='8' placeholder='12 10 10 8'></td></tr>
+<tr class='sel-row'><td class='selcell'><input type='checkbox' class='sel'></td><td class='exname'>Bird dog</td><td class='wcell'><input type='number' class='w-num' step='0.5' value='' placeholder='-'><span class='w-unit'>lbs</span></td><td class='srcell'><input type='number' class='sr-sets' value='3'>×<input type='text' class='sr-reps' value='8' placeholder='12 10 10 8'></td></tr>
         </tbody>
       </table>
       </div>
@@ -2745,16 +2754,16 @@
       <table>
         <thead><tr><th></th><th>Exercise</th><th>Weight</th><th>Sets×Reps</th></tr></thead>
         <tbody data-type="Long Sitting">
-<tr class='sel-row'><td class='selcell'><input type='checkbox' class='sel'></td><td class='exname'>Standing hip flexor stretch</td><td class='wcell'><input type='number' class='w-num' step='0.5' value='' placeholder='-'><span class='w-unit'>lbs</span><input type='number' class='w-kg' step='0.5' value='' placeholder='-'><span class='w-unit w-unit2'>kg</span></td><td class='srcell'><input type='number' class='sr-sets' value='2'>×<input type='text' class='sr-reps' value='30' placeholder='12 10 10 8'></td></tr>
-<tr class='sel-row'><td class='selcell'><input type='checkbox' class='sel'></td><td class='exname'>Couch stretch</td><td class='wcell'><input type='number' class='w-num' step='0.5' value='' placeholder='-'><span class='w-unit'>lbs</span><input type='number' class='w-kg' step='0.5' value='' placeholder='-'><span class='w-unit w-unit2'>kg</span></td><td class='srcell'><input type='number' class='sr-sets' value='2'>×<input type='text' class='sr-reps' value='30' placeholder='12 10 10 8'></td></tr>
-<tr class='sel-row'><td class='selcell'><input type='checkbox' class='sel'></td><td class='exname'>Thoracic extension (foam roller)</td><td class='wcell'><input type='number' class='w-num' step='0.5' value='' placeholder='-'><span class='w-unit'>lbs</span><input type='number' class='w-kg' step='0.5' value='' placeholder='-'><span class='w-unit w-unit2'>kg</span></td><td class='srcell'><input type='number' class='sr-sets' value='2'>×<input type='text' class='sr-reps' value='10' placeholder='12 10 10 8'></td></tr>
-<tr class='sel-row'><td class='selcell'><input type='checkbox' class='sel'></td><td class='exname'>Open book rotation</td><td class='wcell'><input type='number' class='w-num' step='0.5' value='' placeholder='-'><span class='w-unit'>lbs</span><input type='number' class='w-kg' step='0.5' value='' placeholder='-'><span class='w-unit w-unit2'>kg</span></td><td class='srcell'><input type='number' class='sr-sets' value='2'>×<input type='text' class='sr-reps' value='8' placeholder='12 10 10 8'></td></tr>
-<tr class='sel-row'><td class='selcell'><input type='checkbox' class='sel'></td><td class='exname'>Single-leg glute bridge</td><td class='wcell'><input type='number' class='w-num' step='0.5' value='' placeholder='-'><span class='w-unit'>lbs</span><input type='number' class='w-kg' step='0.5' value='' placeholder='-'><span class='w-unit w-unit2'>kg</span></td><td class='srcell'><input type='number' class='sr-sets' value='3'>×<input type='text' class='sr-reps' value='10' placeholder='12 10 10 8'></td></tr>
-<tr class='sel-row'><td class='selcell'><input type='checkbox' class='sel'></td><td class='exname'>Clamshell</td><td class='wcell'><input type='number' class='w-num' step='0.5' value='' placeholder='-'><span class='w-unit'>lbs</span><input type='number' class='w-kg' step='0.5' value='' placeholder='-'><span class='w-unit w-unit2'>kg</span></td><td class='srcell'><input type='number' class='sr-sets' value='3'>×<input type='text' class='sr-reps' value='12' placeholder='12 10 10 8'></td></tr>
-<tr class='sel-row'><td class='selcell'><input type='checkbox' class='sel'></td><td class='exname'>Standing hip abduction</td><td class='wcell'><input type='number' class='w-num' step='0.5' value='' placeholder='-'><span class='w-unit'>lbs</span><input type='number' class='w-kg' step='0.5' value='' placeholder='-'><span class='w-unit w-unit2'>kg</span></td><td class='srcell'><input type='number' class='sr-sets' value='3'>×<input type='text' class='sr-reps' value='12' placeholder='12 10 10 8'></td></tr>
-<tr class='sel-row'><td class='selcell'><input type='checkbox' class='sel'></td><td class='exname'>Hip hinge drill</td><td class='wcell'><input type='number' class='w-num' step='0.5' value='' placeholder='-'><span class='w-unit'>lbs</span><input type='number' class='w-kg' step='0.5' value='' placeholder='-'><span class='w-unit w-unit2'>kg</span></td><td class='srcell'><input type='number' class='sr-sets' value='3'>×<input type='text' class='sr-reps' value='8' placeholder='12 10 10 8'></td></tr>
-<tr class='sel-row'><td class='selcell'><input type='checkbox' class='sel'></td><td class='exname'>Suitcase carry</td><td class='wcell'><input type='number' class='w-num' step='0.5' value='20' placeholder='-'><span class='w-unit'>lbs</span><input type='number' class='w-kg' step='0.5' value='9' placeholder='-'><span class='w-unit w-unit2'>kg</span></td><td class='srcell'><input type='number' class='sr-sets' value='3'>×<input type='text' class='sr-reps' value='20' placeholder='12 10 10 8'></td></tr>
-<tr class='sel-row'><td class='selcell'><input type='checkbox' class='sel'></td><td class='exname'>Pallof press</td><td class='wcell'><input type='number' class='w-num' step='0.5' value='30' placeholder='-'><span class='w-unit'>lbs</span><input type='number' class='w-kg' step='0.5' value='13.5' placeholder='-'><span class='w-unit w-unit2'>kg</span></td><td class='srcell'><input type='number' class='sr-sets' value='3'>×<input type='text' class='sr-reps' value='10' placeholder='12 10 10 8'></td></tr>
+<tr class='sel-row'><td class='selcell'><input type='checkbox' class='sel'></td><td class='exname'>Standing hip flexor stretch</td><td class='wcell'><input type='number' class='w-num' step='0.5' value='' placeholder='-'><span class='w-unit'>lbs</span></td><td class='srcell'><input type='number' class='sr-sets' value='2'>×<input type='text' class='sr-reps' value='30' placeholder='12 10 10 8'></td></tr>
+<tr class='sel-row'><td class='selcell'><input type='checkbox' class='sel'></td><td class='exname'>Couch stretch</td><td class='wcell'><input type='number' class='w-num' step='0.5' value='' placeholder='-'><span class='w-unit'>lbs</span></td><td class='srcell'><input type='number' class='sr-sets' value='2'>×<input type='text' class='sr-reps' value='30' placeholder='12 10 10 8'></td></tr>
+<tr class='sel-row'><td class='selcell'><input type='checkbox' class='sel'></td><td class='exname'>Thoracic extension (foam roller)</td><td class='wcell'><input type='number' class='w-num' step='0.5' value='' placeholder='-'><span class='w-unit'>lbs</span></td><td class='srcell'><input type='number' class='sr-sets' value='2'>×<input type='text' class='sr-reps' value='10' placeholder='12 10 10 8'></td></tr>
+<tr class='sel-row'><td class='selcell'><input type='checkbox' class='sel'></td><td class='exname'>Open book rotation</td><td class='wcell'><input type='number' class='w-num' step='0.5' value='' placeholder='-'><span class='w-unit'>lbs</span></td><td class='srcell'><input type='number' class='sr-sets' value='2'>×<input type='text' class='sr-reps' value='8' placeholder='12 10 10 8'></td></tr>
+<tr class='sel-row'><td class='selcell'><input type='checkbox' class='sel'></td><td class='exname'>Single-leg glute bridge</td><td class='wcell'><input type='number' class='w-num' step='0.5' value='' placeholder='-'><span class='w-unit'>lbs</span></td><td class='srcell'><input type='number' class='sr-sets' value='3'>×<input type='text' class='sr-reps' value='10' placeholder='12 10 10 8'></td></tr>
+<tr class='sel-row'><td class='selcell'><input type='checkbox' class='sel'></td><td class='exname'>Clamshell</td><td class='wcell'><input type='number' class='w-num' step='0.5' value='' placeholder='-'><span class='w-unit'>lbs</span></td><td class='srcell'><input type='number' class='sr-sets' value='3'>×<input type='text' class='sr-reps' value='12' placeholder='12 10 10 8'></td></tr>
+<tr class='sel-row'><td class='selcell'><input type='checkbox' class='sel'></td><td class='exname'>Standing hip abduction</td><td class='wcell'><input type='number' class='w-num' step='0.5' value='' placeholder='-'><span class='w-unit'>lbs</span></td><td class='srcell'><input type='number' class='sr-sets' value='3'>×<input type='text' class='sr-reps' value='12' placeholder='12 10 10 8'></td></tr>
+<tr class='sel-row'><td class='selcell'><input type='checkbox' class='sel'></td><td class='exname'>Hip hinge drill</td><td class='wcell'><input type='number' class='w-num' step='0.5' value='' placeholder='-'><span class='w-unit'>lbs</span></td><td class='srcell'><input type='number' class='sr-sets' value='3'>×<input type='text' class='sr-reps' value='8' placeholder='12 10 10 8'></td></tr>
+<tr class='sel-row'><td class='selcell'><input type='checkbox' class='sel'></td><td class='exname'>Suitcase carry</td><td class='wcell'><input type='number' class='w-num' step='0.5' value='20' placeholder='-'><span class='w-unit'>lbs</span></td><td class='srcell'><input type='number' class='sr-sets' value='3'>×<input type='text' class='sr-reps' value='20' placeholder='12 10 10 8'></td></tr>
+<tr class='sel-row'><td class='selcell'><input type='checkbox' class='sel'></td><td class='exname'>Pallof press</td><td class='wcell'><input type='number' class='w-num' step='0.5' value='30' placeholder='-'><span class='w-unit'>lbs</span></td><td class='srcell'><input type='number' class='sr-sets' value='3'>×<input type='text' class='sr-reps' value='10' placeholder='12 10 10 8'></td></tr>
         </tbody>
       </table>
       </div>
@@ -2793,7 +2802,7 @@
         <div style="height:9rem"></div>
       </div>
 
-      <footer>Updated 2026-10-03 12:51 (Bangkok)</footer>
+      <footer>Updated 2026-10-03 16:58 (Bangkok)</footer>
     </div>
   </div>
 
@@ -2819,7 +2828,7 @@
       const name = (nameEl.value !== undefined ? nameEl.value : nameEl.textContent).trim();
       const ex = { name, completed: true };
       const w = parseFloat(tr.querySelector('.w-num').value);
-      if (w > 0) ex.weight_lbs = w;   // lbs-only log; nothing writes weight_kg
+      if (w > 0) ex.weight_lbs = inLbs(w);   // typed unit -> lbs for storage
       const sets = parseInt(tr.querySelector('.sr-sets').value);
       const repsRaw = tr.querySelector('.sr-reps').value.trim();
       const reps = parseInt(repsRaw);
@@ -2910,35 +2919,48 @@
           <td class='selcell'><input type='checkbox' class='sel' checked></td>
           <td class='exname'><input type='text' placeholder='Exercise name'></td>
           <td class='wcell'><input type='number' class='w-num' step='0.5' placeholder='-'>
-            <span class='w-unit'>lbs</span>
-            <input type='number' class='w-kg' step='0.5' placeholder='-'>
-            <span class='w-unit w-unit2'>kg</span></td>
+            <span class='w-unit'>lbs</span></td>
           <td class='srcell'><input type='number' class='sr-sets' value='3'>×<input type='text' class='sr-reps' value='15' placeholder='12 10 10 8'></td>`;
         tbody.appendChild(tr);
         bindRow(tr);
+        paintUnit();
         tr.querySelector('.exname input').focus();
         refreshBar();
       }));
 
-    // lbs <-> kg mirror. Both fields stay visible; editing either fills the
-    // other. Delegated on document so rows from "+ Add exercise" are covered
-    // too. Only .w-num (lbs) is ever persisted.
+    // ---- Weight unit: ONE field, switch lbs <-> kg in the header ----------
+    // The log stays lbs-only (`weight_lbs`). Whatever unit is selected, the
+    // single visible number is in that unit, and saving converts back to lbs.
     const LB_PER_KG = 2.20462262;
     const r05 = v => Math.round(v * 2) / 2;
-    document.addEventListener('input', e => {
-      const td = e.target.closest && e.target.closest('.wcell');
-      if (!td) return;
-      const lb = td.querySelector('.w-num');
-      const kg = td.querySelector('.w-kg');
-      if (!lb || !kg) return;
-      if (e.target === lb) {
-        const v = parseFloat(lb.value);
-        kg.value = isNaN(v) ? '' : r05(v / LB_PER_KG);
-      } else if (e.target === kg) {
-        const v = parseFloat(kg.value);
-        lb.value = isNaN(v) ? '' : r05(v * LB_PER_KG);
-      }
-    });
+    let UNIT_SEL = (localStorage.getItem('wunit') === 'kg') ? 'kg' : 'lbs';
+    const inLbs   = v => UNIT_SEL === 'kg' ? r05(v * LB_PER_KG) : v;
+    const fromLbs = v => UNIT_SEL === 'kg' ? r05(v / LB_PER_KG) : v;
+
+    function paintUnit() {
+      document.querySelectorAll('.w-unit').forEach(el => { el.textContent = UNIT_SEL; });
+      document.querySelectorAll('.w-tgl').forEach(b =>
+        b.classList.toggle('on', b.dataset.u === UNIT_SEL));
+      document.querySelectorAll('.wv').forEach(el => {
+        const lbs = parseFloat(el.dataset.lbs);
+        if (!isNaN(lbs)) el.textContent = fromLbs(lbs) + ' ' + UNIT_SEL;
+      });
+    }
+
+    function setUnit(u) {
+      if (u === UNIT_SEL) return;
+      document.querySelectorAll('.w-num').forEach(i => {
+        const v = parseFloat(i.value);
+        if (!isNaN(v)) i.value = (u === 'kg') ? r05(v / LB_PER_KG) : r05(v * LB_PER_KG);
+      });
+      UNIT_SEL = u;
+      localStorage.setItem('wunit', u);
+      paintUnit();
+    }
+
+    paintUnit();
+    document.querySelectorAll('.w-tgl').forEach(b =>
+      b.addEventListener('click', () => setUnit(b.dataset.u)));
 
     function getToken(force) {
       let t = localStorage.getItem('gh_token');
