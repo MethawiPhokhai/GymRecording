@@ -15,10 +15,9 @@
       "default_reps": 8
     },
     {
-      "name": "* Romanian deadlift",
+      "name": "* Single-leg RDL",
       "group": "Hamstring/Glute",
-      "default_weight_lbs": 77,
-      "default_sets": 4,
+      "default_sets": 3,
       "default_reps": 8
     },
     {
@@ -29,11 +28,10 @@
       "default_reps": 8
     },
     {
-      "name": "Hip thrust",
+      "name": "* Single-leg glute bridge",
       "group": "Glute",
-      "default_weight_lbs": 22,
       "default_sets": 3,
-      "default_reps": 10
+      "default_reps": 15
     },
     {
       "name": "* Bent-knee single-leg calf raise",
