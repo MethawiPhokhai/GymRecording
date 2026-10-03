@@ -12,6 +12,12 @@
       "default_reps": 8
     },
     {
+      "name": "* Copenhagen abductor",
+      "group": "Adductor",
+      "default_sets": 3,
+      "default_reps": 6
+    },
+    {
       "name": "Curl-up",
       "default_sets": 3,
       "default_reps": 8
