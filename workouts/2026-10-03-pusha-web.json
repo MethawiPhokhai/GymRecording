@@ -1,0 +1,42 @@
+{
+  "date": "2026-10-03",
+  "day": "Saturday",
+  "type": "Push A",
+  "exercises": [
+    {
+      "name": "Barbell bench press (Chest)",
+      "completed": true,
+      "weight_lbs": 20,
+      "sets": 3,
+      "reps": 10
+    },
+    {
+      "name": "Shoulder press (Shoulder)",
+      "completed": true,
+      "weight_lbs": 59.5,
+      "sets": 3,
+      "reps": 15
+    },
+    {
+      "name": "Chest fly (Chest)",
+      "completed": true,
+      "weight_lbs": 30,
+      "sets": 3,
+      "reps": 15
+    },
+    {
+      "name": "Lateral raise (Shoulder)",
+      "completed": true,
+      "weight_lbs": 22,
+      "sets": 3,
+      "reps": 15
+    },
+    {
+      "name": "Cable tricep press down (Triceps)",
+      "completed": true,
+      "weight_lbs": 49.5,
+      "sets": 3,
+      "reps": 10
+    }
+  ]
+}
