@@ -4,7 +4,7 @@
   "type": "Push A",
   "exercises": [
     {
-      "name": "Incline bench press (Chest)",
+      "name": "Incline bench press",
       "completed": true,
       "weight_lbs": 20,
       "sets": 4,
@@ -16,28 +16,28 @@
       ]
     },
     {
-      "name": "Shoulder press (Shoulder)",
+      "name": "Shoulder press",
       "completed": true,
       "weight_lbs": 60,
       "sets": 3,
       "reps": 15
     },
     {
-      "name": "Chest fly (Chest)",
+      "name": "Chest fly",
       "completed": true,
       "weight_lbs": 55,
       "sets": 4,
       "reps": 10
     },
     {
-      "name": "Lateral raise (Shoulder)",
+      "name": "Lateral raise",
       "completed": true,
       "weight_lbs": 10,
       "sets": 4,
       "reps": 10
     },
     {
-      "name": "Cable tricep press down (Triceps)",
+      "name": "Cable tricep press down",
       "completed": true,
       "weight_lbs": 50,
       "sets": 4,

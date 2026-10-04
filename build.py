@@ -270,10 +270,11 @@ def build_template_section(template):
         num = f"{num:g}" if num else ""
         sets = e.get("default_sets") or ""
         reps = e.get("default_reps") or ""
+        nm = e["name"].replace("'", "&#39;")   # data-name: the UNTAGGED name for the save script
         rows += (
             f"<tr class='sel-row'>"
             f"<td class='selcell'><input type='checkbox' class='sel'></td>"
-            f"<td class='exname'>{e['name']}{group_tag(e.get('group'))}</td>"
+            f"<td class='exname' data-name='{nm}'>{e['name']}{group_tag(e.get('group'))}</td>"
             f"<td class='wcell'><input type='number' class='w-num' step='0.5' value='{num}' placeholder='-'>"
             f"<span class='w-unit'>{UNIT}</span></td>"
             f"<td class='srcell'><input type='number' class='sr-sets' value='{sets}'>×"
@@ -724,7 +725,15 @@ SAVE_SCRIPT = """
       const tr = cb.closest('tr');
       const type = tr.closest('tbody').dataset.type;
       const nameEl = tr.querySelector('.exname input') || tr.querySelector('.exname');
-      const name = (nameEl.value !== undefined ? nameEl.value : nameEl.textContent).trim();
+      let name = (nameEl.value !== undefined ? nameEl.value : (nameEl.dataset.name || nameEl.textContent)).trim();
+      // Template rows render the muscle tag as a child span; strip exactly that, so
+      // "Chest fly (Chest)" is never logged — apply_latest_defaults and collect_progress
+      // both key off the exact name. Only strip the RENDERED tag, never a name that
+      // legitimately ends in parentheses (e.g. "* Dead bug (long lever)").
+      const grpEl = nameEl.querySelector ? nameEl.querySelector('.grp') : null;
+      if (grpEl && name.endsWith(grpEl.textContent)) {
+        name = name.slice(0, -grpEl.textContent.length).trim();
+      }
       const ex = { name, completed: true };
       const w = parseFloat(tr.querySelector('.w-num').value);
       if (w > 0) ex.weight_lbs = inLbs(w);   // typed unit -> lbs for storage
