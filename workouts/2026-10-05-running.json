@@ -1,0 +1,11 @@
+{
+  "date": "2026-10-05",
+  "day": "Monday",
+  "type": "Running",
+  "duration_minutes": 16.3,
+  "distance_km": 2.03,
+  "pace": "8:02 min/km",
+  "avg_heart_rate_bpm": 153,
+  "calories": 160,
+  "note": "Treadmill · short run (2.03 km only) · avg HR 153 = 85% HRmax (Tanaka 181), way above the <=140 easy ceiling · WARNING: at a SLOWER pace than 10-02 (8:02 vs 7:54) but +24 bpm higher (153 vs 129) — the exact 'HR up at the same/easier load' fatigue signal · also ran with left Achilles at 2/10 that morning · Possible optical-HR cadence lock (cadence ~155-160 spm at this pace) — check HR graph shape · Feel: Normal"
+}
