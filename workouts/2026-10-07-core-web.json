@@ -1,0 +1,38 @@
+{
+  "date": "2026-10-07",
+  "day": "Wednesday",
+  "type": "Core",
+  "exercises": [
+    {
+      "name": "Bird dog",
+      "completed": true,
+      "sets": 3,
+      "reps": 8
+    },
+    {
+      "name": "Side plank",
+      "completed": true,
+      "sets": 3,
+      "reps": 8
+    },
+    {
+      "name": "Cat-cow",
+      "completed": true,
+      "sets": 1,
+      "reps": 10
+    },
+    {
+      "name": "* Cable crunch",
+      "completed": true,
+      "weight_lbs": 50,
+      "sets": 3,
+      "reps": 20
+    },
+    {
+      "name": "* Hanging leg raise",
+      "completed": true,
+      "sets": 3,
+      "reps": 10
+    }
+  ]
+}
