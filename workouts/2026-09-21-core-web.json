@@ -4,9 +4,57 @@
   "type": "Core",
   "exercises": [
     {
+      "name": "Bird dog",
+      "completed": true,
+      "sets": 3,
+      "reps": 8
+    },
+    {
+      "name": "Side plank",
+      "completed": true,
+      "sets": 3,
+      "reps": 8
+    },
+    {
+      "name": "Curl-up",
+      "completed": true,
+      "sets": 3,
+      "reps": 8
+    },
+    {
+      "name": "Cat-cow",
+      "completed": true,
+      "sets": 1,
+      "reps": 10
+    },
+    {
+      "name": "* Dead bug (long lever)",
+      "completed": true,
+      "sets": 3,
+      "reps": 8
+    },
+    {
+      "name": "* Pallof march",
+      "completed": true,
+      "sets": 3,
+      "reps": 10
+    },
+    {
       "name": "* Cable crunch",
       "completed": true,
       "weight_lbs": 40,
+      "sets": 3,
+      "reps": 12
+    },
+    {
+      "name": "* Hanging leg raise",
+      "completed": true,
+      "sets": 3,
+      "reps": 10
+    },
+    {
+      "name": "* Reverse crunch",
+      "completed": true,
       "sets": 3,
       "reps": 12
     }
