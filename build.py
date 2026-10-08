@@ -275,8 +275,8 @@ def build_template_section(template):
             f"<tr class='sel-row'>"
             f"<td class='selcell'><input type='checkbox' class='sel'></td>"
             f"<td class='exname' data-name='{nm}'>{e['name']}{group_tag(e.get('group'))}</td>"
-            f"<td class='wcell'><input type='number' class='w-num' step='0.5' value='{num}' placeholder='-'>"
-            f"<span class='w-unit'>{UNIT}</span></td>"
+            f"<td class='wcell'><input type='number' class='w-num' step='0.5' value='{num}' data-lbs='{num}' placeholder='-'>"
+            f"<button type='button' class='w-unit' title='Switch lbs/kg'>{UNIT} &#8644;</button></td>"
             f"<td class='srcell'><input type='number' class='sr-sets' value='{sets}'>×"
             f"<input type='text' class='sr-reps' value='{reps}' placeholder='12 10 10 8'></td>"
             f"</tr>\n"
@@ -303,16 +303,11 @@ LBS_TO_KG = 0.45359237
 KG_TO_LBS = 2.20462262
 
 # The log is lbs-only: workouts store `weight_lbs`, templates store
-# `default_weight_lbs`, and the UI has no unit switch. `weight_kg` is still READ
+# `default_weight_lbs`; the UI shows one unit at a time (switch in the topbar or
+# any row's unit button). `weight_kg` is still READ
 # as a fallback so a stray kg value renders correctly instead of vanishing,
 # but nothing in this file writes it any more.
 UNIT = "lbs"
-# The logging form shows BOTH lbs and kg side by side and mirrors edits between
-# them, because the user genuinely thinks in kg for some lifts (Squat, Hip
-# thrust, RDL, calf raises) and lbs for others (machines, most dumbbells).
-# This is NOT a unit switch — neither field is ever hidden, and only lbs is
-# written to the JSON.
-KG_UNIT = "kg"
 
 
 def wspan(lbs):
@@ -735,8 +730,8 @@ SAVE_SCRIPT = """
         name = name.slice(0, -grpEl.textContent.length).trim();
       }
       const ex = { name, completed: true };
-      const w = parseFloat(tr.querySelector('.w-num').value);
-      if (w > 0) ex.weight_lbs = inLbs(w);   // typed unit -> lbs for storage
+      const w = parseFloat(tr.querySelector('.w-num').dataset.lbs);
+      if (w > 0) ex.weight_lbs = w;   // data-lbs is the canonical stored value
       const sets = parseInt(tr.querySelector('.sr-sets').value);
       const repsRaw = tr.querySelector('.sr-reps').value.trim();
       const reps = parseInt(repsRaw);
@@ -826,8 +821,8 @@ SAVE_SCRIPT = """
         tr.innerHTML = `
           <td class='selcell'><input type='checkbox' class='sel' checked></td>
           <td class='exname'><input type='text' placeholder='Exercise name'></td>
-          <td class='wcell'><input type='number' class='w-num' step='0.5' placeholder='-'>
-            <span class='w-unit'>lbs</span></td>
+          <td class='wcell'><input type='number' class='w-num' step='0.5' data-lbs='' placeholder='-'>
+            <button type='button' class='w-unit' title='Switch lbs/kg'>lbs &#8644;</button></td>
           <td class='srcell'><input type='number' class='sr-sets' value='3'>×<input type='text' class='sr-reps' value='15' placeholder='12 10 10 8'></td>`;
         tbody.appendChild(tr);
         bindRow(tr);
@@ -846,7 +841,11 @@ SAVE_SCRIPT = """
     const fromLbs = v => UNIT_SEL === 'kg' ? r05(v / LB_PER_KG) : v;
 
     function paintUnit() {
-      document.querySelectorAll('.w-unit').forEach(el => { el.textContent = UNIT_SEL; });
+      document.querySelectorAll('.w-unit').forEach(el => { el.textContent = UNIT_SEL + ' \u21C4'; });
+      document.querySelectorAll('.w-num').forEach(i => {
+        const lbs = parseFloat(i.dataset.lbs);
+        if (!isNaN(lbs)) i.value = fromLbs(lbs);
+      });
       document.querySelectorAll('.w-tgl').forEach(b =>
         b.classList.toggle('on', b.dataset.u === UNIT_SEL));
       document.querySelectorAll('.wv').forEach(el => {
@@ -857,14 +856,21 @@ SAVE_SCRIPT = """
 
     function setUnit(u) {
       if (u === UNIT_SEL) return;
-      document.querySelectorAll('.w-num').forEach(i => {
-        const v = parseFloat(i.value);
-        if (!isNaN(v)) i.value = (u === 'kg') ? r05(v / LB_PER_KG) : r05(v * LB_PER_KG);
-      });
       UNIT_SEL = u;
       localStorage.setItem('wunit', u);
       paintUnit();
     }
+
+    // Typing updates the canonical lbs value; switching unit only re-renders from it,
+    // so lbs -> kg -> lbs never drifts.
+    document.addEventListener('input', e => {
+      if (!e.target.classList.contains('w-num')) return;
+      const v = parseFloat(e.target.value);
+      e.target.dataset.lbs = isNaN(v) ? '' : inLbs(v);
+    });
+    document.addEventListener('click', e => {
+      if (e.target.closest('.w-unit')) setUnit(UNIT_SEL === 'kg' ? 'lbs' : 'kg');
+    });
 
     paintUnit();
     document.querySelectorAll('.w-tgl').forEach(b =>
@@ -1196,7 +1202,9 @@ STYLE = """
   .exname input{width:9rem}
   .grp{font-size:10px;font-weight:600;opacity:.55;white-space:nowrap;margin-left:.3rem}
   .dur{width:3.4rem;padding:4px 6px;font-size:12px}
-  .w-unit{background:var(--panel2);color:var(--mut);border:1px solid var(--line);border-radius:6px;padding:6px 9px;font-size:12px;font-family:inherit;margin-left:4px;display:inline-block;white-space:nowrap}
+  .w-unit{background:var(--panel2);color:var(--mut);border:1px solid var(--line);border-radius:6px;padding:6px 9px;font-size:12px;font-family:inherit;margin-left:4px;display:inline-block;white-space:nowrap;min-width:3.6rem;cursor:pointer}
+  .w-unit:hover{border-color:var(--accent);color:var(--ink)}
+  .w-unit:active{background:var(--accent);color:#fff}
   input[type=number]{appearance:textfield;-moz-appearance:textfield}
   input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
   .addrow{background:none;border:1px dashed var(--line2);color:var(--mut);border-radius:8px;padding:10px 14px;margin-top:8px;font-size:12.5px;font-family:inherit;cursor:pointer;width:100%}

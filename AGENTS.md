@@ -36,7 +36,7 @@ Weights are **stored in lbs only** (`weight_lbs` / `default_weight_lbs`). The UI
 `localStorage.wunit`, default `lbs`). Every read-only weight is rendered by the `wspan()` helper as
 `<span class="wv" data-lbs="44">44 lbs</span>` and JS re-renders all of them in the selected unit.
 `rowData()` converts the typed number back through `inLbs()` before writing, so nothing ever writes
-`weight_kg`. **Never render two weight inputs side by side** — that is the bug this replaced.
+`weight_kg`. Each row's unit button (`.w-unit`) toggles the same global switch; the input keeps the canonical lbs in `data-lbs` so switching never drifts. **Never render two weight inputs side by side** — that is the bug this replaced.
 
 A leading `* ` in a template exercise name marks the runner-strength pool (from a Facebook post, Jul 2026). The `*` is part of the `name` key — starred template entries do not match unstarred names in past workouts, so defaults/progress treat them as distinct exercises. This is intentional.
 
