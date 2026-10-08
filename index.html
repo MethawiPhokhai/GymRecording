@@ -102,9 +102,6 @@
   .tpl-head{display:flex;align-items:center;gap:9px;padding:4px 0 2px}
   .tpl-head .t{font-weight:700;font-size:14px;color:var(--ink)}
   .tpl-count{font-size:11.5px;color:var(--mut)}
-  .selcell{width:2.2rem}
-  .sel,.sel-run{width:1.05rem;height:1.05rem;accent-color:var(--accent);cursor:pointer;vertical-align:middle}
-  .sel-row{cursor:pointer}
   .sel-chip{cursor:pointer;transition:.15s;user-select:none}
   .sel-chip.selected{background:var(--accent);border-color:var(--accent);color:#fff}
   .sel-chip.selected small{color:#fff}
@@ -116,25 +113,19 @@
     outline:none;border-color:var(--accent)
   }
   .rfield{width:100%}
-  .w-num{width:4.2rem}
   .unit-switch{display:inline-flex;border:1px solid var(--line);border-radius:8px;overflow:hidden;flex-shrink:0}
   .unit-switch button{background:var(--panel2);border:0;color:var(--mut);font:inherit;font-size:12.5px;padding:9px 12px;cursor:pointer;line-height:1}
   .unit-switch button+button{border-left:1px solid var(--line)}
   .unit-switch button.on{background:var(--accent);color:#fff}
   .wv{font-variant-numeric:tabular-nums}
-  .sr-sets,.sr-reps{width:2.6rem;text-align:center}
-  .sr-reps{width:5.6rem;font-family:var(--mono)}
   .rbs{color:var(--accent2);font-family:var(--mono)}
-  .srcell{white-space:nowrap}
   .exname input{width:9rem}
   .grp{font-size:10px;font-weight:600;opacity:.55;white-space:nowrap;margin-left:.3rem}
   .dur{width:3.4rem;padding:4px 6px;font-size:12px}
-  .w-unit{background:var(--panel2);color:var(--mut);border:1px solid var(--line);border-radius:6px;padding:6px 9px;font-size:12px;font-family:inherit;margin-left:4px;display:inline-block;white-space:nowrap;min-width:3.6rem;cursor:pointer}
   .w-unit:hover{border-color:var(--accent);color:var(--ink)}
   .w-unit:active{background:var(--accent);color:#fff}
   input[type=number]{appearance:textfield;-moz-appearance:textfield}
   input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
-  .addrow{background:none;border:1px dashed var(--line2);color:var(--mut);border-radius:8px;padding:10px 14px;margin-top:8px;font-size:12.5px;font-family:inherit;cursor:pointer;width:100%}
   .addrow:hover{border-color:var(--accent);color:var(--ink)}
   .run-toggle{display:flex;align-items:center;gap:8px;margin-top:8px;font-size:13px;color:var(--ink);cursor:pointer}
   .run-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:8px}
@@ -142,14 +133,99 @@
   .run-note{grid-column:1 / -1}
   .note-row{display:flex;gap:8px;align-items:center;font-size:11px;color:var(--mut)}
 
-  /* ---- Save bar ---- */
-  #savebar{position:fixed;bottom:var(--nav-h,0px);left:0;right:0;display:none;align-items:center;justify-content:center;gap:14px;padding:11px 16px;background:rgba(15,16,20,.95);border-top:1px solid var(--line);backdrop-filter:blur(10px);z-index:40;transition:bottom .18s ease}
-  #savebar.visible{display:flex}
-  #savecount{font-size:12.5px;color:var(--mut)}
-  #savebtn{background:var(--accent);border:none;color:#fff;font-size:13px;font-weight:650;font-family:inherit;padding:9px 20px;border-radius:8px}
+  /* ---- Plan page (Claude Design A · one compact list) ---- */
+  .sel-run{width:1.1rem;height:1.1rem;accent-color:var(--accent);cursor:pointer;vertical-align:middle}
+  .plan{--p-bg:#0c0c0e;--p-sf:#141417;--p-sf2:#1b1b1f;--p-bd:#26262b;--p-div:#1c1c21;--p-tx:#ececf0;--p-mu:#8d8d97;
+    --p-ac:#6366f1;--p-ln:#a5a6ff;--p-ok:#22c55e;--p-okt:#06240f;--p-oks:#7dd3a0;--p-ck:#3a3a42;
+    max-width:640px;margin:0 auto;font-variant-numeric:tabular-nums}
+  .plan button{font:inherit;color:inherit;-webkit-tap-highlight-color:transparent}
+  .plan-head{position:sticky;top:0;z-index:20;background:rgba(8,9,12,.96);backdrop-filter:blur(10px);margin:0 -18px;padding:0 18px;border-bottom:1px solid var(--p-bd)}
+  .plan-hd{display:flex;justify-content:space-between;align-items:center;padding:10px 0}
+  .plan-hd h2{font-size:24px;font-weight:700;letter-spacing:-.02em}
+  .plan-hd small{display:block;font-size:12px;color:var(--p-mu);margin-top:2px}
+  .plan .unit-switch,.psheet .unit-switch,#psheet .unit-switch{background:var(--p-sf2,#1b1b1f);border:1px solid #26262b;border-radius:10px;padding:2px;overflow:visible}
+  .plan .unit-switch button,#psheet .unit-switch button{padding:8px 13px;border-radius:8px;font-size:13px;color:var(--mut);min-height:36px}
+  .plan .unit-switch button+button,#psheet .unit-switch button+button{border-left:0}
+  .plan .unit-switch button.on,#psheet .unit-switch button.on{background:#6366f1;color:#fff}
+  .pmode{display:flex;background:var(--p-sf);border:1px solid var(--p-bd);border-radius:12px;padding:3px;margin-bottom:10px}
+  .pmode button{flex:1;min-height:40px;border-radius:9px;font-size:14px;color:var(--p-mu);display:flex;justify-content:center;align-items:center;gap:6px}
+  .pmode button.on{background:var(--p-sf2);color:var(--p-tx);box-shadow:0 0 0 1px var(--p-bd)}
+  .pmode i{font-style:normal;font-size:11px;font-weight:700;background:var(--p-ok);color:var(--p-okt);border-radius:9px;padding:1px 6px}
+  .pmode i:empty{display:none}
+  .pchips{display:flex;gap:6px;overflow-x:auto;padding:0 0 10px;scrollbar-width:none}
+  .pchips::-webkit-scrollbar{display:none}
+  .pchip{flex:none;display:flex;align-items:center;gap:6px;padding:7px 12px;min-height:36px;border-radius:999px;border:1px solid var(--p-bd);background:var(--p-sf);font-size:13px;color:var(--p-mu)}
+  .pchip.on{color:var(--p-tx);border-color:var(--c)}
+  .pchip i{font-style:normal;font-size:11px}
+  .pchip i.n{background:var(--p-ok);color:var(--p-okt);border-radius:8px;padding:0 5px;font-weight:700}
+  .dot{flex:none;width:8px;height:8px;border-radius:50%;background:var(--c)}
+  .ptab{display:none}
+  .ptab.on{display:block}
+  .psec{padding-bottom:6px}
+  .psh{position:sticky;top:var(--plan-head-h,120px);z-index:10;display:flex;align-items:center;gap:8px;padding:10px 6px 8px;background:rgba(8,9,12,.94);backdrop-filter:blur(8px)}
+  .psh b{font-size:14px}
+  .pcnt{font-size:12px;color:var(--p-mu)}
+  .ptick{margin-left:auto;font-size:13px;color:var(--p-ln);padding:10px 0 10px 12px}
+  .prow{display:flex;align-items:center;gap:10px;margin:0 4px;padding:0 6px 0 8px;min-height:52px;border-radius:12px;cursor:pointer}
+  .prow+.prow{border-top:1px solid var(--p-div)}
+  .prow.on{background:rgba(34,197,94,.08)}
+  .prow.on+.prow,.prow+.prow.on{border-top-color:transparent}
+  .ck{flex:none;width:44px;height:44px;margin-left:-8px;display:grid;place-items:center;position:relative;cursor:pointer}
+  .ck .sel{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:pointer;margin:0}
+  .ck span{width:24px;height:24px;border-radius:50%;border:2px solid var(--p-ck);display:grid;place-items:center;transition:all .15s;pointer-events:none}
+  .ck svg{opacity:0}
+  .prow.on .ck span{background:var(--p-ok);border-color:var(--p-ok)}
+  .prow.on .ck svg{opacity:1}
+  .ck .sel:focus-visible+span{outline:2px solid var(--accent2);outline-offset:2px}
+  .prow .nm{flex:1;min-width:0;padding:8px 0;display:flex;flex-direction:column;gap:1px}
+  .prow .nm b{font-weight:500;font-size:14.5px;line-height:1.25}
+  .nsub{font-size:11.5px;color:var(--p-mu)}
+  .nsub em{font-style:normal;color:var(--p-oks)}
+  .also-on{display:none}
+  .prow.on .also-on{display:inline}
+  .prow.on .also-off{display:none}
+  .prow .exname input{width:100%;min-height:36px;font-size:14px}
+  .val{flex:none;min-height:40px;min-width:96px;padding:8px 10px;border-radius:9px;background:var(--p-sf2);border:1px solid var(--p-bd);font-size:13px;text-align:right;white-space:nowrap}
+  .val small{color:var(--p-mu);font-size:inherit}
+  .padd{display:block;width:calc(100% - 8px);margin:6px 4px 4px;padding:12px;border:1px dashed var(--p-bd);border-radius:14px;color:var(--p-mu);font-size:14px}
+  .plan .chip-row{padding:0 6px}
+  .plan .run-toggle,.plan .run-grid{margin-left:6px;margin-right:6px}
+  .plan .rfield,.plan .dur{min-height:40px}
+  .plan .dur{min-height:0}
+  #savebar{left:12px;right:12px;bottom:calc(22px + env(safe-area-inset-bottom));display:flex;max-width:616px;margin:0 auto;padding:10px 10px 10px 16px;gap:10px;justify-content:flex-start;background:#1d1d22;border:1px solid #26262b;border-radius:18px;box-shadow:0 10px 40px rgba(0,0,0,.6);transform:translateY(160%);pointer-events:none;transition:transform .25s cubic-bezier(.3,1.3,.5,1)}
+  #savebar.visible{transform:none;pointer-events:auto}
+  #savecount{flex:1;min-width:0;font-size:12px;color:var(--mut);display:flex;flex-direction:column;gap:3px}
+  #savecount b{color:var(--ink);font-size:15px}
+  .mix{display:flex;gap:4px 10px;flex-wrap:wrap}
+  .mix>span{display:flex;align-items:center;gap:4px}
+  #savebtn{min-height:48px;padding:13px 20px;border-radius:12px;font-size:15px;font-weight:600;background:#6366f1}
+  #tokenbtn{min-height:44px;min-width:44px}
+  #ptoast{position:fixed;left:50%;top:20px;z-index:60;transform:translate(-50%,-30px);opacity:0;background:#22c55e;color:#06240f;padding:10px 16px;border-radius:999px;font-size:14px;font-weight:600;transition:all .25s;pointer-events:none;white-space:nowrap}
+  #ptoast.show{opacity:1;transform:translate(-50%,0)}
+  #pdim{position:fixed;inset:0;z-index:70;background:rgba(0,0,0,.55);opacity:0;pointer-events:none;transition:opacity .2s}
+  #pdim.show{opacity:1;pointer-events:auto}
+  #psheet{position:fixed;left:0;right:0;bottom:0;z-index:71;max-width:640px;margin:0 auto;max-height:92vh;overflow-y:auto;background:#17171b;border-top:1px solid #26262b;border-radius:24px 24px 0 0;padding:10px 18px calc(28px + env(safe-area-inset-bottom));transform:translateY(105%);visibility:hidden;transition:transform .28s cubic-bezier(.2,.9,.3,1),visibility 0s .28s}
+  #psheet.show{transform:none;visibility:visible;transition:transform .28s cubic-bezier(.2,.9,.3,1)}
+  #psheet .grab{width:40px;height:5px;border-radius:3px;background:#3a3a42;margin:0 auto 14px}
+  #psheet h3{font-size:19px}
+  #psheet p{margin:2px 0 14px;font-size:13px;color:var(--mut)}
+  #psheet .st{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-top:1px solid #26262b}
+  #psheet .st>span{font-size:13px;color:var(--mut);width:70px}
+  #psheet .stc{display:flex;align-items:center;gap:8px}
+  #psheet .sbtn{width:48px;height:48px;border-radius:12px;background:#1b1b1f;border:1px solid #26262b;font-size:22px;display:grid;place-items:center}
+  #psheet .sv{min-width:96px;text-align:center;font-size:26px;font-weight:600;font-variant-numeric:tabular-nums}
+  #psheet .sv small{font-size:13px;color:var(--mut);font-weight:400;margin-left:3px}
+  #psheet .quick{display:flex;gap:6px;padding:0 0 10px 70px}
+  #psheet .quick button{flex:1;min-height:40px;border-radius:9px;border:1px solid #26262b;font-size:13px;color:var(--mut)}
+  .pbtn{width:100%;margin-top:14px;min-height:48px;padding:13px 20px;border-radius:12px;background:#6366f1;color:#fff;font-weight:600;font-size:15px}
+  @media(max-width:600px){.plan-head{margin:0 -14px;padding:0 14px}}
+
+  /* ---- Save bar (floating card; look is defined with the Plan styles above) ---- */
+  #savebar{position:fixed;align-items:center;z-index:40}
+  #savebtn{border:none;color:#fff;font-family:inherit}
   #savebtn:hover{filter:brightness(1.1)}
   #savebtn:disabled{opacity:.5;cursor:wait}
-  #tokenbtn{background:var(--panel2);border:1px solid var(--line);color:var(--mut);border-radius:8px;padding:9px 12px}
+  #tokenbtn{background:var(--panel2);border:1px solid var(--line);color:var(--mut);border-radius:12px;padding:9px 12px}
 
   #view-more,.view-more,.btn{border:1px solid var(--line2);background:var(--panel2);color:var(--ink);border-radius:8px;padding:9px 14px;font-size:12.5px;font-weight:600}
   #view-more:hover,.view-more:hover,.btn:hover{border-color:var(--accent)}
@@ -213,7 +289,7 @@
         <div class="page-intro"><h2>Weight Training</h2><p>Strength sessions, exercise progress, and recent training logs.</p></div>
         <div class="statgrid focus-stats"><div class="stat"><div class="k">Last 30 days</div><div class="v">21</div><div class="d">total sessions</div></div><div class="stat"><div class="k">Weight training</div><div class="v">17</div><div class="d">sessions · 30d</div></div><div class="stat"><div class="k">Exercises tracked</div><div class="v">46</div><div class="d">with progress data</div></div><div class="stat"><div class="k">All-time sessions</div><div class="v">61</div><div class="d">in your log</div></div></div>
         <section class="focus-section"><div class="section-title">Progress</div>
-  <div class="chip-row" id="prog-filters"><span class="chip filter-chip selected" data-filter="all">All</span><span class="chip filter-chip" data-filter="Push A">Push A</span><span class="chip filter-chip" data-filter="Pull B">Pull B</span><span class="chip filter-chip" data-filter="Lower">Lower</span><span class="chip filter-chip" data-filter="Calf & Ankle">Calf & Ankle</span><span class="chip filter-chip" data-filter="Full body">Full body</span><span class="chip filter-chip" data-filter="Core">Core</span><span class="chip filter-chip" data-filter="Lower A">Lower A</span><span class="chip filter-chip" data-filter="Upper">Upper</span></div>
+  <div class="chip-row" id="prog-filters"><span class="chip filter-chip selected" data-filter="all">All</span><span class="chip filter-chip" data-filter="Push A">Push A</span><span class="chip filter-chip" data-filter="Pull B">Pull B</span><span class="chip filter-chip" data-filter="Lower">Lower</span><span class="chip filter-chip" data-filter="Calf & Ankle">Calf & Ankle</span><span class="chip filter-chip" data-filter="Full body">Full body</span><span class="chip filter-chip" data-filter="Core">Core</span><span class="chip filter-chip" data-filter="Upper">Upper</span><span class="chip filter-chip" data-filter="Lower A">Lower A</span></div>
 
   <details class="card prog-card" data-type="Push A">
     <summary>
@@ -2710,202 +2786,155 @@
       </div>
 
       <div id="view-templates" class="view">
-        <div class="section-title">Select exercises to log</div>
-        <p style="color:var(--mut);font-size:13px;margin-bottom:14px">Tick the exercises you did — the save bar appears at the bottom.</p>
-        
-  <div class="tpl-section">
-    <div class="tpl-head"><span class="badge" style="background:#4f8ef722;color:#4f8ef7;border-color:#4f8ef744">Push A</span><span class="count">6 exercises</span></div>
-    <div class="card" style="margin-top:.6rem">
-      <div class="tbl-wrap">
-      <table>
-        <thead><tr><th></th><th>Exercise</th><th>Weight</th><th>Sets×Reps</th></tr></thead>
-        <tbody data-type="Push A">
-<tr class='sel-row'><td class='selcell'><input type='checkbox' class='sel'></td><td class='exname' data-name='Incline bench press'>Incline bench press <span class='grp'>(Chest)</span></td><td class='wcell'><input type='number' class='w-num' step='0.5' value='20' data-lbs='20' placeholder='-'><button type='button' class='w-unit' title='Switch lbs/kg'>lbs &#8644;</button></td><td class='srcell'><input type='number' class='sr-sets' value='4'>×<input type='text' class='sr-reps' value='10' placeholder='12 10 10 8'></td></tr>
-<tr class='sel-row'><td class='selcell'><input type='checkbox' class='sel'></td><td class='exname' data-name='Machine Chest press'>Machine Chest press <span class='grp'>(Chest)</span></td><td class='wcell'><input type='number' class='w-num' step='0.5' value='65' data-lbs='65' placeholder='-'><button type='button' class='w-unit' title='Switch lbs/kg'>lbs &#8644;</button></td><td class='srcell'><input type='number' class='sr-sets' value='3'>×<input type='text' class='sr-reps' value='15' placeholder='12 10 10 8'></td></tr>
-<tr class='sel-row'><td class='selcell'><input type='checkbox' class='sel'></td><td class='exname' data-name='Chest fly'>Chest fly <span class='grp'>(Chest)</span></td><td class='wcell'><input type='number' class='w-num' step='0.5' value='30' data-lbs='30' placeholder='-'><button type='button' class='w-unit' title='Switch lbs/kg'>lbs &#8644;</button></td><td class='srcell'><input type='number' class='sr-sets' value='3'>×<input type='text' class='sr-reps' value='15' placeholder='12 10 10 8'></td></tr>
-<tr class='sel-row'><td class='selcell'><input type='checkbox' class='sel'></td><td class='exname' data-name='Shoulder press'>Shoulder press <span class='grp'>(Shoulder)</span></td><td class='wcell'><input type='number' class='w-num' step='0.5' value='49.5' data-lbs='49.5' placeholder='-'><button type='button' class='w-unit' title='Switch lbs/kg'>lbs &#8644;</button></td><td class='srcell'><input type='number' class='sr-sets' value='3'>×<input type='text' class='sr-reps' value='15' placeholder='12 10 10 8'></td></tr>
-<tr class='sel-row'><td class='selcell'><input type='checkbox' class='sel'></td><td class='exname' data-name='Lateral raise'>Lateral raise <span class='grp'>(Shoulder)</span></td><td class='wcell'><input type='number' class='w-num' step='0.5' value='22' data-lbs='22' placeholder='-'><button type='button' class='w-unit' title='Switch lbs/kg'>lbs &#8644;</button></td><td class='srcell'><input type='number' class='sr-sets' value='3'>×<input type='text' class='sr-reps' value='15' placeholder='12 10 10 8'></td></tr>
-<tr class='sel-row'><td class='selcell'><input type='checkbox' class='sel'></td><td class='exname' data-name='Cable tricep press down'>Cable tricep press down <span class='grp'>(Triceps)</span></td><td class='wcell'><input type='number' class='w-num' step='0.5' value='49.5' data-lbs='49.5' placeholder='-'><button type='button' class='w-unit' title='Switch lbs/kg'>lbs &#8644;</button></td><td class='srcell'><input type='number' class='sr-sets' value='3'>×<input type='text' class='sr-reps' value='10' placeholder='12 10 10 8'></td></tr>
-        </tbody>
-      </table>
-      </div>
-    </div>
-    <button class="addrow" data-type="Push A">+ Add exercise</button>
-  </div>
+        <div class="plan">
+          <div class="plan-head" id="plan-head">
+            <div class="plan-hd">
+              <div><h2>Plan</h2><small>last session Oct 7 · 84 workouts</small></div>
+              <div class="unit-switch" role="group" aria-label="Weight unit">
+                <button type="button" class="w-tgl on" data-u="lbs">lbs</button>
+                <button type="button" class="w-tgl" data-u="kg">kg</button>
+              </div>
+            </div>
+            <div class="pmode" role="tablist">
+              <button type="button" class="on" data-pt="s">Strength<i></i></button>
+              <button type="button" data-pt="c">Cardio<i></i></button>
+            </div>
+            <div class="pchips" id="pchips"><button type="button" class="pchip" data-go="sec-push-a" style="--c:#4f8ef7"><span class="dot"></span>Push A<i data-n="6">6</i></button><button type="button" class="pchip" data-go="sec-pull-b" style="--c:#7bb0ff"><span class="dot"></span>Pull B<i data-n="7">7</i></button><button type="button" class="pchip" data-go="sec-lower" style="--c:#f7934f"><span class="dot"></span>Lower<i data-n="7">7</i></button><button type="button" class="pchip" data-go="sec-calf-ankle" style="--c:#ffc46b"><span class="dot"></span>Calf & Ankle<i data-n="4">4</i></button><button type="button" class="pchip" data-go="sec-full-body" style="--c:#e3c04f"><span class="dot"></span>Full body<i data-n="6">6</i></button><button type="button" class="pchip" data-go="sec-core" style="--c:#f75f8f"><span class="dot"></span>Core<i data-n="10">10</i></button><button type="button" class="pchip" data-go="sec-mobility" style="--c:#4fd8f7"><span class="dot"></span>Mobility<i data-n="5">5</i></button><button type="button" class="pchip" data-go="sec-hip-flexor" style="--c:#e39d4f"><span class="dot"></span>Hip Flexor<i data-n="5">5</i></button><button type="button" class="pchip" data-go="sec-long-sitting" style="--c:#8f7dff"><span class="dot"></span>Long Sitting<i data-n="10">10</i></button></div>
+          </div>
+          <div id="pt-s" class="ptab on">
 
-  <div class="tpl-section">
-    <div class="tpl-head"><span class="badge" style="background:#7bb0ff22;color:#7bb0ff;border-color:#7bb0ff44">Pull B</span><span class="count">7 exercises</span></div>
-    <div class="card" style="margin-top:.6rem">
-      <div class="tbl-wrap">
-      <table>
-        <thead><tr><th></th><th>Exercise</th><th>Weight</th><th>Sets×Reps</th></tr></thead>
-        <tbody data-type="Pull B">
-<tr class='sel-row'><td class='selcell'><input type='checkbox' class='sel'></td><td class='exname' data-name='Deadlift'>Deadlift <span class='grp'>(Back)</span></td><td class='wcell'><input type='number' class='w-num' step='0.5' value='35' data-lbs='35' placeholder='-'><button type='button' class='w-unit' title='Switch lbs/kg'>lbs &#8644;</button></td><td class='srcell'><input type='number' class='sr-sets' value='3'>×<input type='text' class='sr-reps' value='10' placeholder='12 10 10 8'></td></tr>
-<tr class='sel-row'><td class='selcell'><input type='checkbox' class='sel'></td><td class='exname' data-name='Pull up'>Pull up <span class='grp'>(Back)</span></td><td class='wcell'><input type='number' class='w-num' step='0.5' value='60' data-lbs='60' placeholder='-'><button type='button' class='w-unit' title='Switch lbs/kg'>lbs &#8644;</button></td><td class='srcell'><input type='number' class='sr-sets' value='3'>×<input type='text' class='sr-reps' value='15' placeholder='12 10 10 8'></td></tr>
-<tr class='sel-row'><td class='selcell'><input type='checkbox' class='sel'></td><td class='exname' data-name='Lat pulldown'>Lat pulldown <span class='grp'>(Back)</span></td><td class='wcell'><input type='number' class='w-num' step='0.5' value='60' data-lbs='60' placeholder='-'><button type='button' class='w-unit' title='Switch lbs/kg'>lbs &#8644;</button></td><td class='srcell'><input type='number' class='sr-sets' value='3'>×<input type='text' class='sr-reps' value='15' placeholder='12 10 10 8'></td></tr>
-<tr class='sel-row'><td class='selcell'><input type='checkbox' class='sel'></td><td class='exname' data-name='Back cable rowing'>Back cable rowing <span class='grp'>(Back)</span></td><td class='wcell'><input type='number' class='w-num' step='0.5' value='60' data-lbs='60' placeholder='-'><button type='button' class='w-unit' title='Switch lbs/kg'>lbs &#8644;</button></td><td class='srcell'><input type='number' class='sr-sets' value='3'>×<input type='text' class='sr-reps' value='15' placeholder='12 10 10 8'></td></tr>
-<tr class='sel-row'><td class='selcell'><input type='checkbox' class='sel'></td><td class='exname' data-name='Face pull'>Face pull <span class='grp'>(Shoulder)</span></td><td class='wcell'><input type='number' class='w-num' step='0.5' value='60' data-lbs='60' placeholder='-'><button type='button' class='w-unit' title='Switch lbs/kg'>lbs &#8644;</button></td><td class='srcell'><input type='number' class='sr-sets' value='3'>×<input type='text' class='sr-reps' value='15' placeholder='12 10 10 8'></td></tr>
-<tr class='sel-row'><td class='selcell'><input type='checkbox' class='sel'></td><td class='exname' data-name='Back Hyperextension'>Back Hyperextension <span class='grp'>(Back)</span></td><td class='wcell'><input type='number' class='w-num' step='0.5' value='10' data-lbs='10' placeholder='-'><button type='button' class='w-unit' title='Switch lbs/kg'>lbs &#8644;</button></td><td class='srcell'><input type='number' class='sr-sets' value='3'>×<input type='text' class='sr-reps' value='15' placeholder='12 10 10 8'></td></tr>
-<tr class='sel-row'><td class='selcell'><input type='checkbox' class='sel'></td><td class='exname' data-name='Bicep curl'>Bicep curl <span class='grp'>(Biceps)</span></td><td class='wcell'><input type='number' class='w-num' step='0.5' value='10' data-lbs='10' placeholder='-'><button type='button' class='w-unit' title='Switch lbs/kg'>lbs &#8644;</button></td><td class='srcell'><input type='number' class='sr-sets' value='3'>×<input type='text' class='sr-reps' value='12' placeholder='12 10 10 8'></td></tr>
-        </tbody>
-      </table>
-      </div>
+  <section class="psec" data-type="Push A" data-color="#4f8ef7" style="--c:#4f8ef7" id="sec-push-a">
+    <div class="psh"><span class='dot'></span><b>Push A</b><span class="pcnt">0/6</span><button type="button" class="ptick">Tick all</button></div>
+    <div class="plist" data-type="Push A">
+<div class='sel-row prow' data-name='Incline bench press' data-group='Chest' data-also=''><label class='ck'><input type='checkbox' class='sel' aria-label='Tick Incline bench press'><span><svg width='14' height='14' viewBox='0 0 16 16' aria-hidden='true'><path d='M3.5 8.5l3 3 6-7' fill='none' stroke='#06240f' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'/></svg></span></label><div class='nm exname' data-name='Incline bench press'><b>Incline bench press</b><span class='nsub'>Chest</span></div><button type='button' class='val' aria-label='Edit weight, sets and reps'></button><input type='number' class='w-num' step='0.5' value='20' data-lbs='20' hidden><input type='number' class='sr-sets' value='4' hidden><input type='text' class='sr-reps' value='10' hidden></div>
+<div class='sel-row prow' data-name='Machine Chest press' data-group='Chest' data-also=''><label class='ck'><input type='checkbox' class='sel' aria-label='Tick Machine Chest press'><span><svg width='14' height='14' viewBox='0 0 16 16' aria-hidden='true'><path d='M3.5 8.5l3 3 6-7' fill='none' stroke='#06240f' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'/></svg></span></label><div class='nm exname' data-name='Machine Chest press'><b>Machine Chest press</b><span class='nsub'>Chest</span></div><button type='button' class='val' aria-label='Edit weight, sets and reps'></button><input type='number' class='w-num' step='0.5' value='65' data-lbs='65' hidden><input type='number' class='sr-sets' value='3' hidden><input type='text' class='sr-reps' value='15' hidden></div>
+<div class='sel-row prow' data-name='Chest fly' data-group='Chest' data-also=''><label class='ck'><input type='checkbox' class='sel' aria-label='Tick Chest fly'><span><svg width='14' height='14' viewBox='0 0 16 16' aria-hidden='true'><path d='M3.5 8.5l3 3 6-7' fill='none' stroke='#06240f' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'/></svg></span></label><div class='nm exname' data-name='Chest fly'><b>Chest fly</b><span class='nsub'>Chest</span></div><button type='button' class='val' aria-label='Edit weight, sets and reps'></button><input type='number' class='w-num' step='0.5' value='30' data-lbs='30' hidden><input type='number' class='sr-sets' value='3' hidden><input type='text' class='sr-reps' value='15' hidden></div>
+<div class='sel-row prow' data-name='Shoulder press' data-group='Shoulder' data-also='Full body'><label class='ck'><input type='checkbox' class='sel' aria-label='Tick Shoulder press'><span><svg width='14' height='14' viewBox='0 0 16 16' aria-hidden='true'><path d='M3.5 8.5l3 3 6-7' fill='none' stroke='#06240f' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'/></svg></span></label><div class='nm exname' data-name='Shoulder press'><b>Shoulder press</b><span class='nsub'>Shoulder · <span class='also-off'>also in Full body</span><em class='also-on'>also ticks in Full body</em></span></div><button type='button' class='val' aria-label='Edit weight, sets and reps'></button><input type='number' class='w-num' step='0.5' value='49.5' data-lbs='49.5' hidden><input type='number' class='sr-sets' value='3' hidden><input type='text' class='sr-reps' value='15' hidden></div>
+<div class='sel-row prow' data-name='Lateral raise' data-group='Shoulder' data-also=''><label class='ck'><input type='checkbox' class='sel' aria-label='Tick Lateral raise'><span><svg width='14' height='14' viewBox='0 0 16 16' aria-hidden='true'><path d='M3.5 8.5l3 3 6-7' fill='none' stroke='#06240f' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'/></svg></span></label><div class='nm exname' data-name='Lateral raise'><b>Lateral raise</b><span class='nsub'>Shoulder</span></div><button type='button' class='val' aria-label='Edit weight, sets and reps'></button><input type='number' class='w-num' step='0.5' value='22' data-lbs='22' hidden><input type='number' class='sr-sets' value='3' hidden><input type='text' class='sr-reps' value='15' hidden></div>
+<div class='sel-row prow' data-name='Cable tricep press down' data-group='Triceps' data-also=''><label class='ck'><input type='checkbox' class='sel' aria-label='Tick Cable tricep press down'><span><svg width='14' height='14' viewBox='0 0 16 16' aria-hidden='true'><path d='M3.5 8.5l3 3 6-7' fill='none' stroke='#06240f' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'/></svg></span></label><div class='nm exname' data-name='Cable tricep press down'><b>Cable tricep press down</b><span class='nsub'>Triceps</span></div><button type='button' class='val' aria-label='Edit weight, sets and reps'></button><input type='number' class='w-num' step='0.5' value='49.5' data-lbs='49.5' hidden><input type='number' class='sr-sets' value='3' hidden><input type='text' class='sr-reps' value='10' hidden></div>
     </div>
-    <button class="addrow" data-type="Pull B">+ Add exercise</button>
-  </div>
+    <button type="button" class="padd" data-type="Push A">+ Add exercise</button>
+  </section>
 
-  <div class="tpl-section">
-    <div class="tpl-head"><span class="badge" style="background:#f7934f22;color:#f7934f;border-color:#f7934f44">Lower</span><span class="count">7 exercises</span></div>
-    <div class="card" style="margin-top:.6rem">
-      <div class="tbl-wrap">
-      <table>
-        <thead><tr><th></th><th>Exercise</th><th>Weight</th><th>Sets×Reps</th></tr></thead>
-        <tbody data-type="Lower">
-<tr class='sel-row'><td class='selcell'><input type='checkbox' class='sel'></td><td class='exname' data-name='* Jump squat'>* Jump squat <span class='grp'>(Quad/Glute)</span></td><td class='wcell'><input type='number' class='w-num' step='0.5' value='' data-lbs='' placeholder='-'><button type='button' class='w-unit' title='Switch lbs/kg'>lbs &#8644;</button></td><td class='srcell'><input type='number' class='sr-sets' value='3'>×<input type='text' class='sr-reps' value='6' placeholder='12 10 10 8'></td></tr>
-<tr class='sel-row'><td class='selcell'><input type='checkbox' class='sel'></td><td class='exname' data-name='Squat'>Squat <span class='grp'>(Quad/Glute)</span></td><td class='wcell'><input type='number' class='w-num' step='0.5' value='44' data-lbs='44' placeholder='-'><button type='button' class='w-unit' title='Switch lbs/kg'>lbs &#8644;</button></td><td class='srcell'><input type='number' class='sr-sets' value='4'>×<input type='text' class='sr-reps' value='8' placeholder='12 10 10 8'></td></tr>
-<tr class='sel-row'><td class='selcell'><input type='checkbox' class='sel'></td><td class='exname' data-name='* Single-leg RDL'>* Single-leg RDL <span class='grp'>(Hamstring/Glute)</span></td><td class='wcell'><input type='number' class='w-num' step='0.5' value='' data-lbs='' placeholder='-'><button type='button' class='w-unit' title='Switch lbs/kg'>lbs &#8644;</button></td><td class='srcell'><input type='number' class='sr-sets' value='3'>×<input type='text' class='sr-reps' value='8' placeholder='12 10 10 8'></td></tr>
-<tr class='sel-row'><td class='selcell'><input type='checkbox' class='sel'></td><td class='exname' data-name='* Bulgarian split squat'>* Bulgarian split squat <span class='grp'>(Quad/Glute)</span></td><td class='wcell'><input type='number' class='w-num' step='0.5' value='20' data-lbs='20' placeholder='-'><button type='button' class='w-unit' title='Switch lbs/kg'>lbs &#8644;</button></td><td class='srcell'><input type='number' class='sr-sets' value='3'>×<input type='text' class='sr-reps' value='8' placeholder='12 10 10 8'></td></tr>
-<tr class='sel-row'><td class='selcell'><input type='checkbox' class='sel'></td><td class='exname' data-name='* Single-leg glute bridge'>* Single-leg glute bridge <span class='grp'>(Glute)</span></td><td class='wcell'><input type='number' class='w-num' step='0.5' value='' data-lbs='' placeholder='-'><button type='button' class='w-unit' title='Switch lbs/kg'>lbs &#8644;</button></td><td class='srcell'><input type='number' class='sr-sets' value='3'>×<input type='text' class='sr-reps' value='15' placeholder='12 10 10 8'></td></tr>
-<tr class='sel-row'><td class='selcell'><input type='checkbox' class='sel'></td><td class='exname' data-name='* Bent-knee single-leg calf raise'>* Bent-knee single-leg calf raise <span class='grp'>(Calf)</span></td><td class='wcell'><input type='number' class='w-num' step='0.5' value='22' data-lbs='22' placeholder='-'><button type='button' class='w-unit' title='Switch lbs/kg'>lbs &#8644;</button></td><td class='srcell'><input type='number' class='sr-sets' value='3'>×<input type='text' class='sr-reps' value='10' placeholder='12 10 10 8'></td></tr>
-<tr class='sel-row'><td class='selcell'><input type='checkbox' class='sel'></td><td class='exname' data-name='* Tibialis raise'>* Tibialis raise <span class='grp'>(Tibialis)</span></td><td class='wcell'><input type='number' class='w-num' step='0.5' value='' data-lbs='' placeholder='-'><button type='button' class='w-unit' title='Switch lbs/kg'>lbs &#8644;</button></td><td class='srcell'><input type='number' class='sr-sets' value='3'>×<input type='text' class='sr-reps' value='15' placeholder='12 10 10 8'></td></tr>
-        </tbody>
-      </table>
-      </div>
+  <section class="psec" data-type="Pull B" data-color="#7bb0ff" style="--c:#7bb0ff" id="sec-pull-b">
+    <div class="psh"><span class='dot'></span><b>Pull B</b><span class="pcnt">0/7</span><button type="button" class="ptick">Tick all</button></div>
+    <div class="plist" data-type="Pull B">
+<div class='sel-row prow' data-name='Deadlift' data-group='Back' data-also=''><label class='ck'><input type='checkbox' class='sel' aria-label='Tick Deadlift'><span><svg width='14' height='14' viewBox='0 0 16 16' aria-hidden='true'><path d='M3.5 8.5l3 3 6-7' fill='none' stroke='#06240f' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'/></svg></span></label><div class='nm exname' data-name='Deadlift'><b>Deadlift</b><span class='nsub'>Back</span></div><button type='button' class='val' aria-label='Edit weight, sets and reps'></button><input type='number' class='w-num' step='0.5' value='35' data-lbs='35' hidden><input type='number' class='sr-sets' value='3' hidden><input type='text' class='sr-reps' value='10' hidden></div>
+<div class='sel-row prow' data-name='Pull up' data-group='Back' data-also=''><label class='ck'><input type='checkbox' class='sel' aria-label='Tick Pull up'><span><svg width='14' height='14' viewBox='0 0 16 16' aria-hidden='true'><path d='M3.5 8.5l3 3 6-7' fill='none' stroke='#06240f' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'/></svg></span></label><div class='nm exname' data-name='Pull up'><b>Pull up</b><span class='nsub'>Back</span></div><button type='button' class='val' aria-label='Edit weight, sets and reps'></button><input type='number' class='w-num' step='0.5' value='60' data-lbs='60' hidden><input type='number' class='sr-sets' value='3' hidden><input type='text' class='sr-reps' value='15' hidden></div>
+<div class='sel-row prow' data-name='Lat pulldown' data-group='Back' data-also='Full body'><label class='ck'><input type='checkbox' class='sel' aria-label='Tick Lat pulldown'><span><svg width='14' height='14' viewBox='0 0 16 16' aria-hidden='true'><path d='M3.5 8.5l3 3 6-7' fill='none' stroke='#06240f' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'/></svg></span></label><div class='nm exname' data-name='Lat pulldown'><b>Lat pulldown</b><span class='nsub'>Back · <span class='also-off'>also in Full body</span><em class='also-on'>also ticks in Full body</em></span></div><button type='button' class='val' aria-label='Edit weight, sets and reps'></button><input type='number' class='w-num' step='0.5' value='60' data-lbs='60' hidden><input type='number' class='sr-sets' value='3' hidden><input type='text' class='sr-reps' value='15' hidden></div>
+<div class='sel-row prow' data-name='Back cable rowing' data-group='Back' data-also='Full body'><label class='ck'><input type='checkbox' class='sel' aria-label='Tick Back cable rowing'><span><svg width='14' height='14' viewBox='0 0 16 16' aria-hidden='true'><path d='M3.5 8.5l3 3 6-7' fill='none' stroke='#06240f' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'/></svg></span></label><div class='nm exname' data-name='Back cable rowing'><b>Back cable rowing</b><span class='nsub'>Back · <span class='also-off'>also in Full body</span><em class='also-on'>also ticks in Full body</em></span></div><button type='button' class='val' aria-label='Edit weight, sets and reps'></button><input type='number' class='w-num' step='0.5' value='60' data-lbs='60' hidden><input type='number' class='sr-sets' value='3' hidden><input type='text' class='sr-reps' value='15' hidden></div>
+<div class='sel-row prow' data-name='Face pull' data-group='Shoulder' data-also=''><label class='ck'><input type='checkbox' class='sel' aria-label='Tick Face pull'><span><svg width='14' height='14' viewBox='0 0 16 16' aria-hidden='true'><path d='M3.5 8.5l3 3 6-7' fill='none' stroke='#06240f' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'/></svg></span></label><div class='nm exname' data-name='Face pull'><b>Face pull</b><span class='nsub'>Shoulder</span></div><button type='button' class='val' aria-label='Edit weight, sets and reps'></button><input type='number' class='w-num' step='0.5' value='60' data-lbs='60' hidden><input type='number' class='sr-sets' value='3' hidden><input type='text' class='sr-reps' value='15' hidden></div>
+<div class='sel-row prow' data-name='Back Hyperextension' data-group='Back' data-also=''><label class='ck'><input type='checkbox' class='sel' aria-label='Tick Back Hyperextension'><span><svg width='14' height='14' viewBox='0 0 16 16' aria-hidden='true'><path d='M3.5 8.5l3 3 6-7' fill='none' stroke='#06240f' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'/></svg></span></label><div class='nm exname' data-name='Back Hyperextension'><b>Back Hyperextension</b><span class='nsub'>Back</span></div><button type='button' class='val' aria-label='Edit weight, sets and reps'></button><input type='number' class='w-num' step='0.5' value='10' data-lbs='10' hidden><input type='number' class='sr-sets' value='3' hidden><input type='text' class='sr-reps' value='15' hidden></div>
+<div class='sel-row prow' data-name='Bicep curl' data-group='Biceps' data-also=''><label class='ck'><input type='checkbox' class='sel' aria-label='Tick Bicep curl'><span><svg width='14' height='14' viewBox='0 0 16 16' aria-hidden='true'><path d='M3.5 8.5l3 3 6-7' fill='none' stroke='#06240f' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'/></svg></span></label><div class='nm exname' data-name='Bicep curl'><b>Bicep curl</b><span class='nsub'>Biceps</span></div><button type='button' class='val' aria-label='Edit weight, sets and reps'></button><input type='number' class='w-num' step='0.5' value='10' data-lbs='10' hidden><input type='number' class='sr-sets' value='3' hidden><input type='text' class='sr-reps' value='12' hidden></div>
     </div>
-    <button class="addrow" data-type="Lower">+ Add exercise</button>
-  </div>
+    <button type="button" class="padd" data-type="Pull B">+ Add exercise</button>
+  </section>
 
-  <div class="tpl-section">
-    <div class="tpl-head"><span class="badge" style="background:#ffc46b22;color:#ffc46b;border-color:#ffc46b44">Calf & Ankle</span><span class="count">4 exercises</span></div>
-    <div class="card" style="margin-top:.6rem">
-      <div class="tbl-wrap">
-      <table>
-        <thead><tr><th></th><th>Exercise</th><th>Weight</th><th>Sets×Reps</th></tr></thead>
-        <tbody data-type="Calf & Ankle">
-<tr class='sel-row'><td class='selcell'><input type='checkbox' class='sel'></td><td class='exname' data-name='* Calf raise'>* Calf raise <span class='grp'>(Calf)</span></td><td class='wcell'><input type='number' class='w-num' step='0.5' value='' data-lbs='' placeholder='-'><button type='button' class='w-unit' title='Switch lbs/kg'>lbs &#8644;</button></td><td class='srcell'><input type='number' class='sr-sets' value='3'>×<input type='text' class='sr-reps' value='12' placeholder='12 10 10 8'></td></tr>
-<tr class='sel-row'><td class='selcell'><input type='checkbox' class='sel'></td><td class='exname' data-name='* Bent-knee single-leg calf raise'>* Bent-knee single-leg calf raise <span class='grp'>(Soleus)</span></td><td class='wcell'><input type='number' class='w-num' step='0.5' value='22' data-lbs='22' placeholder='-'><button type='button' class='w-unit' title='Switch lbs/kg'>lbs &#8644;</button></td><td class='srcell'><input type='number' class='sr-sets' value='3'>×<input type='text' class='sr-reps' value='10' placeholder='12 10 10 8'></td></tr>
-<tr class='sel-row'><td class='selcell'><input type='checkbox' class='sel'></td><td class='exname' data-name='* Tibialis raise'>* Tibialis raise <span class='grp'>(Tibialis)</span></td><td class='wcell'><input type='number' class='w-num' step='0.5' value='' data-lbs='' placeholder='-'><button type='button' class='w-unit' title='Switch lbs/kg'>lbs &#8644;</button></td><td class='srcell'><input type='number' class='sr-sets' value='3'>×<input type='text' class='sr-reps' value='15' placeholder='12 10 10 8'></td></tr>
-<tr class='sel-row'><td class='selcell'><input type='checkbox' class='sel'></td><td class='exname' data-name='* Lateral band walk'>* Lateral band walk <span class='grp'>(Hip Abductor)</span></td><td class='wcell'><input type='number' class='w-num' step='0.5' value='' data-lbs='' placeholder='-'><button type='button' class='w-unit' title='Switch lbs/kg'>lbs &#8644;</button></td><td class='srcell'><input type='number' class='sr-sets' value='2'>×<input type='text' class='sr-reps' value='15' placeholder='12 10 10 8'></td></tr>
-        </tbody>
-      </table>
-      </div>
+  <section class="psec" data-type="Lower" data-color="#f7934f" style="--c:#f7934f" id="sec-lower">
+    <div class="psh"><span class='dot'></span><b>Lower</b><span class="pcnt">0/7</span><button type="button" class="ptick">Tick all</button></div>
+    <div class="plist" data-type="Lower">
+<div class='sel-row prow' data-name='* Jump squat' data-group='Quad/Glute' data-also=''><label class='ck'><input type='checkbox' class='sel' aria-label='Tick * Jump squat'><span><svg width='14' height='14' viewBox='0 0 16 16' aria-hidden='true'><path d='M3.5 8.5l3 3 6-7' fill='none' stroke='#06240f' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'/></svg></span></label><div class='nm exname' data-name='* Jump squat'><b>* Jump squat</b><span class='nsub'>Quad/Glute</span></div><button type='button' class='val' aria-label='Edit weight, sets and reps'></button><input type='number' class='w-num' step='0.5' value='' data-lbs='' hidden><input type='number' class='sr-sets' value='3' hidden><input type='text' class='sr-reps' value='6' hidden></div>
+<div class='sel-row prow' data-name='Squat' data-group='Quad/Glute' data-also='Full body'><label class='ck'><input type='checkbox' class='sel' aria-label='Tick Squat'><span><svg width='14' height='14' viewBox='0 0 16 16' aria-hidden='true'><path d='M3.5 8.5l3 3 6-7' fill='none' stroke='#06240f' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'/></svg></span></label><div class='nm exname' data-name='Squat'><b>Squat</b><span class='nsub'>Quad/Glute · <span class='also-off'>also in Full body</span><em class='also-on'>also ticks in Full body</em></span></div><button type='button' class='val' aria-label='Edit weight, sets and reps'></button><input type='number' class='w-num' step='0.5' value='44' data-lbs='44' hidden><input type='number' class='sr-sets' value='4' hidden><input type='text' class='sr-reps' value='8' hidden></div>
+<div class='sel-row prow' data-name='* Single-leg RDL' data-group='Hamstring/Glute' data-also=''><label class='ck'><input type='checkbox' class='sel' aria-label='Tick * Single-leg RDL'><span><svg width='14' height='14' viewBox='0 0 16 16' aria-hidden='true'><path d='M3.5 8.5l3 3 6-7' fill='none' stroke='#06240f' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'/></svg></span></label><div class='nm exname' data-name='* Single-leg RDL'><b>* Single-leg RDL</b><span class='nsub'>Hamstring/Glute</span></div><button type='button' class='val' aria-label='Edit weight, sets and reps'></button><input type='number' class='w-num' step='0.5' value='' data-lbs='' hidden><input type='number' class='sr-sets' value='3' hidden><input type='text' class='sr-reps' value='8' hidden></div>
+<div class='sel-row prow' data-name='* Bulgarian split squat' data-group='Quad/Glute' data-also=''><label class='ck'><input type='checkbox' class='sel' aria-label='Tick * Bulgarian split squat'><span><svg width='14' height='14' viewBox='0 0 16 16' aria-hidden='true'><path d='M3.5 8.5l3 3 6-7' fill='none' stroke='#06240f' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'/></svg></span></label><div class='nm exname' data-name='* Bulgarian split squat'><b>* Bulgarian split squat</b><span class='nsub'>Quad/Glute</span></div><button type='button' class='val' aria-label='Edit weight, sets and reps'></button><input type='number' class='w-num' step='0.5' value='20' data-lbs='20' hidden><input type='number' class='sr-sets' value='3' hidden><input type='text' class='sr-reps' value='8' hidden></div>
+<div class='sel-row prow' data-name='* Single-leg glute bridge' data-group='Glute' data-also=''><label class='ck'><input type='checkbox' class='sel' aria-label='Tick * Single-leg glute bridge'><span><svg width='14' height='14' viewBox='0 0 16 16' aria-hidden='true'><path d='M3.5 8.5l3 3 6-7' fill='none' stroke='#06240f' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'/></svg></span></label><div class='nm exname' data-name='* Single-leg glute bridge'><b>* Single-leg glute bridge</b><span class='nsub'>Glute</span></div><button type='button' class='val' aria-label='Edit weight, sets and reps'></button><input type='number' class='w-num' step='0.5' value='' data-lbs='' hidden><input type='number' class='sr-sets' value='3' hidden><input type='text' class='sr-reps' value='15' hidden></div>
+<div class='sel-row prow' data-name='* Bent-knee single-leg calf raise' data-group='Calf' data-also='Calf &amp; Ankle'><label class='ck'><input type='checkbox' class='sel' aria-label='Tick * Bent-knee single-leg calf raise'><span><svg width='14' height='14' viewBox='0 0 16 16' aria-hidden='true'><path d='M3.5 8.5l3 3 6-7' fill='none' stroke='#06240f' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'/></svg></span></label><div class='nm exname' data-name='* Bent-knee single-leg calf raise'><b>* Bent-knee single-leg calf raise</b><span class='nsub'>Calf · <span class='also-off'>also in Calf &amp; Ankle</span><em class='also-on'>also ticks in Calf &amp; Ankle</em></span></div><button type='button' class='val' aria-label='Edit weight, sets and reps'></button><input type='number' class='w-num' step='0.5' value='22' data-lbs='22' hidden><input type='number' class='sr-sets' value='3' hidden><input type='text' class='sr-reps' value='10' hidden></div>
+<div class='sel-row prow' data-name='* Tibialis raise' data-group='Tibialis' data-also='Calf &amp; Ankle'><label class='ck'><input type='checkbox' class='sel' aria-label='Tick * Tibialis raise'><span><svg width='14' height='14' viewBox='0 0 16 16' aria-hidden='true'><path d='M3.5 8.5l3 3 6-7' fill='none' stroke='#06240f' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'/></svg></span></label><div class='nm exname' data-name='* Tibialis raise'><b>* Tibialis raise</b><span class='nsub'>Tibialis · <span class='also-off'>also in Calf &amp; Ankle</span><em class='also-on'>also ticks in Calf &amp; Ankle</em></span></div><button type='button' class='val' aria-label='Edit weight, sets and reps'></button><input type='number' class='w-num' step='0.5' value='' data-lbs='' hidden><input type='number' class='sr-sets' value='3' hidden><input type='text' class='sr-reps' value='15' hidden></div>
     </div>
-    <button class="addrow" data-type="Calf & Ankle">+ Add exercise</button>
-  </div>
+    <button type="button" class="padd" data-type="Lower">+ Add exercise</button>
+  </section>
 
-  <div class="tpl-section">
-    <div class="tpl-head"><span class="badge" style="background:#e3c04f22;color:#e3c04f;border-color:#e3c04f44">Full body</span><span class="count">6 exercises</span></div>
-    <div class="card" style="margin-top:.6rem">
-      <div class="tbl-wrap">
-      <table>
-        <thead><tr><th></th><th>Exercise</th><th>Weight</th><th>Sets×Reps</th></tr></thead>
-        <tbody data-type="Full body">
-<tr class='sel-row'><td class='selcell'><input type='checkbox' class='sel'></td><td class='exname' data-name='Squat'>Squat</td><td class='wcell'><input type='number' class='w-num' step='0.5' value='44' data-lbs='44' placeholder='-'><button type='button' class='w-unit' title='Switch lbs/kg'>lbs &#8644;</button></td><td class='srcell'><input type='number' class='sr-sets' value='3'>×<input type='text' class='sr-reps' value='10' placeholder='12 10 10 8'></td></tr>
-<tr class='sel-row'><td class='selcell'><input type='checkbox' class='sel'></td><td class='exname' data-name='* Romanian deadlift'>* Romanian deadlift</td><td class='wcell'><input type='number' class='w-num' step='0.5' value='77' data-lbs='77' placeholder='-'><button type='button' class='w-unit' title='Switch lbs/kg'>lbs &#8644;</button></td><td class='srcell'><input type='number' class='sr-sets' value='3'>×<input type='text' class='sr-reps' value='12' placeholder='12 10 10 8'></td></tr>
-<tr class='sel-row'><td class='selcell'><input type='checkbox' class='sel'></td><td class='exname' data-name='Supine bench press'>Supine bench press</td><td class='wcell'><input type='number' class='w-num' step='0.5' value='20' data-lbs='20' placeholder='-'><button type='button' class='w-unit' title='Switch lbs/kg'>lbs &#8644;</button></td><td class='srcell'><input type='number' class='sr-sets' value='3'>×<input type='text' class='sr-reps' value='10' placeholder='12 10 10 8'></td></tr>
-<tr class='sel-row'><td class='selcell'><input type='checkbox' class='sel'></td><td class='exname' data-name='Back cable rowing'>Back cable rowing</td><td class='wcell'><input type='number' class='w-num' step='0.5' value='60' data-lbs='60' placeholder='-'><button type='button' class='w-unit' title='Switch lbs/kg'>lbs &#8644;</button></td><td class='srcell'><input type='number' class='sr-sets' value='3'>×<input type='text' class='sr-reps' value='12' placeholder='12 10 10 8'></td></tr>
-<tr class='sel-row'><td class='selcell'><input type='checkbox' class='sel'></td><td class='exname' data-name='Shoulder press'>Shoulder press</td><td class='wcell'><input type='number' class='w-num' step='0.5' value='49.5' data-lbs='49.5' placeholder='-'><button type='button' class='w-unit' title='Switch lbs/kg'>lbs &#8644;</button></td><td class='srcell'><input type='number' class='sr-sets' value='3'>×<input type='text' class='sr-reps' value='12' placeholder='12 10 10 8'></td></tr>
-<tr class='sel-row'><td class='selcell'><input type='checkbox' class='sel'></td><td class='exname' data-name='Lat pulldown'>Lat pulldown</td><td class='wcell'><input type='number' class='w-num' step='0.5' value='60' data-lbs='60' placeholder='-'><button type='button' class='w-unit' title='Switch lbs/kg'>lbs &#8644;</button></td><td class='srcell'><input type='number' class='sr-sets' value='3'>×<input type='text' class='sr-reps' value='10' placeholder='12 10 10 8'></td></tr>
-        </tbody>
-      </table>
-      </div>
+  <section class="psec" data-type="Calf &amp; Ankle" data-color="#ffc46b" style="--c:#ffc46b" id="sec-calf-ankle">
+    <div class="psh"><span class='dot'></span><b>Calf &amp; Ankle</b><span class="pcnt">0/4</span><button type="button" class="ptick">Tick all</button></div>
+    <div class="plist" data-type="Calf &amp; Ankle">
+<div class='sel-row prow' data-name='* Calf raise' data-group='Calf' data-also=''><label class='ck'><input type='checkbox' class='sel' aria-label='Tick * Calf raise'><span><svg width='14' height='14' viewBox='0 0 16 16' aria-hidden='true'><path d='M3.5 8.5l3 3 6-7' fill='none' stroke='#06240f' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'/></svg></span></label><div class='nm exname' data-name='* Calf raise'><b>* Calf raise</b><span class='nsub'>Calf</span></div><button type='button' class='val' aria-label='Edit weight, sets and reps'></button><input type='number' class='w-num' step='0.5' value='' data-lbs='' hidden><input type='number' class='sr-sets' value='3' hidden><input type='text' class='sr-reps' value='12' hidden></div>
+<div class='sel-row prow' data-name='* Bent-knee single-leg calf raise' data-group='Soleus' data-also='Lower'><label class='ck'><input type='checkbox' class='sel' aria-label='Tick * Bent-knee single-leg calf raise'><span><svg width='14' height='14' viewBox='0 0 16 16' aria-hidden='true'><path d='M3.5 8.5l3 3 6-7' fill='none' stroke='#06240f' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'/></svg></span></label><div class='nm exname' data-name='* Bent-knee single-leg calf raise'><b>* Bent-knee single-leg calf raise</b><span class='nsub'>Soleus · <span class='also-off'>also in Lower</span><em class='also-on'>also ticks in Lower</em></span></div><button type='button' class='val' aria-label='Edit weight, sets and reps'></button><input type='number' class='w-num' step='0.5' value='22' data-lbs='22' hidden><input type='number' class='sr-sets' value='3' hidden><input type='text' class='sr-reps' value='10' hidden></div>
+<div class='sel-row prow' data-name='* Tibialis raise' data-group='Tibialis' data-also='Lower'><label class='ck'><input type='checkbox' class='sel' aria-label='Tick * Tibialis raise'><span><svg width='14' height='14' viewBox='0 0 16 16' aria-hidden='true'><path d='M3.5 8.5l3 3 6-7' fill='none' stroke='#06240f' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'/></svg></span></label><div class='nm exname' data-name='* Tibialis raise'><b>* Tibialis raise</b><span class='nsub'>Tibialis · <span class='also-off'>also in Lower</span><em class='also-on'>also ticks in Lower</em></span></div><button type='button' class='val' aria-label='Edit weight, sets and reps'></button><input type='number' class='w-num' step='0.5' value='' data-lbs='' hidden><input type='number' class='sr-sets' value='3' hidden><input type='text' class='sr-reps' value='15' hidden></div>
+<div class='sel-row prow' data-name='* Lateral band walk' data-group='Hip Abductor' data-also=''><label class='ck'><input type='checkbox' class='sel' aria-label='Tick * Lateral band walk'><span><svg width='14' height='14' viewBox='0 0 16 16' aria-hidden='true'><path d='M3.5 8.5l3 3 6-7' fill='none' stroke='#06240f' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'/></svg></span></label><div class='nm exname' data-name='* Lateral band walk'><b>* Lateral band walk</b><span class='nsub'>Hip Abductor</span></div><button type='button' class='val' aria-label='Edit weight, sets and reps'></button><input type='number' class='w-num' step='0.5' value='' data-lbs='' hidden><input type='number' class='sr-sets' value='2' hidden><input type='text' class='sr-reps' value='15' hidden></div>
     </div>
-    <button class="addrow" data-type="Full body">+ Add exercise</button>
-  </div>
+    <button type="button" class="padd" data-type="Calf &amp; Ankle">+ Add exercise</button>
+  </section>
 
-  <div class="tpl-section">
-    <div class="tpl-head"><span class="badge" style="background:#f75f8f22;color:#f75f8f;border-color:#f75f8f44">Core</span><span class="count">10 exercises</span></div>
-    <div class="card" style="margin-top:.6rem">
-      <div class="tbl-wrap">
-      <table>
-        <thead><tr><th></th><th>Exercise</th><th>Weight</th><th>Sets×Reps</th></tr></thead>
-        <tbody data-type="Core">
-<tr class='sel-row'><td class='selcell'><input type='checkbox' class='sel'></td><td class='exname' data-name='Bird dog'>Bird dog</td><td class='wcell'><input type='number' class='w-num' step='0.5' value='' data-lbs='' placeholder='-'><button type='button' class='w-unit' title='Switch lbs/kg'>lbs &#8644;</button></td><td class='srcell'><input type='number' class='sr-sets' value='3'>×<input type='text' class='sr-reps' value='8' placeholder='12 10 10 8'></td></tr>
-<tr class='sel-row'><td class='selcell'><input type='checkbox' class='sel'></td><td class='exname' data-name='Side plank'>Side plank</td><td class='wcell'><input type='number' class='w-num' step='0.5' value='' data-lbs='' placeholder='-'><button type='button' class='w-unit' title='Switch lbs/kg'>lbs &#8644;</button></td><td class='srcell'><input type='number' class='sr-sets' value='3'>×<input type='text' class='sr-reps' value='8' placeholder='12 10 10 8'></td></tr>
-<tr class='sel-row'><td class='selcell'><input type='checkbox' class='sel'></td><td class='exname' data-name='* Copenhagen adductor'>* Copenhagen adductor <span class='grp'>(Adductor)</span></td><td class='wcell'><input type='number' class='w-num' step='0.5' value='' data-lbs='' placeholder='-'><button type='button' class='w-unit' title='Switch lbs/kg'>lbs &#8644;</button></td><td class='srcell'><input type='number' class='sr-sets' value='3'>×<input type='text' class='sr-reps' value='6' placeholder='12 10 10 8'></td></tr>
-<tr class='sel-row'><td class='selcell'><input type='checkbox' class='sel'></td><td class='exname' data-name='Curl-up'>Curl-up</td><td class='wcell'><input type='number' class='w-num' step='0.5' value='' data-lbs='' placeholder='-'><button type='button' class='w-unit' title='Switch lbs/kg'>lbs &#8644;</button></td><td class='srcell'><input type='number' class='sr-sets' value='3'>×<input type='text' class='sr-reps' value='8' placeholder='12 10 10 8'></td></tr>
-<tr class='sel-row'><td class='selcell'><input type='checkbox' class='sel'></td><td class='exname' data-name='Cat-cow'>Cat-cow</td><td class='wcell'><input type='number' class='w-num' step='0.5' value='' data-lbs='' placeholder='-'><button type='button' class='w-unit' title='Switch lbs/kg'>lbs &#8644;</button></td><td class='srcell'><input type='number' class='sr-sets' value='1'>×<input type='text' class='sr-reps' value='10' placeholder='12 10 10 8'></td></tr>
-<tr class='sel-row'><td class='selcell'><input type='checkbox' class='sel'></td><td class='exname' data-name='* Dead bug (long lever)'>* Dead bug (long lever)</td><td class='wcell'><input type='number' class='w-num' step='0.5' value='' data-lbs='' placeholder='-'><button type='button' class='w-unit' title='Switch lbs/kg'>lbs &#8644;</button></td><td class='srcell'><input type='number' class='sr-sets' value='3'>×<input type='text' class='sr-reps' value='8' placeholder='12 10 10 8'></td></tr>
-<tr class='sel-row'><td class='selcell'><input type='checkbox' class='sel'></td><td class='exname' data-name='* Pallof march'>* Pallof march</td><td class='wcell'><input type='number' class='w-num' step='0.5' value='' data-lbs='' placeholder='-'><button type='button' class='w-unit' title='Switch lbs/kg'>lbs &#8644;</button></td><td class='srcell'><input type='number' class='sr-sets' value='3'>×<input type='text' class='sr-reps' value='10' placeholder='12 10 10 8'></td></tr>
-<tr class='sel-row'><td class='selcell'><input type='checkbox' class='sel'></td><td class='exname' data-name='* Cable crunch'>* Cable crunch</td><td class='wcell'><input type='number' class='w-num' step='0.5' value='50' data-lbs='50' placeholder='-'><button type='button' class='w-unit' title='Switch lbs/kg'>lbs &#8644;</button></td><td class='srcell'><input type='number' class='sr-sets' value='3'>×<input type='text' class='sr-reps' value='12' placeholder='12 10 10 8'></td></tr>
-<tr class='sel-row'><td class='selcell'><input type='checkbox' class='sel'></td><td class='exname' data-name='* Hanging leg raise'>* Hanging leg raise</td><td class='wcell'><input type='number' class='w-num' step='0.5' value='' data-lbs='' placeholder='-'><button type='button' class='w-unit' title='Switch lbs/kg'>lbs &#8644;</button></td><td class='srcell'><input type='number' class='sr-sets' value='3'>×<input type='text' class='sr-reps' value='10' placeholder='12 10 10 8'></td></tr>
-<tr class='sel-row'><td class='selcell'><input type='checkbox' class='sel'></td><td class='exname' data-name='* Reverse crunch'>* Reverse crunch</td><td class='wcell'><input type='number' class='w-num' step='0.5' value='' data-lbs='' placeholder='-'><button type='button' class='w-unit' title='Switch lbs/kg'>lbs &#8644;</button></td><td class='srcell'><input type='number' class='sr-sets' value='3'>×<input type='text' class='sr-reps' value='12' placeholder='12 10 10 8'></td></tr>
-        </tbody>
-      </table>
-      </div>
+  <section class="psec" data-type="Full body" data-color="#e3c04f" style="--c:#e3c04f" id="sec-full-body">
+    <div class="psh"><span class='dot'></span><b>Full body</b><span class="pcnt">0/6</span><button type="button" class="ptick">Tick all</button></div>
+    <div class="plist" data-type="Full body">
+<div class='sel-row prow' data-name='Squat' data-group='' data-also='Lower'><label class='ck'><input type='checkbox' class='sel' aria-label='Tick Squat'><span><svg width='14' height='14' viewBox='0 0 16 16' aria-hidden='true'><path d='M3.5 8.5l3 3 6-7' fill='none' stroke='#06240f' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'/></svg></span></label><div class='nm exname' data-name='Squat'><b>Squat</b><span class='nsub'><span class='also-off'>also in Lower</span><em class='also-on'>also ticks in Lower</em></span></div><button type='button' class='val' aria-label='Edit weight, sets and reps'></button><input type='number' class='w-num' step='0.5' value='44' data-lbs='44' hidden><input type='number' class='sr-sets' value='3' hidden><input type='text' class='sr-reps' value='10' hidden></div>
+<div class='sel-row prow' data-name='* Romanian deadlift' data-group='' data-also=''><label class='ck'><input type='checkbox' class='sel' aria-label='Tick * Romanian deadlift'><span><svg width='14' height='14' viewBox='0 0 16 16' aria-hidden='true'><path d='M3.5 8.5l3 3 6-7' fill='none' stroke='#06240f' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'/></svg></span></label><div class='nm exname' data-name='* Romanian deadlift'><b>* Romanian deadlift</b><span class='nsub'></span></div><button type='button' class='val' aria-label='Edit weight, sets and reps'></button><input type='number' class='w-num' step='0.5' value='77' data-lbs='77' hidden><input type='number' class='sr-sets' value='3' hidden><input type='text' class='sr-reps' value='12' hidden></div>
+<div class='sel-row prow' data-name='Supine bench press' data-group='' data-also=''><label class='ck'><input type='checkbox' class='sel' aria-label='Tick Supine bench press'><span><svg width='14' height='14' viewBox='0 0 16 16' aria-hidden='true'><path d='M3.5 8.5l3 3 6-7' fill='none' stroke='#06240f' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'/></svg></span></label><div class='nm exname' data-name='Supine bench press'><b>Supine bench press</b><span class='nsub'></span></div><button type='button' class='val' aria-label='Edit weight, sets and reps'></button><input type='number' class='w-num' step='0.5' value='20' data-lbs='20' hidden><input type='number' class='sr-sets' value='3' hidden><input type='text' class='sr-reps' value='10' hidden></div>
+<div class='sel-row prow' data-name='Back cable rowing' data-group='' data-also='Pull B'><label class='ck'><input type='checkbox' class='sel' aria-label='Tick Back cable rowing'><span><svg width='14' height='14' viewBox='0 0 16 16' aria-hidden='true'><path d='M3.5 8.5l3 3 6-7' fill='none' stroke='#06240f' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'/></svg></span></label><div class='nm exname' data-name='Back cable rowing'><b>Back cable rowing</b><span class='nsub'><span class='also-off'>also in Pull B</span><em class='also-on'>also ticks in Pull B</em></span></div><button type='button' class='val' aria-label='Edit weight, sets and reps'></button><input type='number' class='w-num' step='0.5' value='60' data-lbs='60' hidden><input type='number' class='sr-sets' value='3' hidden><input type='text' class='sr-reps' value='12' hidden></div>
+<div class='sel-row prow' data-name='Shoulder press' data-group='' data-also='Push A'><label class='ck'><input type='checkbox' class='sel' aria-label='Tick Shoulder press'><span><svg width='14' height='14' viewBox='0 0 16 16' aria-hidden='true'><path d='M3.5 8.5l3 3 6-7' fill='none' stroke='#06240f' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'/></svg></span></label><div class='nm exname' data-name='Shoulder press'><b>Shoulder press</b><span class='nsub'><span class='also-off'>also in Push A</span><em class='also-on'>also ticks in Push A</em></span></div><button type='button' class='val' aria-label='Edit weight, sets and reps'></button><input type='number' class='w-num' step='0.5' value='49.5' data-lbs='49.5' hidden><input type='number' class='sr-sets' value='3' hidden><input type='text' class='sr-reps' value='12' hidden></div>
+<div class='sel-row prow' data-name='Lat pulldown' data-group='' data-also='Pull B'><label class='ck'><input type='checkbox' class='sel' aria-label='Tick Lat pulldown'><span><svg width='14' height='14' viewBox='0 0 16 16' aria-hidden='true'><path d='M3.5 8.5l3 3 6-7' fill='none' stroke='#06240f' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'/></svg></span></label><div class='nm exname' data-name='Lat pulldown'><b>Lat pulldown</b><span class='nsub'><span class='also-off'>also in Pull B</span><em class='also-on'>also ticks in Pull B</em></span></div><button type='button' class='val' aria-label='Edit weight, sets and reps'></button><input type='number' class='w-num' step='0.5' value='60' data-lbs='60' hidden><input type='number' class='sr-sets' value='3' hidden><input type='text' class='sr-reps' value='10' hidden></div>
     </div>
-    <button class="addrow" data-type="Core">+ Add exercise</button>
-  </div>
+    <button type="button" class="padd" data-type="Full body">+ Add exercise</button>
+  </section>
 
-  <div class="tpl-section">
-    <div class="tpl-head"><span class="badge" style="background:#4fd8f722;color:#4fd8f7;border-color:#4fd8f744">Mobility</span><span class="count">5 exercises</span></div>
-    <div class="card" style="margin-top:.6rem">
-      <div class="tbl-wrap">
-      <table>
-        <thead><tr><th></th><th>Exercise</th><th>Weight</th><th>Sets×Reps</th></tr></thead>
-        <tbody data-type="Mobility">
-<tr class='sel-row'><td class='selcell'><input type='checkbox' class='sel'></td><td class='exname' data-name='Runner&#39;s lunge'>Runner's lunge</td><td class='wcell'><input type='number' class='w-num' step='0.5' value='' data-lbs='' placeholder='-'><button type='button' class='w-unit' title='Switch lbs/kg'>lbs &#8644;</button></td><td class='srcell'><input type='number' class='sr-sets' value='2'>×<input type='text' class='sr-reps' value='8' placeholder='12 10 10 8'></td></tr>
-<tr class='sel-row'><td class='selcell'><input type='checkbox' class='sel'></td><td class='exname' data-name='Deep squat'>Deep squat</td><td class='wcell'><input type='number' class='w-num' step='0.5' value='' data-lbs='' placeholder='-'><button type='button' class='w-unit' title='Switch lbs/kg'>lbs &#8644;</button></td><td class='srcell'><input type='number' class='sr-sets' value='2'>×<input type='text' class='sr-reps' value='10' placeholder='12 10 10 8'></td></tr>
-<tr class='sel-row'><td class='selcell'><input type='checkbox' class='sel'></td><td class='exname' data-name='Windshield wipers'>Windshield wipers</td><td class='wcell'><input type='number' class='w-num' step='0.5' value='' data-lbs='' placeholder='-'><button type='button' class='w-unit' title='Switch lbs/kg'>lbs &#8644;</button></td><td class='srcell'><input type='number' class='sr-sets' value='2'>×<input type='text' class='sr-reps' value='10' placeholder='12 10 10 8'></td></tr>
-<tr class='sel-row'><td class='selcell'><input type='checkbox' class='sel'></td><td class='exname' data-name='Cobra flow'>Cobra flow</td><td class='wcell'><input type='number' class='w-num' step='0.5' value='' data-lbs='' placeholder='-'><button type='button' class='w-unit' title='Switch lbs/kg'>lbs &#8644;</button></td><td class='srcell'><input type='number' class='sr-sets' value='2'>×<input type='text' class='sr-reps' value='10' placeholder='12 10 10 8'></td></tr>
-<tr class='sel-row'><td class='selcell'><input type='checkbox' class='sel'></td><td class='exname' data-name='Cossack squat'>Cossack squat</td><td class='wcell'><input type='number' class='w-num' step='0.5' value='' data-lbs='' placeholder='-'><button type='button' class='w-unit' title='Switch lbs/kg'>lbs &#8644;</button></td><td class='srcell'><input type='number' class='sr-sets' value='2'>×<input type='text' class='sr-reps' value='8' placeholder='12 10 10 8'></td></tr>
-        </tbody>
-      </table>
-      </div>
+  <section class="psec" data-type="Core" data-color="#f75f8f" style="--c:#f75f8f" id="sec-core">
+    <div class="psh"><span class='dot'></span><b>Core</b><span class="pcnt">0/10</span><button type="button" class="ptick">Tick all</button></div>
+    <div class="plist" data-type="Core">
+<div class='sel-row prow' data-name='Bird dog' data-group='' data-also='Hip Flexor'><label class='ck'><input type='checkbox' class='sel' aria-label='Tick Bird dog'><span><svg width='14' height='14' viewBox='0 0 16 16' aria-hidden='true'><path d='M3.5 8.5l3 3 6-7' fill='none' stroke='#06240f' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'/></svg></span></label><div class='nm exname' data-name='Bird dog'><b>Bird dog</b><span class='nsub'><span class='also-off'>also in Hip Flexor</span><em class='also-on'>also ticks in Hip Flexor</em></span></div><button type='button' class='val' aria-label='Edit weight, sets and reps'></button><input type='number' class='w-num' step='0.5' value='' data-lbs='' hidden><input type='number' class='sr-sets' value='3' hidden><input type='text' class='sr-reps' value='8' hidden></div>
+<div class='sel-row prow' data-name='Side plank' data-group='' data-also=''><label class='ck'><input type='checkbox' class='sel' aria-label='Tick Side plank'><span><svg width='14' height='14' viewBox='0 0 16 16' aria-hidden='true'><path d='M3.5 8.5l3 3 6-7' fill='none' stroke='#06240f' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'/></svg></span></label><div class='nm exname' data-name='Side plank'><b>Side plank</b><span class='nsub'></span></div><button type='button' class='val' aria-label='Edit weight, sets and reps'></button><input type='number' class='w-num' step='0.5' value='' data-lbs='' hidden><input type='number' class='sr-sets' value='3' hidden><input type='text' class='sr-reps' value='8' hidden></div>
+<div class='sel-row prow' data-name='* Copenhagen adductor' data-group='Adductor' data-also=''><label class='ck'><input type='checkbox' class='sel' aria-label='Tick * Copenhagen adductor'><span><svg width='14' height='14' viewBox='0 0 16 16' aria-hidden='true'><path d='M3.5 8.5l3 3 6-7' fill='none' stroke='#06240f' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'/></svg></span></label><div class='nm exname' data-name='* Copenhagen adductor'><b>* Copenhagen adductor</b><span class='nsub'>Adductor</span></div><button type='button' class='val' aria-label='Edit weight, sets and reps'></button><input type='number' class='w-num' step='0.5' value='' data-lbs='' hidden><input type='number' class='sr-sets' value='3' hidden><input type='text' class='sr-reps' value='6' hidden></div>
+<div class='sel-row prow' data-name='Curl-up' data-group='' data-also=''><label class='ck'><input type='checkbox' class='sel' aria-label='Tick Curl-up'><span><svg width='14' height='14' viewBox='0 0 16 16' aria-hidden='true'><path d='M3.5 8.5l3 3 6-7' fill='none' stroke='#06240f' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'/></svg></span></label><div class='nm exname' data-name='Curl-up'><b>Curl-up</b><span class='nsub'></span></div><button type='button' class='val' aria-label='Edit weight, sets and reps'></button><input type='number' class='w-num' step='0.5' value='' data-lbs='' hidden><input type='number' class='sr-sets' value='3' hidden><input type='text' class='sr-reps' value='8' hidden></div>
+<div class='sel-row prow' data-name='Cat-cow' data-group='' data-also=''><label class='ck'><input type='checkbox' class='sel' aria-label='Tick Cat-cow'><span><svg width='14' height='14' viewBox='0 0 16 16' aria-hidden='true'><path d='M3.5 8.5l3 3 6-7' fill='none' stroke='#06240f' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'/></svg></span></label><div class='nm exname' data-name='Cat-cow'><b>Cat-cow</b><span class='nsub'></span></div><button type='button' class='val' aria-label='Edit weight, sets and reps'></button><input type='number' class='w-num' step='0.5' value='' data-lbs='' hidden><input type='number' class='sr-sets' value='1' hidden><input type='text' class='sr-reps' value='10' hidden></div>
+<div class='sel-row prow' data-name='* Dead bug (long lever)' data-group='' data-also=''><label class='ck'><input type='checkbox' class='sel' aria-label='Tick * Dead bug (long lever)'><span><svg width='14' height='14' viewBox='0 0 16 16' aria-hidden='true'><path d='M3.5 8.5l3 3 6-7' fill='none' stroke='#06240f' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'/></svg></span></label><div class='nm exname' data-name='* Dead bug (long lever)'><b>* Dead bug (long lever)</b><span class='nsub'></span></div><button type='button' class='val' aria-label='Edit weight, sets and reps'></button><input type='number' class='w-num' step='0.5' value='' data-lbs='' hidden><input type='number' class='sr-sets' value='3' hidden><input type='text' class='sr-reps' value='8' hidden></div>
+<div class='sel-row prow' data-name='* Pallof march' data-group='' data-also=''><label class='ck'><input type='checkbox' class='sel' aria-label='Tick * Pallof march'><span><svg width='14' height='14' viewBox='0 0 16 16' aria-hidden='true'><path d='M3.5 8.5l3 3 6-7' fill='none' stroke='#06240f' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'/></svg></span></label><div class='nm exname' data-name='* Pallof march'><b>* Pallof march</b><span class='nsub'></span></div><button type='button' class='val' aria-label='Edit weight, sets and reps'></button><input type='number' class='w-num' step='0.5' value='' data-lbs='' hidden><input type='number' class='sr-sets' value='3' hidden><input type='text' class='sr-reps' value='10' hidden></div>
+<div class='sel-row prow' data-name='* Cable crunch' data-group='' data-also=''><label class='ck'><input type='checkbox' class='sel' aria-label='Tick * Cable crunch'><span><svg width='14' height='14' viewBox='0 0 16 16' aria-hidden='true'><path d='M3.5 8.5l3 3 6-7' fill='none' stroke='#06240f' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'/></svg></span></label><div class='nm exname' data-name='* Cable crunch'><b>* Cable crunch</b><span class='nsub'></span></div><button type='button' class='val' aria-label='Edit weight, sets and reps'></button><input type='number' class='w-num' step='0.5' value='50' data-lbs='50' hidden><input type='number' class='sr-sets' value='3' hidden><input type='text' class='sr-reps' value='12' hidden></div>
+<div class='sel-row prow' data-name='* Hanging leg raise' data-group='' data-also=''><label class='ck'><input type='checkbox' class='sel' aria-label='Tick * Hanging leg raise'><span><svg width='14' height='14' viewBox='0 0 16 16' aria-hidden='true'><path d='M3.5 8.5l3 3 6-7' fill='none' stroke='#06240f' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'/></svg></span></label><div class='nm exname' data-name='* Hanging leg raise'><b>* Hanging leg raise</b><span class='nsub'></span></div><button type='button' class='val' aria-label='Edit weight, sets and reps'></button><input type='number' class='w-num' step='0.5' value='' data-lbs='' hidden><input type='number' class='sr-sets' value='3' hidden><input type='text' class='sr-reps' value='10' hidden></div>
+<div class='sel-row prow' data-name='* Reverse crunch' data-group='' data-also=''><label class='ck'><input type='checkbox' class='sel' aria-label='Tick * Reverse crunch'><span><svg width='14' height='14' viewBox='0 0 16 16' aria-hidden='true'><path d='M3.5 8.5l3 3 6-7' fill='none' stroke='#06240f' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'/></svg></span></label><div class='nm exname' data-name='* Reverse crunch'><b>* Reverse crunch</b><span class='nsub'></span></div><button type='button' class='val' aria-label='Edit weight, sets and reps'></button><input type='number' class='w-num' step='0.5' value='' data-lbs='' hidden><input type='number' class='sr-sets' value='3' hidden><input type='text' class='sr-reps' value='12' hidden></div>
     </div>
-    <button class="addrow" data-type="Mobility">+ Add exercise</button>
-  </div>
+    <button type="button" class="padd" data-type="Core">+ Add exercise</button>
+  </section>
 
-  <div class="tpl-section">
-    <div class="tpl-head"><span class="badge" style="background:#e39d4f22;color:#e39d4f;border-color:#e39d4f44">Hip Flexor</span><span class="count">5 exercises</span></div>
-    <div class="card" style="margin-top:.6rem">
-      <div class="tbl-wrap">
-      <table>
-        <thead><tr><th></th><th>Exercise</th><th>Weight</th><th>Sets×Reps</th></tr></thead>
-        <tbody data-type="Hip Flexor">
-<tr class='sel-row'><td class='selcell'><input type='checkbox' class='sel'></td><td class='exname' data-name='Hip flexor stretch'>Hip flexor stretch</td><td class='wcell'><input type='number' class='w-num' step='0.5' value='' data-lbs='' placeholder='-'><button type='button' class='w-unit' title='Switch lbs/kg'>lbs &#8644;</button></td><td class='srcell'><input type='number' class='sr-sets' value='2'>×<input type='text' class='sr-reps' value='2' placeholder='12 10 10 8'></td></tr>
-<tr class='sel-row'><td class='selcell'><input type='checkbox' class='sel'></td><td class='exname' data-name='Kneeling lunge stretch'>Kneeling lunge stretch</td><td class='wcell'><input type='number' class='w-num' step='0.5' value='' data-lbs='' placeholder='-'><button type='button' class='w-unit' title='Switch lbs/kg'>lbs &#8644;</button></td><td class='srcell'><input type='number' class='sr-sets' value='2'>×<input type='text' class='sr-reps' value='2' placeholder='12 10 10 8'></td></tr>
-<tr class='sel-row'><td class='selcell'><input type='checkbox' class='sel'></td><td class='exname' data-name='Glute bridge'>Glute bridge</td><td class='wcell'><input type='number' class='w-num' step='0.5' value='' data-lbs='' placeholder='-'><button type='button' class='w-unit' title='Switch lbs/kg'>lbs &#8644;</button></td><td class='srcell'><input type='number' class='sr-sets' value='3'>×<input type='text' class='sr-reps' value='12' placeholder='12 10 10 8'></td></tr>
-<tr class='sel-row'><td class='selcell'><input type='checkbox' class='sel'></td><td class='exname' data-name='Dead bug'>Dead bug</td><td class='wcell'><input type='number' class='w-num' step='0.5' value='' data-lbs='' placeholder='-'><button type='button' class='w-unit' title='Switch lbs/kg'>lbs &#8644;</button></td><td class='srcell'><input type='number' class='sr-sets' value='3'>×<input type='text' class='sr-reps' value='8' placeholder='12 10 10 8'></td></tr>
-<tr class='sel-row'><td class='selcell'><input type='checkbox' class='sel'></td><td class='exname' data-name='Bird dog'>Bird dog</td><td class='wcell'><input type='number' class='w-num' step='0.5' value='' data-lbs='' placeholder='-'><button type='button' class='w-unit' title='Switch lbs/kg'>lbs &#8644;</button></td><td class='srcell'><input type='number' class='sr-sets' value='3'>×<input type='text' class='sr-reps' value='8' placeholder='12 10 10 8'></td></tr>
-        </tbody>
-      </table>
-      </div>
+  <section class="psec" data-type="Mobility" data-color="#4fd8f7" style="--c:#4fd8f7" id="sec-mobility">
+    <div class="psh"><span class='dot'></span><b>Mobility</b><span class="pcnt">0/5</span><button type="button" class="ptick">Tick all</button></div>
+    <div class="plist" data-type="Mobility">
+<div class='sel-row prow' data-name='Runner&#x27;s lunge' data-group='' data-also=''><label class='ck'><input type='checkbox' class='sel' aria-label='Tick Runner&#x27;s lunge'><span><svg width='14' height='14' viewBox='0 0 16 16' aria-hidden='true'><path d='M3.5 8.5l3 3 6-7' fill='none' stroke='#06240f' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'/></svg></span></label><div class='nm exname' data-name='Runner&#x27;s lunge'><b>Runner&#x27;s lunge</b><span class='nsub'></span></div><button type='button' class='val' aria-label='Edit weight, sets and reps'></button><input type='number' class='w-num' step='0.5' value='' data-lbs='' hidden><input type='number' class='sr-sets' value='2' hidden><input type='text' class='sr-reps' value='8' hidden></div>
+<div class='sel-row prow' data-name='Deep squat' data-group='' data-also=''><label class='ck'><input type='checkbox' class='sel' aria-label='Tick Deep squat'><span><svg width='14' height='14' viewBox='0 0 16 16' aria-hidden='true'><path d='M3.5 8.5l3 3 6-7' fill='none' stroke='#06240f' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'/></svg></span></label><div class='nm exname' data-name='Deep squat'><b>Deep squat</b><span class='nsub'></span></div><button type='button' class='val' aria-label='Edit weight, sets and reps'></button><input type='number' class='w-num' step='0.5' value='' data-lbs='' hidden><input type='number' class='sr-sets' value='2' hidden><input type='text' class='sr-reps' value='10' hidden></div>
+<div class='sel-row prow' data-name='Windshield wipers' data-group='' data-also=''><label class='ck'><input type='checkbox' class='sel' aria-label='Tick Windshield wipers'><span><svg width='14' height='14' viewBox='0 0 16 16' aria-hidden='true'><path d='M3.5 8.5l3 3 6-7' fill='none' stroke='#06240f' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'/></svg></span></label><div class='nm exname' data-name='Windshield wipers'><b>Windshield wipers</b><span class='nsub'></span></div><button type='button' class='val' aria-label='Edit weight, sets and reps'></button><input type='number' class='w-num' step='0.5' value='' data-lbs='' hidden><input type='number' class='sr-sets' value='2' hidden><input type='text' class='sr-reps' value='10' hidden></div>
+<div class='sel-row prow' data-name='Cobra flow' data-group='' data-also=''><label class='ck'><input type='checkbox' class='sel' aria-label='Tick Cobra flow'><span><svg width='14' height='14' viewBox='0 0 16 16' aria-hidden='true'><path d='M3.5 8.5l3 3 6-7' fill='none' stroke='#06240f' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'/></svg></span></label><div class='nm exname' data-name='Cobra flow'><b>Cobra flow</b><span class='nsub'></span></div><button type='button' class='val' aria-label='Edit weight, sets and reps'></button><input type='number' class='w-num' step='0.5' value='' data-lbs='' hidden><input type='number' class='sr-sets' value='2' hidden><input type='text' class='sr-reps' value='10' hidden></div>
+<div class='sel-row prow' data-name='Cossack squat' data-group='' data-also=''><label class='ck'><input type='checkbox' class='sel' aria-label='Tick Cossack squat'><span><svg width='14' height='14' viewBox='0 0 16 16' aria-hidden='true'><path d='M3.5 8.5l3 3 6-7' fill='none' stroke='#06240f' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'/></svg></span></label><div class='nm exname' data-name='Cossack squat'><b>Cossack squat</b><span class='nsub'></span></div><button type='button' class='val' aria-label='Edit weight, sets and reps'></button><input type='number' class='w-num' step='0.5' value='' data-lbs='' hidden><input type='number' class='sr-sets' value='2' hidden><input type='text' class='sr-reps' value='8' hidden></div>
     </div>
-    <button class="addrow" data-type="Hip Flexor">+ Add exercise</button>
-  </div>
+    <button type="button" class="padd" data-type="Mobility">+ Add exercise</button>
+  </section>
 
-  <div class="tpl-section">
-    <div class="tpl-head"><span class="badge" style="background:#8f7dff22;color:#8f7dff;border-color:#8f7dff44">Long Sitting</span><span class="count">10 exercises</span></div>
-    <div class="card" style="margin-top:.6rem">
-      <div class="tbl-wrap">
-      <table>
-        <thead><tr><th></th><th>Exercise</th><th>Weight</th><th>Sets×Reps</th></tr></thead>
-        <tbody data-type="Long Sitting">
-<tr class='sel-row'><td class='selcell'><input type='checkbox' class='sel'></td><td class='exname' data-name='Standing hip flexor stretch'>Standing hip flexor stretch</td><td class='wcell'><input type='number' class='w-num' step='0.5' value='' data-lbs='' placeholder='-'><button type='button' class='w-unit' title='Switch lbs/kg'>lbs &#8644;</button></td><td class='srcell'><input type='number' class='sr-sets' value='2'>×<input type='text' class='sr-reps' value='30' placeholder='12 10 10 8'></td></tr>
-<tr class='sel-row'><td class='selcell'><input type='checkbox' class='sel'></td><td class='exname' data-name='Couch stretch'>Couch stretch</td><td class='wcell'><input type='number' class='w-num' step='0.5' value='' data-lbs='' placeholder='-'><button type='button' class='w-unit' title='Switch lbs/kg'>lbs &#8644;</button></td><td class='srcell'><input type='number' class='sr-sets' value='2'>×<input type='text' class='sr-reps' value='30' placeholder='12 10 10 8'></td></tr>
-<tr class='sel-row'><td class='selcell'><input type='checkbox' class='sel'></td><td class='exname' data-name='Thoracic extension (foam roller)'>Thoracic extension (foam roller)</td><td class='wcell'><input type='number' class='w-num' step='0.5' value='' data-lbs='' placeholder='-'><button type='button' class='w-unit' title='Switch lbs/kg'>lbs &#8644;</button></td><td class='srcell'><input type='number' class='sr-sets' value='2'>×<input type='text' class='sr-reps' value='10' placeholder='12 10 10 8'></td></tr>
-<tr class='sel-row'><td class='selcell'><input type='checkbox' class='sel'></td><td class='exname' data-name='Open book rotation'>Open book rotation</td><td class='wcell'><input type='number' class='w-num' step='0.5' value='' data-lbs='' placeholder='-'><button type='button' class='w-unit' title='Switch lbs/kg'>lbs &#8644;</button></td><td class='srcell'><input type='number' class='sr-sets' value='2'>×<input type='text' class='sr-reps' value='8' placeholder='12 10 10 8'></td></tr>
-<tr class='sel-row'><td class='selcell'><input type='checkbox' class='sel'></td><td class='exname' data-name='Single-leg glute bridge'>Single-leg glute bridge</td><td class='wcell'><input type='number' class='w-num' step='0.5' value='' data-lbs='' placeholder='-'><button type='button' class='w-unit' title='Switch lbs/kg'>lbs &#8644;</button></td><td class='srcell'><input type='number' class='sr-sets' value='3'>×<input type='text' class='sr-reps' value='10' placeholder='12 10 10 8'></td></tr>
-<tr class='sel-row'><td class='selcell'><input type='checkbox' class='sel'></td><td class='exname' data-name='Clamshell'>Clamshell</td><td class='wcell'><input type='number' class='w-num' step='0.5' value='' data-lbs='' placeholder='-'><button type='button' class='w-unit' title='Switch lbs/kg'>lbs &#8644;</button></td><td class='srcell'><input type='number' class='sr-sets' value='3'>×<input type='text' class='sr-reps' value='12' placeholder='12 10 10 8'></td></tr>
-<tr class='sel-row'><td class='selcell'><input type='checkbox' class='sel'></td><td class='exname' data-name='Standing hip abduction'>Standing hip abduction</td><td class='wcell'><input type='number' class='w-num' step='0.5' value='' data-lbs='' placeholder='-'><button type='button' class='w-unit' title='Switch lbs/kg'>lbs &#8644;</button></td><td class='srcell'><input type='number' class='sr-sets' value='3'>×<input type='text' class='sr-reps' value='12' placeholder='12 10 10 8'></td></tr>
-<tr class='sel-row'><td class='selcell'><input type='checkbox' class='sel'></td><td class='exname' data-name='Hip hinge drill'>Hip hinge drill</td><td class='wcell'><input type='number' class='w-num' step='0.5' value='' data-lbs='' placeholder='-'><button type='button' class='w-unit' title='Switch lbs/kg'>lbs &#8644;</button></td><td class='srcell'><input type='number' class='sr-sets' value='3'>×<input type='text' class='sr-reps' value='8' placeholder='12 10 10 8'></td></tr>
-<tr class='sel-row'><td class='selcell'><input type='checkbox' class='sel'></td><td class='exname' data-name='Suitcase carry'>Suitcase carry</td><td class='wcell'><input type='number' class='w-num' step='0.5' value='20' data-lbs='20' placeholder='-'><button type='button' class='w-unit' title='Switch lbs/kg'>lbs &#8644;</button></td><td class='srcell'><input type='number' class='sr-sets' value='3'>×<input type='text' class='sr-reps' value='20' placeholder='12 10 10 8'></td></tr>
-<tr class='sel-row'><td class='selcell'><input type='checkbox' class='sel'></td><td class='exname' data-name='Pallof press'>Pallof press</td><td class='wcell'><input type='number' class='w-num' step='0.5' value='30' data-lbs='30' placeholder='-'><button type='button' class='w-unit' title='Switch lbs/kg'>lbs &#8644;</button></td><td class='srcell'><input type='number' class='sr-sets' value='3'>×<input type='text' class='sr-reps' value='10' placeholder='12 10 10 8'></td></tr>
-        </tbody>
-      </table>
-      </div>
+  <section class="psec" data-type="Hip Flexor" data-color="#e39d4f" style="--c:#e39d4f" id="sec-hip-flexor">
+    <div class="psh"><span class='dot'></span><b>Hip Flexor</b><span class="pcnt">0/5</span><button type="button" class="ptick">Tick all</button></div>
+    <div class="plist" data-type="Hip Flexor">
+<div class='sel-row prow' data-name='Hip flexor stretch' data-group='' data-also=''><label class='ck'><input type='checkbox' class='sel' aria-label='Tick Hip flexor stretch'><span><svg width='14' height='14' viewBox='0 0 16 16' aria-hidden='true'><path d='M3.5 8.5l3 3 6-7' fill='none' stroke='#06240f' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'/></svg></span></label><div class='nm exname' data-name='Hip flexor stretch'><b>Hip flexor stretch</b><span class='nsub'></span></div><button type='button' class='val' aria-label='Edit weight, sets and reps'></button><input type='number' class='w-num' step='0.5' value='' data-lbs='' hidden><input type='number' class='sr-sets' value='2' hidden><input type='text' class='sr-reps' value='2' hidden></div>
+<div class='sel-row prow' data-name='Kneeling lunge stretch' data-group='' data-also=''><label class='ck'><input type='checkbox' class='sel' aria-label='Tick Kneeling lunge stretch'><span><svg width='14' height='14' viewBox='0 0 16 16' aria-hidden='true'><path d='M3.5 8.5l3 3 6-7' fill='none' stroke='#06240f' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'/></svg></span></label><div class='nm exname' data-name='Kneeling lunge stretch'><b>Kneeling lunge stretch</b><span class='nsub'></span></div><button type='button' class='val' aria-label='Edit weight, sets and reps'></button><input type='number' class='w-num' step='0.5' value='' data-lbs='' hidden><input type='number' class='sr-sets' value='2' hidden><input type='text' class='sr-reps' value='2' hidden></div>
+<div class='sel-row prow' data-name='Glute bridge' data-group='' data-also=''><label class='ck'><input type='checkbox' class='sel' aria-label='Tick Glute bridge'><span><svg width='14' height='14' viewBox='0 0 16 16' aria-hidden='true'><path d='M3.5 8.5l3 3 6-7' fill='none' stroke='#06240f' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'/></svg></span></label><div class='nm exname' data-name='Glute bridge'><b>Glute bridge</b><span class='nsub'></span></div><button type='button' class='val' aria-label='Edit weight, sets and reps'></button><input type='number' class='w-num' step='0.5' value='' data-lbs='' hidden><input type='number' class='sr-sets' value='3' hidden><input type='text' class='sr-reps' value='12' hidden></div>
+<div class='sel-row prow' data-name='Dead bug' data-group='' data-also=''><label class='ck'><input type='checkbox' class='sel' aria-label='Tick Dead bug'><span><svg width='14' height='14' viewBox='0 0 16 16' aria-hidden='true'><path d='M3.5 8.5l3 3 6-7' fill='none' stroke='#06240f' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'/></svg></span></label><div class='nm exname' data-name='Dead bug'><b>Dead bug</b><span class='nsub'></span></div><button type='button' class='val' aria-label='Edit weight, sets and reps'></button><input type='number' class='w-num' step='0.5' value='' data-lbs='' hidden><input type='number' class='sr-sets' value='3' hidden><input type='text' class='sr-reps' value='8' hidden></div>
+<div class='sel-row prow' data-name='Bird dog' data-group='' data-also='Core'><label class='ck'><input type='checkbox' class='sel' aria-label='Tick Bird dog'><span><svg width='14' height='14' viewBox='0 0 16 16' aria-hidden='true'><path d='M3.5 8.5l3 3 6-7' fill='none' stroke='#06240f' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'/></svg></span></label><div class='nm exname' data-name='Bird dog'><b>Bird dog</b><span class='nsub'><span class='also-off'>also in Core</span><em class='also-on'>also ticks in Core</em></span></div><button type='button' class='val' aria-label='Edit weight, sets and reps'></button><input type='number' class='w-num' step='0.5' value='' data-lbs='' hidden><input type='number' class='sr-sets' value='3' hidden><input type='text' class='sr-reps' value='8' hidden></div>
     </div>
-    <button class="addrow" data-type="Long Sitting">+ Add exercise</button>
-  </div>
+    <button type="button" class="padd" data-type="Hip Flexor">+ Add exercise</button>
+  </section>
 
-  <div class="tpl-section">
-    <div class="tpl-head"><span class="badge" style="background:#a04ff722;color:#a04ff7;border-color:#a04ff744">Class</span></div>
+  <section class="psec" data-type="Long Sitting" data-color="#8f7dff" style="--c:#8f7dff" id="sec-long-sitting">
+    <div class="psh"><span class='dot'></span><b>Long Sitting</b><span class="pcnt">0/10</span><button type="button" class="ptick">Tick all</button></div>
+    <div class="plist" data-type="Long Sitting">
+<div class='sel-row prow' data-name='Standing hip flexor stretch' data-group='' data-also=''><label class='ck'><input type='checkbox' class='sel' aria-label='Tick Standing hip flexor stretch'><span><svg width='14' height='14' viewBox='0 0 16 16' aria-hidden='true'><path d='M3.5 8.5l3 3 6-7' fill='none' stroke='#06240f' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'/></svg></span></label><div class='nm exname' data-name='Standing hip flexor stretch'><b>Standing hip flexor stretch</b><span class='nsub'></span></div><button type='button' class='val' aria-label='Edit weight, sets and reps'></button><input type='number' class='w-num' step='0.5' value='' data-lbs='' hidden><input type='number' class='sr-sets' value='2' hidden><input type='text' class='sr-reps' value='30' hidden></div>
+<div class='sel-row prow' data-name='Couch stretch' data-group='' data-also=''><label class='ck'><input type='checkbox' class='sel' aria-label='Tick Couch stretch'><span><svg width='14' height='14' viewBox='0 0 16 16' aria-hidden='true'><path d='M3.5 8.5l3 3 6-7' fill='none' stroke='#06240f' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'/></svg></span></label><div class='nm exname' data-name='Couch stretch'><b>Couch stretch</b><span class='nsub'></span></div><button type='button' class='val' aria-label='Edit weight, sets and reps'></button><input type='number' class='w-num' step='0.5' value='' data-lbs='' hidden><input type='number' class='sr-sets' value='2' hidden><input type='text' class='sr-reps' value='30' hidden></div>
+<div class='sel-row prow' data-name='Thoracic extension (foam roller)' data-group='' data-also=''><label class='ck'><input type='checkbox' class='sel' aria-label='Tick Thoracic extension (foam roller)'><span><svg width='14' height='14' viewBox='0 0 16 16' aria-hidden='true'><path d='M3.5 8.5l3 3 6-7' fill='none' stroke='#06240f' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'/></svg></span></label><div class='nm exname' data-name='Thoracic extension (foam roller)'><b>Thoracic extension (foam roller)</b><span class='nsub'></span></div><button type='button' class='val' aria-label='Edit weight, sets and reps'></button><input type='number' class='w-num' step='0.5' value='' data-lbs='' hidden><input type='number' class='sr-sets' value='2' hidden><input type='text' class='sr-reps' value='10' hidden></div>
+<div class='sel-row prow' data-name='Open book rotation' data-group='' data-also=''><label class='ck'><input type='checkbox' class='sel' aria-label='Tick Open book rotation'><span><svg width='14' height='14' viewBox='0 0 16 16' aria-hidden='true'><path d='M3.5 8.5l3 3 6-7' fill='none' stroke='#06240f' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'/></svg></span></label><div class='nm exname' data-name='Open book rotation'><b>Open book rotation</b><span class='nsub'></span></div><button type='button' class='val' aria-label='Edit weight, sets and reps'></button><input type='number' class='w-num' step='0.5' value='' data-lbs='' hidden><input type='number' class='sr-sets' value='2' hidden><input type='text' class='sr-reps' value='8' hidden></div>
+<div class='sel-row prow' data-name='Single-leg glute bridge' data-group='' data-also=''><label class='ck'><input type='checkbox' class='sel' aria-label='Tick Single-leg glute bridge'><span><svg width='14' height='14' viewBox='0 0 16 16' aria-hidden='true'><path d='M3.5 8.5l3 3 6-7' fill='none' stroke='#06240f' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'/></svg></span></label><div class='nm exname' data-name='Single-leg glute bridge'><b>Single-leg glute bridge</b><span class='nsub'></span></div><button type='button' class='val' aria-label='Edit weight, sets and reps'></button><input type='number' class='w-num' step='0.5' value='' data-lbs='' hidden><input type='number' class='sr-sets' value='3' hidden><input type='text' class='sr-reps' value='10' hidden></div>
+<div class='sel-row prow' data-name='Clamshell' data-group='' data-also=''><label class='ck'><input type='checkbox' class='sel' aria-label='Tick Clamshell'><span><svg width='14' height='14' viewBox='0 0 16 16' aria-hidden='true'><path d='M3.5 8.5l3 3 6-7' fill='none' stroke='#06240f' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'/></svg></span></label><div class='nm exname' data-name='Clamshell'><b>Clamshell</b><span class='nsub'></span></div><button type='button' class='val' aria-label='Edit weight, sets and reps'></button><input type='number' class='w-num' step='0.5' value='' data-lbs='' hidden><input type='number' class='sr-sets' value='3' hidden><input type='text' class='sr-reps' value='12' hidden></div>
+<div class='sel-row prow' data-name='Standing hip abduction' data-group='' data-also=''><label class='ck'><input type='checkbox' class='sel' aria-label='Tick Standing hip abduction'><span><svg width='14' height='14' viewBox='0 0 16 16' aria-hidden='true'><path d='M3.5 8.5l3 3 6-7' fill='none' stroke='#06240f' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'/></svg></span></label><div class='nm exname' data-name='Standing hip abduction'><b>Standing hip abduction</b><span class='nsub'></span></div><button type='button' class='val' aria-label='Edit weight, sets and reps'></button><input type='number' class='w-num' step='0.5' value='' data-lbs='' hidden><input type='number' class='sr-sets' value='3' hidden><input type='text' class='sr-reps' value='12' hidden></div>
+<div class='sel-row prow' data-name='Hip hinge drill' data-group='' data-also=''><label class='ck'><input type='checkbox' class='sel' aria-label='Tick Hip hinge drill'><span><svg width='14' height='14' viewBox='0 0 16 16' aria-hidden='true'><path d='M3.5 8.5l3 3 6-7' fill='none' stroke='#06240f' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'/></svg></span></label><div class='nm exname' data-name='Hip hinge drill'><b>Hip hinge drill</b><span class='nsub'></span></div><button type='button' class='val' aria-label='Edit weight, sets and reps'></button><input type='number' class='w-num' step='0.5' value='' data-lbs='' hidden><input type='number' class='sr-sets' value='3' hidden><input type='text' class='sr-reps' value='8' hidden></div>
+<div class='sel-row prow' data-name='Suitcase carry' data-group='' data-also=''><label class='ck'><input type='checkbox' class='sel' aria-label='Tick Suitcase carry'><span><svg width='14' height='14' viewBox='0 0 16 16' aria-hidden='true'><path d='M3.5 8.5l3 3 6-7' fill='none' stroke='#06240f' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'/></svg></span></label><div class='nm exname' data-name='Suitcase carry'><b>Suitcase carry</b><span class='nsub'></span></div><button type='button' class='val' aria-label='Edit weight, sets and reps'></button><input type='number' class='w-num' step='0.5' value='20' data-lbs='20' hidden><input type='number' class='sr-sets' value='3' hidden><input type='text' class='sr-reps' value='20' hidden></div>
+<div class='sel-row prow' data-name='Pallof press' data-group='' data-also=''><label class='ck'><input type='checkbox' class='sel' aria-label='Tick Pallof press'><span><svg width='14' height='14' viewBox='0 0 16 16' aria-hidden='true'><path d='M3.5 8.5l3 3 6-7' fill='none' stroke='#06240f' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'/></svg></span></label><div class='nm exname' data-name='Pallof press'><b>Pallof press</b><span class='nsub'></span></div><button type='button' class='val' aria-label='Edit weight, sets and reps'></button><input type='number' class='w-num' step='0.5' value='30' data-lbs='30' hidden><input type='number' class='sr-sets' value='3' hidden><input type='text' class='sr-reps' value='10' hidden></div>
+    </div>
+    <button type="button" class="padd" data-type="Long Sitting">+ Add exercise</button>
+  </section>
+          </div>
+          <div id="pt-c" class="ptab">
+
+  <section class="psec" data-type="Class" data-color="#a04ff7" style="--c:#a04ff7">
+    <div class="psh"><span class='dot'></span><b>Class</b></div>
     <div class="chip-row"><span class="chip sel-chip" data-name="Core Body">Core Body<small> · <input type="number" class="dur" value="60"> min</small></span><span class="chip sel-chip" data-name="Yoga">Yoga<small> · <input type="number" class="dur" value="60"> min</small></span><span class="chip sel-chip" data-name="Zumba">Zumba<small> · <input type="number" class="dur" value="60"> min</small></span><span class="chip sel-chip" data-name="Body Combat">Body Combat<small> · <input type="number" class="dur" value="60"> min</small></span><span class="chip sel-chip" data-name="Pilates">Pilates<small> · <input type="number" class="dur" value="60"> min</small></span><span class="chip sel-chip" data-name="Hyrox">Hyrox<small> · <input type="number" class="dur" value="60"> min</small></span><span class="chip sel-chip" data-name="Breath Work">Breath Work<small> · <input type="number" class="dur" value="60"> min</small></span></div>
-  </div>
+  </section>
 
-  <div class="tpl-section">
-    <div class="tpl-head"><span class="badge" style="background:#4ff7a022;color:#4ff7a0;border-color:#4ff7a044">Running</span></div>
+  <section class="psec" data-type="Running" data-color="#4ff7a0" style="--c:#4ff7a0">
+    <div class="psh"><span class='dot'></span><b>Running</b></div>
     <label class="run-toggle"><input type="checkbox" class="sel-run"> Log a run today</label>
     <div class="run-grid">
       <label class="run-cell">Duration (min)<input type="number" class="rfield" data-r="duration_minutes" step="1" placeholder="-"></label>
@@ -2915,10 +2944,10 @@
       <label class="run-cell">Calories (kcal)<input type="number" class="rfield" data-r="calories" placeholder="-"></label>
       <label class="run-cell run-note">Note<input type="text" class="rfield" data-r="note" placeholder="Zone 2 / location"></label>
     </div>
-  </div>
+  </section>
 
-  <div class="tpl-section">
-    <div class="tpl-head"><span class="badge" style="background:#33c3f022;color:#33c3f0;border-color:#33c3f044">Cycling</span></div>
+  <section class="psec" data-type="Cycling" data-color="#33c3f0" style="--c:#33c3f0">
+    <div class="psh"><span class='dot'></span><b>Cycling</b></div>
     <label class="run-toggle"><input type="checkbox" class="sel-run"> Log cycling today</label>
     <div class="run-grid">
       <label class="run-cell">Duration (min)<input type="number" class="rfield" data-r="duration_minutes" step="1" placeholder="-"></label>
@@ -2926,18 +2955,37 @@
       <label class="run-cell">Calories (kcal)<input type="number" class="rfield" data-r="calories" placeholder="-"></label>
       <label class="run-cell run-note">Note<input type="text" class="rfield" data-r="note" placeholder="Zone 2 / recovery"></label>
     </div>
-  </div>
+  </section>
+          </div>
+        </div>
         <div style="height:9rem"></div>
       </div>
 
-      <footer>Updated 2026-10-08 10:15 (Bangkok)</footer>
+      <footer>Updated 2026-10-08 10:47 (Bangkok)</footer>
     </div>
   </div>
 
   <div id="savebar">
-    <span id="savecount"></span>
-    <button id="savebtn">Save to Log</button>
+    <div id="savecount"></div>
     <button id="tokenbtn" title="Set GitHub token">⚙</button>
+    <button id="savebtn">Save</button>
+  </div>
+  <div id="ptoast" role="status"></div>
+  <div id="pdim"></div>
+  <div id="psheet" role="dialog" aria-modal="true" aria-labelledby="sh-title">
+    <div class="grab"></div>
+    <h3 id="sh-title"></h3>
+    <p id="sh-sub"></p>
+    <div class="st"><span>Weight</span>
+      <div class="stc"><button type="button" class="sbtn" data-st="w-" aria-label="Less weight">&minus;</button><div class="sv" id="sv-w"></div><button type="button" class="sbtn" data-st="w+" aria-label="More weight">+</button></div></div>
+    <div class="quick" id="sh-quick"></div>
+    <div class="st"><span>Sets</span>
+      <div class="stc"><button type="button" class="sbtn" data-st="s-" aria-label="Fewer sets">&minus;</button><div class="sv" id="sv-s"></div><button type="button" class="sbtn" data-st="s+" aria-label="More sets">+</button></div></div>
+    <div class="st"><span>Reps</span>
+      <div class="stc"><button type="button" class="sbtn" data-st="r-" aria-label="Fewer reps">&minus;</button><div class="sv" id="sv-r"></div><button type="button" class="sbtn" data-st="r+" aria-label="More reps">+</button></div></div>
+    <div class="st sh-unit"><span>Unit</span>
+      <div class="unit-switch" role="group" aria-label="Weight unit"><button type="button" class="w-tgl on" data-u="lbs">lbs</button><button type="button" class="w-tgl" data-u="kg">kg</button></div></div>
+    <button type="button" class="pbtn" id="sh-done">Done</button>
   </div>
 
   <script>
@@ -2950,8 +2998,8 @@
     const savebtn = document.getElementById('savebtn');
 
     function rowData(cb) {
-      const tr = cb.closest('tr');
-      const type = tr.closest('tbody').dataset.type;
+      const tr = cb.closest('.sel-row');
+      const type = tr.closest('[data-type]').dataset.type;
       const nameEl = tr.querySelector('.exname input') || tr.querySelector('.exname');
       let name = (nameEl.value !== undefined ? nameEl.value : (nameEl.dataset.name || nameEl.textContent)).trim();
       // Template rows render the muscle tag as a child span; strip exactly that, so
@@ -2982,9 +3030,13 @@
 
     function selections() {
       const items = [];
+      // A move that lives in several routines is one shared selection: log it once.
+      const seen = new Set();
       document.querySelectorAll('.sel:checked').forEach(cb => {
         const d = rowData(cb);
-        if (d.ex.name) items.push(d);
+        if (!d.ex.name || seen.has(d.ex.name)) return;
+        seen.add(d.ex.name);
+        items.push(d);
       });
       document.querySelectorAll('.sel-chip.selected').forEach(ch =>
         items.push({ kind: 'class', name: ch.dataset.name,
@@ -3018,20 +3070,73 @@
     window.addEventListener('resize', syncNavHeight);
     window.addEventListener('orientationchange', () => setTimeout(syncNavHeight, 120));
 
+    const rowsByName = name =>
+      Array.from(document.querySelectorAll('.sel-row')).filter(r => r.dataset.name === name);
+    const tickedCount = list => list.filter(r => r.querySelector('.sel').checked).length;
+
     function refreshBar() {
-      const n = selections().length;
-      savecount.textContent = n + ' selected';
+      const items = selections();
+      const n = items.length;
+      // routines in the mix (colour dots) + cardio
+      const mix = [];
+      const seenType = new Set();
+      items.forEach(i => {
+        if (i.kind !== 'exercise' || seenType.has(i.type)) return;
+        seenType.add(i.type);
+        const sec = document.querySelector('.psec[data-type="' + i.type.replace(/"/g, '\"') + '"]');
+        mix.push('<span><span class="dot" style="--c:' + (sec ? sec.dataset.color : '#888') + '"></span>' + i.type + '</span>');
+      });
+      const cardioN = items.filter(i => i.kind !== 'exercise').length;
+      if (cardioN) mix.push('<span><span class="dot" style="--c:#22d3ee"></span>Cardio</span>');
+      savecount.innerHTML = '<b>' + n + ' selected</b><div class="mix">' + mix.join('') + '</div>';
       savebar.classList.toggle('visible', n > 0);
+
+      // per-section counts, chips, tab badges
+      let strengthN = 0;
+      document.querySelectorAll('.psec').forEach(sec => {
+        const rows = Array.from(sec.querySelectorAll('.sel-row'));
+        if (!rows.length) return;
+        const t = tickedCount(rows);
+        strengthN += t;
+        sec.querySelector('.pcnt').textContent = t + '/' + rows.length;
+        const all = t === rows.length;
+        sec.querySelector('.ptick').textContent = all ? 'Clear' : 'Tick all';
+        const chip = document.querySelector('.pchip[data-go="' + sec.id + '"] i');
+        if (chip) {
+          chip.textContent = t || chip.dataset.n;
+          chip.classList.toggle('n', t > 0);
+        }
+      });
+      const setBadge = (tab, k) => {
+        const i = document.querySelector('.pmode [data-pt="' + tab + '"] i');
+        i.textContent = k || '';
+        i.style.display = k ? '' : 'none';
+      };
+      setBadge('s', items.filter(i => i.kind === 'exercise').length);
+      setBadge('c', cardioN);
+    }
+
+    // Ticking a move ticks it everywhere it appears (one shared selection).
+    function onTick(cb) {
+      const row = cb.closest('.sel-row');
+      row.classList.toggle('on', cb.checked);
+      (row.dataset.name ? rowsByName(row.dataset.name) : []).forEach(r => {
+        const c = r.querySelector('.sel');
+        c.checked = cb.checked;
+        r.classList.toggle('on', cb.checked);
+      });
+      refreshBar();
     }
 
     function bindRow(row) {
       row.addEventListener('click', e => {
-        if (e.target.matches('input, select, button')) return;
+        if (e.target.closest('.ck, .val, input, select, button')) return;
         const cb = row.querySelector('.sel');
         cb.checked = !cb.checked;
-        refreshBar();
+        onTick(cb);
       });
-      row.querySelector('.sel').addEventListener('change', refreshBar);
+      row.querySelector('.sel').addEventListener('change', e => onTick(e.target));
+      row.querySelector('.val').addEventListener('click', () => openSheet(row));
     }
 
     document.querySelectorAll('.sel-row').forEach(bindRow);
@@ -3045,22 +3150,36 @@
 
     const runToggle = document.querySelector('.sel-run');
     if (runToggle) runToggle.addEventListener('change', refreshBar);
+    document.querySelectorAll('.sel-run').forEach(c => c.addEventListener('change', refreshBar));
 
-    document.querySelectorAll('.addrow').forEach(btn =>
+    document.querySelectorAll('.ptick').forEach(btn =>
       btn.addEventListener('click', () => {
-        const tbody = btn.closest('.tpl-section').querySelector('tbody');
-        const tr = document.createElement('tr');
-        tr.className = 'sel-row';
-        tr.innerHTML = `
-          <td class='selcell'><input type='checkbox' class='sel' checked></td>
-          <td class='exname'><input type='text' placeholder='Exercise name'></td>
-          <td class='wcell'><input type='number' class='w-num' step='0.5' data-lbs='' placeholder='-'>
-            <button type='button' class='w-unit' title='Switch lbs/kg'>lbs &#8644;</button></td>
-          <td class='srcell'><input type='number' class='sr-sets' value='3'>×<input type='text' class='sr-reps' value='15' placeholder='12 10 10 8'></td>`;
-        tbody.appendChild(tr);
-        bindRow(tr);
+        const rows = Array.from(btn.closest('.psec').querySelectorAll('.sel-row'));
+        const want = tickedCount(rows) !== rows.length;
+        rows.forEach(r => { const c = r.querySelector('.sel'); c.checked = want; onTick(c); });
+      }));
+
+    function newRowHtml(name) {
+      return `
+        <label class='ck'><input type='checkbox' class='sel' checked aria-label='Tick'><span><svg width='14' height='14' viewBox='0 0 16 16' aria-hidden='true'><path d='M3.5 8.5l3 3 6-7' fill='none' stroke='#06240f' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'/></svg></span></label>
+        <div class='nm exname'><input type='text' placeholder='Exercise name'></div>
+        <button type='button' class='val' aria-label='Edit weight, sets and reps'></button>
+        <input type='number' class='w-num' step='0.5' data-lbs='' hidden>
+        <input type='number' class='sr-sets' value='3' hidden>
+        <input type='text' class='sr-reps' value='15' hidden>`;
+    }
+
+    document.querySelectorAll('.padd').forEach(btn =>
+      btn.addEventListener('click', () => {
+        const list = btn.closest('.psec').querySelector('.plist');
+        const row = document.createElement('div');
+        row.className = 'sel-row prow on';
+        row.dataset.name = '';
+        row.innerHTML = newRowHtml();
+        list.appendChild(row);
+        bindRow(row);
         paintUnit();
-        tr.querySelector('.exname input').focus();
+        row.querySelector('.exname input').focus();
         refreshBar();
       }));
 
@@ -3073,12 +3192,25 @@
     const inLbs   = v => UNIT_SEL === 'kg' ? r05(v * LB_PER_KG) : v;
     const fromLbs = v => UNIT_SEL === 'kg' ? r05(v / LB_PER_KG) : v;
 
+    let sheetRow = null;
+    const fmtN = v => String(+v.toFixed(1));
+
+    // Value chip text, e.g. "44 lbs · 4×8" or "BW · 3×6".
+    function paintVal(row) {
+      const lbs = parseFloat(row.querySelector('.w-num').dataset.lbs);
+      const w = (!isNaN(lbs) && lbs > 0) ? fmtN(fromLbs(lbs)) + '<small> ' + UNIT_SEL + '</small>' : 'BW';
+      const sets = row.querySelector('.sr-sets').value || '-';
+      const reps = (row.querySelector('.sr-reps').value.trim().split(/[\s,]+/).filter(Boolean).join('/')) || '-';
+      row.querySelector('.val').innerHTML = w + ' <small>·</small> ' + sets + '×' + reps;
+    }
+
     function paintUnit() {
-      document.querySelectorAll('.w-unit').forEach(el => { el.textContent = UNIT_SEL + ' ⇄'; });
       document.querySelectorAll('.w-num').forEach(i => {
         const lbs = parseFloat(i.dataset.lbs);
         if (!isNaN(lbs)) i.value = fromLbs(lbs);
       });
+      document.querySelectorAll('.sel-row').forEach(paintVal);
+      if (sheetRow) paintSheet();
       document.querySelectorAll('.w-tgl').forEach(b =>
         b.classList.toggle('on', b.dataset.u === UNIT_SEL));
       document.querySelectorAll('.wv').forEach(el => {
@@ -3101,11 +3233,163 @@
       const v = parseFloat(e.target.value);
       e.target.dataset.lbs = isNaN(v) ? '' : inLbs(v);
     });
-    document.addEventListener('click', e => {
-      if (e.target.closest('.w-unit')) setUnit(UNIT_SEL === 'kg' ? 'lbs' : 'kg');
+    document.addEventListener('input', e => {
+      const nameIn = e.target.closest && e.target.closest('.exname input');
+      if (nameIn) nameIn.closest('.sel-row').dataset.name = nameIn.value.trim();
     });
 
+    // ---- Edit sheet (weight / sets / reps) -----------------------------------
+    // Edits the row's hidden inputs, so rowData() / the lbs-only log are untouched.
+    const psheet = document.getElementById('psheet');
+    const pdim = document.getElementById('pdim');
+    const stepW = () => UNIT_SEL === 'kg' ? 2.5 : 5;
+    const quickW = () => UNIT_SEL === 'kg' ? [1, 2.5, 5] : [2.5, 5, 10];
+
+    const wLbs = row => parseFloat(row.querySelector('.w-num').dataset.lbs);
+    const wShown = row => { const l = wLbs(row); return (!isNaN(l) && l > 0) ? fromLbs(l) : null; };
+    function setW(row, shown) {
+      const inp = row.querySelector('.w-num');
+      if (shown == null || shown <= 0) { inp.value = ''; inp.dataset.lbs = ''; }
+      else { inp.value = shown; inp.dataset.lbs = inLbs(shown); }
+    }
+    const repsList = row => row.querySelector('.sr-reps').value.trim().split(/[\s,]+/)
+      .map(x => parseInt(x)).filter(x => !isNaN(x));
+
+    // keep every row of the same move in step with the one being edited
+    function syncSame(row) {
+      const name = row.dataset.name;
+      if (!name) { paintVal(row); return; }
+      const qs = ['.w-num', '.sr-sets', '.sr-reps'];
+      rowsByName(name).forEach(r => {
+        if (r !== row) {
+          qs.forEach(q => { r.querySelector(q).value = row.querySelector(q).value; });
+          r.querySelector('.w-num').dataset.lbs = row.querySelector('.w-num').dataset.lbs;
+        }
+        paintVal(r);
+      });
+    }
+
+    function paintSheet() {
+      const row = sheetRow;
+      const w = wShown(row);
+      document.getElementById('sv-w').innerHTML = w == null ? 'BW' : fmtN(w) + '<small>' + UNIT_SEL + '</small>';
+      document.getElementById('sv-s').textContent = row.querySelector('.sr-sets').value || '-';
+      document.getElementById('sv-r').textContent = repsList(row).join('/') || '-';
+      document.getElementById('sh-quick').innerHTML =
+        quickW().map(q => '<button type="button" data-q="' + q + '">+' + q + '</button>').join('') +
+        '<button type="button" data-q="bw">BW</button>';
+    }
+
+    function openSheet(row) {
+      sheetRow = row;
+      const nm = row.querySelector('.exname input');
+      document.getElementById('sh-title').textContent = nm ? (nm.value || 'New exercise') : row.dataset.name;
+      const homes = [row.closest('.psec').dataset.type].concat(row.dataset.also ? row.dataset.also.split(', ') : []);
+      document.getElementById('sh-sub').textContent = (row.dataset.group ? row.dataset.group + ' · ' : '') + 'in ' + homes.join(', ');
+      paintSheet();
+      psheet.classList.add('show');
+      pdim.classList.add('show');
+    }
+
+    function closeSheet(tick) {
+      const row = sheetRow;
+      psheet.classList.remove('show');
+      pdim.classList.remove('show');
+      sheetRow = null;
+      if (row && tick) {
+        const cb = row.querySelector('.sel');
+        cb.checked = true;
+        onTick(cb);
+      }
+    }
+
+    psheet.addEventListener('click', e => {
+      const row = sheetRow;
+      if (!row) return;
+      const st = e.target.closest('[data-st]');
+      const q = e.target.closest('[data-q]');
+      if (st) {
+        const k = st.dataset.st;
+        if (k[0] === 'w') {
+          const cur = wShown(row);
+          const next = k === 'w+' ? (cur || 0) + stepW() : (cur == null ? null : cur - stepW());
+          setW(row, next == null ? null : Math.round(next * 100) / 100);
+        } else if (k[0] === 's') {
+          const v = Math.max(1, (parseInt(row.querySelector('.sr-sets').value) || 3) + (k === 's+' ? 1 : -1));
+          row.querySelector('.sr-sets').value = v;
+        } else {
+          const list = repsList(row);
+          const d = k === 'r+' ? 1 : -1;
+          row.querySelector('.sr-reps').value = (list.length ? list : [12]).map(x => Math.max(1, x + d)).join(' ');
+        }
+      } else if (q) {
+        if (q.dataset.q === 'bw') setW(row, null);
+        else setW(row, Math.round(((wShown(row) || 0) + parseFloat(q.dataset.q)) * 100) / 100);
+      } else return;
+      syncSame(row);
+      paintSheet();
+    });
+    pdim.addEventListener('click', () => closeSheet(false));
+    document.getElementById('sh-done').addEventListener('click', () => closeSheet(true));
+    document.addEventListener('keydown', e => { if (e.key === 'Escape' && sheetRow) closeSheet(false); });
+
+    // ---- Plan page chrome: tabs, routine chips, sticky offsets, toast --------
+    const planHead = document.getElementById('plan-head');
+    function measurePlan() {
+      if (planHead && planHead.offsetParent) {
+        document.documentElement.style.setProperty('--plan-head-h', planHead.offsetHeight + 'px');
+      }
+    }
+    window.measurePlan = measurePlan;
+    window.addEventListener('resize', measurePlan);
+
+    document.querySelectorAll('.pmode button').forEach(b =>
+      b.addEventListener('click', () => {
+        document.querySelectorAll('.pmode button').forEach(x => x.classList.toggle('on', x === b));
+        document.getElementById('pt-s').classList.toggle('on', b.dataset.pt === 's');
+        document.getElementById('pt-c').classList.toggle('on', b.dataset.pt === 'c');
+        document.getElementById('pchips').style.display = b.dataset.pt === 's' ? '' : 'none';
+        window.scrollTo(0, 0);
+        measurePlan();
+      }));
+
+    const chipEls = Array.from(document.querySelectorAll('.pchip'));
+    chipEls.forEach(c => c.addEventListener('click', () => {
+      const sec = document.getElementById(c.dataset.go);
+      if (!sec) return;
+      const top = sec.getBoundingClientRect().top + window.scrollY - planHead.offsetHeight + 1;
+      window.scrollTo({ top, behavior: 'smooth' });
+    }));
+
+    function spy() {
+      if (!planHead || !planHead.offsetParent || !chipEls.length) return;
+      const line = planHead.getBoundingClientRect().bottom + 8;
+      let cur = chipEls[0].dataset.go;
+      chipEls.forEach(c => {
+        const sec = document.getElementById(c.dataset.go);
+        if (sec && sec.getBoundingClientRect().top <= line) cur = c.dataset.go;
+      });
+      chipEls.forEach(c => {
+        const on = c.dataset.go === cur;
+        if (c.classList.contains('on') !== on) {
+          c.classList.toggle('on', on);
+          if (on) c.parentElement.scrollTo({ left: Math.max(0, c.offsetLeft - 12), behavior: 'smooth' });
+        }
+      });
+    }
+    window.addEventListener('scroll', spy, { passive: true });
+
+    let toastTimer;
+    function toast(msg) {
+      const t = document.getElementById('ptoast');
+      t.textContent = msg;
+      t.classList.add('show');
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => t.classList.remove('show'), 2400);
+    }
+
     paintUnit();
+    refreshBar();
     document.querySelectorAll('.w-tgl').forEach(b =>
       b.addEventListener('click', () => setUnit(b.dataset.u)));
 
@@ -3215,13 +3499,13 @@
           await ghPut(runPath, runObj, null, token);
         }
 
-        document.querySelectorAll('.sel:checked').forEach(cb => cb.checked = false);
+        document.querySelectorAll('.sel:checked').forEach(cb => { cb.checked = false; cb.closest('.sel-row').classList.remove('on'); });
         document.querySelectorAll('.sel-chip.selected').forEach(ch => ch.classList.remove('selected'));
         const runClear = document.querySelector('.sel-run');
         if (runClear) runClear.checked = false;
         document.querySelectorAll('.rfield').forEach(f => f.value = '');
         refreshBar();
-        alert('Saved! The site rebuilds in ~1 minute, then pull to refresh.');
+        toast('Workout saved ✓ · site rebuilds in ~1 min');
       } catch (err) {
         if (String(err).includes('401') || String(err).includes('403')) {
           alert('Token invalid or expired — tap ⚙ to set a new one.');
@@ -3230,7 +3514,7 @@
         }
       } finally {
         savebtn.disabled = false;
-        savebtn.textContent = 'Save to Log';
+        savebtn.textContent = 'Save';
       }
     });
 </script>
@@ -3257,6 +3541,9 @@
       });
       var t = document.getElementById('page-title');
       if (t) t.textContent = titles[v] || 'Log';
+      var usw = document.getElementById('unitsw');
+      if (usw) usw.style.display = (v === 'templates') ? 'none' : '';
+      if (window.measurePlan) { window.measurePlan(); }
       history.replaceState(null, '', '#' + v);
     }
     document.querySelectorAll('.top-nav a').forEach(function(el) {
