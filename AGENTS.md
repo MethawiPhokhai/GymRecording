@@ -35,8 +35,7 @@ Weights are **stored in lbs only** (`weight_lbs` / `default_weight_lbs`). The UI
 **single weight input per exercise** plus one **`lbs`/`kg` switch** in the topbar (persisted in
 `localStorage.wunit`, default `lbs`). Every read-only weight is rendered by the `wspan()` helper as
 `<span class="wv" data-lbs="44">44 lbs</span>` and JS re-renders all of them in the selected unit.
-`rowData()` converts the typed number back through `inLbs()` before writing, so nothing ever writes
-`weight_kg`. Each row's unit button (`.w-unit`) toggles the same global switch; the input keeps the canonical lbs in `data-lbs` so switching never drifts. **Never render two weight inputs side by side** — that is the bug this replaced.
+`rowData()` reads the canonical lbs from `data-lbs`, so nothing ever writes `weight_kg`. The Plan page (Design A, `docs/plan-redesign-analysis.md`) renders each exercise as a compact `.sel-row` with a value chip; the weight/sets/reps inputs are **hidden** and edited through the bottom sheet (`#psheet`). The lbs/kg switch is in the sticky `.plan-head` and inside the sheet. Moves with the same name in several routines are one shared selection (`selections()` dedupes). **Never render two weight inputs side by side** — that is the bug the single-input design replaced.
 
 A leading `* ` in a template exercise name marks the runner-strength pool (from a Facebook post, Jul 2026). The `*` is part of the `name` key — starred template entries do not match unstarred names in past workouts, so defaults/progress treat them as distinct exercises. This is intentional.
 

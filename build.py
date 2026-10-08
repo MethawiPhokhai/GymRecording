@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+import html
 import json
 import os
 import re
@@ -215,28 +216,60 @@ def format_default_weight(ex):
     return wspan(ex.get("default_weight_lbs"))
 
 
-def build_template_section(template):
+CHECK_SVG = ("<svg width='14' height='14' viewBox='0 0 16 16' aria-hidden='true'><path d='M3.5 8.5l3 3 6-7' "
+             "fill='none' stroke='#06240f' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'/></svg>")
+CARDIO_TYPES = ("Class", "Running", "Cycling")
+
+
+def plan_row_html(name, group, also):
+    """One compact Plan row. The hidden .w-num/.sr-sets/.sr-reps inputs are the source of
+    truth read by rowData(); the value chip + bottom sheet are just a nicer editor for them."""
+    nm = html.escape(name, quote=True)
+    sub = html.escape(group or "")
+    if also:
+        names = html.escape(", ".join(also))
+        sub += (" · " if sub else "") + f"<span class='also-off'>also in {names}</span><em class='also-on'>also ticks in {names}</em>"
+    return (
+        f"<div class='sel-row prow' data-name='{nm}' data-group='{html.escape(group or '', quote=True)}' "
+        f"data-also='{html.escape(', '.join(also), quote=True)}'>"
+        f"<label class='ck'><input type='checkbox' class='sel' aria-label='Tick {nm}'><span>{CHECK_SVG}</span></label>"
+        f"<div class='nm exname' data-name='{nm}'><b>{html.escape(name)}</b><span class='nsub'>{sub}</span></div>"
+        f"<button type='button' class='val' aria-label='Edit weight, sets and reps'></button>"
+        f"%INPUTS%</div>\n"
+    )
+
+
+def plan_inputs_html(num, sets, reps):
+    return (f"<input type='number' class='w-num' step='0.5' value='{num}' data-lbs='{num}' hidden>"
+            f"<input type='number' class='sr-sets' value='{sets}' hidden>"
+            f"<input type='text' class='sr-reps' value='{reps}' hidden>")
+
+
+def build_template_section(template, also=None):
+    """Plan section for one template. `also` maps exercise name -> other routine types it appears in."""
+    also = also or {}
     workout_type = template.get("type", "-")
     color = TYPE_COLORS.get(workout_type, TYPE_DEFAULT)
-    badge = f'<span class="badge" style="background:{color}22;color:{color};border-color:{color}44">{workout_type}</span>'
+    wt = html.escape(workout_type, quote=True)
+    head = f"<span class='dot'></span><b>{html.escape(workout_type)}</b>"
 
     if workout_type == "Class":
         chips = "".join(
-            f'<span class="chip sel-chip" data-name="{c["name"]}">{c["name"]}'
+            f'<span class="chip sel-chip" data-name="{html.escape(c["name"], quote=True)}">{html.escape(c["name"])}'
             f'<small> · <input type="number" class="dur" '
             f'value="{c["default_duration_minutes"]}"> min</small></span>'
             for c in template.get("classes", [])
         )
         return f"""
-  <div class="tpl-section">
-    <div class="tpl-head">{badge}</div>
+  <section class="psec" data-type="{wt}" data-color="{color}" style="--c:{color}">
+    <div class="psh">{head}</div>
     <div class="chip-row">{chips}</div>
-  </div>"""
+  </section>"""
 
     if workout_type == "Running":
         return f"""
-  <div class="tpl-section">
-    <div class="tpl-head">{badge}</div>
+  <section class="psec" data-type="{wt}" data-color="{color}" style="--c:{color}">
+    <div class="psh">{head}</div>
     <label class="run-toggle"><input type="checkbox" class="sel-run"> Log a run today</label>
     <div class="run-grid">
       <label class="run-cell">Duration (min)<input type="number" class="rfield" data-r="duration_minutes" step="1" placeholder="-"></label>
@@ -246,12 +279,12 @@ def build_template_section(template):
       <label class="run-cell">Calories (kcal)<input type="number" class="rfield" data-r="calories" placeholder="-"></label>
       <label class="run-cell run-note">Note<input type="text" class="rfield" data-r="note" placeholder="Zone 2 / location"></label>
     </div>
-  </div>"""
+  </section>"""
 
     if workout_type == "Cycling":
         return f"""
-  <div class="tpl-section">
-    <div class="tpl-head">{badge}</div>
+  <section class="psec" data-type="{wt}" data-color="{color}" style="--c:{color}">
+    <div class="psh">{head}</div>
     <label class="run-toggle"><input type="checkbox" class="sel-run"> Log cycling today</label>
     <div class="run-grid">
       <label class="run-cell">Duration (min)<input type="number" class="rfield" data-r="duration_minutes" step="1" placeholder="-"></label>
@@ -259,7 +292,7 @@ def build_template_section(template):
       <label class="run-cell">Calories (kcal)<input type="number" class="rfield" data-r="calories" placeholder="-"></label>
       <label class="run-cell run-note">Note<input type="text" class="rfield" data-r="note" placeholder="Zone 2 / recovery"></label>
     </div>
-  </div>"""
+  </section>"""
 
     exercises = template.get("exercises", [])
     if not exercises:
@@ -270,31 +303,15 @@ def build_template_section(template):
         num = f"{num:g}" if num else ""
         sets = e.get("default_sets") or ""
         reps = e.get("default_reps") or ""
-        nm = e["name"].replace("'", "&#39;")   # data-name: the UNTAGGED name for the save script
-        rows += (
-            f"<tr class='sel-row'>"
-            f"<td class='selcell'><input type='checkbox' class='sel'></td>"
-            f"<td class='exname' data-name='{nm}'>{e['name']}{group_tag(e.get('group'))}</td>"
-            f"<td class='wcell'><input type='number' class='w-num' step='0.5' value='{num}' data-lbs='{num}' placeholder='-'>"
-            f"<button type='button' class='w-unit' title='Switch lbs/kg'>{UNIT} &#8644;</button></td>"
-            f"<td class='srcell'><input type='number' class='sr-sets' value='{sets}'>×"
-            f"<input type='text' class='sr-reps' value='{reps}' placeholder='12 10 10 8'></td>"
-            f"</tr>\n"
-        )
+        rows += plan_row_html(e["name"], e.get("group"), also.get(e["name"], [])).replace(
+            "%INPUTS%", plan_inputs_html(num, sets, html.escape(str(reps), quote=True)))
     return f"""
-  <div class="tpl-section">
-    <div class="tpl-head">{badge}<span class="count">{len(exercises)} exercises</span></div>
-    <div class="card" style="margin-top:.6rem">
-      <div class="tbl-wrap">
-      <table>
-        <thead><tr><th></th><th>Exercise</th><th>Weight</th><th>Sets×Reps</th></tr></thead>
-        <tbody data-type="{workout_type}">
-{rows}        </tbody>
-      </table>
-      </div>
-    </div>
-    <button class="addrow" data-type="{workout_type}">+ Add exercise</button>
-  </div>"""
+  <section class="psec" data-type="{wt}" data-color="{color}" style="--c:{color}" id="sec-{re.sub(r'[^a-z0-9]+', '-', workout_type.lower())}">
+    <div class="psh">{head}<span class="pcnt">0/{len(exercises)}</span><button type="button" class="ptick">Tick all</button></div>
+    <div class="plist" data-type="{wt}">
+{rows}    </div>
+    <button type="button" class="padd" data-type="{wt}">+ Add exercise</button>
+  </section>"""
 
 
 TEMPLATE_ORDER = ["Push A", "Pull B", "Lower", "Calf & Ankle", "Full body", "Core", "Mobility", "Hip Flexor", "Long Sitting", "Class", "Running", "Cycling"]
@@ -717,8 +734,8 @@ SAVE_SCRIPT = """
     const savebtn = document.getElementById('savebtn');
 
     function rowData(cb) {
-      const tr = cb.closest('tr');
-      const type = tr.closest('tbody').dataset.type;
+      const tr = cb.closest('.sel-row');
+      const type = tr.closest('[data-type]').dataset.type;
       const nameEl = tr.querySelector('.exname input') || tr.querySelector('.exname');
       let name = (nameEl.value !== undefined ? nameEl.value : (nameEl.dataset.name || nameEl.textContent)).trim();
       // Template rows render the muscle tag as a child span; strip exactly that, so
@@ -749,9 +766,13 @@ SAVE_SCRIPT = """
 
     function selections() {
       const items = [];
+      // A move that lives in several routines is one shared selection: log it once.
+      const seen = new Set();
       document.querySelectorAll('.sel:checked').forEach(cb => {
         const d = rowData(cb);
-        if (d.ex.name) items.push(d);
+        if (!d.ex.name || seen.has(d.ex.name)) return;
+        seen.add(d.ex.name);
+        items.push(d);
       });
       document.querySelectorAll('.sel-chip.selected').forEach(ch =>
         items.push({ kind: 'class', name: ch.dataset.name,
@@ -785,20 +806,73 @@ SAVE_SCRIPT = """
     window.addEventListener('resize', syncNavHeight);
     window.addEventListener('orientationchange', () => setTimeout(syncNavHeight, 120));
 
+    const rowsByName = name =>
+      Array.from(document.querySelectorAll('.sel-row')).filter(r => r.dataset.name === name);
+    const tickedCount = list => list.filter(r => r.querySelector('.sel').checked).length;
+
     function refreshBar() {
-      const n = selections().length;
-      savecount.textContent = n + ' selected';
+      const items = selections();
+      const n = items.length;
+      // routines in the mix (colour dots) + cardio
+      const mix = [];
+      const seenType = new Set();
+      items.forEach(i => {
+        if (i.kind !== 'exercise' || seenType.has(i.type)) return;
+        seenType.add(i.type);
+        const sec = document.querySelector('.psec[data-type="' + i.type.replace(/"/g, '\\"') + '"]');
+        mix.push('<span><span class="dot" style="--c:' + (sec ? sec.dataset.color : '#888') + '"></span>' + i.type + '</span>');
+      });
+      const cardioN = items.filter(i => i.kind !== 'exercise').length;
+      if (cardioN) mix.push('<span><span class="dot" style="--c:#22d3ee"></span>Cardio</span>');
+      savecount.innerHTML = '<b>' + n + ' selected</b><div class="mix">' + mix.join('') + '</div>';
       savebar.classList.toggle('visible', n > 0);
+
+      // per-section counts, chips, tab badges
+      let strengthN = 0;
+      document.querySelectorAll('.psec').forEach(sec => {
+        const rows = Array.from(sec.querySelectorAll('.sel-row'));
+        if (!rows.length) return;
+        const t = tickedCount(rows);
+        strengthN += t;
+        sec.querySelector('.pcnt').textContent = t + '/' + rows.length;
+        const all = t === rows.length;
+        sec.querySelector('.ptick').textContent = all ? 'Clear' : 'Tick all';
+        const chip = document.querySelector('.pchip[data-go="' + sec.id + '"] i');
+        if (chip) {
+          chip.textContent = t || chip.dataset.n;
+          chip.classList.toggle('n', t > 0);
+        }
+      });
+      const setBadge = (tab, k) => {
+        const i = document.querySelector('.pmode [data-pt="' + tab + '"] i');
+        i.textContent = k || '';
+        i.style.display = k ? '' : 'none';
+      };
+      setBadge('s', items.filter(i => i.kind === 'exercise').length);
+      setBadge('c', cardioN);
+    }
+
+    // Ticking a move ticks it everywhere it appears (one shared selection).
+    function onTick(cb) {
+      const row = cb.closest('.sel-row');
+      row.classList.toggle('on', cb.checked);
+      (row.dataset.name ? rowsByName(row.dataset.name) : []).forEach(r => {
+        const c = r.querySelector('.sel');
+        c.checked = cb.checked;
+        r.classList.toggle('on', cb.checked);
+      });
+      refreshBar();
     }
 
     function bindRow(row) {
       row.addEventListener('click', e => {
-        if (e.target.matches('input, select, button')) return;
+        if (e.target.closest('.ck, .val, input, select, button')) return;
         const cb = row.querySelector('.sel');
         cb.checked = !cb.checked;
-        refreshBar();
+        onTick(cb);
       });
-      row.querySelector('.sel').addEventListener('change', refreshBar);
+      row.querySelector('.sel').addEventListener('change', e => onTick(e.target));
+      row.querySelector('.val').addEventListener('click', () => openSheet(row));
     }
 
     document.querySelectorAll('.sel-row').forEach(bindRow);
@@ -812,22 +886,36 @@ SAVE_SCRIPT = """
 
     const runToggle = document.querySelector('.sel-run');
     if (runToggle) runToggle.addEventListener('change', refreshBar);
+    document.querySelectorAll('.sel-run').forEach(c => c.addEventListener('change', refreshBar));
 
-    document.querySelectorAll('.addrow').forEach(btn =>
+    document.querySelectorAll('.ptick').forEach(btn =>
       btn.addEventListener('click', () => {
-        const tbody = btn.closest('.tpl-section').querySelector('tbody');
-        const tr = document.createElement('tr');
-        tr.className = 'sel-row';
-        tr.innerHTML = `
-          <td class='selcell'><input type='checkbox' class='sel' checked></td>
-          <td class='exname'><input type='text' placeholder='Exercise name'></td>
-          <td class='wcell'><input type='number' class='w-num' step='0.5' data-lbs='' placeholder='-'>
-            <button type='button' class='w-unit' title='Switch lbs/kg'>lbs &#8644;</button></td>
-          <td class='srcell'><input type='number' class='sr-sets' value='3'>×<input type='text' class='sr-reps' value='15' placeholder='12 10 10 8'></td>`;
-        tbody.appendChild(tr);
-        bindRow(tr);
+        const rows = Array.from(btn.closest('.psec').querySelectorAll('.sel-row'));
+        const want = tickedCount(rows) !== rows.length;
+        rows.forEach(r => { const c = r.querySelector('.sel'); c.checked = want; onTick(c); });
+      }));
+
+    function newRowHtml(name) {
+      return `
+        <label class='ck'><input type='checkbox' class='sel' checked aria-label='Tick'><span><svg width='14' height='14' viewBox='0 0 16 16' aria-hidden='true'><path d='M3.5 8.5l3 3 6-7' fill='none' stroke='#06240f' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'/></svg></span></label>
+        <div class='nm exname'><input type='text' placeholder='Exercise name'></div>
+        <button type='button' class='val' aria-label='Edit weight, sets and reps'></button>
+        <input type='number' class='w-num' step='0.5' data-lbs='' hidden>
+        <input type='number' class='sr-sets' value='3' hidden>
+        <input type='text' class='sr-reps' value='15' hidden>`;
+    }
+
+    document.querySelectorAll('.padd').forEach(btn =>
+      btn.addEventListener('click', () => {
+        const list = btn.closest('.psec').querySelector('.plist');
+        const row = document.createElement('div');
+        row.className = 'sel-row prow on';
+        row.dataset.name = '';
+        row.innerHTML = newRowHtml();
+        list.appendChild(row);
+        bindRow(row);
         paintUnit();
-        tr.querySelector('.exname input').focus();
+        row.querySelector('.exname input').focus();
         refreshBar();
       }));
 
@@ -840,12 +928,25 @@ SAVE_SCRIPT = """
     const inLbs   = v => UNIT_SEL === 'kg' ? r05(v * LB_PER_KG) : v;
     const fromLbs = v => UNIT_SEL === 'kg' ? r05(v / LB_PER_KG) : v;
 
+    let sheetRow = null;
+    const fmtN = v => String(+v.toFixed(1));
+
+    // Value chip text, e.g. "44 lbs · 4×8" or "BW · 3×6".
+    function paintVal(row) {
+      const lbs = parseFloat(row.querySelector('.w-num').dataset.lbs);
+      const w = (!isNaN(lbs) && lbs > 0) ? fmtN(fromLbs(lbs)) + '<small> ' + UNIT_SEL + '</small>' : 'BW';
+      const sets = row.querySelector('.sr-sets').value || '-';
+      const reps = (row.querySelector('.sr-reps').value.trim().split(/[\\s,]+/).filter(Boolean).join('/')) || '-';
+      row.querySelector('.val').innerHTML = w + ' <small>·</small> ' + sets + '×' + reps;
+    }
+
     function paintUnit() {
-      document.querySelectorAll('.w-unit').forEach(el => { el.textContent = UNIT_SEL + ' \u21C4'; });
       document.querySelectorAll('.w-num').forEach(i => {
         const lbs = parseFloat(i.dataset.lbs);
         if (!isNaN(lbs)) i.value = fromLbs(lbs);
       });
+      document.querySelectorAll('.sel-row').forEach(paintVal);
+      if (sheetRow) paintSheet();
       document.querySelectorAll('.w-tgl').forEach(b =>
         b.classList.toggle('on', b.dataset.u === UNIT_SEL));
       document.querySelectorAll('.wv').forEach(el => {
@@ -868,11 +969,163 @@ SAVE_SCRIPT = """
       const v = parseFloat(e.target.value);
       e.target.dataset.lbs = isNaN(v) ? '' : inLbs(v);
     });
-    document.addEventListener('click', e => {
-      if (e.target.closest('.w-unit')) setUnit(UNIT_SEL === 'kg' ? 'lbs' : 'kg');
+    document.addEventListener('input', e => {
+      const nameIn = e.target.closest && e.target.closest('.exname input');
+      if (nameIn) nameIn.closest('.sel-row').dataset.name = nameIn.value.trim();
     });
 
+    // ---- Edit sheet (weight / sets / reps) -----------------------------------
+    // Edits the row's hidden inputs, so rowData() / the lbs-only log are untouched.
+    const psheet = document.getElementById('psheet');
+    const pdim = document.getElementById('pdim');
+    const stepW = () => UNIT_SEL === 'kg' ? 2.5 : 5;
+    const quickW = () => UNIT_SEL === 'kg' ? [1, 2.5, 5] : [2.5, 5, 10];
+
+    const wLbs = row => parseFloat(row.querySelector('.w-num').dataset.lbs);
+    const wShown = row => { const l = wLbs(row); return (!isNaN(l) && l > 0) ? fromLbs(l) : null; };
+    function setW(row, shown) {
+      const inp = row.querySelector('.w-num');
+      if (shown == null || shown <= 0) { inp.value = ''; inp.dataset.lbs = ''; }
+      else { inp.value = shown; inp.dataset.lbs = inLbs(shown); }
+    }
+    const repsList = row => row.querySelector('.sr-reps').value.trim().split(/[\\s,]+/)
+      .map(x => parseInt(x)).filter(x => !isNaN(x));
+
+    // keep every row of the same move in step with the one being edited
+    function syncSame(row) {
+      const name = row.dataset.name;
+      if (!name) { paintVal(row); return; }
+      const qs = ['.w-num', '.sr-sets', '.sr-reps'];
+      rowsByName(name).forEach(r => {
+        if (r !== row) {
+          qs.forEach(q => { r.querySelector(q).value = row.querySelector(q).value; });
+          r.querySelector('.w-num').dataset.lbs = row.querySelector('.w-num').dataset.lbs;
+        }
+        paintVal(r);
+      });
+    }
+
+    function paintSheet() {
+      const row = sheetRow;
+      const w = wShown(row);
+      document.getElementById('sv-w').innerHTML = w == null ? 'BW' : fmtN(w) + '<small>' + UNIT_SEL + '</small>';
+      document.getElementById('sv-s').textContent = row.querySelector('.sr-sets').value || '-';
+      document.getElementById('sv-r').textContent = repsList(row).join('/') || '-';
+      document.getElementById('sh-quick').innerHTML =
+        quickW().map(q => '<button type="button" data-q="' + q + '">+' + q + '</button>').join('') +
+        '<button type="button" data-q="bw">BW</button>';
+    }
+
+    function openSheet(row) {
+      sheetRow = row;
+      const nm = row.querySelector('.exname input');
+      document.getElementById('sh-title').textContent = nm ? (nm.value || 'New exercise') : row.dataset.name;
+      const homes = [row.closest('.psec').dataset.type].concat(row.dataset.also ? row.dataset.also.split(', ') : []);
+      document.getElementById('sh-sub').textContent = (row.dataset.group ? row.dataset.group + ' · ' : '') + 'in ' + homes.join(', ');
+      paintSheet();
+      psheet.classList.add('show');
+      pdim.classList.add('show');
+    }
+
+    function closeSheet(tick) {
+      const row = sheetRow;
+      psheet.classList.remove('show');
+      pdim.classList.remove('show');
+      sheetRow = null;
+      if (row && tick) {
+        const cb = row.querySelector('.sel');
+        cb.checked = true;
+        onTick(cb);
+      }
+    }
+
+    psheet.addEventListener('click', e => {
+      const row = sheetRow;
+      if (!row) return;
+      const st = e.target.closest('[data-st]');
+      const q = e.target.closest('[data-q]');
+      if (st) {
+        const k = st.dataset.st;
+        if (k[0] === 'w') {
+          const cur = wShown(row);
+          const next = k === 'w+' ? (cur || 0) + stepW() : (cur == null ? null : cur - stepW());
+          setW(row, next == null ? null : Math.round(next * 100) / 100);
+        } else if (k[0] === 's') {
+          const v = Math.max(1, (parseInt(row.querySelector('.sr-sets').value) || 3) + (k === 's+' ? 1 : -1));
+          row.querySelector('.sr-sets').value = v;
+        } else {
+          const list = repsList(row);
+          const d = k === 'r+' ? 1 : -1;
+          row.querySelector('.sr-reps').value = (list.length ? list : [12]).map(x => Math.max(1, x + d)).join(' ');
+        }
+      } else if (q) {
+        if (q.dataset.q === 'bw') setW(row, null);
+        else setW(row, Math.round(((wShown(row) || 0) + parseFloat(q.dataset.q)) * 100) / 100);
+      } else return;
+      syncSame(row);
+      paintSheet();
+    });
+    pdim.addEventListener('click', () => closeSheet(false));
+    document.getElementById('sh-done').addEventListener('click', () => closeSheet(true));
+    document.addEventListener('keydown', e => { if (e.key === 'Escape' && sheetRow) closeSheet(false); });
+
+    // ---- Plan page chrome: tabs, routine chips, sticky offsets, toast --------
+    const planHead = document.getElementById('plan-head');
+    function measurePlan() {
+      if (planHead && planHead.offsetParent) {
+        document.documentElement.style.setProperty('--plan-head-h', planHead.offsetHeight + 'px');
+      }
+    }
+    window.measurePlan = measurePlan;
+    window.addEventListener('resize', measurePlan);
+
+    document.querySelectorAll('.pmode button').forEach(b =>
+      b.addEventListener('click', () => {
+        document.querySelectorAll('.pmode button').forEach(x => x.classList.toggle('on', x === b));
+        document.getElementById('pt-s').classList.toggle('on', b.dataset.pt === 's');
+        document.getElementById('pt-c').classList.toggle('on', b.dataset.pt === 'c');
+        document.getElementById('pchips').style.display = b.dataset.pt === 's' ? '' : 'none';
+        window.scrollTo(0, 0);
+        measurePlan();
+      }));
+
+    const chipEls = Array.from(document.querySelectorAll('.pchip'));
+    chipEls.forEach(c => c.addEventListener('click', () => {
+      const sec = document.getElementById(c.dataset.go);
+      if (!sec) return;
+      const top = sec.getBoundingClientRect().top + window.scrollY - planHead.offsetHeight + 1;
+      window.scrollTo({ top, behavior: 'smooth' });
+    }));
+
+    function spy() {
+      if (!planHead || !planHead.offsetParent || !chipEls.length) return;
+      const line = planHead.getBoundingClientRect().bottom + 8;
+      let cur = chipEls[0].dataset.go;
+      chipEls.forEach(c => {
+        const sec = document.getElementById(c.dataset.go);
+        if (sec && sec.getBoundingClientRect().top <= line) cur = c.dataset.go;
+      });
+      chipEls.forEach(c => {
+        const on = c.dataset.go === cur;
+        if (c.classList.contains('on') !== on) {
+          c.classList.toggle('on', on);
+          if (on) c.parentElement.scrollTo({ left: Math.max(0, c.offsetLeft - 12), behavior: 'smooth' });
+        }
+      });
+    }
+    window.addEventListener('scroll', spy, { passive: true });
+
+    let toastTimer;
+    function toast(msg) {
+      const t = document.getElementById('ptoast');
+      t.textContent = msg;
+      t.classList.add('show');
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => t.classList.remove('show'), 2400);
+    }
+
     paintUnit();
+    refreshBar();
     document.querySelectorAll('.w-tgl').forEach(b =>
       b.addEventListener('click', () => setUnit(b.dataset.u)));
 
@@ -982,13 +1235,13 @@ SAVE_SCRIPT = """
           await ghPut(runPath, runObj, null, token);
         }
 
-        document.querySelectorAll('.sel:checked').forEach(cb => cb.checked = false);
+        document.querySelectorAll('.sel:checked').forEach(cb => { cb.checked = false; cb.closest('.sel-row').classList.remove('on'); });
         document.querySelectorAll('.sel-chip.selected').forEach(ch => ch.classList.remove('selected'));
         const runClear = document.querySelector('.sel-run');
         if (runClear) runClear.checked = false;
         document.querySelectorAll('.rfield').forEach(f => f.value = '');
         refreshBar();
-        alert('Saved! The site rebuilds in ~1 minute, then pull to refresh.');
+        toast('Workout saved \u2713 \u00b7 site rebuilds in ~1 min');
       } catch (err) {
         if (String(err).includes('401') || String(err).includes('403')) {
           alert('Token invalid or expired — tap ⚙ to set a new one.');
@@ -997,7 +1250,7 @@ SAVE_SCRIPT = """
         }
       } finally {
         savebtn.disabled = false;
-        savebtn.textContent = 'Save to Log';
+        savebtn.textContent = 'Save';
       }
     });
 """
@@ -1175,9 +1428,6 @@ STYLE = """
   .tpl-head{display:flex;align-items:center;gap:9px;padding:4px 0 2px}
   .tpl-head .t{font-weight:700;font-size:14px;color:var(--ink)}
   .tpl-count{font-size:11.5px;color:var(--mut)}
-  .selcell{width:2.2rem}
-  .sel,.sel-run{width:1.05rem;height:1.05rem;accent-color:var(--accent);cursor:pointer;vertical-align:middle}
-  .sel-row{cursor:pointer}
   .sel-chip{cursor:pointer;transition:.15s;user-select:none}
   .sel-chip.selected{background:var(--accent);border-color:var(--accent);color:#fff}
   .sel-chip.selected small{color:#fff}
@@ -1189,25 +1439,19 @@ STYLE = """
     outline:none;border-color:var(--accent)
   }
   .rfield{width:100%}
-  .w-num{width:4.2rem}
   .unit-switch{display:inline-flex;border:1px solid var(--line);border-radius:8px;overflow:hidden;flex-shrink:0}
   .unit-switch button{background:var(--panel2);border:0;color:var(--mut);font:inherit;font-size:12.5px;padding:9px 12px;cursor:pointer;line-height:1}
   .unit-switch button+button{border-left:1px solid var(--line)}
   .unit-switch button.on{background:var(--accent);color:#fff}
   .wv{font-variant-numeric:tabular-nums}
-  .sr-sets,.sr-reps{width:2.6rem;text-align:center}
-  .sr-reps{width:5.6rem;font-family:var(--mono)}
   .rbs{color:var(--accent2);font-family:var(--mono)}
-  .srcell{white-space:nowrap}
   .exname input{width:9rem}
   .grp{font-size:10px;font-weight:600;opacity:.55;white-space:nowrap;margin-left:.3rem}
   .dur{width:3.4rem;padding:4px 6px;font-size:12px}
-  .w-unit{background:var(--panel2);color:var(--mut);border:1px solid var(--line);border-radius:6px;padding:6px 9px;font-size:12px;font-family:inherit;margin-left:4px;display:inline-block;white-space:nowrap;min-width:3.6rem;cursor:pointer}
   .w-unit:hover{border-color:var(--accent);color:var(--ink)}
   .w-unit:active{background:var(--accent);color:#fff}
   input[type=number]{appearance:textfield;-moz-appearance:textfield}
   input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
-  .addrow{background:none;border:1px dashed var(--line2);color:var(--mut);border-radius:8px;padding:10px 14px;margin-top:8px;font-size:12.5px;font-family:inherit;cursor:pointer;width:100%}
   .addrow:hover{border-color:var(--accent);color:var(--ink)}
   .run-toggle{display:flex;align-items:center;gap:8px;margin-top:8px;font-size:13px;color:var(--ink);cursor:pointer}
   .run-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:8px}
@@ -1215,14 +1459,99 @@ STYLE = """
   .run-note{grid-column:1 / -1}
   .note-row{display:flex;gap:8px;align-items:center;font-size:11px;color:var(--mut)}
 
-  /* ---- Save bar ---- */
-  #savebar{position:fixed;bottom:var(--nav-h,0px);left:0;right:0;display:none;align-items:center;justify-content:center;gap:14px;padding:11px 16px;background:rgba(15,16,20,.95);border-top:1px solid var(--line);backdrop-filter:blur(10px);z-index:40;transition:bottom .18s ease}
-  #savebar.visible{display:flex}
-  #savecount{font-size:12.5px;color:var(--mut)}
-  #savebtn{background:var(--accent);border:none;color:#fff;font-size:13px;font-weight:650;font-family:inherit;padding:9px 20px;border-radius:8px}
+  /* ---- Plan page (Claude Design A · one compact list) ---- */
+  .sel-run{width:1.1rem;height:1.1rem;accent-color:var(--accent);cursor:pointer;vertical-align:middle}
+  .plan{--p-bg:#0c0c0e;--p-sf:#141417;--p-sf2:#1b1b1f;--p-bd:#26262b;--p-div:#1c1c21;--p-tx:#ececf0;--p-mu:#8d8d97;
+    --p-ac:#6366f1;--p-ln:#a5a6ff;--p-ok:#22c55e;--p-okt:#06240f;--p-oks:#7dd3a0;--p-ck:#3a3a42;
+    max-width:640px;margin:0 auto;font-variant-numeric:tabular-nums}
+  .plan button{font:inherit;color:inherit;-webkit-tap-highlight-color:transparent}
+  .plan-head{position:sticky;top:0;z-index:20;background:rgba(8,9,12,.96);backdrop-filter:blur(10px);margin:0 -18px;padding:0 18px;border-bottom:1px solid var(--p-bd)}
+  .plan-hd{display:flex;justify-content:space-between;align-items:center;padding:10px 0}
+  .plan-hd h2{font-size:24px;font-weight:700;letter-spacing:-.02em}
+  .plan-hd small{display:block;font-size:12px;color:var(--p-mu);margin-top:2px}
+  .plan .unit-switch,.psheet .unit-switch,#psheet .unit-switch{background:var(--p-sf2,#1b1b1f);border:1px solid #26262b;border-radius:10px;padding:2px;overflow:visible}
+  .plan .unit-switch button,#psheet .unit-switch button{padding:8px 13px;border-radius:8px;font-size:13px;color:var(--mut);min-height:36px}
+  .plan .unit-switch button+button,#psheet .unit-switch button+button{border-left:0}
+  .plan .unit-switch button.on,#psheet .unit-switch button.on{background:#6366f1;color:#fff}
+  .pmode{display:flex;background:var(--p-sf);border:1px solid var(--p-bd);border-radius:12px;padding:3px;margin-bottom:10px}
+  .pmode button{flex:1;min-height:40px;border-radius:9px;font-size:14px;color:var(--p-mu);display:flex;justify-content:center;align-items:center;gap:6px}
+  .pmode button.on{background:var(--p-sf2);color:var(--p-tx);box-shadow:0 0 0 1px var(--p-bd)}
+  .pmode i{font-style:normal;font-size:11px;font-weight:700;background:var(--p-ok);color:var(--p-okt);border-radius:9px;padding:1px 6px}
+  .pmode i:empty{display:none}
+  .pchips{display:flex;gap:6px;overflow-x:auto;padding:0 0 10px;scrollbar-width:none}
+  .pchips::-webkit-scrollbar{display:none}
+  .pchip{flex:none;display:flex;align-items:center;gap:6px;padding:7px 12px;min-height:36px;border-radius:999px;border:1px solid var(--p-bd);background:var(--p-sf);font-size:13px;color:var(--p-mu)}
+  .pchip.on{color:var(--p-tx);border-color:var(--c)}
+  .pchip i{font-style:normal;font-size:11px}
+  .pchip i.n{background:var(--p-ok);color:var(--p-okt);border-radius:8px;padding:0 5px;font-weight:700}
+  .dot{flex:none;width:8px;height:8px;border-radius:50%;background:var(--c)}
+  .ptab{display:none}
+  .ptab.on{display:block}
+  .psec{padding-bottom:6px}
+  .psh{position:sticky;top:var(--plan-head-h,120px);z-index:10;display:flex;align-items:center;gap:8px;padding:10px 6px 8px;background:rgba(8,9,12,.94);backdrop-filter:blur(8px)}
+  .psh b{font-size:14px}
+  .pcnt{font-size:12px;color:var(--p-mu)}
+  .ptick{margin-left:auto;font-size:13px;color:var(--p-ln);padding:10px 0 10px 12px}
+  .prow{display:flex;align-items:center;gap:10px;margin:0 4px;padding:0 6px 0 8px;min-height:52px;border-radius:12px;cursor:pointer}
+  .prow+.prow{border-top:1px solid var(--p-div)}
+  .prow.on{background:rgba(34,197,94,.08)}
+  .prow.on+.prow,.prow+.prow.on{border-top-color:transparent}
+  .ck{flex:none;width:44px;height:44px;margin-left:-8px;display:grid;place-items:center;position:relative;cursor:pointer}
+  .ck .sel{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:pointer;margin:0}
+  .ck span{width:24px;height:24px;border-radius:50%;border:2px solid var(--p-ck);display:grid;place-items:center;transition:all .15s;pointer-events:none}
+  .ck svg{opacity:0}
+  .prow.on .ck span{background:var(--p-ok);border-color:var(--p-ok)}
+  .prow.on .ck svg{opacity:1}
+  .ck .sel:focus-visible+span{outline:2px solid var(--accent2);outline-offset:2px}
+  .prow .nm{flex:1;min-width:0;padding:8px 0;display:flex;flex-direction:column;gap:1px}
+  .prow .nm b{font-weight:500;font-size:14.5px;line-height:1.25}
+  .nsub{font-size:11.5px;color:var(--p-mu)}
+  .nsub em{font-style:normal;color:var(--p-oks)}
+  .also-on{display:none}
+  .prow.on .also-on{display:inline}
+  .prow.on .also-off{display:none}
+  .prow .exname input{width:100%;min-height:36px;font-size:14px}
+  .val{flex:none;min-height:40px;min-width:96px;padding:8px 10px;border-radius:9px;background:var(--p-sf2);border:1px solid var(--p-bd);font-size:13px;text-align:right;white-space:nowrap}
+  .val small{color:var(--p-mu);font-size:inherit}
+  .padd{display:block;width:calc(100% - 8px);margin:6px 4px 4px;padding:12px;border:1px dashed var(--p-bd);border-radius:14px;color:var(--p-mu);font-size:14px}
+  .plan .chip-row{padding:0 6px}
+  .plan .run-toggle,.plan .run-grid{margin-left:6px;margin-right:6px}
+  .plan .rfield,.plan .dur{min-height:40px}
+  .plan .dur{min-height:0}
+  #savebar{left:12px;right:12px;bottom:calc(22px + env(safe-area-inset-bottom));display:flex;max-width:616px;margin:0 auto;padding:10px 10px 10px 16px;gap:10px;justify-content:flex-start;background:#1d1d22;border:1px solid #26262b;border-radius:18px;box-shadow:0 10px 40px rgba(0,0,0,.6);transform:translateY(160%);pointer-events:none;transition:transform .25s cubic-bezier(.3,1.3,.5,1)}
+  #savebar.visible{transform:none;pointer-events:auto}
+  #savecount{flex:1;min-width:0;font-size:12px;color:var(--mut);display:flex;flex-direction:column;gap:3px}
+  #savecount b{color:var(--ink);font-size:15px}
+  .mix{display:flex;gap:4px 10px;flex-wrap:wrap}
+  .mix>span{display:flex;align-items:center;gap:4px}
+  #savebtn{min-height:48px;padding:13px 20px;border-radius:12px;font-size:15px;font-weight:600;background:#6366f1}
+  #tokenbtn{min-height:44px;min-width:44px}
+  #ptoast{position:fixed;left:50%;top:20px;z-index:60;transform:translate(-50%,-30px);opacity:0;background:#22c55e;color:#06240f;padding:10px 16px;border-radius:999px;font-size:14px;font-weight:600;transition:all .25s;pointer-events:none;white-space:nowrap}
+  #ptoast.show{opacity:1;transform:translate(-50%,0)}
+  #pdim{position:fixed;inset:0;z-index:70;background:rgba(0,0,0,.55);opacity:0;pointer-events:none;transition:opacity .2s}
+  #pdim.show{opacity:1;pointer-events:auto}
+  #psheet{position:fixed;left:0;right:0;bottom:0;z-index:71;max-width:640px;margin:0 auto;max-height:92vh;overflow-y:auto;background:#17171b;border-top:1px solid #26262b;border-radius:24px 24px 0 0;padding:10px 18px calc(28px + env(safe-area-inset-bottom));transform:translateY(105%);visibility:hidden;transition:transform .28s cubic-bezier(.2,.9,.3,1),visibility 0s .28s}
+  #psheet.show{transform:none;visibility:visible;transition:transform .28s cubic-bezier(.2,.9,.3,1)}
+  #psheet .grab{width:40px;height:5px;border-radius:3px;background:#3a3a42;margin:0 auto 14px}
+  #psheet h3{font-size:19px}
+  #psheet p{margin:2px 0 14px;font-size:13px;color:var(--mut)}
+  #psheet .st{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-top:1px solid #26262b}
+  #psheet .st>span{font-size:13px;color:var(--mut);width:70px}
+  #psheet .stc{display:flex;align-items:center;gap:8px}
+  #psheet .sbtn{width:48px;height:48px;border-radius:12px;background:#1b1b1f;border:1px solid #26262b;font-size:22px;display:grid;place-items:center}
+  #psheet .sv{min-width:96px;text-align:center;font-size:26px;font-weight:600;font-variant-numeric:tabular-nums}
+  #psheet .sv small{font-size:13px;color:var(--mut);font-weight:400;margin-left:3px}
+  #psheet .quick{display:flex;gap:6px;padding:0 0 10px 70px}
+  #psheet .quick button{flex:1;min-height:40px;border-radius:9px;border:1px solid #26262b;font-size:13px;color:var(--mut)}
+  .pbtn{width:100%;margin-top:14px;min-height:48px;padding:13px 20px;border-radius:12px;background:#6366f1;color:#fff;font-weight:600;font-size:15px}
+  @media(max-width:600px){.plan-head{margin:0 -14px;padding:0 14px}}
+
+  /* ---- Save bar (floating card; look is defined with the Plan styles above) ---- */
+  #savebar{position:fixed;align-items:center;z-index:40}
+  #savebtn{border:none;color:#fff;font-family:inherit}
   #savebtn:hover{filter:brightness(1.1)}
   #savebtn:disabled{opacity:.5;cursor:wait}
-  #tokenbtn{background:var(--panel2);border:1px solid var(--line);color:var(--mut);border-radius:8px;padding:9px 12px}
+  #tokenbtn{background:var(--panel2);border:1px solid var(--line);color:var(--mut);border-radius:12px;padding:9px 12px}
 
   #view-more,.view-more,.btn{border:1px solid var(--line2);background:var(--panel2);color:var(--ink);border-radius:8px;padding:9px 14px;font-size:12.5px;font-weight:600}
   #view-more:hover,.view-more:hover,.btn:hover{border-color:var(--accent)}
@@ -1277,10 +1606,29 @@ def build_html(entries, templates, raw_entries):
     cardio_cards, cardio_more = col(cardio)
     ordered = [templates[t] for t in TEMPLATE_ORDER if t in templates]
     ordered += [t for k, t in templates.items() if k not in TEMPLATE_ORDER]
-    template_sections = "\n".join(
-        s for s in (build_template_section(t) for t in ordered) if s
+    # name -> other routines it also appears in (drives "also in …" and the global tick)
+    homes = {}
+    for t in ordered:
+        for e in t.get("exercises", []):
+            homes.setdefault(e["name"], []).append(t["type"])
+    also_for = lambda typ: {n: [x for x in ts if x != typ] for n, ts in homes.items() if typ in ts and len(ts) > 1}
+    sections = [(t, build_template_section(t, also_for(t["type"]))) for t in ordered]
+    strength_secs = [(t, h) for t, h in sections if h and t.get("exercises")]
+    cardio_secs = [(t, h) for t, h in sections if h and t["type"] in CARDIO_TYPES]
+    strength_html = "\n".join(h for _, h in strength_secs)
+    cardio_html = "\n".join(h for _, h in cardio_secs)
+    plan_chips = "".join(
+        f'<button type="button" class="pchip" data-go="sec-{re.sub(r"[^a-z0-9]+", "-", t["type"].lower())}" '
+        f'style="--c:{TYPE_COLORS.get(t["type"], TYPE_DEFAULT)}"><span class="dot"></span>{t["type"]}'
+        f'<i data-n="{len(t["exercises"])}">{len(t["exercises"])}</i></button>'
+        for t, _ in strength_secs
     )
     latest_date = entries[0].get("date", "—") if entries else "—"
+    try:
+        _d = datetime.strptime(latest_date, "%Y-%m-%d")
+        latest_label = f"{_d.strftime('%b')} {_d.day}"
+    except ValueError:
+        latest_label = latest_date
     n = len(entries)
     updated = datetime.now(BKK).strftime("%Y-%m-%d %H:%M (Bangkok)")
 
@@ -1330,9 +1678,28 @@ def build_html(entries, templates, raw_entries):
       </div>
 
       <div id="view-templates" class="view">
-        <div class="section-title">Select exercises to log</div>
-        <p style="color:var(--mut);font-size:13px;margin-bottom:14px">Tick the exercises you did — the save bar appears at the bottom.</p>
-        {template_sections}
+        <div class="plan">
+          <div class="plan-head" id="plan-head">
+            <div class="plan-hd">
+              <div><h2>Plan</h2><small>last session {latest_label} · {n} workouts</small></div>
+              <div class="unit-switch" role="group" aria-label="Weight unit">
+                <button type="button" class="w-tgl on" data-u="lbs">lbs</button>
+                <button type="button" class="w-tgl" data-u="kg">kg</button>
+              </div>
+            </div>
+            <div class="pmode" role="tablist">
+              <button type="button" class="on" data-pt="s">Strength<i></i></button>
+              <button type="button" data-pt="c">Cardio<i></i></button>
+            </div>
+            <div class="pchips" id="pchips">{plan_chips}</div>
+          </div>
+          <div id="pt-s" class="ptab on">
+{strength_html}
+          </div>
+          <div id="pt-c" class="ptab">
+{cardio_html}
+          </div>
+        </div>
         <div style="height:9rem"></div>
       </div>
 
@@ -1341,9 +1708,26 @@ def build_html(entries, templates, raw_entries):
   </div>
 
   <div id="savebar">
-    <span id="savecount"></span>
-    <button id="savebtn">Save to Log</button>
+    <div id="savecount"></div>
     <button id="tokenbtn" title="Set GitHub token">⚙</button>
+    <button id="savebtn">Save</button>
+  </div>
+  <div id="ptoast" role="status"></div>
+  <div id="pdim"></div>
+  <div id="psheet" role="dialog" aria-modal="true" aria-labelledby="sh-title">
+    <div class="grab"></div>
+    <h3 id="sh-title"></h3>
+    <p id="sh-sub"></p>
+    <div class="st"><span>Weight</span>
+      <div class="stc"><button type="button" class="sbtn" data-st="w-" aria-label="Less weight">&minus;</button><div class="sv" id="sv-w"></div><button type="button" class="sbtn" data-st="w+" aria-label="More weight">+</button></div></div>
+    <div class="quick" id="sh-quick"></div>
+    <div class="st"><span>Sets</span>
+      <div class="stc"><button type="button" class="sbtn" data-st="s-" aria-label="Fewer sets">&minus;</button><div class="sv" id="sv-s"></div><button type="button" class="sbtn" data-st="s+" aria-label="More sets">+</button></div></div>
+    <div class="st"><span>Reps</span>
+      <div class="stc"><button type="button" class="sbtn" data-st="r-" aria-label="Fewer reps">&minus;</button><div class="sv" id="sv-r"></div><button type="button" class="sbtn" data-st="r+" aria-label="More reps">+</button></div></div>
+    <div class="st sh-unit"><span>Unit</span>
+      <div class="unit-switch" role="group" aria-label="Weight unit"><button type="button" class="w-tgl on" data-u="lbs">lbs</button><button type="button" class="w-tgl" data-u="kg">kg</button></div></div>
+    <button type="button" class="pbtn" id="sh-done">Done</button>
   </div>
 
   <script>{SAVE_SCRIPT}</script>
@@ -1360,6 +1744,9 @@ def build_html(entries, templates, raw_entries):
       }});
       var t = document.getElementById('page-title');
       if (t) t.textContent = titles[v] || 'Log';
+      var usw = document.getElementById('unitsw');
+      if (usw) usw.style.display = (v === 'templates') ? 'none' : '';
+      if (window.measurePlan) {{ window.measurePlan(); }}
       history.replaceState(null, '', '#' + v);
     }}
     document.querySelectorAll('.top-nav a').forEach(function(el) {{
