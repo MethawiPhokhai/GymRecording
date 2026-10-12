@@ -23,6 +23,13 @@
       "default_reps": 15
     },
     {
+      "name": "Barbell bench press",
+      "group": "Chest",
+      "default_weight_lbs": 44,
+      "default_sets": 4,
+      "default_reps": 15
+    },
+    {
       "name": "Shoulder press",
       "group": "Shoulder",
       "default_weight_lbs": 40,
