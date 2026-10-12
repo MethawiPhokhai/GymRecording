@@ -1339,9 +1339,12 @@ STYLE = """
     --radius:10px;
   }
   *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-  html{-webkit-text-size-adjust:100%}
+  html{-webkit-text-size-adjust:100%;touch-action:manipulation}
   body{background:var(--bg);color:var(--ink);font-family:'Inter',system-ui,-apple-system,'Segoe UI',sans-serif;line-height:1.45;-webkit-font-smoothing:antialiased}
-  button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit}
+  button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit;touch-action:manipulation}
+  /* Kill double-tap-to-zoom on the controls that get tapped rapidly (plan rows,
+     checkboxes, tick-all, chips). Pinch-zoom is intentionally left working. */
+  .prow,.ck,.ck .sel,.ptick,.padd,.chip,.sel-chip,.sel-run,.ptick,.card summary,.run-toggle,.unit-switch button,input,label,summary{touch-action:manipulation}
   a{color:inherit;text-decoration:none}
   .layout{min-height:100vh}
 
