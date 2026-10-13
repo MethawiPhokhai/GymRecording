@@ -1,0 +1,19 @@
+{
+  "date": "2026-10-13",
+  "day": "Tuesday",
+  "type": "Calf & Ankle",
+  "exercises": [
+    {
+      "name": "* Calf raise",
+      "completed": true,
+      "sets": 3,
+      "reps": 12
+    },
+    {
+      "name": "* Lateral band walk",
+      "completed": true,
+      "sets": 2,
+      "reps": 15
+    }
+  ]
+}
