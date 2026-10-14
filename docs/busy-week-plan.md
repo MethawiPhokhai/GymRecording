@@ -1,6 +1,6 @@
 # แผนสำรอง "Busy" — สำหรับสัปดาห์ที่งานยุ่ง
 
-> เพิ่มเป็น 2 routine ในหน้า **Plan** ของแอป: **Busy A** + **Busy B** (template: `templates/busy-a.json`, `templates/busy-b.json`)
+> เพิ่มเป็น 3 routine ในหน้า **Plan** ของแอป: **Busy** (วันเดียว) + **Busy A** + **Busy B** (template: `templates/busy.json`, `templates/busy-a.json`, `templates/busy-b.json`)
 > ใช้เมื่อไหร่: สัปดาห์ที่เข้า gym ได้แค่ **2 วัน** (เช่น หลังเริ่มงานใหม่ 1 พ.ย. 2569) — ใช้แทน Push A / Pull B / Lower A / Lower B **เฉพาะสัปดาห์นั้น** ไม่ใช่แผนหลัก
 
 ## หลักการ (3 ข้อ)
@@ -18,6 +18,47 @@
 | 3 | Incline bench press (incline ±30° เท่านั้น) | Push แนวนอน | 3 × 5 |
 | 4 | Lat pulldown | Pull แนวตั้ง | 3 × 6 |
 | 5 | Face pull | หลังบน / posture | 3 × 15 |
+
+## ทางเลือก: `Busy` — รวม A+B แบบย่อเหลือวันเดียว (~60-70 นาที)
+
+ใช้เมื่อเหลือ **1 วัน/สัปดาห์** แต่มีเวลา ~1 ชั่วโมง (มากกว่าขั้นต่ำสุดด้านล่าง) — template: `templates/busy.json`
+
+| ลำดับ | ท่า | Pattern | เซ็ต × เรป |
+|---|---|---|---|
+| 1 | Deadlift *(สลับกับ Squat อาทิตย์เว้นอาทิตย์)* | Squat/Hinge หนัก | 3 × 5 |
+| 2 | Bulgarian split squat | ขาเดียว | 3 × 6 |
+| 3 | Incline bench press (incline ±30°) | Push นอน | 3 × 6 |
+| 4 | Lat pulldown | Pull แนวตั้ง | 3 × 6 |
+| 5 | Back cable rowing | Row แนวนอน | 3 × 6 |
+| 6 | Shoulder press | Push แนวตั้ง | 3 × 6 |
+| 7 | Face pull | หลังบน / posture | 3 × 15 |
+
+**รวม 7 ท่า / 21 working sets · 4 pattern หลักครบ + ขาเดียว + posture**
+
+### ⚠️ ทำไมไม่รวม Busy A + Busy B ตรง ๆ
+
+รวมตรง ๆ ได้ **10 ท่า / 30 working sets** ซึ่ง
+- **ใช้เวลา 90-120 นาที** (30 เซ็ต × ~4 นาที เพราะพัก ≥3 นาที @ 80-90% 1RM) → ขัดกับจุดประสงค์ "Busy" ทั้งหมด
+- **โหลดหลังล่าง 5 ท่าในวันเดียว** (Deadlift + Squat + Bulgarian + Single-leg RDL + Back cable rowing) → ขัดกับหลักข้อ 2 ข้างบนที่ตั้งใจแยก hinge กับ row คนละวัน
+
+⇒ **วันเดียวที่รวมได้ = ย่อเป็น 7 ท่า** โดยเลือก **Deadlift หรือ Squat อย่างเดียว** (สลับอาทิตย์เว้นอาทิตย์) และ **ตัด Single-leg RDL + Bicep curl** (ทับกับ Bulgarian และเป็นท่าเสริมตามลำดับ)
+
+### เทียบกับ routine `Full body` ที่มีอยู่
+
+| | `Full body` | `Busy` |
+|---|---|---|
+| ท่า / เซ็ต | 6 / 18 | 7 / 21 |
+| Reps | 10-12 | **5-6** |
+| โหลด | hypertrophy | **strength 80-90% 1RM** |
+| พัก/เซ็ต | 60-90 วิ | **≥3 นาที** |
+| Deadlift / Squat หนัก | ❌ | ✅ |
+| ขาเดียว (Bulgarian) | ❌ | ✅ |
+| Face pull (posture) | ❌ | ✅ |
+| เวลา | ~45-60 นาที | ~60-70 นาที |
+
+➡️ **ทับกัน 4 ท่า** (Squat · Lat pulldown · Back cable rowing · Shoulder press) — ใช้ name เดียวกัน จึงแชร์ประวัติน้ำหนักกันอัตโนมัติ
+➡️ **ต่างกันที่จุดประสงค์:** `Full body` = เก็บกล้ามเนื้อด้วย 10-12 เรป · `Busy` = รักษา**แรงและ pattern** ด้วย 5-6 เรป พักยาว
+➡️ **ไม่ใช่ routine เดียวกัน ไม่ควรใช้แทนกันโดยไม่ตั้งใจ**
 
 ## Session ที่ 2 — Busy B (~55-70 นาที)
 

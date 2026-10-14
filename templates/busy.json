@@ -1,0 +1,12 @@
+{
+  "type": "Busy",
+  "exercises": [
+    {"name": "Deadlift", "group": "Hinge · สลับกับ Squat อาทิตย์เว้นอาทิตย์", "default_sets": 3, "default_reps": 5},
+    {"name": "* Bulgarian split squat", "group": "ขาเดียว · 6 เรป", "default_sets": 3, "default_reps": 6},
+    {"name": "Incline bench press", "group": "Push นอน · incline ≤30°", "default_sets": 3, "default_reps": 6},
+    {"name": "Lat pulldown", "group": "Pull แนวตั้ง · 6 เรป", "default_sets": 3, "default_reps": 6},
+    {"name": "Back cable rowing", "group": "Row แนวนอน · 6 เรป", "default_sets": 3, "default_reps": 6},
+    {"name": "Shoulder press", "group": "Push แนวตั้ง · 6 เรป", "default_sets": 3, "default_reps": 6},
+    {"name": "Face pull", "group": "หลังบน · posture", "default_sets": 3, "default_reps": 15}
+  ]
+}

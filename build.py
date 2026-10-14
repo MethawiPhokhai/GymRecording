@@ -103,6 +103,7 @@ TYPE_COLORS = {
     "Lower":     "#f7934f",
     "Lower A":   "#f7934f",
     "Lower B":   "#ffab5c",
+    "Busy":      "#1f8a8a",
     "Busy A":    "#2fa3a3",
     "Busy B":    "#6fc9c9",
     "Calf & Ankle": "#ffc46b",
@@ -316,7 +317,7 @@ def build_template_section(template, also=None):
   </section>"""
 
 
-TEMPLATE_ORDER = ["Push A", "Pull B", "Lower", "Busy A", "Busy B", "Calf & Ankle", "Full body", "Core", "Mobility", "Hip Flexor", "Long Sitting", "Class", "Running", "Cycling"]
+TEMPLATE_ORDER = ["Push A", "Pull B", "Lower", "Busy", "Busy A", "Busy B", "Calf & Ankle", "Full body", "Core", "Mobility", "Hip Flexor", "Long Sitting", "Class", "Running", "Cycling"]
 
 LBS_TO_KG = 0.45359237
 KG_TO_LBS = 2.20462262
