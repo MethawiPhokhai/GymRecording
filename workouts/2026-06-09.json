@@ -3,9 +3,22 @@
   "day": "Monday",
   "type": "Upper",
   "exercises": [
-    { "name": "Pull up",              "completed": true },
-    { "name": "Shoulder press",       "completed": true, "note": "เจ็บหลังแขน" },
-    { "name": "Supine bench press",   "completed": true },
-    { "name": "Machine Chest press",  "completed": true }
+    {
+      "name": "Pull up",
+      "completed": true
+    },
+    {
+      "name": "Shoulder press",
+      "completed": true,
+      "note": "เจ็บหลังแขน"
+    },
+    {
+      "name": "Supine bench press",
+      "completed": true
+    },
+    {
+      "name": "Machine Chest press",
+      "completed": true
+    }
   ]
 }
