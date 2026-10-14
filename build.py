@@ -1344,7 +1344,7 @@ STYLE = """
   button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit;touch-action:manipulation}
   /* Kill double-tap-to-zoom on the controls that get tapped rapidly (plan rows,
      checkboxes, tick-all, chips). Pinch-zoom is intentionally left working. */
-  .prow,.ck,.ck .sel,.ptick,.padd,.chip,.sel-chip,.sel-run,.ptick,.card summary,.run-toggle,.unit-switch button,input,label,summary{touch-action:manipulation}
+  .prow,.ck,.ck .sel,.ptick,.padd,.chip,.sel-chip,.sel-run,.sel-row,.sel-row *,#psheet,#psheet *,.sheet,.sheet *,.card summary,.run-toggle,.unit-switch button,input,label,summary,[role=button]{touch-action:manipulation}
   a{color:inherit;text-decoration:none}
   .layout{min-height:100vh}
 

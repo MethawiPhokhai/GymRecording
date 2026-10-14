@@ -18,7 +18,7 @@
   button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit;touch-action:manipulation}
   /* Kill double-tap-to-zoom on the controls that get tapped rapidly (plan rows,
      checkboxes, tick-all, chips). Pinch-zoom is intentionally left working. */
-  .prow,.ck,.ck .sel,.ptick,.padd,.chip,.sel-chip,.sel-run,.ptick,.card summary,.run-toggle,.unit-switch button,input,label,summary{touch-action:manipulation}
+  .prow,.ck,.ck .sel,.ptick,.padd,.chip,.sel-chip,.sel-run,.sel-row,.sel-row *,#psheet,#psheet *,.sheet,.sheet *,.card summary,.run-toggle,.unit-switch button,input,label,summary,[role=button]{touch-action:manipulation}
   a{color:inherit;text-decoration:none}
   .layout{min-height:100vh}
 
@@ -274,7 +274,7 @@
   <div class="layout">
     <div class="main">
       <div class="topbar">
-        <div><h1 id="page-title">Weight Training</h1><div class="meta">latest session 2026-10-13 · 87 workouts</div></div>
+        <div><h1 id="page-title">Weight Training</h1><div class="meta">latest session 2026-10-13 · 88 workouts</div></div>
         <div class="actions">
           <div class="unit-switch" id="unitsw" role="group" aria-label="Weight unit">
             <button type="button" class="w-tgl on" data-u="lbs">lbs</button>
@@ -290,7 +290,7 @@
 
       <div id="view-weight" class="view on">
         <div class="page-intro"><h2>Weight Training</h2><p>Strength sessions, exercise progress, and recent training logs.</p></div>
-        <div class="statgrid focus-stats"><div class="stat"><div class="k">Last 30 days</div><div class="v">22</div><div class="d">total sessions</div></div><div class="stat"><div class="k">Weight training</div><div class="v">17</div><div class="d">sessions · 30d</div></div><div class="stat"><div class="k">Exercises tracked</div><div class="v">49</div><div class="d">with progress data</div></div><div class="stat"><div class="k">All-time sessions</div><div class="v">63</div><div class="d">in your log</div></div></div>
+        <div class="statgrid focus-stats"><div class="stat"><div class="k">Last 30 days</div><div class="v">23</div><div class="d">total sessions</div></div><div class="stat"><div class="k">Weight training</div><div class="v">18</div><div class="d">sessions · 30d</div></div><div class="stat"><div class="k">Exercises tracked</div><div class="v">50</div><div class="d">with progress data</div></div><div class="stat"><div class="k">All-time sessions</div><div class="v">63</div><div class="d">in your log</div></div></div>
         <section class="focus-section"><div class="section-title">Progress</div>
   <div class="chip-row" id="prog-filters"><span class="chip filter-chip selected" data-filter="all">All</span><span class="chip filter-chip" data-filter="Push A">Push A</span><span class="chip filter-chip" data-filter="Pull B">Pull B</span><span class="chip filter-chip" data-filter="Lower">Lower</span><span class="chip filter-chip" data-filter="Calf & Ankle">Calf & Ankle</span><span class="chip filter-chip" data-filter="Full body">Full body</span><span class="chip filter-chip" data-filter="Core">Core</span><span class="chip filter-chip" data-filter="Lower A">Lower A</span><span class="chip filter-chip" data-filter="Upper">Upper</span></div>
 
@@ -322,6 +322,29 @@
 <tr><td>2026-06-26</td><td><span class="wv" data-lbs="53">53 lbs</span></td><td>3×10</td><td>1590 lbs</td><td><span class='trend up'>▲ +9 lbs</span></td></tr>
 <tr><td>2026-06-19</td><td><span class="wv" data-lbs="44">44 lbs</span></td><td>3×10</td><td>1320 lbs</td><td><span class='trend up'>▲ +6.5 lbs</span></td></tr>
 <tr><td>2026-06-13</td><td><span class="wv" data-lbs="37.5">37.5 lbs</span></td><td>3×15</td><td>1687.5 lbs</td><td><span class='trend new'>● new</span></td></tr>
+      </tbody>
+    </table>
+    </div>
+  </details>
+
+  <details class="card prog-card" data-type="Calf & Ankle">
+    <summary>
+      <div class="prog-main">
+        <div class="prog-head"><span class="prog-name">* Calf raise</span><span class="badge" style="background:#ffc46b22;color:#ffc46b;border-color:#ffc46b44">Calf & Ankle</span></div>
+        <div class="prog-latest">BW · 3×12 · 2026-10-13</div>
+      </div>
+      <svg class="spark" width="88" height="26" viewBox="0 0 88 26" aria-hidden="true"><polyline points="5.0,21.0 24.5,21.0 44.0,13.0 63.5,21.0 83.0,5.0" fill="none" stroke="#5e6ad2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="83.0" cy="5.0" r="4" fill="#5e6ad2" stroke="#0f1014" stroke-width="2"/></svg>
+      <span class="trend up">▲ +50%</span>
+    </summary>
+    <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Date</th><th>Weight</th><th>Sets×Reps</th><th>Volume</th><th>Δ</th></tr></thead>
+      <tbody>
+<tr><td>2026-10-13</td><td>BW</td><td>3×12</td><td>36 reps</td><td><span class='trend up'>▲ +50%</span></td></tr>
+<tr><td>2026-08-19</td><td>BW</td><td>3×8</td><td>24 reps</td><td><span class='trend down'>▼ -20%</span></td></tr>
+<tr><td>2026-07-12</td><td>BW</td><td>3×10</td><td>30 reps</td><td><span class='trend up'>▲ +25%</span></td></tr>
+<tr><td>2026-07-03</td><td>BW</td><td>3×8</td><td>24 reps</td><td><span class='trend flat'>— same</span></td></tr>
+<tr><td>2026-06-13</td><td>BW</td><td>3×8</td><td>24 reps</td><td><span class='trend new'>● new</span></td></tr>
       </tbody>
     </table>
     </div>
@@ -450,6 +473,25 @@
       <thead><tr><th>Date</th><th>Weight</th><th>Sets×Reps</th><th>Volume</th><th>Δ</th></tr></thead>
       <tbody>
 <tr><td>2026-10-13</td><td>BW</td><td>3×15</td><td>45 reps</td><td><span class='trend new'>● new</span></td></tr>
+      </tbody>
+    </table>
+    </div>
+  </details>
+
+  <details class="card prog-card" data-type="Calf & Ankle">
+    <summary>
+      <div class="prog-main">
+        <div class="prog-head"><span class="prog-name">* Lateral band walk</span><span class="badge" style="background:#ffc46b22;color:#ffc46b;border-color:#ffc46b44">Calf & Ankle</span></div>
+        <div class="prog-latest">BW · 2×15 · 2026-10-13</div>
+      </div>
+      
+      <span class="trend new">● new</span>
+    </summary>
+    <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Date</th><th>Weight</th><th>Sets×Reps</th><th>Volume</th><th>Δ</th></tr></thead>
+      <tbody>
+<tr><td>2026-10-13</td><td>BW</td><td>2×15</td><td>30 reps</td><td><span class='trend new'>● new</span></td></tr>
       </tbody>
     </table>
     </div>
@@ -1186,28 +1228,6 @@
     </div>
   </details>
 
-  <details class="card prog-card" data-type="Calf & Ankle">
-    <summary>
-      <div class="prog-main">
-        <div class="prog-head"><span class="prog-name">* Calf raise</span><span class="badge" style="background:#ffc46b22;color:#ffc46b;border-color:#ffc46b44">Calf & Ankle</span></div>
-        <div class="prog-latest">BW · 3×8 · 2026-08-19</div>
-      </div>
-      <svg class="spark" width="88" height="26" viewBox="0 0 88 26" aria-hidden="true"><polyline points="5.0,21.0 31.0,21.0 57.0,5.0 83.0,21.0" fill="none" stroke="#5e6ad2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="83.0" cy="21.0" r="4" fill="#5e6ad2" stroke="#0f1014" stroke-width="2"/></svg>
-      <span class="trend down">▼ -20%</span>
-    </summary>
-    <div class="tbl-wrap">
-    <table>
-      <thead><tr><th>Date</th><th>Weight</th><th>Sets×Reps</th><th>Volume</th><th>Δ</th></tr></thead>
-      <tbody>
-<tr><td>2026-08-19</td><td>BW</td><td>3×8</td><td>24 reps</td><td><span class='trend down'>▼ -20%</span></td></tr>
-<tr><td>2026-07-12</td><td>BW</td><td>3×10</td><td>30 reps</td><td><span class='trend up'>▲ +25%</span></td></tr>
-<tr><td>2026-07-03</td><td>BW</td><td>3×8</td><td>24 reps</td><td><span class='trend flat'>— same</span></td></tr>
-<tr><td>2026-06-13</td><td>BW</td><td>3×8</td><td>24 reps</td><td><span class='trend new'>● new</span></td></tr>
-      </tbody>
-    </table>
-    </div>
-  </details>
-
   <details class="card prog-card" data-type="Lower">
     <summary>
       <div class="prog-main">
@@ -1428,6 +1448,24 @@
 
   <details class="card">
     <summary>
+      <span class="date">2026-10-13</span>
+      <span class="day">Tuesday</span>
+      <span class="badge" style="background:#ffc46b22;color:#ffc46b;border-color:#ffc46b44">Calf & Ankle</span>
+      <span class="count">2 exercises</span>
+    </summary>
+    <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Exercise</th><th>Weight</th><th>Sets×Reps</th><th>Note</th></tr></thead>
+      <tbody>
+<tr><td>* Calf raise <span class='grp'>(Calf)</span></td><td>-</td><td>3×12</td><td class='note'></td></tr>
+<tr><td>* Lateral band walk <span class='grp'>(Hip Abductor)</span></td><td>-</td><td>2×15</td><td class='note'></td></tr>
+      </tbody>
+    </table>
+    </div>
+  </details>
+
+  <details class="card">
+    <summary>
       <span class="date">2026-10-12</span>
       <span class="day">Monday</span>
       <span class="badge" style="background:#4f8ef722;color:#4f8ef7;border-color:#4f8ef744">Push A</span>
@@ -1595,7 +1633,7 @@
     </div>
   </details>
 
-  <details class="card">
+  <details class="card more-hidden">
     <summary>
       <span class="date">2026-09-25</span>
       <span class="day">Friday</span>
@@ -2916,7 +2954,7 @@
         <div class="plan">
           <div class="plan-head" id="plan-head">
             <div class="plan-hd">
-              <div><h2>Plan</h2><small>last session Oct 13 · 87 workouts</small></div>
+              <div><h2>Plan</h2><small>last session Oct 13 · 88 workouts</small></div>
               <div class="unit-switch" role="group" aria-label="Weight unit">
                 <button type="button" class="w-tgl on" data-u="lbs">lbs</button>
                 <button type="button" class="w-tgl" data-u="kg">kg</button>
@@ -3089,7 +3127,7 @@
         <div style="height:9rem"></div>
       </div>
 
-      <footer>Updated 2026-10-13 16:53 (Bangkok)</footer>
+      <footer>Updated 2026-10-14 07:56 (Bangkok)</footer>
     </div>
   </div>
 
