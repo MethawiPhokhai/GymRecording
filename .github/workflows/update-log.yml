@@ -27,4 +27,28 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add index.html
-          git diff --cached --quiet || (git commit -m "chore: update workout log" && git pull --rebase origin ${{ github.ref_name }} && git push)
+          if git diff --cached --quiet; then
+            echo "index.html unchanged — nothing to commit"
+            exit 0
+          fi
+          git commit -m "chore: update workout log"
+          # index.html is a build artifact, not a mergeable source file. If two pushes
+          # land close together the rebase conflicts on it; take either side and then
+          # REGENERATE it, so what gets committed is always the real build output.
+          for attempt in 1 2 3; do
+            if git pull --rebase -X theirs origin "${{ github.ref_name }}"; then
+              python3 build.py
+              git add index.html
+              git commit --amend --no-edit || true
+              if git push; then
+                echo "pushed index.html on attempt $attempt"
+                exit 0
+              fi
+            else
+              git rebase --abort 2>/dev/null || true
+            fi
+            echo "attempt $attempt failed; retrying in 5s"
+            sleep 5
+          done
+          echo "::error::could not push index.html after 3 attempts"
+          exit 1
