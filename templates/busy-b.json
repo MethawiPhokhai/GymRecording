@@ -1,0 +1,10 @@
+{
+  "type": "Busy B",
+  "exercises": [
+    {"name": "Squat", "group": "Squat · หนัก 5 เรป", "default_sets": 3, "default_reps": 5},
+    {"name": "* Single-leg RDL", "group": "Hinge ขาเดียว · 6 เรป", "default_sets": 3, "default_reps": 6},
+    {"name": "Shoulder press", "group": "Push แนวตั้ง · 6 เรป", "default_sets": 3, "default_reps": 6},
+    {"name": "Back cable rowing", "group": "Row แนวนอน · 6 เรป", "default_sets": 3, "default_reps": 6},
+    {"name": "Bicep curl", "group": "แขน · ถ้ามีแรง", "default_sets": 3, "default_reps": 12}
+  ]
+}

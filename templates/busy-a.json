@@ -1,0 +1,10 @@
+{
+  "type": "Busy A",
+  "exercises": [
+    {"name": "Deadlift", "group": "Hinge · หนัก 5 เรป", "default_sets": 3, "default_reps": 5},
+    {"name": "* Bulgarian split squat", "group": "Lunge · 6 เรป", "default_sets": 3, "default_reps": 6},
+    {"name": "Incline bench press", "group": "Push · incline ≤30°", "default_sets": 3, "default_reps": 5},
+    {"name": "Lat pulldown", "group": "Pull แนวตั้ง · 6 เรป", "default_sets": 3, "default_reps": 6},
+    {"name": "Face pull", "group": "หลังบน · posture", "default_sets": 3, "default_reps": 15}
+  ]
+}
