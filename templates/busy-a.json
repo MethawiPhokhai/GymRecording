@@ -1,5 +1,6 @@
 {
   "type": "Busy A",
+  "hint": "2 วัน/สัปดาห์ · วันที่ 1",
   "exercises": [
     {"name": "Deadlift", "group": "Hinge · หนัก 5 เรป", "default_sets": 3, "default_reps": 5},
     {"name": "* Bulgarian split squat", "group": "Lunge · 6 เรป", "default_sets": 3, "default_reps": 6},

@@ -1,5 +1,6 @@
 {
   "type": "Busy",
+  "hint": "1 วัน/สัปดาห์ · รักษาแรง + ความถี่ของ pattern",
   "exercises": [
     {"name": "Deadlift", "group": "Hinge · สลับกับ Squat อาทิตย์เว้นอาทิตย์", "default_sets": 3, "default_reps": 5},
     {"name": "* Bulgarian split squat", "group": "ขาเดียว · 6 เรป", "default_sets": 3, "default_reps": 6},

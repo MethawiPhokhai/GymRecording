@@ -255,6 +255,8 @@ def build_template_section(template, also=None):
     color = TYPE_COLORS.get(workout_type, TYPE_DEFAULT)
     wt = html.escape(workout_type, quote=True)
     head = f"<span class='dot'></span><b>{html.escape(workout_type)}</b>"
+    if template.get("hint"):
+        head += f"<span class='tpl-hint'>({html.escape(str(template['hint']))})</span>"
 
     if workout_type == "Class":
         chips = "".join(
@@ -1496,6 +1498,7 @@ STYLE = """
   .psec{padding-bottom:6px}
   .psh{position:sticky;top:var(--plan-head-h,120px);z-index:10;display:flex;align-items:center;gap:8px;padding:10px 6px 8px;background:rgba(8,9,12,.94);backdrop-filter:blur(8px)}
   .psh b{font-size:14px}
+  .tpl-hint{font-size:11.5px;color:var(--p-mu);font-weight:400;flex:1;min-width:0}
   .pcnt{font-size:12px;color:var(--p-mu)}
   .ptick{margin-left:auto;font-size:13px;color:var(--p-ln);padding:10px 0 10px 12px}
   .prow{display:flex;align-items:center;gap:10px;margin:0 4px;padding:0 6px 0 8px;min-height:52px;border-radius:12px;cursor:pointer}

@@ -1,5 +1,6 @@
 {
   "type": "Busy B",
+  "hint": "2 วัน/สัปดาห์ · วันที่ 2",
   "exercises": [
     {"name": "Squat", "group": "Squat · หนัก 5 เรป", "default_sets": 3, "default_reps": 5},
     {"name": "* Single-leg RDL", "group": "Hinge ขาเดียว · 6 เรป", "default_sets": 3, "default_reps": 6},

@@ -167,6 +167,7 @@
   .psec{padding-bottom:6px}
   .psh{position:sticky;top:var(--plan-head-h,120px);z-index:10;display:flex;align-items:center;gap:8px;padding:10px 6px 8px;background:rgba(8,9,12,.94);backdrop-filter:blur(8px)}
   .psh b{font-size:14px}
+  .tpl-hint{font-size:11.5px;color:var(--p-mu);font-weight:400;flex:1;min-width:0}
   .pcnt{font-size:12px;color:var(--p-mu)}
   .ptick{margin-left:auto;font-size:13px;color:var(--p-ln);padding:10px 0 10px 12px}
   .prow{display:flex;align-items:center;gap:10px;margin:0 4px;padding:0 6px 0 8px;min-height:52px;border-radius:12px;cursor:pointer}
@@ -292,7 +293,7 @@
         <div class="page-intro"><h2>Weight Training</h2><p>Strength sessions, exercise progress, and recent training logs.</p></div>
         <div class="statgrid focus-stats"><div class="stat"><div class="k">Last 30 days</div><div class="v">23</div><div class="d">total sessions</div></div><div class="stat"><div class="k">Weight training</div><div class="v">18</div><div class="d">sessions · 30d</div></div><div class="stat"><div class="k">Exercises tracked</div><div class="v">50</div><div class="d">with progress data</div></div><div class="stat"><div class="k">All-time sessions</div><div class="v">63</div><div class="d">in your log</div></div></div>
         <section class="focus-section"><div class="section-title">Progress</div>
-  <div class="chip-row" id="prog-filters"><span class="chip filter-chip selected" data-filter="all">All</span><span class="chip filter-chip" data-filter="Push A">Push A</span><span class="chip filter-chip" data-filter="Pull B">Pull B</span><span class="chip filter-chip" data-filter="Lower">Lower</span><span class="chip filter-chip" data-filter="Calf & Ankle">Calf & Ankle</span><span class="chip filter-chip" data-filter="Full body">Full body</span><span class="chip filter-chip" data-filter="Core">Core</span><span class="chip filter-chip" data-filter="Upper">Upper</span><span class="chip filter-chip" data-filter="Lower A">Lower A</span></div>
+  <div class="chip-row" id="prog-filters"><span class="chip filter-chip selected" data-filter="all">All</span><span class="chip filter-chip" data-filter="Push A">Push A</span><span class="chip filter-chip" data-filter="Pull B">Pull B</span><span class="chip filter-chip" data-filter="Lower">Lower</span><span class="chip filter-chip" data-filter="Calf & Ankle">Calf & Ankle</span><span class="chip filter-chip" data-filter="Full body">Full body</span><span class="chip filter-chip" data-filter="Core">Core</span><span class="chip filter-chip" data-filter="Lower A">Lower A</span><span class="chip filter-chip" data-filter="Upper">Upper</span></div>
 
   <details class="card prog-card" data-type="Lower">
     <summary>
@@ -3011,7 +3012,7 @@
   </section>
 
   <section class="psec" data-type="Busy" data-color="#1f8a8a" style="--c:#1f8a8a" id="sec-busy">
-    <div class="psh"><span class='dot'></span><b>Busy</b><span class="pcnt">0/7</span><button type="button" class="ptick">Tick all</button></div>
+    <div class="psh"><span class='dot'></span><b>Busy</b><span class='tpl-hint'>(1 วัน/สัปดาห์ · รักษาแรง + ความถี่ของ pattern)</span><span class="pcnt">0/7</span><button type="button" class="ptick">Tick all</button></div>
     <div class="plist" data-type="Busy">
 <div class='sel-row prow' data-name='Deadlift' data-group='Hinge · สลับกับ Squat อาทิตย์เว้นอาทิตย์' data-also='Pull B, Busy A'><label class='ck'><input type='checkbox' class='sel' aria-label='Tick Deadlift'><span><svg width='14' height='14' viewBox='0 0 16 16' aria-hidden='true'><path d='M3.5 8.5l3 3 6-7' fill='none' stroke='#06240f' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'/></svg></span></label><div class='nm exname' data-name='Deadlift'><b>Deadlift</b><span class='nsub'>Hinge · สลับกับ Squat อาทิตย์เว้นอาทิตย์ · <span class='also-off'>also in Pull B, Busy A</span><em class='also-on'>also ticks in Pull B, Busy A</em></span></div><button type='button' class='val' aria-label='Edit weight, sets and reps'></button><input type='number' class='w-num' step='0.5' value='35' data-lbs='35' hidden><input type='number' class='sr-sets' value='3' hidden><input type='text' class='sr-reps' value='5' hidden></div>
 <div class='sel-row prow' data-name='* Bulgarian split squat' data-group='ขาเดียว · 6 เรป' data-also='Lower, Busy A'><label class='ck'><input type='checkbox' class='sel' aria-label='Tick * Bulgarian split squat'><span><svg width='14' height='14' viewBox='0 0 16 16' aria-hidden='true'><path d='M3.5 8.5l3 3 6-7' fill='none' stroke='#06240f' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'/></svg></span></label><div class='nm exname' data-name='* Bulgarian split squat'><b>* Bulgarian split squat</b><span class='nsub'>ขาเดียว · 6 เรป · <span class='also-off'>also in Lower, Busy A</span><em class='also-on'>also ticks in Lower, Busy A</em></span></div><button type='button' class='val' aria-label='Edit weight, sets and reps'></button><input type='number' class='w-num' step='0.5' value='22' data-lbs='22' hidden><input type='number' class='sr-sets' value='3' hidden><input type='text' class='sr-reps' value='6' hidden></div>
@@ -3025,7 +3026,7 @@
   </section>
 
   <section class="psec" data-type="Busy A" data-color="#2fa3a3" style="--c:#2fa3a3" id="sec-busy-a">
-    <div class="psh"><span class='dot'></span><b>Busy A</b><span class="pcnt">0/5</span><button type="button" class="ptick">Tick all</button></div>
+    <div class="psh"><span class='dot'></span><b>Busy A</b><span class='tpl-hint'>(2 วัน/สัปดาห์ · วันที่ 1)</span><span class="pcnt">0/5</span><button type="button" class="ptick">Tick all</button></div>
     <div class="plist" data-type="Busy A">
 <div class='sel-row prow' data-name='Deadlift' data-group='Hinge · หนัก 5 เรป' data-also='Pull B, Busy'><label class='ck'><input type='checkbox' class='sel' aria-label='Tick Deadlift'><span><svg width='14' height='14' viewBox='0 0 16 16' aria-hidden='true'><path d='M3.5 8.5l3 3 6-7' fill='none' stroke='#06240f' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'/></svg></span></label><div class='nm exname' data-name='Deadlift'><b>Deadlift</b><span class='nsub'>Hinge · หนัก 5 เรป · <span class='also-off'>also in Pull B, Busy</span><em class='also-on'>also ticks in Pull B, Busy</em></span></div><button type='button' class='val' aria-label='Edit weight, sets and reps'></button><input type='number' class='w-num' step='0.5' value='35' data-lbs='35' hidden><input type='number' class='sr-sets' value='3' hidden><input type='text' class='sr-reps' value='5' hidden></div>
 <div class='sel-row prow' data-name='* Bulgarian split squat' data-group='Lunge · 6 เรป' data-also='Lower, Busy'><label class='ck'><input type='checkbox' class='sel' aria-label='Tick * Bulgarian split squat'><span><svg width='14' height='14' viewBox='0 0 16 16' aria-hidden='true'><path d='M3.5 8.5l3 3 6-7' fill='none' stroke='#06240f' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'/></svg></span></label><div class='nm exname' data-name='* Bulgarian split squat'><b>* Bulgarian split squat</b><span class='nsub'>Lunge · 6 เรป · <span class='also-off'>also in Lower, Busy</span><em class='also-on'>also ticks in Lower, Busy</em></span></div><button type='button' class='val' aria-label='Edit weight, sets and reps'></button><input type='number' class='w-num' step='0.5' value='22' data-lbs='22' hidden><input type='number' class='sr-sets' value='3' hidden><input type='text' class='sr-reps' value='6' hidden></div>
@@ -3037,7 +3038,7 @@
   </section>
 
   <section class="psec" data-type="Busy B" data-color="#6fc9c9" style="--c:#6fc9c9" id="sec-busy-b">
-    <div class="psh"><span class='dot'></span><b>Busy B</b><span class="pcnt">0/5</span><button type="button" class="ptick">Tick all</button></div>
+    <div class="psh"><span class='dot'></span><b>Busy B</b><span class='tpl-hint'>(2 วัน/สัปดาห์ · วันที่ 2)</span><span class="pcnt">0/5</span><button type="button" class="ptick">Tick all</button></div>
     <div class="plist" data-type="Busy B">
 <div class='sel-row prow' data-name='Squat' data-group='Squat · หนัก 5 เรป' data-also='Lower, Full body'><label class='ck'><input type='checkbox' class='sel' aria-label='Tick Squat'><span><svg width='14' height='14' viewBox='0 0 16 16' aria-hidden='true'><path d='M3.5 8.5l3 3 6-7' fill='none' stroke='#06240f' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'/></svg></span></label><div class='nm exname' data-name='Squat'><b>Squat</b><span class='nsub'>Squat · หนัก 5 เรป · <span class='also-off'>also in Lower, Full body</span><em class='also-on'>also ticks in Lower, Full body</em></span></div><button type='button' class='val' aria-label='Edit weight, sets and reps'></button><input type='number' class='w-num' step='0.5' value='22' data-lbs='22' hidden><input type='number' class='sr-sets' value='3' hidden><input type='text' class='sr-reps' value='5' hidden></div>
 <div class='sel-row prow' data-name='* Single-leg RDL' data-group='Hinge ขาเดียว · 6 เรป' data-also='Lower'><label class='ck'><input type='checkbox' class='sel' aria-label='Tick * Single-leg RDL'><span><svg width='14' height='14' viewBox='0 0 16 16' aria-hidden='true'><path d='M3.5 8.5l3 3 6-7' fill='none' stroke='#06240f' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'/></svg></span></label><div class='nm exname' data-name='* Single-leg RDL'><b>* Single-leg RDL</b><span class='nsub'>Hinge ขาเดียว · 6 เรป · <span class='also-off'>also in Lower</span><em class='also-on'>also ticks in Lower</em></span></div><button type='button' class='val' aria-label='Edit weight, sets and reps'></button><input type='number' class='w-num' step='0.5' value='' data-lbs='' hidden><input type='number' class='sr-sets' value='3' hidden><input type='text' class='sr-reps' value='6' hidden></div>
@@ -3060,7 +3061,7 @@
   </section>
 
   <section class="psec" data-type="Full body" data-color="#e3c04f" style="--c:#e3c04f" id="sec-full-body">
-    <div class="psh"><span class='dot'></span><b>Full body</b><span class="pcnt">0/6</span><button type="button" class="ptick">Tick all</button></div>
+    <div class="psh"><span class='dot'></span><b>Full body</b><span class='tpl-hint'>(เก็บกล้ามเนื้อ · 10-12 เรป)</span><span class="pcnt">0/6</span><button type="button" class="ptick">Tick all</button></div>
     <div class="plist" data-type="Full body">
 <div class='sel-row prow' data-name='Squat' data-group='' data-also='Lower, Busy B'><label class='ck'><input type='checkbox' class='sel' aria-label='Tick Squat'><span><svg width='14' height='14' viewBox='0 0 16 16' aria-hidden='true'><path d='M3.5 8.5l3 3 6-7' fill='none' stroke='#06240f' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'/></svg></span></label><div class='nm exname' data-name='Squat'><b>Squat</b><span class='nsub'><span class='also-off'>also in Lower, Busy B</span><em class='also-on'>also ticks in Lower, Busy B</em></span></div><button type='button' class='val' aria-label='Edit weight, sets and reps'></button><input type='number' class='w-num' step='0.5' value='22' data-lbs='22' hidden><input type='number' class='sr-sets' value='3' hidden><input type='text' class='sr-reps' value='10' hidden></div>
 <div class='sel-row prow' data-name='* Romanian deadlift' data-group='' data-also=''><label class='ck'><input type='checkbox' class='sel' aria-label='Tick * Romanian deadlift'><span><svg width='14' height='14' viewBox='0 0 16 16' aria-hidden='true'><path d='M3.5 8.5l3 3 6-7' fill='none' stroke='#06240f' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'/></svg></span></label><div class='nm exname' data-name='* Romanian deadlift'><b>* Romanian deadlift</b><span class='nsub'></span></div><button type='button' class='val' aria-label='Edit weight, sets and reps'></button><input type='number' class='w-num' step='0.5' value='77' data-lbs='77' hidden><input type='number' class='sr-sets' value='3' hidden><input type='text' class='sr-reps' value='12' hidden></div>
@@ -3165,7 +3166,7 @@
         <div style="height:9rem"></div>
       </div>
 
-      <footer>Updated 2026-10-14 12:27 (Bangkok)</footer>
+      <footer>Updated 2026-10-14 12:43 (Bangkok)</footer>
     </div>
   </div>
 
