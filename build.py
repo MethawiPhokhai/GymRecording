@@ -126,6 +126,215 @@ def group_tag(group):
     return f" <span class='grp'>({group})</span>"
 
 
+# ---------------------------------------------------------------------------
+# Canonical muscle-group taxonomy for the volume heat map.
+#
+# The free-text `group` field on template exercises (e.g. "Hinge · หนัก 5 เรป")
+# is a display label, not a structured taxonomy, so it is NOT reused here.
+# This map is keyed by exercise name, lowercased, with a leading "* " (the
+# bodyweight/"still learning" marker) stripped — built by scanning every name
+# across workouts/*.json and templates/*.json by hand.
+MUSCLE_GROUP_ORDER = [
+    "Chest", "Back/Lats", "Shoulders", "Biceps", "Triceps",
+    "Quads", "Hamstrings/Glutes", "Calves", "Core", "Forearms", "Other",
+]
+
+EXERCISE_MUSCLE_GROUP = {
+    # Chest
+    "incline bench press": "Chest",
+    "machine chest press": "Chest",
+    "chest fly": "Chest",
+    "barbell bench press": "Chest",
+    "supine bench press": "Chest",
+    # Back/Lats
+    "deadlift": "Back/Lats",
+    "lat pulldown": "Back/Lats",
+    "back cable rowing": "Back/Lats",
+    "back cable pull": "Back/Lats",
+    "pull up": "Back/Lats",
+    "back hyperextension": "Back/Lats",
+    # Shoulders
+    "face pull": "Shoulders",
+    "overhead face pull": "Shoulders",
+    "shoulder press": "Shoulders",
+    "dumbbell shoulder press": "Shoulders",
+    "machine shoulder press": "Shoulders",
+    "lateral raise": "Shoulders",
+    "dumbbell front raise": "Shoulders",
+    "plate front raise": "Shoulders",
+    "dumbell rear delt fly": "Shoulders",
+    # Biceps
+    "bicep curl": "Biceps",
+    "dumbbell curl": "Biceps",
+    "barbell curl": "Biceps",
+    # Triceps
+    "cable tricep press down": "Triceps",
+    # Quads
+    "bulgarian split squat": "Quads",
+    "squat": "Quads",
+    "jump squat": "Quads",
+    "leg extension": "Quads",
+    "goblet squat": "Quads",
+    "cossack squat": "Quads",
+    # Hamstrings/Glutes
+    "single-leg rdl": "Hamstrings/Glutes",
+    "romanian deadlift": "Hamstrings/Glutes",
+    "hip thrust": "Hamstrings/Glutes",
+    "glute bridge": "Hamstrings/Glutes",
+    "single-leg glute bridge": "Hamstrings/Glutes",
+    # Calves
+    "calf raise": "Calves",
+    "bent-knee single-leg calf raise": "Calves",
+    "seated calf raise": "Calves",
+    # Core
+    "bird dog": "Core",
+    "side plank": "Core",
+    "curl-up": "Core",
+    "cat-cow": "Core",
+    "dead bug (long lever)": "Core",
+    "dead bug": "Core",
+    "pallof march": "Core",
+    "pallof press": "Core",
+    "cable crunch": "Core",
+    "hanging leg raise": "Core",
+    "reverse crunch": "Core",
+    "suitcase carry": "Core",
+    "windshield wipers": "Core",
+    "incline sit up": "Core",
+    # Everything below has no clean fit in the canonical 10 groups (hip
+    # abductor/adductor isolation, tibialis, or pure mobility/stretch drills
+    # with no meaningful load) -- bucketed into "Other" deliberately, see
+    # the build report for the full list.
+    "tibialis raise": "Other",
+    "lateral band walk": "Other",
+    "copenhagen adductor": "Other",
+    "clamshell": "Other",
+    "standing hip abduction": "Other",
+    "hip hinge drill": "Other",
+    "hip flexor stretch": "Other",
+    "standing hip flexor stretch": "Other",
+    "kneeling lunge stretch": "Other",
+    "couch stretch": "Other",
+    "thoracic extension (foam roller)": "Other",
+    "open book rotation": "Other",
+    "runner's lunge": "Other",
+    "deep squat": "Other",
+    "cobra flow": "Other",
+}
+
+
+def muscle_group_for(name):
+    """Canonical muscle group for an exercise name, 'Other' if unmapped."""
+    key = name.strip()
+    if key.startswith("* "):
+        key = key[2:]
+    key = key.strip().lower()
+    return EXERCISE_MUSCLE_GROUP.get(key, "Other")
+
+
+def iso_week_key(date_str):
+    """('2026-W41', monday_date) for a YYYY-MM-DD date string, or None."""
+    try:
+        d = datetime.strptime(date_str, "%Y-%m-%d").date()
+    except (TypeError, ValueError):
+        return None
+    iso = d.isocalendar()  # (year, week, weekday)
+    monday = d - timedelta(days=iso.weekday - 1)
+    return f"{iso.year}-W{iso.week:02d}", monday
+
+
+def collect_muscle_volume(raw_entries):
+    """Sum real logged volume (see point_from_exercise) per muscle group per
+    ISO week, straight off the raw workout files -- no template defaults, no
+    fabricated numbers. Returns (week_order, {group: {week_key: volume}})."""
+    weekly = {}
+    week_monday = {}
+    for entry in raw_entries:
+        if entry.get("type") in ("Class", "Running", "Cycling"):
+            continue
+        date = entry.get("date", "")
+        wk = iso_week_key(date)
+        if wk is None:
+            continue
+        week_key, monday = wk
+        week_monday[week_key] = monday
+        for ex in entry.get("exercises", []):
+            if not ex.get("completed"):
+                continue
+            point = point_from_exercise(date, ex)
+            if point is None or point["volume"] is None:
+                continue
+            group = muscle_group_for(ex["name"])
+            weekly.setdefault(group, {}).setdefault(week_key, 0.0)
+            weekly[group][week_key] += point["volume"]
+    week_order = [k for k, _ in sorted(week_monday.items(), key=lambda kv: kv[1])]
+    return week_order, weekly
+
+
+def build_volume_heatmap(raw_entries, weeks=12):
+    """Render the muscle-group x week volume heat map section (or '' if no data).
+
+    Each row's cell shading is scaled to THAT row's own max across the shown
+    weeks, so low-volume groups (calves, forearms) stay visible instead of
+    being washed out by a global max dominated by back/legs."""
+    week_order, weekly = collect_muscle_volume(raw_entries)
+    if not week_order:
+        return ""
+    week_order = week_order[-weeks:]
+
+    monday_by_week = {}
+    for entry in raw_entries:
+        date = entry.get("date", "")
+        wk = iso_week_key(date)
+        if wk:
+            monday_by_week.setdefault(wk[0], wk[1])
+
+    header_cells = "".join(
+        f"<th title='week of {monday_by_week[wk].isoformat()}'>"
+        f"{monday_by_week[wk].strftime('%b')} {monday_by_week[wk].day}</th>"
+        for wk in week_order
+    )
+
+    rows_html = []
+    for group in MUSCLE_GROUP_ORDER:
+        by_week = weekly.get(group)
+        if not by_week:
+            continue  # no logged volume at all for this group (e.g. Forearms)
+        values = [by_week.get(wk, 0.0) for wk in week_order]
+        row_max = max(values) or 1.0
+        cells = []
+        for v in values:
+            intensity = v / row_max if row_max else 0.0
+            alpha = 0.08 + 0.72 * intensity if v else 0.0
+            text = f"{v:,.0f}" if v else "–"
+            cells.append(
+                f"<td style='background:rgba(94,106,210,{alpha:.2f})' "
+                f"title='{group}: {v:,.0f} (volume = weight_lbs\u00d7sets\u00d7reps; "
+                f"bodyweight = sets\u00d7reps)'>{text}</td>"
+            )
+        rows_html.append(
+            f"<tr><td class='hm-row-label'>{html.escape(group)}</td>{''.join(cells)}</tr>"
+        )
+
+    if not rows_html:
+        return ""
+
+    return f"""
+  <div class="card heatmap-card">
+    <div class="tbl-wrap heatmap-wrap">
+    <table class="heatmap">
+      <thead><tr><th class="hm-row-label">Muscle group</th>{header_cells}</tr></thead>
+      <tbody>
+{"".join(rows_html)}
+      </tbody>
+    </table>
+    </div>
+    <p class="hm-note">Volume = weight (lbs) \u00d7 sets \u00d7 reps per completed set; bodyweight exercises
+      (no logged load) count as sets \u00d7 reps. Each row's shading is scaled to that
+      muscle group's own busiest week, not a global max.</p>
+  </div>"""
+
+
 def build_card_html(entry):
     date = entry.get("date", "-")
     day = entry.get("day", "-")
@@ -517,11 +726,11 @@ def build_progress_card(name, data):
         sr = format_sets_reps(p["sets"], p["reps"], p.get("reps_by_set")) if p["work"] else "-"
         rows += (
             f"<tr>"
-            f"<td>{p['date']}</td>"
-            f"<td>{p['weight']}</td>"
-            f"<td>{sr}</td>"
-            f"<td>{format_volume(p)}</td>"
-            f"<td><span class='trend {d_cls}'>{d_label}</span></td>"
+            f"<td data-label='Date'>{p['date']}</td>"
+            f"<td data-label='Weight'>{p['weight']}</td>"
+            f"<td data-label='Sets×Reps'>{sr}</td>"
+            f"<td data-label='Volume'>{format_volume(p)}</td>"
+            f"<td data-label='Δ'><span class='trend {d_cls}'>{d_label}</span></td>"
             f"</tr>\n"
         )
 
@@ -1391,6 +1600,16 @@ STYLE = """
   .trend{font-weight:600;white-space:nowrap;font-variant-numeric:tabular-nums;font-size:12px}
   .trend.up{color:var(--green)} .trend.down{color:var(--red)} .trend.flat{color:var(--dim)} .trend.new{color:var(--accent2)}
 
+  /* ---- Volume heat map ---- */
+  .heatmap-card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:14px}
+  .heatmap-wrap{border:1px solid var(--line);border-radius:var(--radius)}
+  .heatmap{font-variant-numeric:tabular-nums}
+  .heatmap th,.heatmap td{text-align:center;white-space:nowrap}
+  .heatmap td{font-size:12px}
+  .heatmap th.hm-row-label,.heatmap td.hm-row-label{text-align:left;position:sticky;left:0;background:var(--panel);z-index:1;box-shadow:1px 0 0 var(--line)}
+  .heatmap td.hm-row-label{font-weight:600;color:var(--ink)}
+  .hm-note{font-size:11.5px;color:var(--mut);margin:10px 2px 0;line-height:1.5}
+
   /* ---- Log cards (details) ---- */
   .card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);margin-bottom:9px;overflow:hidden}
   .card:hover{border-color:var(--line2)}
@@ -1593,12 +1812,39 @@ STYLE = """
     .stats .stat:first-child{grid-column:1 / -1}
     .spark{display:none}
     .date{min-width:64px}
+    .heatmap th,.heatmap td{padding:7px 8px;font-size:11px}
+    .heatmap th.hm-row-label,.heatmap td.hm-row-label{min-width:92px}
+  }
+
+  /* ---- Progress table -> compact cards on phone widths ---- */
+  @media(max-width:480px){
+    .prog-card .tbl-wrap{overflow-x:visible;background:none;border:0;border-radius:0}
+    .prog-card table{width:100%;font-size:13px}
+    .prog-card thead{display:none}
+    .prog-card tbody,.prog-card tr{display:block;width:100%}
+    .prog-card tr{
+      display:grid;grid-template-columns:1fr 1fr;gap:8px 12px;
+      background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);
+      padding:12px 14px;margin-bottom:10px
+    }
+    .prog-card tr:last-child{margin-bottom:0}
+    .prog-card tbody tr:hover td{background:none}
+    .prog-card td{
+      display:flex;flex-direction:column;gap:3px;
+      padding:4px 0;border-bottom:0;min-height:36px;justify-content:center
+    }
+    .prog-card td::before{
+      content:attr(data-label);color:var(--dim);font-size:10.5px;
+      text-transform:uppercase;letter-spacing:.05em;font-weight:600
+    }
+    .prog-card td:last-child{grid-column:1 / -1}
   }
 """
 
 
 def build_html(entries, templates, raw_entries):
     progress_view = build_progress_view(raw_entries, templates, compact=True)
+    volume_heatmap = build_volume_heatmap(raw_entries, weeks=12)
 
     def col(col_entries):
         lst = [build_card_html(e) for e in col_entries]
@@ -1677,6 +1923,7 @@ def build_html(entries, templates, raw_entries):
         <div class="page-intro"><h2>Weight Training</h2><p>Strength sessions, exercise progress, and recent training logs.</p></div>
         {build_focus_statgrid(entries, raw_entries, templates, "weight")}
         <section class="focus-section"><div class="section-title">Progress</div>{progress_view}</section>
+        {f'<section class="focus-section"><div class="section-title">Volume Heat Map (last 12 weeks)</div>{volume_heatmap}</section>' if volume_heatmap else ''}
         <section class="focus-section"><div class="section-title">Recent sessions</div>{weight_cards}{weight_more}</section>
       </div>
 

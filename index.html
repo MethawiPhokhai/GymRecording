@@ -60,6 +60,16 @@
   .trend{font-weight:600;white-space:nowrap;font-variant-numeric:tabular-nums;font-size:12px}
   .trend.up{color:var(--green)} .trend.down{color:var(--red)} .trend.flat{color:var(--dim)} .trend.new{color:var(--accent2)}
 
+  /* ---- Volume heat map ---- */
+  .heatmap-card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:14px}
+  .heatmap-wrap{border:1px solid var(--line);border-radius:var(--radius)}
+  .heatmap{font-variant-numeric:tabular-nums}
+  .heatmap th,.heatmap td{text-align:center;white-space:nowrap}
+  .heatmap td{font-size:12px}
+  .heatmap th.hm-row-label,.heatmap td.hm-row-label{text-align:left;position:sticky;left:0;background:var(--panel);z-index:1;box-shadow:1px 0 0 var(--line)}
+  .heatmap td.hm-row-label{font-weight:600;color:var(--ink)}
+  .hm-note{font-size:11.5px;color:var(--mut);margin:10px 2px 0;line-height:1.5}
+
   /* ---- Log cards (details) ---- */
   .card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);margin-bottom:9px;overflow:hidden}
   .card:hover{border-color:var(--line2)}
@@ -262,6 +272,32 @@
     .stats .stat:first-child{grid-column:1 / -1}
     .spark{display:none}
     .date{min-width:64px}
+    .heatmap th,.heatmap td{padding:7px 8px;font-size:11px}
+    .heatmap th.hm-row-label,.heatmap td.hm-row-label{min-width:92px}
+  }
+
+  /* ---- Progress table -> compact cards on phone widths ---- */
+  @media(max-width:480px){
+    .prog-card .tbl-wrap{overflow-x:visible;background:none;border:0;border-radius:0}
+    .prog-card table{width:100%;font-size:13px}
+    .prog-card thead{display:none}
+    .prog-card tbody,.prog-card tr{display:block;width:100%}
+    .prog-card tr{
+      display:grid;grid-template-columns:1fr 1fr;gap:8px 12px;
+      background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);
+      padding:12px 14px;margin-bottom:10px
+    }
+    .prog-card tr:last-child{margin-bottom:0}
+    .prog-card tbody tr:hover td{background:none}
+    .prog-card td{
+      display:flex;flex-direction:column;gap:3px;
+      padding:4px 0;border-bottom:0;min-height:36px;justify-content:center
+    }
+    .prog-card td::before{
+      content:attr(data-label);color:var(--dim);font-size:10.5px;
+      text-transform:uppercase;letter-spacing:.05em;font-weight:600
+    }
+    .prog-card td:last-child{grid-column:1 / -1}
   }
 </style>
 </head>
@@ -293,7 +329,7 @@
         <div class="page-intro"><h2>Weight Training</h2><p>Strength sessions, exercise progress, and recent training logs.</p></div>
         <div class="statgrid focus-stats"><div class="stat"><div class="k">Last 30 days</div><div class="v">22</div><div class="d">total sessions</div></div><div class="stat"><div class="k">Weight training</div><div class="v">18</div><div class="d">sessions · 30d</div></div><div class="stat"><div class="k">Exercises tracked</div><div class="v">50</div><div class="d">with progress data</div></div><div class="stat"><div class="k">All-time sessions</div><div class="v">66</div><div class="d">in your log</div></div></div>
         <section class="focus-section"><div class="section-title">Progress</div>
-  <div class="chip-row" id="prog-filters"><span class="chip filter-chip selected" data-filter="all">All</span><span class="chip filter-chip" data-filter="Push A">Push A</span><span class="chip filter-chip" data-filter="Pull B">Pull B</span><span class="chip filter-chip" data-filter="Lower">Lower</span><span class="chip filter-chip" data-filter="Calf & Ankle">Calf & Ankle</span><span class="chip filter-chip" data-filter="Full body">Full body</span><span class="chip filter-chip" data-filter="Core">Core</span><span class="chip filter-chip" data-filter="Lower A">Lower A</span><span class="chip filter-chip" data-filter="Upper">Upper</span></div>
+  <div class="chip-row" id="prog-filters"><span class="chip filter-chip selected" data-filter="all">All</span><span class="chip filter-chip" data-filter="Push A">Push A</span><span class="chip filter-chip" data-filter="Pull B">Pull B</span><span class="chip filter-chip" data-filter="Lower">Lower</span><span class="chip filter-chip" data-filter="Calf & Ankle">Calf & Ankle</span><span class="chip filter-chip" data-filter="Full body">Full body</span><span class="chip filter-chip" data-filter="Core">Core</span><span class="chip filter-chip" data-filter="Upper">Upper</span><span class="chip filter-chip" data-filter="Lower A">Lower A</span></div>
 
   <details class="card prog-card" data-type="Pull B">
     <summary>
@@ -308,25 +344,25 @@
     <table>
       <thead><tr><th>Date</th><th>Weight</th><th>Sets×Reps</th><th>Volume</th><th>Δ</th></tr></thead>
       <tbody>
-<tr><td>2026-10-20</td><td><span class="wv" data-lbs="55">55 lbs</span></td><td>3×15</td><td>2475 lbs</td><td><span class='trend down'>▼ -25%</span></td></tr>
-<tr><td>2026-10-15</td><td><span class="wv" data-lbs="55">55 lbs</span></td><td>4×15</td><td>3300 lbs</td><td><span class='trend down'>▼ -5 lbs</span></td></tr>
-<tr><td>2026-10-05</td><td><span class="wv" data-lbs="60">60 lbs</span></td><td>3×15</td><td>2700 lbs</td><td><span class='trend flat'>— same</span></td></tr>
-<tr><td>2026-09-29</td><td><span class="wv" data-lbs="60">60 lbs</span></td><td>3×15</td><td>2700 lbs</td><td><span class='trend flat'>— same</span></td></tr>
-<tr><td>2026-09-24</td><td><span class="wv" data-lbs="60">60 lbs</span></td><td>3×15</td><td>2700 lbs</td><td><span class='trend flat'>— same</span></td></tr>
-<tr><td>2026-09-21</td><td><span class="wv" data-lbs="60">60 lbs</span></td><td>3×15</td><td>2700 lbs</td><td><span class='trend up'>▲ +12%</span></td></tr>
-<tr><td>2026-09-14</td><td><span class="wv" data-lbs="60">60 lbs</span></td><td>4×10</td><td>2400 lbs</td><td><span class='trend flat'>— same</span></td></tr>
-<tr><td>2026-09-08</td><td><span class="wv" data-lbs="60">60 lbs</span></td><td>4×10</td><td>2400 lbs</td><td><span class='trend down'>▼ -5 lbs</span></td></tr>
-<tr><td>2026-09-04</td><td><span class="wv" data-lbs="65">65 lbs</span></td><td>4× <span class='rbs'>10/10/10/10</span></td><td>2600 lbs</td><td><span class='trend flat'>— same</span></td></tr>
-<tr><td>2026-08-28</td><td><span class="wv" data-lbs="65">65 lbs</span></td><td>4×10</td><td>2600 lbs</td><td><span class='trend up'>▲ +5 lbs</span></td></tr>
-<tr><td>2026-08-22</td><td><span class="wv" data-lbs="60">60 lbs</span></td><td>4×10</td><td>2400 lbs</td><td><span class='trend up'>▲ +5 lbs</span></td></tr>
-<tr><td>2026-08-17</td><td><span class="wv" data-lbs="55">55 lbs</span></td><td>3×15</td><td>2475 lbs</td><td><span class='trend down'>▼ -10 lbs</span></td></tr>
-<tr><td>2026-08-05</td><td><span class="wv" data-lbs="65">65 lbs</span></td><td>3×15</td><td>2925 lbs</td><td><span class='trend flat'>— same</span></td></tr>
-<tr><td>2026-08-04</td><td><span class="wv" data-lbs="65">65 lbs</span></td><td>3×15</td><td>2925 lbs</td><td><span class='trend up'>▲ +25%</span></td></tr>
-<tr><td>2026-07-28</td><td><span class="wv" data-lbs="65">65 lbs</span></td><td>3×12</td><td>2340 lbs</td><td><span class='trend down'>▼ -20%</span></td></tr>
-<tr><td>2026-07-21</td><td><span class="wv" data-lbs="65">65 lbs</span></td><td>3×15</td><td>2925 lbs</td><td><span class='trend flat'>— same</span></td></tr>
-<tr><td>2026-07-14</td><td><span class="wv" data-lbs="65">65 lbs</span></td><td>3×15</td><td>2925 lbs</td><td><span class='trend up'>▲ +50%</span></td></tr>
-<tr><td>2026-07-10</td><td><span class="wv" data-lbs="65">65 lbs</span></td><td>3×10</td><td>1950 lbs</td><td><span class='trend up'>▲ +10 lbs</span></td></tr>
-<tr><td>2026-06-16</td><td><span class="wv" data-lbs="55">55 lbs</span></td><td>3×15</td><td>2475 lbs</td><td><span class='trend new'>● new</span></td></tr>
+<tr><td data-label='Date'>2026-10-20</td><td data-label='Weight'><span class="wv" data-lbs="55">55 lbs</span></td><td data-label='Sets×Reps'>3×15</td><td data-label='Volume'>2475 lbs</td><td data-label='Δ'><span class='trend down'>▼ -25%</span></td></tr>
+<tr><td data-label='Date'>2026-10-15</td><td data-label='Weight'><span class="wv" data-lbs="55">55 lbs</span></td><td data-label='Sets×Reps'>4×15</td><td data-label='Volume'>3300 lbs</td><td data-label='Δ'><span class='trend down'>▼ -5 lbs</span></td></tr>
+<tr><td data-label='Date'>2026-10-05</td><td data-label='Weight'><span class="wv" data-lbs="60">60 lbs</span></td><td data-label='Sets×Reps'>3×15</td><td data-label='Volume'>2700 lbs</td><td data-label='Δ'><span class='trend flat'>— same</span></td></tr>
+<tr><td data-label='Date'>2026-09-29</td><td data-label='Weight'><span class="wv" data-lbs="60">60 lbs</span></td><td data-label='Sets×Reps'>3×15</td><td data-label='Volume'>2700 lbs</td><td data-label='Δ'><span class='trend flat'>— same</span></td></tr>
+<tr><td data-label='Date'>2026-09-24</td><td data-label='Weight'><span class="wv" data-lbs="60">60 lbs</span></td><td data-label='Sets×Reps'>3×15</td><td data-label='Volume'>2700 lbs</td><td data-label='Δ'><span class='trend flat'>— same</span></td></tr>
+<tr><td data-label='Date'>2026-09-21</td><td data-label='Weight'><span class="wv" data-lbs="60">60 lbs</span></td><td data-label='Sets×Reps'>3×15</td><td data-label='Volume'>2700 lbs</td><td data-label='Δ'><span class='trend up'>▲ +12%</span></td></tr>
+<tr><td data-label='Date'>2026-09-14</td><td data-label='Weight'><span class="wv" data-lbs="60">60 lbs</span></td><td data-label='Sets×Reps'>4×10</td><td data-label='Volume'>2400 lbs</td><td data-label='Δ'><span class='trend flat'>— same</span></td></tr>
+<tr><td data-label='Date'>2026-09-08</td><td data-label='Weight'><span class="wv" data-lbs="60">60 lbs</span></td><td data-label='Sets×Reps'>4×10</td><td data-label='Volume'>2400 lbs</td><td data-label='Δ'><span class='trend down'>▼ -5 lbs</span></td></tr>
+<tr><td data-label='Date'>2026-09-04</td><td data-label='Weight'><span class="wv" data-lbs="65">65 lbs</span></td><td data-label='Sets×Reps'>4× <span class='rbs'>10/10/10/10</span></td><td data-label='Volume'>2600 lbs</td><td data-label='Δ'><span class='trend flat'>— same</span></td></tr>
+<tr><td data-label='Date'>2026-08-28</td><td data-label='Weight'><span class="wv" data-lbs="65">65 lbs</span></td><td data-label='Sets×Reps'>4×10</td><td data-label='Volume'>2600 lbs</td><td data-label='Δ'><span class='trend up'>▲ +5 lbs</span></td></tr>
+<tr><td data-label='Date'>2026-08-22</td><td data-label='Weight'><span class="wv" data-lbs="60">60 lbs</span></td><td data-label='Sets×Reps'>4×10</td><td data-label='Volume'>2400 lbs</td><td data-label='Δ'><span class='trend up'>▲ +5 lbs</span></td></tr>
+<tr><td data-label='Date'>2026-08-17</td><td data-label='Weight'><span class="wv" data-lbs="55">55 lbs</span></td><td data-label='Sets×Reps'>3×15</td><td data-label='Volume'>2475 lbs</td><td data-label='Δ'><span class='trend down'>▼ -10 lbs</span></td></tr>
+<tr><td data-label='Date'>2026-08-05</td><td data-label='Weight'><span class="wv" data-lbs="65">65 lbs</span></td><td data-label='Sets×Reps'>3×15</td><td data-label='Volume'>2925 lbs</td><td data-label='Δ'><span class='trend flat'>— same</span></td></tr>
+<tr><td data-label='Date'>2026-08-04</td><td data-label='Weight'><span class="wv" data-lbs="65">65 lbs</span></td><td data-label='Sets×Reps'>3×15</td><td data-label='Volume'>2925 lbs</td><td data-label='Δ'><span class='trend up'>▲ +25%</span></td></tr>
+<tr><td data-label='Date'>2026-07-28</td><td data-label='Weight'><span class="wv" data-lbs="65">65 lbs</span></td><td data-label='Sets×Reps'>3×12</td><td data-label='Volume'>2340 lbs</td><td data-label='Δ'><span class='trend down'>▼ -20%</span></td></tr>
+<tr><td data-label='Date'>2026-07-21</td><td data-label='Weight'><span class="wv" data-lbs="65">65 lbs</span></td><td data-label='Sets×Reps'>3×15</td><td data-label='Volume'>2925 lbs</td><td data-label='Δ'><span class='trend flat'>— same</span></td></tr>
+<tr><td data-label='Date'>2026-07-14</td><td data-label='Weight'><span class="wv" data-lbs="65">65 lbs</span></td><td data-label='Sets×Reps'>3×15</td><td data-label='Volume'>2925 lbs</td><td data-label='Δ'><span class='trend up'>▲ +50%</span></td></tr>
+<tr><td data-label='Date'>2026-07-10</td><td data-label='Weight'><span class="wv" data-lbs="65">65 lbs</span></td><td data-label='Sets×Reps'>3×10</td><td data-label='Volume'>1950 lbs</td><td data-label='Δ'><span class='trend up'>▲ +10 lbs</span></td></tr>
+<tr><td data-label='Date'>2026-06-16</td><td data-label='Weight'><span class="wv" data-lbs="55">55 lbs</span></td><td data-label='Sets×Reps'>3×15</td><td data-label='Volume'>2475 lbs</td><td data-label='Δ'><span class='trend new'>● new</span></td></tr>
       </tbody>
     </table>
     </div>
@@ -345,21 +381,21 @@
     <table>
       <thead><tr><th>Date</th><th>Weight</th><th>Sets×Reps</th><th>Volume</th><th>Δ</th></tr></thead>
       <tbody>
-<tr><td>2026-10-20</td><td><span class="wv" data-lbs="50">50 lbs</span></td><td>4×15</td><td>3000 lbs</td><td><span class='trend flat'>— same</span></td></tr>
-<tr><td>2026-10-15</td><td><span class="wv" data-lbs="50">50 lbs</span></td><td>4×15</td><td>3000 lbs</td><td><span class='trend down'>▼ -10 lbs</span></td></tr>
-<tr><td>2026-10-05</td><td><span class="wv" data-lbs="60">60 lbs</span></td><td>3×15</td><td>2700 lbs</td><td><span class='trend flat'>— same</span></td></tr>
-<tr><td>2026-09-29</td><td><span class="wv" data-lbs="60">60 lbs</span></td><td>3×15</td><td>2700 lbs</td><td><span class='trend up'>▲ +12%</span></td></tr>
-<tr><td>2026-09-21</td><td><span class="wv" data-lbs="60">60 lbs</span></td><td>4×10</td><td>2400 lbs</td><td><span class='trend up'>▲ +10 lbs</span></td></tr>
-<tr><td>2026-09-18</td><td><span class="wv" data-lbs="50">50 lbs</span></td><td>3×15</td><td>2250 lbs</td><td><span class='trend flat'>— same</span></td></tr>
-<tr><td>2026-09-14</td><td><span class="wv" data-lbs="50">50 lbs</span></td><td>3×15</td><td>2250 lbs</td><td><span class='trend up'>▲ +12%</span></td></tr>
-<tr><td>2026-09-04</td><td><span class="wv" data-lbs="50">50 lbs</span></td><td>4× <span class='rbs'>10/10/10/10</span></td><td>2000 lbs</td><td><span class='trend down'>▼ -10 lbs</span></td></tr>
-<tr><td>2026-08-28</td><td><span class="wv" data-lbs="60">60 lbs</span></td><td>4×10</td><td>2400 lbs</td><td><span class='trend up'>▲ +10 lbs</span></td></tr>
-<tr><td>2026-08-05</td><td><span class="wv" data-lbs="50">50 lbs</span></td><td>3×15</td><td>2250 lbs</td><td><span class='trend flat'>— same</span></td></tr>
-<tr><td>2026-08-04</td><td><span class="wv" data-lbs="50">50 lbs</span></td><td>3×15</td><td>2250 lbs</td><td><span class='trend flat'>— same</span></td></tr>
-<tr><td>2026-07-24</td><td><span class="wv" data-lbs="50">50 lbs</span></td><td>3×15</td><td>2250 lbs</td><td><span class='trend flat'>— same</span></td></tr>
-<tr><td>2026-07-14</td><td><span class="wv" data-lbs="50">50 lbs</span></td><td>3×15</td><td>2250 lbs</td><td><span class='trend flat'>— same</span></td></tr>
-<tr><td>2026-07-07</td><td><span class="wv" data-lbs="50">50 lbs</span></td><td>3×15</td><td>2250 lbs</td><td><span class='trend up'>▲ +10 lbs</span></td></tr>
-<tr><td>2026-06-23</td><td><span class="wv" data-lbs="40">40 lbs</span></td><td>3×15</td><td>1800 lbs</td><td><span class='trend new'>● new</span></td></tr>
+<tr><td data-label='Date'>2026-10-20</td><td data-label='Weight'><span class="wv" data-lbs="50">50 lbs</span></td><td data-label='Sets×Reps'>4×15</td><td data-label='Volume'>3000 lbs</td><td data-label='Δ'><span class='trend flat'>— same</span></td></tr>
+<tr><td data-label='Date'>2026-10-15</td><td data-label='Weight'><span class="wv" data-lbs="50">50 lbs</span></td><td data-label='Sets×Reps'>4×15</td><td data-label='Volume'>3000 lbs</td><td data-label='Δ'><span class='trend down'>▼ -10 lbs</span></td></tr>
+<tr><td data-label='Date'>2026-10-05</td><td data-label='Weight'><span class="wv" data-lbs="60">60 lbs</span></td><td data-label='Sets×Reps'>3×15</td><td data-label='Volume'>2700 lbs</td><td data-label='Δ'><span class='trend flat'>— same</span></td></tr>
+<tr><td data-label='Date'>2026-09-29</td><td data-label='Weight'><span class="wv" data-lbs="60">60 lbs</span></td><td data-label='Sets×Reps'>3×15</td><td data-label='Volume'>2700 lbs</td><td data-label='Δ'><span class='trend up'>▲ +12%</span></td></tr>
+<tr><td data-label='Date'>2026-09-21</td><td data-label='Weight'><span class="wv" data-lbs="60">60 lbs</span></td><td data-label='Sets×Reps'>4×10</td><td data-label='Volume'>2400 lbs</td><td data-label='Δ'><span class='trend up'>▲ +10 lbs</span></td></tr>
+<tr><td data-label='Date'>2026-09-18</td><td data-label='Weight'><span class="wv" data-lbs="50">50 lbs</span></td><td data-label='Sets×Reps'>3×15</td><td data-label='Volume'>2250 lbs</td><td data-label='Δ'><span class='trend flat'>— same</span></td></tr>
+<tr><td data-label='Date'>2026-09-14</td><td data-label='Weight'><span class="wv" data-lbs="50">50 lbs</span></td><td data-label='Sets×Reps'>3×15</td><td data-label='Volume'>2250 lbs</td><td data-label='Δ'><span class='trend up'>▲ +12%</span></td></tr>
+<tr><td data-label='Date'>2026-09-04</td><td data-label='Weight'><span class="wv" data-lbs="50">50 lbs</span></td><td data-label='Sets×Reps'>4× <span class='rbs'>10/10/10/10</span></td><td data-label='Volume'>2000 lbs</td><td data-label='Δ'><span class='trend down'>▼ -10 lbs</span></td></tr>
+<tr><td data-label='Date'>2026-08-28</td><td data-label='Weight'><span class="wv" data-lbs="60">60 lbs</span></td><td data-label='Sets×Reps'>4×10</td><td data-label='Volume'>2400 lbs</td><td data-label='Δ'><span class='trend up'>▲ +10 lbs</span></td></tr>
+<tr><td data-label='Date'>2026-08-05</td><td data-label='Weight'><span class="wv" data-lbs="50">50 lbs</span></td><td data-label='Sets×Reps'>3×15</td><td data-label='Volume'>2250 lbs</td><td data-label='Δ'><span class='trend flat'>— same</span></td></tr>
+<tr><td data-label='Date'>2026-08-04</td><td data-label='Weight'><span class="wv" data-lbs="50">50 lbs</span></td><td data-label='Sets×Reps'>3×15</td><td data-label='Volume'>2250 lbs</td><td data-label='Δ'><span class='trend flat'>— same</span></td></tr>
+<tr><td data-label='Date'>2026-07-24</td><td data-label='Weight'><span class="wv" data-lbs="50">50 lbs</span></td><td data-label='Sets×Reps'>3×15</td><td data-label='Volume'>2250 lbs</td><td data-label='Δ'><span class='trend flat'>— same</span></td></tr>
+<tr><td data-label='Date'>2026-07-14</td><td data-label='Weight'><span class="wv" data-lbs="50">50 lbs</span></td><td data-label='Sets×Reps'>3×15</td><td data-label='Volume'>2250 lbs</td><td data-label='Δ'><span class='trend flat'>— same</span></td></tr>
+<tr><td data-label='Date'>2026-07-07</td><td data-label='Weight'><span class="wv" data-lbs="50">50 lbs</span></td><td data-label='Sets×Reps'>3×15</td><td data-label='Volume'>2250 lbs</td><td data-label='Δ'><span class='trend up'>▲ +10 lbs</span></td></tr>
+<tr><td data-label='Date'>2026-06-23</td><td data-label='Weight'><span class="wv" data-lbs="40">40 lbs</span></td><td data-label='Sets×Reps'>3×15</td><td data-label='Volume'>1800 lbs</td><td data-label='Δ'><span class='trend new'>● new</span></td></tr>
       </tbody>
     </table>
     </div>
@@ -378,18 +414,18 @@
     <table>
       <thead><tr><th>Date</th><th>Weight</th><th>Sets×Reps</th><th>Volume</th><th>Δ</th></tr></thead>
       <tbody>
-<tr><td>2026-10-20</td><td><span class="wv" data-lbs="11">11 lbs</span></td><td>3×15</td><td>495 lbs</td><td><span class='trend down'>▼ -25%</span></td></tr>
-<tr><td>2026-10-15</td><td><span class="wv" data-lbs="11">11 lbs</span></td><td>4×15</td><td>660 lbs</td><td><span class='trend up'>▲ +1 lbs</span></td></tr>
-<tr><td>2026-10-05</td><td><span class="wv" data-lbs="10">10 lbs</span></td><td>3×15</td><td>450 lbs</td><td><span class='trend up'>▲ +12%</span></td></tr>
-<tr><td>2026-09-29</td><td><span class="wv" data-lbs="10">10 lbs</span></td><td>4×10</td><td>400 lbs</td><td><span class='trend up'>▲ +weight</span></td></tr>
-<tr><td>2026-09-16</td><td>BW</td><td>3×10</td><td>30 reps</td><td><span class='trend down'>▼ −weight</span></td></tr>
-<tr><td>2026-09-03</td><td><span class="wv" data-lbs="5">5 lbs</span></td><td>3× <span class='rbs'>10/10/10</span></td><td>150 lbs</td><td><span class='trend down'>▼ -25%</span></td></tr>
-<tr><td>2026-08-28</td><td><span class="wv" data-lbs="5">5 lbs</span></td><td>4×10</td><td>200 lbs</td><td><span class='trend flat'>— same</span></td></tr>
-<tr><td>2026-08-22</td><td><span class="wv" data-lbs="5">5 lbs</span></td><td>4×10</td><td>200 lbs</td><td><span class='trend down'>▼ -5 lbs</span></td></tr>
-<tr><td>2026-08-11</td><td><span class="wv" data-lbs="10">10 lbs</span></td><td>3×15</td><td>450 lbs</td><td><span class='trend up'>▲ +weight</span></td></tr>
-<tr><td>2026-07-24</td><td>BW</td><td>3×15</td><td>45 reps</td><td><span class='trend up'>▲ +50%</span></td></tr>
-<tr><td>2026-07-10</td><td>BW</td><td>3×10</td><td>30 reps</td><td><span class='trend down'>▼ -33%</span></td></tr>
-<tr><td>2026-06-23</td><td>BW</td><td>3×15</td><td>45 reps</td><td><span class='trend new'>● new</span></td></tr>
+<tr><td data-label='Date'>2026-10-20</td><td data-label='Weight'><span class="wv" data-lbs="11">11 lbs</span></td><td data-label='Sets×Reps'>3×15</td><td data-label='Volume'>495 lbs</td><td data-label='Δ'><span class='trend down'>▼ -25%</span></td></tr>
+<tr><td data-label='Date'>2026-10-15</td><td data-label='Weight'><span class="wv" data-lbs="11">11 lbs</span></td><td data-label='Sets×Reps'>4×15</td><td data-label='Volume'>660 lbs</td><td data-label='Δ'><span class='trend up'>▲ +1 lbs</span></td></tr>
+<tr><td data-label='Date'>2026-10-05</td><td data-label='Weight'><span class="wv" data-lbs="10">10 lbs</span></td><td data-label='Sets×Reps'>3×15</td><td data-label='Volume'>450 lbs</td><td data-label='Δ'><span class='trend up'>▲ +12%</span></td></tr>
+<tr><td data-label='Date'>2026-09-29</td><td data-label='Weight'><span class="wv" data-lbs="10">10 lbs</span></td><td data-label='Sets×Reps'>4×10</td><td data-label='Volume'>400 lbs</td><td data-label='Δ'><span class='trend up'>▲ +weight</span></td></tr>
+<tr><td data-label='Date'>2026-09-16</td><td data-label='Weight'>BW</td><td data-label='Sets×Reps'>3×10</td><td data-label='Volume'>30 reps</td><td data-label='Δ'><span class='trend down'>▼ −weight</span></td></tr>
+<tr><td data-label='Date'>2026-09-03</td><td data-label='Weight'><span class="wv" data-lbs="5">5 lbs</span></td><td data-label='Sets×Reps'>3× <span class='rbs'>10/10/10</span></td><td data-label='Volume'>150 lbs</td><td data-label='Δ'><span class='trend down'>▼ -25%</span></td></tr>
+<tr><td data-label='Date'>2026-08-28</td><td data-label='Weight'><span class="wv" data-lbs="5">5 lbs</span></td><td data-label='Sets×Reps'>4×10</td><td data-label='Volume'>200 lbs</td><td data-label='Δ'><span class='trend flat'>— same</span></td></tr>
+<tr><td data-label='Date'>2026-08-22</td><td data-label='Weight'><span class="wv" data-lbs="5">5 lbs</span></td><td data-label='Sets×Reps'>4×10</td><td data-label='Volume'>200 lbs</td><td data-label='Δ'><span class='trend down'>▼ -5 lbs</span></td></tr>
+<tr><td data-label='Date'>2026-08-11</td><td data-label='Weight'><span class="wv" data-lbs="10">10 lbs</span></td><td data-label='Sets×Reps'>3×15</td><td data-label='Volume'>450 lbs</td><td data-label='Δ'><span class='trend up'>▲ +weight</span></td></tr>
+<tr><td data-label='Date'>2026-07-24</td><td data-label='Weight'>BW</td><td data-label='Sets×Reps'>3×15</td><td data-label='Volume'>45 reps</td><td data-label='Δ'><span class='trend up'>▲ +50%</span></td></tr>
+<tr><td data-label='Date'>2026-07-10</td><td data-label='Weight'>BW</td><td data-label='Sets×Reps'>3×10</td><td data-label='Volume'>30 reps</td><td data-label='Δ'><span class='trend down'>▼ -33%</span></td></tr>
+<tr><td data-label='Date'>2026-06-23</td><td data-label='Weight'>BW</td><td data-label='Sets×Reps'>3×15</td><td data-label='Volume'>45 reps</td><td data-label='Δ'><span class='trend new'>● new</span></td></tr>
       </tbody>
     </table>
     </div>
@@ -408,20 +444,20 @@
     <table>
       <thead><tr><th>Date</th><th>Weight</th><th>Sets×Reps</th><th>Volume</th><th>Δ</th></tr></thead>
       <tbody>
-<tr><td>2026-10-20</td><td><span class="wv" data-lbs="55">55 lbs</span></td><td>3×15</td><td>2475 lbs</td><td><span class='trend down'>▼ -25%</span></td></tr>
-<tr><td>2026-10-15</td><td><span class="wv" data-lbs="55">55 lbs</span></td><td>4×15</td><td>3300 lbs</td><td><span class='trend down'>▼ -5 lbs</span></td></tr>
-<tr><td>2026-10-05</td><td><span class="wv" data-lbs="60">60 lbs</span></td><td>3×15</td><td>2700 lbs</td><td><span class='trend flat'>— same</span></td></tr>
-<tr><td>2026-09-29</td><td><span class="wv" data-lbs="60">60 lbs</span></td><td>3×15</td><td>2700 lbs</td><td><span class='trend flat'>— same</span></td></tr>
-<tr><td>2026-09-24</td><td><span class="wv" data-lbs="60">60 lbs</span></td><td>3×15</td><td>2700 lbs</td><td><span class='trend flat'>— same</span></td></tr>
-<tr><td>2026-09-21</td><td><span class="wv" data-lbs="60">60 lbs</span></td><td>3×15</td><td>2700 lbs</td><td><span class='trend up'>▲ +12%</span></td></tr>
-<tr><td>2026-09-14</td><td><span class="wv" data-lbs="60">60 lbs</span></td><td>4×10</td><td>2400 lbs</td><td><span class='trend flat'>— same</span></td></tr>
-<tr><td>2026-09-03</td><td><span class="wv" data-lbs="60">60 lbs</span></td><td>4× <span class='rbs'>10/10/10/10</span></td><td>2400 lbs</td><td><span class='trend up'>▲ +5 lbs</span></td></tr>
-<tr><td>2026-08-25</td><td><span class="wv" data-lbs="55">55 lbs</span></td><td>4× <span class='rbs'>12/10/10/8</span></td><td>2200 lbs</td><td><span class='trend down'>▼ -11%</span></td></tr>
-<tr><td>2026-08-17</td><td><span class="wv" data-lbs="55">55 lbs</span></td><td>3×15</td><td>2475 lbs</td><td><span class='trend down'>▼ -15 lbs</span></td></tr>
-<tr><td>2026-08-11</td><td><span class="wv" data-lbs="70">70 lbs</span></td><td>3×15</td><td>3150 lbs</td><td><span class='trend up'>▲ +50%</span></td></tr>
-<tr><td>2026-07-31</td><td><span class="wv" data-lbs="70">70 lbs</span></td><td>3×10</td><td>2100 lbs</td><td><span class='trend up'>▲ +5 lbs</span></td></tr>
-<tr><td>2026-07-24</td><td><span class="wv" data-lbs="65">65 lbs</span></td><td>3×15</td><td>2925 lbs</td><td><span class='trend flat'>— same</span></td></tr>
-<tr><td>2026-07-07</td><td><span class="wv" data-lbs="65">65 lbs</span></td><td>3×15</td><td>2925 lbs</td><td><span class='trend new'>● new</span></td></tr>
+<tr><td data-label='Date'>2026-10-20</td><td data-label='Weight'><span class="wv" data-lbs="55">55 lbs</span></td><td data-label='Sets×Reps'>3×15</td><td data-label='Volume'>2475 lbs</td><td data-label='Δ'><span class='trend down'>▼ -25%</span></td></tr>
+<tr><td data-label='Date'>2026-10-15</td><td data-label='Weight'><span class="wv" data-lbs="55">55 lbs</span></td><td data-label='Sets×Reps'>4×15</td><td data-label='Volume'>3300 lbs</td><td data-label='Δ'><span class='trend down'>▼ -5 lbs</span></td></tr>
+<tr><td data-label='Date'>2026-10-05</td><td data-label='Weight'><span class="wv" data-lbs="60">60 lbs</span></td><td data-label='Sets×Reps'>3×15</td><td data-label='Volume'>2700 lbs</td><td data-label='Δ'><span class='trend flat'>— same</span></td></tr>
+<tr><td data-label='Date'>2026-09-29</td><td data-label='Weight'><span class="wv" data-lbs="60">60 lbs</span></td><td data-label='Sets×Reps'>3×15</td><td data-label='Volume'>2700 lbs</td><td data-label='Δ'><span class='trend flat'>— same</span></td></tr>
+<tr><td data-label='Date'>2026-09-24</td><td data-label='Weight'><span class="wv" data-lbs="60">60 lbs</span></td><td data-label='Sets×Reps'>3×15</td><td data-label='Volume'>2700 lbs</td><td data-label='Δ'><span class='trend flat'>— same</span></td></tr>
+<tr><td data-label='Date'>2026-09-21</td><td data-label='Weight'><span class="wv" data-lbs="60">60 lbs</span></td><td data-label='Sets×Reps'>3×15</td><td data-label='Volume'>2700 lbs</td><td data-label='Δ'><span class='trend up'>▲ +12%</span></td></tr>
+<tr><td data-label='Date'>2026-09-14</td><td data-label='Weight'><span class="wv" data-lbs="60">60 lbs</span></td><td data-label='Sets×Reps'>4×10</td><td data-label='Volume'>2400 lbs</td><td data-label='Δ'><span class='trend flat'>— same</span></td></tr>
+<tr><td data-label='Date'>2026-09-03</td><td data-label='Weight'><span class="wv" data-lbs="60">60 lbs</span></td><td data-label='Sets×Reps'>4× <span class='rbs'>10/10/10/10</span></td><td data-label='Volume'>2400 lbs</td><td data-label='Δ'><span class='trend up'>▲ +5 lbs</span></td></tr>
+<tr><td data-label='Date'>2026-08-25</td><td data-label='Weight'><span class="wv" data-lbs="55">55 lbs</span></td><td data-label='Sets×Reps'>4× <span class='rbs'>12/10/10/8</span></td><td data-label='Volume'>2200 lbs</td><td data-label='Δ'><span class='trend down'>▼ -11%</span></td></tr>
+<tr><td data-label='Date'>2026-08-17</td><td data-label='Weight'><span class="wv" data-lbs="55">55 lbs</span></td><td data-label='Sets×Reps'>3×15</td><td data-label='Volume'>2475 lbs</td><td data-label='Δ'><span class='trend down'>▼ -15 lbs</span></td></tr>
+<tr><td data-label='Date'>2026-08-11</td><td data-label='Weight'><span class="wv" data-lbs="70">70 lbs</span></td><td data-label='Sets×Reps'>3×15</td><td data-label='Volume'>3150 lbs</td><td data-label='Δ'><span class='trend up'>▲ +50%</span></td></tr>
+<tr><td data-label='Date'>2026-07-31</td><td data-label='Weight'><span class="wv" data-lbs="70">70 lbs</span></td><td data-label='Sets×Reps'>3×10</td><td data-label='Volume'>2100 lbs</td><td data-label='Δ'><span class='trend up'>▲ +5 lbs</span></td></tr>
+<tr><td data-label='Date'>2026-07-24</td><td data-label='Weight'><span class="wv" data-lbs="65">65 lbs</span></td><td data-label='Sets×Reps'>3×15</td><td data-label='Volume'>2925 lbs</td><td data-label='Δ'><span class='trend flat'>— same</span></td></tr>
+<tr><td data-label='Date'>2026-07-07</td><td data-label='Weight'><span class="wv" data-lbs="65">65 lbs</span></td><td data-label='Sets×Reps'>3×15</td><td data-label='Volume'>2925 lbs</td><td data-label='Δ'><span class='trend new'>● new</span></td></tr>
       </tbody>
     </table>
     </div>
@@ -440,10 +476,10 @@
     <table>
       <thead><tr><th>Date</th><th>Weight</th><th>Sets×Reps</th><th>Volume</th><th>Δ</th></tr></thead>
       <tbody>
-<tr><td>2026-10-20</td><td><span class="wv" data-lbs="44">44 lbs</span></td><td>3×10</td><td>1320 lbs</td><td><span class='trend down'>▼ -25%</span></td></tr>
-<tr><td>2026-10-15</td><td><span class="wv" data-lbs="44">44 lbs</span></td><td>4×10</td><td>1760 lbs</td><td><span class='trend up'>▲ +9 lbs</span></td></tr>
-<tr><td>2026-10-05</td><td><span class="wv" data-lbs="35">35 lbs</span></td><td>4×10</td><td>1400 lbs</td><td><span class='trend up'>▲ +5 lbs</span></td></tr>
-<tr><td>2026-07-10</td><td><span class="wv" data-lbs="30">30 lbs</span></td><td>3×10</td><td>900 lbs</td><td><span class='trend new'>● new</span></td></tr>
+<tr><td data-label='Date'>2026-10-20</td><td data-label='Weight'><span class="wv" data-lbs="44">44 lbs</span></td><td data-label='Sets×Reps'>3×10</td><td data-label='Volume'>1320 lbs</td><td data-label='Δ'><span class='trend down'>▼ -25%</span></td></tr>
+<tr><td data-label='Date'>2026-10-15</td><td data-label='Weight'><span class="wv" data-lbs="44">44 lbs</span></td><td data-label='Sets×Reps'>4×10</td><td data-label='Volume'>1760 lbs</td><td data-label='Δ'><span class='trend up'>▲ +9 lbs</span></td></tr>
+<tr><td data-label='Date'>2026-10-05</td><td data-label='Weight'><span class="wv" data-lbs="35">35 lbs</span></td><td data-label='Sets×Reps'>4×10</td><td data-label='Volume'>1400 lbs</td><td data-label='Δ'><span class='trend up'>▲ +5 lbs</span></td></tr>
+<tr><td data-label='Date'>2026-07-10</td><td data-label='Weight'><span class="wv" data-lbs="30">30 lbs</span></td><td data-label='Sets×Reps'>3×10</td><td data-label='Volume'>900 lbs</td><td data-label='Δ'><span class='trend new'>● new</span></td></tr>
       </tbody>
     </table>
     </div>
@@ -462,19 +498,19 @@
     <table>
       <thead><tr><th>Date</th><th>Weight</th><th>Sets×Reps</th><th>Volume</th><th>Δ</th></tr></thead>
       <tbody>
-<tr><td>2026-10-20</td><td><span class="wv" data-lbs="10">10 lbs</span></td><td>3×12</td><td>360 lbs</td><td><span class='trend down'>▼ -25%</span></td></tr>
-<tr><td>2026-10-15</td><td><span class="wv" data-lbs="10">10 lbs</span></td><td>4×12</td><td>480 lbs</td><td><span class='trend up'>▲ +33%</span></td></tr>
-<tr><td>2026-10-05</td><td><span class="wv" data-lbs="10">10 lbs</span></td><td>3×12</td><td>360 lbs</td><td><span class='trend flat'>— same</span></td></tr>
-<tr><td>2026-09-29</td><td><span class="wv" data-lbs="10">10 lbs</span></td><td>3×12</td><td>360 lbs</td><td><span class='trend flat'>— same</span></td></tr>
-<tr><td>2026-09-24</td><td><span class="wv" data-lbs="10">10 lbs</span></td><td>3×12</td><td>360 lbs</td><td><span class='trend flat'>— same</span></td></tr>
-<tr><td>2026-09-21</td><td><span class="wv" data-lbs="10">10 lbs</span></td><td>3×12</td><td>360 lbs</td><td><span class='trend up'>▲ +20%</span></td></tr>
-<tr><td>2026-09-18</td><td><span class="wv" data-lbs="10">10 lbs</span></td><td>3×10</td><td>300 lbs</td><td><span class='trend down'>▼ -17%</span></td></tr>
-<tr><td>2026-09-14</td><td><span class="wv" data-lbs="10">10 lbs</span></td><td>3×12</td><td>360 lbs</td><td><span class='trend up'>▲ +20%</span></td></tr>
-<tr><td>2026-09-08</td><td><span class="wv" data-lbs="10">10 lbs</span></td><td>3×10</td><td>300 lbs</td><td><span class='trend down'>▼ -25%</span></td></tr>
-<tr><td>2026-08-25</td><td><span class="wv" data-lbs="10">10 lbs</span></td><td>4× <span class='rbs'>12/10/10/8</span></td><td>400 lbs</td><td><span class='trend up'>▲ +11%</span></td></tr>
-<tr><td>2026-08-17</td><td><span class="wv" data-lbs="10">10 lbs</span></td><td>3×12</td><td>360 lbs</td><td><span class='trend flat'>— same</span></td></tr>
-<tr><td>2026-07-24</td><td><span class="wv" data-lbs="10">10 lbs</span></td><td>3×12</td><td>360 lbs</td><td><span class='trend up'>▲ +5 lbs</span></td></tr>
-<tr><td>2026-07-10</td><td><span class="wv" data-lbs="5">5 lbs</span></td><td>3×15</td><td>225 lbs</td><td><span class='trend new'>● new</span></td></tr>
+<tr><td data-label='Date'>2026-10-20</td><td data-label='Weight'><span class="wv" data-lbs="10">10 lbs</span></td><td data-label='Sets×Reps'>3×12</td><td data-label='Volume'>360 lbs</td><td data-label='Δ'><span class='trend down'>▼ -25%</span></td></tr>
+<tr><td data-label='Date'>2026-10-15</td><td data-label='Weight'><span class="wv" data-lbs="10">10 lbs</span></td><td data-label='Sets×Reps'>4×12</td><td data-label='Volume'>480 lbs</td><td data-label='Δ'><span class='trend up'>▲ +33%</span></td></tr>
+<tr><td data-label='Date'>2026-10-05</td><td data-label='Weight'><span class="wv" data-lbs="10">10 lbs</span></td><td data-label='Sets×Reps'>3×12</td><td data-label='Volume'>360 lbs</td><td data-label='Δ'><span class='trend flat'>— same</span></td></tr>
+<tr><td data-label='Date'>2026-09-29</td><td data-label='Weight'><span class="wv" data-lbs="10">10 lbs</span></td><td data-label='Sets×Reps'>3×12</td><td data-label='Volume'>360 lbs</td><td data-label='Δ'><span class='trend flat'>— same</span></td></tr>
+<tr><td data-label='Date'>2026-09-24</td><td data-label='Weight'><span class="wv" data-lbs="10">10 lbs</span></td><td data-label='Sets×Reps'>3×12</td><td data-label='Volume'>360 lbs</td><td data-label='Δ'><span class='trend flat'>— same</span></td></tr>
+<tr><td data-label='Date'>2026-09-21</td><td data-label='Weight'><span class="wv" data-lbs="10">10 lbs</span></td><td data-label='Sets×Reps'>3×12</td><td data-label='Volume'>360 lbs</td><td data-label='Δ'><span class='trend up'>▲ +20%</span></td></tr>
+<tr><td data-label='Date'>2026-09-18</td><td data-label='Weight'><span class="wv" data-lbs="10">10 lbs</span></td><td data-label='Sets×Reps'>3×10</td><td data-label='Volume'>300 lbs</td><td data-label='Δ'><span class='trend down'>▼ -17%</span></td></tr>
+<tr><td data-label='Date'>2026-09-14</td><td data-label='Weight'><span class="wv" data-lbs="10">10 lbs</span></td><td data-label='Sets×Reps'>3×12</td><td data-label='Volume'>360 lbs</td><td data-label='Δ'><span class='trend up'>▲ +20%</span></td></tr>
+<tr><td data-label='Date'>2026-09-08</td><td data-label='Weight'><span class="wv" data-lbs="10">10 lbs</span></td><td data-label='Sets×Reps'>3×10</td><td data-label='Volume'>300 lbs</td><td data-label='Δ'><span class='trend down'>▼ -25%</span></td></tr>
+<tr><td data-label='Date'>2026-08-25</td><td data-label='Weight'><span class="wv" data-lbs="10">10 lbs</span></td><td data-label='Sets×Reps'>4× <span class='rbs'>12/10/10/8</span></td><td data-label='Volume'>400 lbs</td><td data-label='Δ'><span class='trend up'>▲ +11%</span></td></tr>
+<tr><td data-label='Date'>2026-08-17</td><td data-label='Weight'><span class="wv" data-lbs="10">10 lbs</span></td><td data-label='Sets×Reps'>3×12</td><td data-label='Volume'>360 lbs</td><td data-label='Δ'><span class='trend flat'>— same</span></td></tr>
+<tr><td data-label='Date'>2026-07-24</td><td data-label='Weight'><span class="wv" data-lbs="10">10 lbs</span></td><td data-label='Sets×Reps'>3×12</td><td data-label='Volume'>360 lbs</td><td data-label='Δ'><span class='trend up'>▲ +5 lbs</span></td></tr>
+<tr><td data-label='Date'>2026-07-10</td><td data-label='Weight'><span class="wv" data-lbs="5">5 lbs</span></td><td data-label='Sets×Reps'>3×15</td><td data-label='Volume'>225 lbs</td><td data-label='Δ'><span class='trend new'>● new</span></td></tr>
       </tbody>
     </table>
     </div>
@@ -493,24 +529,24 @@
     <table>
       <thead><tr><th>Date</th><th>Weight</th><th>Sets×Reps</th><th>Volume</th><th>Δ</th></tr></thead>
       <tbody>
-<tr><td>2026-10-19</td><td><span class="wv" data-lbs="39.5">39.5 lbs</span></td><td>3×15</td><td>1777.5 lbs</td><td><span class='trend flat'>— same</span></td></tr>
-<tr><td>2026-10-12</td><td><span class="wv" data-lbs="39.5">39.5 lbs</span></td><td>3×15</td><td>1777.5 lbs</td><td><span class='trend down'>▼ -10 lbs</span></td></tr>
-<tr><td>2026-10-07</td><td><span class="wv" data-lbs="49.5">49.5 lbs</span></td><td>3×15</td><td>2227.5 lbs</td><td><span class='trend down'>▼ -10 lbs</span></td></tr>
-<tr><td>2026-10-03</td><td><span class="wv" data-lbs="59.5">59.5 lbs</span></td><td>3×15</td><td>2677.5 lbs</td><td><span class='trend down'>▼ -0.5 lbs</span></td></tr>
-<tr><td>2026-09-28</td><td><span class="wv" data-lbs="60">60 lbs</span></td><td>3×15</td><td>2700 lbs</td><td><span class='trend up'>▲ +12%</span></td></tr>
-<tr><td>2026-09-24</td><td><span class="wv" data-lbs="60">60 lbs</span></td><td>4×10</td><td>2400 lbs</td><td><span class='trend up'>▲ +5 lbs</span></td></tr>
-<tr><td>2026-09-21</td><td><span class="wv" data-lbs="55">55 lbs</span></td><td>3×15</td><td>2475 lbs</td><td><span class='trend up'>▲ +5 lbs</span></td></tr>
-<tr><td>2026-09-14</td><td><span class="wv" data-lbs="50">50 lbs</span></td><td>3×15</td><td>2250 lbs</td><td><span class='trend up'>▲ +12%</span></td></tr>
-<tr><td>2026-09-08</td><td><span class="wv" data-lbs="50">50 lbs</span></td><td>4×10</td><td>2000 lbs</td><td><span class='trend flat'>— same</span></td></tr>
-<tr><td>2026-09-04</td><td><span class="wv" data-lbs="50">50 lbs</span></td><td>4× <span class='rbs'>10/10/10/10</span></td><td>2000 lbs</td><td><span class='trend flat'>— same</span></td></tr>
-<tr><td>2026-08-25</td><td><span class="wv" data-lbs="50">50 lbs</span></td><td>4× <span class='rbs'>12/10/10/8</span></td><td>2000 lbs</td><td><span class='trend down'>▼ -11%</span></td></tr>
-<tr><td>2026-08-17</td><td><span class="wv" data-lbs="50">50 lbs</span></td><td>3×15</td><td>2250 lbs</td><td><span class='trend flat'>— same</span></td></tr>
-<tr><td>2026-08-11</td><td><span class="wv" data-lbs="50">50 lbs</span></td><td>3×15</td><td>2250 lbs</td><td><span class='trend flat'>— same</span></td></tr>
-<tr><td>2026-08-05</td><td><span class="wv" data-lbs="50">50 lbs</span></td><td>3×15</td><td>2250 lbs</td><td><span class='trend flat'>— same</span></td></tr>
-<tr><td>2026-08-04</td><td><span class="wv" data-lbs="50">50 lbs</span></td><td>3×15</td><td>2250 lbs</td><td><span class='trend up'>▲ +50%</span></td></tr>
-<tr><td>2026-07-31</td><td><span class="wv" data-lbs="50">50 lbs</span></td><td>3×10</td><td>1500 lbs</td><td><span class='trend up'>▲ +10 lbs</span></td></tr>
-<tr><td>2026-07-28</td><td><span class="wv" data-lbs="40">40 lbs</span></td><td>3×12</td><td>1440 lbs</td><td><span class='trend down'>▼ -20%</span></td></tr>
-<tr><td>2026-06-23</td><td><span class="wv" data-lbs="40">40 lbs</span></td><td>3×15</td><td>1800 lbs</td><td><span class='trend new'>● new</span></td></tr>
+<tr><td data-label='Date'>2026-10-19</td><td data-label='Weight'><span class="wv" data-lbs="39.5">39.5 lbs</span></td><td data-label='Sets×Reps'>3×15</td><td data-label='Volume'>1777.5 lbs</td><td data-label='Δ'><span class='trend flat'>— same</span></td></tr>
+<tr><td data-label='Date'>2026-10-12</td><td data-label='Weight'><span class="wv" data-lbs="39.5">39.5 lbs</span></td><td data-label='Sets×Reps'>3×15</td><td data-label='Volume'>1777.5 lbs</td><td data-label='Δ'><span class='trend down'>▼ -10 lbs</span></td></tr>
+<tr><td data-label='Date'>2026-10-07</td><td data-label='Weight'><span class="wv" data-lbs="49.5">49.5 lbs</span></td><td data-label='Sets×Reps'>3×15</td><td data-label='Volume'>2227.5 lbs</td><td data-label='Δ'><span class='trend down'>▼ -10 lbs</span></td></tr>
+<tr><td data-label='Date'>2026-10-03</td><td data-label='Weight'><span class="wv" data-lbs="59.5">59.5 lbs</span></td><td data-label='Sets×Reps'>3×15</td><td data-label='Volume'>2677.5 lbs</td><td data-label='Δ'><span class='trend down'>▼ -0.5 lbs</span></td></tr>
+<tr><td data-label='Date'>2026-09-28</td><td data-label='Weight'><span class="wv" data-lbs="60">60 lbs</span></td><td data-label='Sets×Reps'>3×15</td><td data-label='Volume'>2700 lbs</td><td data-label='Δ'><span class='trend up'>▲ +12%</span></td></tr>
+<tr><td data-label='Date'>2026-09-24</td><td data-label='Weight'><span class="wv" data-lbs="60">60 lbs</span></td><td data-label='Sets×Reps'>4×10</td><td data-label='Volume'>2400 lbs</td><td data-label='Δ'><span class='trend up'>▲ +5 lbs</span></td></tr>
+<tr><td data-label='Date'>2026-09-21</td><td data-label='Weight'><span class="wv" data-lbs="55">55 lbs</span></td><td data-label='Sets×Reps'>3×15</td><td data-label='Volume'>2475 lbs</td><td data-label='Δ'><span class='trend up'>▲ +5 lbs</span></td></tr>
+<tr><td data-label='Date'>2026-09-14</td><td data-label='Weight'><span class="wv" data-lbs="50">50 lbs</span></td><td data-label='Sets×Reps'>3×15</td><td data-label='Volume'>2250 lbs</td><td data-label='Δ'><span class='trend up'>▲ +12%</span></td></tr>
+<tr><td data-label='Date'>2026-09-08</td><td data-label='Weight'><span class="wv" data-lbs="50">50 lbs</span></td><td data-label='Sets×Reps'>4×10</td><td data-label='Volume'>2000 lbs</td><td data-label='Δ'><span class='trend flat'>— same</span></td></tr>
+<tr><td data-label='Date'>2026-09-04</td><td data-label='Weight'><span class="wv" data-lbs="50">50 lbs</span></td><td data-label='Sets×Reps'>4× <span class='rbs'>10/10/10/10</span></td><td data-label='Volume'>2000 lbs</td><td data-label='Δ'><span class='trend flat'>— same</span></td></tr>
+<tr><td data-label='Date'>2026-08-25</td><td data-label='Weight'><span class="wv" data-lbs="50">50 lbs</span></td><td data-label='Sets×Reps'>4× <span class='rbs'>12/10/10/8</span></td><td data-label='Volume'>2000 lbs</td><td data-label='Δ'><span class='trend down'>▼ -11%</span></td></tr>
+<tr><td data-label='Date'>2026-08-17</td><td data-label='Weight'><span class="wv" data-lbs="50">50 lbs</span></td><td data-label='Sets×Reps'>3×15</td><td data-label='Volume'>2250 lbs</td><td data-label='Δ'><span class='trend flat'>— same</span></td></tr>
+<tr><td data-label='Date'>2026-08-11</td><td data-label='Weight'><span class="wv" data-lbs="50">50 lbs</span></td><td data-label='Sets×Reps'>3×15</td><td data-label='Volume'>2250 lbs</td><td data-label='Δ'><span class='trend flat'>— same</span></td></tr>
+<tr><td data-label='Date'>2026-08-05</td><td data-label='Weight'><span class="wv" data-lbs="50">50 lbs</span></td><td data-label='Sets×Reps'>3×15</td><td data-label='Volume'>2250 lbs</td><td data-label='Δ'><span class='trend flat'>— same</span></td></tr>
+<tr><td data-label='Date'>2026-08-04</td><td data-label='Weight'><span class="wv" data-lbs="50">50 lbs</span></td><td data-label='Sets×Reps'>3×15</td><td data-label='Volume'>2250 lbs</td><td data-label='Δ'><span class='trend up'>▲ +50%</span></td></tr>
+<tr><td data-label='Date'>2026-07-31</td><td data-label='Weight'><span class="wv" data-lbs="50">50 lbs</span></td><td data-label='Sets×Reps'>3×10</td><td data-label='Volume'>1500 lbs</td><td data-label='Δ'><span class='trend up'>▲ +10 lbs</span></td></tr>
+<tr><td data-label='Date'>2026-07-28</td><td data-label='Weight'><span class="wv" data-lbs="40">40 lbs</span></td><td data-label='Sets×Reps'>3×12</td><td data-label='Volume'>1440 lbs</td><td data-label='Δ'><span class='trend down'>▼ -20%</span></td></tr>
+<tr><td data-label='Date'>2026-06-23</td><td data-label='Weight'><span class="wv" data-lbs="40">40 lbs</span></td><td data-label='Sets×Reps'>3×15</td><td data-label='Volume'>1800 lbs</td><td data-label='Δ'><span class='trend new'>● new</span></td></tr>
       </tbody>
     </table>
     </div>
@@ -529,9 +565,9 @@
     <table>
       <thead><tr><th>Date</th><th>Weight</th><th>Sets×Reps</th><th>Volume</th><th>Δ</th></tr></thead>
       <tbody>
-<tr><td>2026-10-19</td><td><span class="wv" data-lbs="65">65 lbs</span></td><td>3×15</td><td>2925 lbs</td><td><span class='trend flat'>— same</span></td></tr>
-<tr><td>2026-07-21</td><td><span class="wv" data-lbs="65">65 lbs</span></td><td>3×15</td><td>2925 lbs</td><td><span class='trend flat'>— same</span></td></tr>
-<tr><td>2026-07-07</td><td><span class="wv" data-lbs="65">65 lbs</span></td><td>3×15</td><td>2925 lbs</td><td><span class='trend new'>● new</span></td></tr>
+<tr><td data-label='Date'>2026-10-19</td><td data-label='Weight'><span class="wv" data-lbs="65">65 lbs</span></td><td data-label='Sets×Reps'>3×15</td><td data-label='Volume'>2925 lbs</td><td data-label='Δ'><span class='trend flat'>— same</span></td></tr>
+<tr><td data-label='Date'>2026-07-21</td><td data-label='Weight'><span class="wv" data-lbs="65">65 lbs</span></td><td data-label='Sets×Reps'>3×15</td><td data-label='Volume'>2925 lbs</td><td data-label='Δ'><span class='trend flat'>— same</span></td></tr>
+<tr><td data-label='Date'>2026-07-07</td><td data-label='Weight'><span class="wv" data-lbs="65">65 lbs</span></td><td data-label='Sets×Reps'>3×15</td><td data-label='Volume'>2925 lbs</td><td data-label='Δ'><span class='trend new'>● new</span></td></tr>
       </tbody>
     </table>
     </div>
@@ -550,14 +586,14 @@
     <table>
       <thead><tr><th>Date</th><th>Weight</th><th>Sets×Reps</th><th>Volume</th><th>Δ</th></tr></thead>
       <tbody>
-<tr><td>2026-10-19</td><td><span class="wv" data-lbs="22">22 lbs</span></td><td>4×10</td><td>880 lbs</td><td><span class='trend down'>▼ -33%</span></td></tr>
-<tr><td>2026-10-12</td><td><span class="wv" data-lbs="22">22 lbs</span></td><td>4×15</td><td>1320 lbs</td><td><span class='trend up'>▲ +2 lbs</span></td></tr>
-<tr><td>2026-09-28</td><td><span class="wv" data-lbs="20">20 lbs</span></td><td>4× <span class='rbs'>8/8/8/8</span></td><td>640 lbs</td><td><span class='trend down'>▼ -20%</span></td></tr>
-<tr><td>2026-09-24</td><td><span class="wv" data-lbs="20">20 lbs</span></td><td>4× <span class='rbs'>10/10/10/10</span></td><td>800 lbs</td><td><span class='trend up'>▲ +25%</span></td></tr>
-<tr><td>2026-09-18</td><td><span class="wv" data-lbs="20">20 lbs</span></td><td>4× <span class='rbs'>9/8/8/7</span></td><td>640 lbs</td><td><span class='trend up'>▲ +33%</span></td></tr>
-<tr><td>2026-09-03</td><td><span class="wv" data-lbs="20">20 lbs</span></td><td>4× <span class='rbs'>7/7/5/5</span></td><td>480 lbs</td><td><span class='trend up'>▲ +10 lbs</span></td></tr>
-<tr><td>2026-08-25</td><td><span class="wv" data-lbs="10">10 lbs</span></td><td>4× <span class='rbs'>12/10/10/8</span></td><td>400 lbs</td><td><span class='trend down'>▼ -1 lbs</span></td></tr>
-<tr><td>2026-08-21</td><td><span class="wv" data-lbs="11">11 lbs</span></td><td>5× <span class='rbs'>12/10/7/7/6</span></td><td>462 lbs</td><td><span class='trend new'>● new</span></td></tr>
+<tr><td data-label='Date'>2026-10-19</td><td data-label='Weight'><span class="wv" data-lbs="22">22 lbs</span></td><td data-label='Sets×Reps'>4×10</td><td data-label='Volume'>880 lbs</td><td data-label='Δ'><span class='trend down'>▼ -33%</span></td></tr>
+<tr><td data-label='Date'>2026-10-12</td><td data-label='Weight'><span class="wv" data-lbs="22">22 lbs</span></td><td data-label='Sets×Reps'>4×15</td><td data-label='Volume'>1320 lbs</td><td data-label='Δ'><span class='trend up'>▲ +2 lbs</span></td></tr>
+<tr><td data-label='Date'>2026-09-28</td><td data-label='Weight'><span class="wv" data-lbs="20">20 lbs</span></td><td data-label='Sets×Reps'>4× <span class='rbs'>8/8/8/8</span></td><td data-label='Volume'>640 lbs</td><td data-label='Δ'><span class='trend down'>▼ -20%</span></td></tr>
+<tr><td data-label='Date'>2026-09-24</td><td data-label='Weight'><span class="wv" data-lbs="20">20 lbs</span></td><td data-label='Sets×Reps'>4× <span class='rbs'>10/10/10/10</span></td><td data-label='Volume'>800 lbs</td><td data-label='Δ'><span class='trend up'>▲ +25%</span></td></tr>
+<tr><td data-label='Date'>2026-09-18</td><td data-label='Weight'><span class="wv" data-lbs="20">20 lbs</span></td><td data-label='Sets×Reps'>4× <span class='rbs'>9/8/8/7</span></td><td data-label='Volume'>640 lbs</td><td data-label='Δ'><span class='trend up'>▲ +33%</span></td></tr>
+<tr><td data-label='Date'>2026-09-03</td><td data-label='Weight'><span class="wv" data-lbs="20">20 lbs</span></td><td data-label='Sets×Reps'>4× <span class='rbs'>7/7/5/5</span></td><td data-label='Volume'>480 lbs</td><td data-label='Δ'><span class='trend up'>▲ +10 lbs</span></td></tr>
+<tr><td data-label='Date'>2026-08-25</td><td data-label='Weight'><span class="wv" data-lbs="10">10 lbs</span></td><td data-label='Sets×Reps'>4× <span class='rbs'>12/10/10/8</span></td><td data-label='Volume'>400 lbs</td><td data-label='Δ'><span class='trend down'>▼ -1 lbs</span></td></tr>
+<tr><td data-label='Date'>2026-08-21</td><td data-label='Weight'><span class="wv" data-lbs="11">11 lbs</span></td><td data-label='Sets×Reps'>5× <span class='rbs'>12/10/7/7/6</span></td><td data-label='Volume'>462 lbs</td><td data-label='Δ'><span class='trend new'>● new</span></td></tr>
       </tbody>
     </table>
     </div>
@@ -576,11 +612,11 @@
     <table>
       <thead><tr><th>Date</th><th>Weight</th><th>Sets×Reps</th><th>Volume</th><th>Δ</th></tr></thead>
       <tbody>
-<tr><td>2026-10-19</td><td><span class="wv" data-lbs="22">22 lbs</span></td><td>4×15</td><td>1320 lbs</td><td><span class='trend up'>▲ +33%</span></td></tr>
-<tr><td>2026-10-12</td><td><span class="wv" data-lbs="22">22 lbs</span></td><td>3×15</td><td>990 lbs</td><td><span class='trend flat'>— same</span></td></tr>
-<tr><td>2026-10-07</td><td><span class="wv" data-lbs="22">22 lbs</span></td><td>3×15</td><td>990 lbs</td><td><span class='trend flat'>— same</span></td></tr>
-<tr><td>2026-10-03</td><td><span class="wv" data-lbs="22">22 lbs</span></td><td>3×15</td><td>990 lbs</td><td><span class='trend up'>▲ +12 lbs</span></td></tr>
-<tr><td>2026-09-28</td><td><span class="wv" data-lbs="10">10 lbs</span></td><td>4×10</td><td>400 lbs</td><td><span class='trend new'>● new</span></td></tr>
+<tr><td data-label='Date'>2026-10-19</td><td data-label='Weight'><span class="wv" data-lbs="22">22 lbs</span></td><td data-label='Sets×Reps'>4×15</td><td data-label='Volume'>1320 lbs</td><td data-label='Δ'><span class='trend up'>▲ +33%</span></td></tr>
+<tr><td data-label='Date'>2026-10-12</td><td data-label='Weight'><span class="wv" data-lbs="22">22 lbs</span></td><td data-label='Sets×Reps'>3×15</td><td data-label='Volume'>990 lbs</td><td data-label='Δ'><span class='trend flat'>— same</span></td></tr>
+<tr><td data-label='Date'>2026-10-07</td><td data-label='Weight'><span class="wv" data-lbs="22">22 lbs</span></td><td data-label='Sets×Reps'>3×15</td><td data-label='Volume'>990 lbs</td><td data-label='Δ'><span class='trend flat'>— same</span></td></tr>
+<tr><td data-label='Date'>2026-10-03</td><td data-label='Weight'><span class="wv" data-lbs="22">22 lbs</span></td><td data-label='Sets×Reps'>3×15</td><td data-label='Volume'>990 lbs</td><td data-label='Δ'><span class='trend up'>▲ +12 lbs</span></td></tr>
+<tr><td data-label='Date'>2026-09-28</td><td data-label='Weight'><span class="wv" data-lbs="10">10 lbs</span></td><td data-label='Sets×Reps'>4×10</td><td data-label='Volume'>400 lbs</td><td data-label='Δ'><span class='trend new'>● new</span></td></tr>
       </tbody>
     </table>
     </div>
@@ -599,21 +635,21 @@
     <table>
       <thead><tr><th>Date</th><th>Weight</th><th>Sets×Reps</th><th>Volume</th><th>Δ</th></tr></thead>
       <tbody>
-<tr><td>2026-10-13</td><td><span class="wv" data-lbs="22">22 lbs</span></td><td>4×15</td><td>1320 lbs</td><td><span class='trend down'>▼ -22 lbs</span></td></tr>
-<tr><td>2026-10-01</td><td><span class="wv" data-lbs="44">44 lbs</span></td><td>4×10</td><td>1760 lbs</td><td><span class='trend down'>▼ -11 lbs</span></td></tr>
-<tr><td>2026-09-25</td><td><span class="wv" data-lbs="55">55 lbs</span></td><td>3×10</td><td>1650 lbs</td><td><span class='trend up'>▲ +11 lbs</span></td></tr>
-<tr><td>2026-09-10</td><td><span class="wv" data-lbs="44">44 lbs</span></td><td>4×10</td><td>1760 lbs</td><td><span class='trend flat'>— same</span></td></tr>
-<tr><td>2026-09-05</td><td><span class="wv" data-lbs="44">44 lbs</span></td><td>4×10</td><td>1760 lbs</td><td><span class='trend up'>▲ +22 lbs</span></td></tr>
-<tr><td>2026-08-27</td><td><span class="wv" data-lbs="22">22 lbs</span></td><td>4× <span class='rbs'>10/10/10/10</span></td><td>880 lbs</td><td><span class='trend down'>▼ -22 lbs</span></td></tr>
-<tr><td>2026-08-19</td><td><span class="wv" data-lbs="44">44 lbs</span></td><td>3×10</td><td>1320 lbs</td><td><span class='trend flat'>— same</span></td></tr>
-<tr><td>2026-08-12</td><td><span class="wv" data-lbs="44">44 lbs</span></td><td>3×10</td><td>1320 lbs</td><td><span class='trend flat'>— same</span></td></tr>
-<tr><td>2026-07-28</td><td><span class="wv" data-lbs="44">44 lbs</span></td><td>3×10</td><td>1320 lbs</td><td><span class='trend flat'>— same</span></td></tr>
-<tr><td>2026-07-20</td><td><span class="wv" data-lbs="44">44 lbs</span></td><td>3×10</td><td>1320 lbs</td><td><span class='trend flat'>— same</span></td></tr>
-<tr><td>2026-07-12</td><td><span class="wv" data-lbs="44">44 lbs</span></td><td>3×10</td><td>1320 lbs</td><td><span class='trend flat'>— same</span></td></tr>
-<tr><td>2026-07-03</td><td><span class="wv" data-lbs="44">44 lbs</span></td><td>3×10</td><td>1320 lbs</td><td><span class='trend down'>▼ -9 lbs</span></td></tr>
-<tr><td>2026-06-26</td><td><span class="wv" data-lbs="53">53 lbs</span></td><td>3×10</td><td>1590 lbs</td><td><span class='trend up'>▲ +9 lbs</span></td></tr>
-<tr><td>2026-06-19</td><td><span class="wv" data-lbs="44">44 lbs</span></td><td>3×10</td><td>1320 lbs</td><td><span class='trend up'>▲ +6.5 lbs</span></td></tr>
-<tr><td>2026-06-13</td><td><span class="wv" data-lbs="37.5">37.5 lbs</span></td><td>3×15</td><td>1687.5 lbs</td><td><span class='trend new'>● new</span></td></tr>
+<tr><td data-label='Date'>2026-10-13</td><td data-label='Weight'><span class="wv" data-lbs="22">22 lbs</span></td><td data-label='Sets×Reps'>4×15</td><td data-label='Volume'>1320 lbs</td><td data-label='Δ'><span class='trend down'>▼ -22 lbs</span></td></tr>
+<tr><td data-label='Date'>2026-10-01</td><td data-label='Weight'><span class="wv" data-lbs="44">44 lbs</span></td><td data-label='Sets×Reps'>4×10</td><td data-label='Volume'>1760 lbs</td><td data-label='Δ'><span class='trend down'>▼ -11 lbs</span></td></tr>
+<tr><td data-label='Date'>2026-09-25</td><td data-label='Weight'><span class="wv" data-lbs="55">55 lbs</span></td><td data-label='Sets×Reps'>3×10</td><td data-label='Volume'>1650 lbs</td><td data-label='Δ'><span class='trend up'>▲ +11 lbs</span></td></tr>
+<tr><td data-label='Date'>2026-09-10</td><td data-label='Weight'><span class="wv" data-lbs="44">44 lbs</span></td><td data-label='Sets×Reps'>4×10</td><td data-label='Volume'>1760 lbs</td><td data-label='Δ'><span class='trend flat'>— same</span></td></tr>
+<tr><td data-label='Date'>2026-09-05</td><td data-label='Weight'><span class="wv" data-lbs="44">44 lbs</span></td><td data-label='Sets×Reps'>4×10</td><td data-label='Volume'>1760 lbs</td><td data-label='Δ'><span class='trend up'>▲ +22 lbs</span></td></tr>
+<tr><td data-label='Date'>2026-08-27</td><td data-label='Weight'><span class="wv" data-lbs="22">22 lbs</span></td><td data-label='Sets×Reps'>4× <span class='rbs'>10/10/10/10</span></td><td data-label='Volume'>880 lbs</td><td data-label='Δ'><span class='trend down'>▼ -22 lbs</span></td></tr>
+<tr><td data-label='Date'>2026-08-19</td><td data-label='Weight'><span class="wv" data-lbs="44">44 lbs</span></td><td data-label='Sets×Reps'>3×10</td><td data-label='Volume'>1320 lbs</td><td data-label='Δ'><span class='trend flat'>— same</span></td></tr>
+<tr><td data-label='Date'>2026-08-12</td><td data-label='Weight'><span class="wv" data-lbs="44">44 lbs</span></td><td data-label='Sets×Reps'>3×10</td><td data-label='Volume'>1320 lbs</td><td data-label='Δ'><span class='trend flat'>— same</span></td></tr>
+<tr><td data-label='Date'>2026-07-28</td><td data-label='Weight'><span class="wv" data-lbs="44">44 lbs</span></td><td data-label='Sets×Reps'>3×10</td><td data-label='Volume'>1320 lbs</td><td data-label='Δ'><span class='trend flat'>— same</span></td></tr>
+<tr><td data-label='Date'>2026-07-20</td><td data-label='Weight'><span class="wv" data-lbs="44">44 lbs</span></td><td data-label='Sets×Reps'>3×10</td><td data-label='Volume'>1320 lbs</td><td data-label='Δ'><span class='trend flat'>— same</span></td></tr>
+<tr><td data-label='Date'>2026-07-12</td><td data-label='Weight'><span class="wv" data-lbs="44">44 lbs</span></td><td data-label='Sets×Reps'>3×10</td><td data-label='Volume'>1320 lbs</td><td data-label='Δ'><span class='trend flat'>— same</span></td></tr>
+<tr><td data-label='Date'>2026-07-03</td><td data-label='Weight'><span class="wv" data-lbs="44">44 lbs</span></td><td data-label='Sets×Reps'>3×10</td><td data-label='Volume'>1320 lbs</td><td data-label='Δ'><span class='trend down'>▼ -9 lbs</span></td></tr>
+<tr><td data-label='Date'>2026-06-26</td><td data-label='Weight'><span class="wv" data-lbs="53">53 lbs</span></td><td data-label='Sets×Reps'>3×10</td><td data-label='Volume'>1590 lbs</td><td data-label='Δ'><span class='trend up'>▲ +9 lbs</span></td></tr>
+<tr><td data-label='Date'>2026-06-19</td><td data-label='Weight'><span class="wv" data-lbs="44">44 lbs</span></td><td data-label='Sets×Reps'>3×10</td><td data-label='Volume'>1320 lbs</td><td data-label='Δ'><span class='trend up'>▲ +6.5 lbs</span></td></tr>
+<tr><td data-label='Date'>2026-06-13</td><td data-label='Weight'><span class="wv" data-lbs="37.5">37.5 lbs</span></td><td data-label='Sets×Reps'>3×15</td><td data-label='Volume'>1687.5 lbs</td><td data-label='Δ'><span class='trend new'>● new</span></td></tr>
       </tbody>
     </table>
     </div>
@@ -632,11 +668,11 @@
     <table>
       <thead><tr><th>Date</th><th>Weight</th><th>Sets×Reps</th><th>Volume</th><th>Δ</th></tr></thead>
       <tbody>
-<tr><td>2026-10-13</td><td>BW</td><td>3×12</td><td>36 reps</td><td><span class='trend up'>▲ +50%</span></td></tr>
-<tr><td>2026-08-19</td><td>BW</td><td>3×8</td><td>24 reps</td><td><span class='trend down'>▼ -20%</span></td></tr>
-<tr><td>2026-07-12</td><td>BW</td><td>3×10</td><td>30 reps</td><td><span class='trend up'>▲ +25%</span></td></tr>
-<tr><td>2026-07-03</td><td>BW</td><td>3×8</td><td>24 reps</td><td><span class='trend flat'>— same</span></td></tr>
-<tr><td>2026-06-13</td><td>BW</td><td>3×8</td><td>24 reps</td><td><span class='trend new'>● new</span></td></tr>
+<tr><td data-label='Date'>2026-10-13</td><td data-label='Weight'>BW</td><td data-label='Sets×Reps'>3×12</td><td data-label='Volume'>36 reps</td><td data-label='Δ'><span class='trend up'>▲ +50%</span></td></tr>
+<tr><td data-label='Date'>2026-08-19</td><td data-label='Weight'>BW</td><td data-label='Sets×Reps'>3×8</td><td data-label='Volume'>24 reps</td><td data-label='Δ'><span class='trend down'>▼ -20%</span></td></tr>
+<tr><td data-label='Date'>2026-07-12</td><td data-label='Weight'>BW</td><td data-label='Sets×Reps'>3×10</td><td data-label='Volume'>30 reps</td><td data-label='Δ'><span class='trend up'>▲ +25%</span></td></tr>
+<tr><td data-label='Date'>2026-07-03</td><td data-label='Weight'>BW</td><td data-label='Sets×Reps'>3×8</td><td data-label='Volume'>24 reps</td><td data-label='Δ'><span class='trend flat'>— same</span></td></tr>
+<tr><td data-label='Date'>2026-06-13</td><td data-label='Weight'>BW</td><td data-label='Sets×Reps'>3×8</td><td data-label='Volume'>24 reps</td><td data-label='Δ'><span class='trend new'>● new</span></td></tr>
       </tbody>
     </table>
     </div>
@@ -655,11 +691,11 @@
     <table>
       <thead><tr><th>Date</th><th>Weight</th><th>Sets×Reps</th><th>Volume</th><th>Δ</th></tr></thead>
       <tbody>
-<tr><td>2026-10-13</td><td><span class="wv" data-lbs="22">22 lbs</span></td><td>3×8</td><td>528 lbs</td><td><span class='trend up'>▲ +2 lbs</span></td></tr>
-<tr><td>2026-10-01</td><td><span class="wv" data-lbs="20">20 lbs</span></td><td>3×8</td><td>480 lbs</td><td><span class='trend down'>▼ -14%</span></td></tr>
-<tr><td>2026-09-05</td><td><span class="wv" data-lbs="20">20 lbs</span></td><td>3× <span class='rbs'>10/10/8</span></td><td>560 lbs</td><td><span class='trend down'>▼ -7%</span></td></tr>
-<tr><td>2026-07-30</td><td><span class="wv" data-lbs="20">20 lbs</span></td><td>3×10</td><td>600 lbs</td><td><span class='trend flat'>— same</span></td></tr>
-<tr><td>2026-07-12</td><td><span class="wv" data-lbs="20">20 lbs</span></td><td>3×10</td><td>600 lbs</td><td><span class='trend new'>● new</span></td></tr>
+<tr><td data-label='Date'>2026-10-13</td><td data-label='Weight'><span class="wv" data-lbs="22">22 lbs</span></td><td data-label='Sets×Reps'>3×8</td><td data-label='Volume'>528 lbs</td><td data-label='Δ'><span class='trend up'>▲ +2 lbs</span></td></tr>
+<tr><td data-label='Date'>2026-10-01</td><td data-label='Weight'><span class="wv" data-lbs="20">20 lbs</span></td><td data-label='Sets×Reps'>3×8</td><td data-label='Volume'>480 lbs</td><td data-label='Δ'><span class='trend down'>▼ -14%</span></td></tr>
+<tr><td data-label='Date'>2026-09-05</td><td data-label='Weight'><span class="wv" data-lbs="20">20 lbs</span></td><td data-label='Sets×Reps'>3× <span class='rbs'>10/10/8</span></td><td data-label='Volume'>560 lbs</td><td data-label='Δ'><span class='trend down'>▼ -7%</span></td></tr>
+<tr><td data-label='Date'>2026-07-30</td><td data-label='Weight'><span class="wv" data-lbs="20">20 lbs</span></td><td data-label='Sets×Reps'>3×10</td><td data-label='Volume'>600 lbs</td><td data-label='Δ'><span class='trend flat'>— same</span></td></tr>
+<tr><td data-label='Date'>2026-07-12</td><td data-label='Weight'><span class="wv" data-lbs="20">20 lbs</span></td><td data-label='Sets×Reps'>3×10</td><td data-label='Volume'>600 lbs</td><td data-label='Δ'><span class='trend new'>● new</span></td></tr>
       </tbody>
     </table>
     </div>
@@ -678,12 +714,12 @@
     <table>
       <thead><tr><th>Date</th><th>Weight</th><th>Sets×Reps</th><th>Volume</th><th>Δ</th></tr></thead>
       <tbody>
-<tr><td>2026-10-13</td><td>BW</td><td>3×15</td><td>45 reps</td><td><span class='trend flat'>— same</span></td></tr>
-<tr><td>2026-09-22</td><td>BW</td><td>3×15</td><td>45 reps</td><td><span class='trend flat'>— same</span></td></tr>
-<tr><td>2026-09-16</td><td>BW</td><td>3×15</td><td>45 reps</td><td><span class='trend flat'>— same</span></td></tr>
-<tr><td>2026-09-10</td><td>BW</td><td>3×15</td><td>45 reps</td><td><span class='trend flat'>— same</span></td></tr>
-<tr><td>2026-09-05</td><td>BW</td><td>3×15</td><td>45 reps</td><td><span class='trend flat'>— same</span></td></tr>
-<tr><td>2026-08-19</td><td>BW</td><td>3×15</td><td>45 reps</td><td><span class='trend new'>● new</span></td></tr>
+<tr><td data-label='Date'>2026-10-13</td><td data-label='Weight'>BW</td><td data-label='Sets×Reps'>3×15</td><td data-label='Volume'>45 reps</td><td data-label='Δ'><span class='trend flat'>— same</span></td></tr>
+<tr><td data-label='Date'>2026-09-22</td><td data-label='Weight'>BW</td><td data-label='Sets×Reps'>3×15</td><td data-label='Volume'>45 reps</td><td data-label='Δ'><span class='trend flat'>— same</span></td></tr>
+<tr><td data-label='Date'>2026-09-16</td><td data-label='Weight'>BW</td><td data-label='Sets×Reps'>3×15</td><td data-label='Volume'>45 reps</td><td data-label='Δ'><span class='trend flat'>— same</span></td></tr>
+<tr><td data-label='Date'>2026-09-10</td><td data-label='Weight'>BW</td><td data-label='Sets×Reps'>3×15</td><td data-label='Volume'>45 reps</td><td data-label='Δ'><span class='trend flat'>— same</span></td></tr>
+<tr><td data-label='Date'>2026-09-05</td><td data-label='Weight'>BW</td><td data-label='Sets×Reps'>3×15</td><td data-label='Volume'>45 reps</td><td data-label='Δ'><span class='trend flat'>— same</span></td></tr>
+<tr><td data-label='Date'>2026-08-19</td><td data-label='Weight'>BW</td><td data-label='Sets×Reps'>3×15</td><td data-label='Volume'>45 reps</td><td data-label='Δ'><span class='trend new'>● new</span></td></tr>
       </tbody>
     </table>
     </div>
@@ -702,12 +738,12 @@
     <table>
       <thead><tr><th>Date</th><th>Weight</th><th>Sets×Reps</th><th>Volume</th><th>Δ</th></tr></thead>
       <tbody>
-<tr><td>2026-10-13</td><td><span class="wv" data-lbs="22">22 lbs</span></td><td>4×10</td><td>880 lbs</td><td><span class='trend flat'>— same</span></td></tr>
-<tr><td>2026-09-22</td><td><span class="wv" data-lbs="22">22 lbs</span></td><td>4×10</td><td>880 lbs</td><td><span class='trend up'>▲ +33%</span></td></tr>
-<tr><td>2026-09-16</td><td><span class="wv" data-lbs="22">22 lbs</span></td><td>3×10</td><td>660 lbs</td><td><span class='trend up'>▲ +25%</span></td></tr>
-<tr><td>2026-09-10</td><td><span class="wv" data-lbs="22">22 lbs</span></td><td>3×8</td><td>528 lbs</td><td><span class='trend down'>▼ -20%</span></td></tr>
-<tr><td>2026-09-05</td><td><span class="wv" data-lbs="22">22 lbs</span></td><td>3×10</td><td>660 lbs</td><td><span class='trend flat'>— same</span></td></tr>
-<tr><td>2026-08-27</td><td><span class="wv" data-lbs="22">22 lbs</span></td><td>3× <span class='rbs'>10/10/10</span></td><td>660 lbs</td><td><span class='trend new'>● new</span></td></tr>
+<tr><td data-label='Date'>2026-10-13</td><td data-label='Weight'><span class="wv" data-lbs="22">22 lbs</span></td><td data-label='Sets×Reps'>4×10</td><td data-label='Volume'>880 lbs</td><td data-label='Δ'><span class='trend flat'>— same</span></td></tr>
+<tr><td data-label='Date'>2026-09-22</td><td data-label='Weight'><span class="wv" data-lbs="22">22 lbs</span></td><td data-label='Sets×Reps'>4×10</td><td data-label='Volume'>880 lbs</td><td data-label='Δ'><span class='trend up'>▲ +33%</span></td></tr>
+<tr><td data-label='Date'>2026-09-16</td><td data-label='Weight'><span class="wv" data-lbs="22">22 lbs</span></td><td data-label='Sets×Reps'>3×10</td><td data-label='Volume'>660 lbs</td><td data-label='Δ'><span class='trend up'>▲ +25%</span></td></tr>
+<tr><td data-label='Date'>2026-09-10</td><td data-label='Weight'><span class="wv" data-lbs="22">22 lbs</span></td><td data-label='Sets×Reps'>3×8</td><td data-label='Volume'>528 lbs</td><td data-label='Δ'><span class='trend down'>▼ -20%</span></td></tr>
+<tr><td data-label='Date'>2026-09-05</td><td data-label='Weight'><span class="wv" data-lbs="22">22 lbs</span></td><td data-label='Sets×Reps'>3×10</td><td data-label='Volume'>660 lbs</td><td data-label='Δ'><span class='trend flat'>— same</span></td></tr>
+<tr><td data-label='Date'>2026-08-27</td><td data-label='Weight'><span class="wv" data-lbs="22">22 lbs</span></td><td data-label='Sets×Reps'>3× <span class='rbs'>10/10/10</span></td><td data-label='Volume'>660 lbs</td><td data-label='Δ'><span class='trend new'>● new</span></td></tr>
       </tbody>
     </table>
     </div>
@@ -726,7 +762,7 @@
     <table>
       <thead><tr><th>Date</th><th>Weight</th><th>Sets×Reps</th><th>Volume</th><th>Δ</th></tr></thead>
       <tbody>
-<tr><td>2026-10-13</td><td>BW</td><td>3×6</td><td>18 reps</td><td><span class='trend new'>● new</span></td></tr>
+<tr><td data-label='Date'>2026-10-13</td><td data-label='Weight'>BW</td><td data-label='Sets×Reps'>3×6</td><td data-label='Volume'>18 reps</td><td data-label='Δ'><span class='trend new'>● new</span></td></tr>
       </tbody>
     </table>
     </div>
@@ -745,7 +781,7 @@
     <table>
       <thead><tr><th>Date</th><th>Weight</th><th>Sets×Reps</th><th>Volume</th><th>Δ</th></tr></thead>
       <tbody>
-<tr><td>2026-10-13</td><td>BW</td><td>3×8</td><td>24 reps</td><td><span class='trend new'>● new</span></td></tr>
+<tr><td data-label='Date'>2026-10-13</td><td data-label='Weight'>BW</td><td data-label='Sets×Reps'>3×8</td><td data-label='Volume'>24 reps</td><td data-label='Δ'><span class='trend new'>● new</span></td></tr>
       </tbody>
     </table>
     </div>
@@ -764,7 +800,7 @@
     <table>
       <thead><tr><th>Date</th><th>Weight</th><th>Sets×Reps</th><th>Volume</th><th>Δ</th></tr></thead>
       <tbody>
-<tr><td>2026-10-13</td><td>BW</td><td>3×15</td><td>45 reps</td><td><span class='trend new'>● new</span></td></tr>
+<tr><td data-label='Date'>2026-10-13</td><td data-label='Weight'>BW</td><td data-label='Sets×Reps'>3×15</td><td data-label='Volume'>45 reps</td><td data-label='Δ'><span class='trend new'>● new</span></td></tr>
       </tbody>
     </table>
     </div>
@@ -783,7 +819,7 @@
     <table>
       <thead><tr><th>Date</th><th>Weight</th><th>Sets×Reps</th><th>Volume</th><th>Δ</th></tr></thead>
       <tbody>
-<tr><td>2026-10-13</td><td>BW</td><td>2×15</td><td>30 reps</td><td><span class='trend new'>● new</span></td></tr>
+<tr><td data-label='Date'>2026-10-13</td><td data-label='Weight'>BW</td><td data-label='Sets×Reps'>2×15</td><td data-label='Volume'>30 reps</td><td data-label='Δ'><span class='trend new'>● new</span></td></tr>
       </tbody>
     </table>
     </div>
@@ -802,15 +838,15 @@
     <table>
       <thead><tr><th>Date</th><th>Weight</th><th>Sets×Reps</th><th>Volume</th><th>Δ</th></tr></thead>
       <tbody>
-<tr><td>2026-10-12</td><td><span class="wv" data-lbs="30">30 lbs</span></td><td>4×15</td><td>1800 lbs</td><td><span class='trend up'>▲ +33%</span></td></tr>
-<tr><td>2026-10-07</td><td><span class="wv" data-lbs="30">30 lbs</span></td><td>3×15</td><td>1350 lbs</td><td><span class='trend flat'>— same</span></td></tr>
-<tr><td>2026-10-03</td><td><span class="wv" data-lbs="30">30 lbs</span></td><td>3×15</td><td>1350 lbs</td><td><span class='trend down'>▼ -25 lbs</span></td></tr>
-<tr><td>2026-09-28</td><td><span class="wv" data-lbs="55">55 lbs</span></td><td>4×10</td><td>2200 lbs</td><td><span class='trend down'>▼ -11%</span></td></tr>
-<tr><td>2026-09-24</td><td><span class="wv" data-lbs="55">55 lbs</span></td><td>3×15</td><td>2475 lbs</td><td><span class='trend flat'>— same</span></td></tr>
-<tr><td>2026-08-11</td><td><span class="wv" data-lbs="55">55 lbs</span></td><td>3×15</td><td>2475 lbs</td><td><span class='trend flat'>— same</span></td></tr>
-<tr><td>2026-07-31</td><td><span class="wv" data-lbs="55">55 lbs</span></td><td>3×15</td><td>2475 lbs</td><td><span class='trend flat'>— same</span></td></tr>
-<tr><td>2026-07-14</td><td><span class="wv" data-lbs="55">55 lbs</span></td><td>3×15</td><td>2475 lbs</td><td><span class='trend flat'>— same</span></td></tr>
-<tr><td>2026-06-30</td><td><span class="wv" data-lbs="55">55 lbs</span></td><td>3×15</td><td>2475 lbs</td><td><span class='trend new'>● new</span></td></tr>
+<tr><td data-label='Date'>2026-10-12</td><td data-label='Weight'><span class="wv" data-lbs="30">30 lbs</span></td><td data-label='Sets×Reps'>4×15</td><td data-label='Volume'>1800 lbs</td><td data-label='Δ'><span class='trend up'>▲ +33%</span></td></tr>
+<tr><td data-label='Date'>2026-10-07</td><td data-label='Weight'><span class="wv" data-lbs="30">30 lbs</span></td><td data-label='Sets×Reps'>3×15</td><td data-label='Volume'>1350 lbs</td><td data-label='Δ'><span class='trend flat'>— same</span></td></tr>
+<tr><td data-label='Date'>2026-10-03</td><td data-label='Weight'><span class="wv" data-lbs="30">30 lbs</span></td><td data-label='Sets×Reps'>3×15</td><td data-label='Volume'>1350 lbs</td><td data-label='Δ'><span class='trend down'>▼ -25 lbs</span></td></tr>
+<tr><td data-label='Date'>2026-09-28</td><td data-label='Weight'><span class="wv" data-lbs="55">55 lbs</span></td><td data-label='Sets×Reps'>4×10</td><td data-label='Volume'>2200 lbs</td><td data-label='Δ'><span class='trend down'>▼ -11%</span></td></tr>
+<tr><td data-label='Date'>2026-09-24</td><td data-label='Weight'><span class="wv" data-lbs="55">55 lbs</span></td><td data-label='Sets×Reps'>3×15</td><td data-label='Volume'>2475 lbs</td><td data-label='Δ'><span class='trend flat'>— same</span></td></tr>
+<tr><td data-label='Date'>2026-08-11</td><td data-label='Weight'><span class="wv" data-lbs="55">55 lbs</span></td><td data-label='Sets×Reps'>3×15</td><td data-label='Volume'>2475 lbs</td><td data-label='Δ'><span class='trend flat'>— same</span></td></tr>
+<tr><td data-label='Date'>2026-07-31</td><td data-label='Weight'><span class="wv" data-lbs="55">55 lbs</span></td><td data-label='Sets×Reps'>3×15</td><td data-label='Volume'>2475 lbs</td><td data-label='Δ'><span class='trend flat'>— same</span></td></tr>
+<tr><td data-label='Date'>2026-07-14</td><td data-label='Weight'><span class="wv" data-lbs="55">55 lbs</span></td><td data-label='Sets×Reps'>3×15</td><td data-label='Volume'>2475 lbs</td><td data-label='Δ'><span class='trend flat'>— same</span></td></tr>
+<tr><td data-label='Date'>2026-06-30</td><td data-label='Weight'><span class="wv" data-lbs="55">55 lbs</span></td><td data-label='Sets×Reps'>3×15</td><td data-label='Volume'>2475 lbs</td><td data-label='Δ'><span class='trend new'>● new</span></td></tr>
       </tbody>
     </table>
     </div>
@@ -829,18 +865,18 @@
     <table>
       <thead><tr><th>Date</th><th>Weight</th><th>Sets×Reps</th><th>Volume</th><th>Δ</th></tr></thead>
       <tbody>
-<tr><td>2026-10-12</td><td><span class="wv" data-lbs="44">44 lbs</span></td><td>4×15</td><td>2640 lbs</td><td><span class='trend up'>▲ +50%</span></td></tr>
-<tr><td>2026-10-07</td><td><span class="wv" data-lbs="44">44 lbs</span></td><td>4×10</td><td>1760 lbs</td><td><span class='trend up'>▲ +24 lbs</span></td></tr>
-<tr><td>2026-10-03</td><td><span class="wv" data-lbs="20">20 lbs</span></td><td>3×10</td><td>600 lbs</td><td><span class='trend down'>▼ -5 lbs</span></td></tr>
-<tr><td>2026-09-21</td><td><span class="wv" data-lbs="25">25 lbs</span></td><td>4× <span class='rbs'>9/7/7/6</span></td><td>725 lbs</td><td><span class='trend up'>▲ +5 lbs</span></td></tr>
-<tr><td>2026-09-14</td><td><span class="wv" data-lbs="20">20 lbs</span></td><td>4×10</td><td>800 lbs</td><td><span class='trend up'>▲ +11%</span></td></tr>
-<tr><td>2026-09-04</td><td><span class="wv" data-lbs="20">20 lbs</span></td><td>4× <span class='rbs'>10/10/8/8</span></td><td>720 lbs</td><td><span class='trend up'>▲ +20%</span></td></tr>
-<tr><td>2026-08-11</td><td><span class="wv" data-lbs="20">20 lbs</span></td><td>3×10</td><td>600 lbs</td><td><span class='trend down'>▼ -5 lbs</span></td></tr>
-<tr><td>2026-08-05</td><td><span class="wv" data-lbs="25">25 lbs</span></td><td>3×10</td><td>750 lbs</td><td><span class='trend up'>▲ +5 lbs</span></td></tr>
-<tr><td>2026-08-04</td><td><span class="wv" data-lbs="20">20 lbs</span></td><td>3×10</td><td>600 lbs</td><td><span class='trend flat'>— same</span></td></tr>
-<tr><td>2026-07-24</td><td><span class="wv" data-lbs="20">20 lbs</span></td><td>3×10</td><td>600 lbs</td><td><span class='trend flat'>— same</span></td></tr>
-<tr><td>2026-07-21</td><td><span class="wv" data-lbs="20">20 lbs</span></td><td>3×10</td><td>600 lbs</td><td><span class='trend down'>▼ -5 lbs</span></td></tr>
-<tr><td>2026-07-07</td><td><span class="wv" data-lbs="25">25 lbs</span></td><td>3×10</td><td>750 lbs</td><td><span class='trend new'>● new</span></td></tr>
+<tr><td data-label='Date'>2026-10-12</td><td data-label='Weight'><span class="wv" data-lbs="44">44 lbs</span></td><td data-label='Sets×Reps'>4×15</td><td data-label='Volume'>2640 lbs</td><td data-label='Δ'><span class='trend up'>▲ +50%</span></td></tr>
+<tr><td data-label='Date'>2026-10-07</td><td data-label='Weight'><span class="wv" data-lbs="44">44 lbs</span></td><td data-label='Sets×Reps'>4×10</td><td data-label='Volume'>1760 lbs</td><td data-label='Δ'><span class='trend up'>▲ +24 lbs</span></td></tr>
+<tr><td data-label='Date'>2026-10-03</td><td data-label='Weight'><span class="wv" data-lbs="20">20 lbs</span></td><td data-label='Sets×Reps'>3×10</td><td data-label='Volume'>600 lbs</td><td data-label='Δ'><span class='trend down'>▼ -5 lbs</span></td></tr>
+<tr><td data-label='Date'>2026-09-21</td><td data-label='Weight'><span class="wv" data-lbs="25">25 lbs</span></td><td data-label='Sets×Reps'>4× <span class='rbs'>9/7/7/6</span></td><td data-label='Volume'>725 lbs</td><td data-label='Δ'><span class='trend up'>▲ +5 lbs</span></td></tr>
+<tr><td data-label='Date'>2026-09-14</td><td data-label='Weight'><span class="wv" data-lbs="20">20 lbs</span></td><td data-label='Sets×Reps'>4×10</td><td data-label='Volume'>800 lbs</td><td data-label='Δ'><span class='trend up'>▲ +11%</span></td></tr>
+<tr><td data-label='Date'>2026-09-04</td><td data-label='Weight'><span class="wv" data-lbs="20">20 lbs</span></td><td data-label='Sets×Reps'>4× <span class='rbs'>10/10/8/8</span></td><td data-label='Volume'>720 lbs</td><td data-label='Δ'><span class='trend up'>▲ +20%</span></td></tr>
+<tr><td data-label='Date'>2026-08-11</td><td data-label='Weight'><span class="wv" data-lbs="20">20 lbs</span></td><td data-label='Sets×Reps'>3×10</td><td data-label='Volume'>600 lbs</td><td data-label='Δ'><span class='trend down'>▼ -5 lbs</span></td></tr>
+<tr><td data-label='Date'>2026-08-05</td><td data-label='Weight'><span class="wv" data-lbs="25">25 lbs</span></td><td data-label='Sets×Reps'>3×10</td><td data-label='Volume'>750 lbs</td><td data-label='Δ'><span class='trend up'>▲ +5 lbs</span></td></tr>
+<tr><td data-label='Date'>2026-08-04</td><td data-label='Weight'><span class="wv" data-lbs="20">20 lbs</span></td><td data-label='Sets×Reps'>3×10</td><td data-label='Volume'>600 lbs</td><td data-label='Δ'><span class='trend flat'>— same</span></td></tr>
+<tr><td data-label='Date'>2026-07-24</td><td data-label='Weight'><span class="wv" data-lbs="20">20 lbs</span></td><td data-label='Sets×Reps'>3×10</td><td data-label='Volume'>600 lbs</td><td data-label='Δ'><span class='trend flat'>— same</span></td></tr>
+<tr><td data-label='Date'>2026-07-21</td><td data-label='Weight'><span class="wv" data-lbs="20">20 lbs</span></td><td data-label='Sets×Reps'>3×10</td><td data-label='Volume'>600 lbs</td><td data-label='Δ'><span class='trend down'>▼ -5 lbs</span></td></tr>
+<tr><td data-label='Date'>2026-07-07</td><td data-label='Weight'><span class="wv" data-lbs="25">25 lbs</span></td><td data-label='Sets×Reps'>3×10</td><td data-label='Volume'>750 lbs</td><td data-label='Δ'><span class='trend new'>● new</span></td></tr>
       </tbody>
     </table>
     </div>
@@ -859,14 +895,14 @@
     <table>
       <thead><tr><th>Date</th><th>Weight</th><th>Sets×Reps</th><th>Volume</th><th>Δ</th></tr></thead>
       <tbody>
-<tr><td>2026-10-12</td><td><span class="wv" data-lbs="49.5">49.5 lbs</span></td><td>3×10</td><td>1485 lbs</td><td><span class='trend flat'>— same</span></td></tr>
-<tr><td>2026-10-07</td><td><span class="wv" data-lbs="49.5">49.5 lbs</span></td><td>3×10</td><td>1485 lbs</td><td><span class='trend flat'>— same</span></td></tr>
-<tr><td>2026-10-03</td><td><span class="wv" data-lbs="49.5">49.5 lbs</span></td><td>3×10</td><td>1485 lbs</td><td><span class='trend down'>▼ -0.5 lbs</span></td></tr>
-<tr><td>2026-09-28</td><td><span class="wv" data-lbs="50">50 lbs</span></td><td>4×10</td><td>2000 lbs</td><td><span class='trend up'>▲ +33%</span></td></tr>
-<tr><td>2026-09-16</td><td><span class="wv" data-lbs="50">50 lbs</span></td><td>3×10</td><td>1500 lbs</td><td><span class='trend up'>▲ +10 lbs</span></td></tr>
-<tr><td>2026-08-17</td><td><span class="wv" data-lbs="40">40 lbs</span></td><td>3×10</td><td>1200 lbs</td><td><span class='trend flat'>— same</span></td></tr>
-<tr><td>2026-07-14</td><td><span class="wv" data-lbs="40">40 lbs</span></td><td>3×10</td><td>1200 lbs</td><td><span class='trend flat'>— same</span></td></tr>
-<tr><td>2026-07-07</td><td><span class="wv" data-lbs="40">40 lbs</span></td><td>3×10</td><td>1200 lbs</td><td><span class='trend new'>● new</span></td></tr>
+<tr><td data-label='Date'>2026-10-12</td><td data-label='Weight'><span class="wv" data-lbs="49.5">49.5 lbs</span></td><td data-label='Sets×Reps'>3×10</td><td data-label='Volume'>1485 lbs</td><td data-label='Δ'><span class='trend flat'>— same</span></td></tr>
+<tr><td data-label='Date'>2026-10-07</td><td data-label='Weight'><span class="wv" data-lbs="49.5">49.5 lbs</span></td><td data-label='Sets×Reps'>3×10</td><td data-label='Volume'>1485 lbs</td><td data-label='Δ'><span class='trend flat'>— same</span></td></tr>
+<tr><td data-label='Date'>2026-10-03</td><td data-label='Weight'><span class="wv" data-lbs="49.5">49.5 lbs</span></td><td data-label='Sets×Reps'>3×10</td><td data-label='Volume'>1485 lbs</td><td data-label='Δ'><span class='trend down'>▼ -0.5 lbs</span></td></tr>
+<tr><td data-label='Date'>2026-09-28</td><td data-label='Weight'><span class="wv" data-lbs="50">50 lbs</span></td><td data-label='Sets×Reps'>4×10</td><td data-label='Volume'>2000 lbs</td><td data-label='Δ'><span class='trend up'>▲ +33%</span></td></tr>
+<tr><td data-label='Date'>2026-09-16</td><td data-label='Weight'><span class="wv" data-lbs="50">50 lbs</span></td><td data-label='Sets×Reps'>3×10</td><td data-label='Volume'>1500 lbs</td><td data-label='Δ'><span class='trend up'>▲ +10 lbs</span></td></tr>
+<tr><td data-label='Date'>2026-08-17</td><td data-label='Weight'><span class="wv" data-lbs="40">40 lbs</span></td><td data-label='Sets×Reps'>3×10</td><td data-label='Volume'>1200 lbs</td><td data-label='Δ'><span class='trend flat'>— same</span></td></tr>
+<tr><td data-label='Date'>2026-07-14</td><td data-label='Weight'><span class="wv" data-lbs="40">40 lbs</span></td><td data-label='Sets×Reps'>3×10</td><td data-label='Volume'>1200 lbs</td><td data-label='Δ'><span class='trend flat'>— same</span></td></tr>
+<tr><td data-label='Date'>2026-07-07</td><td data-label='Weight'><span class="wv" data-lbs="40">40 lbs</span></td><td data-label='Sets×Reps'>3×10</td><td data-label='Volume'>1200 lbs</td><td data-label='Δ'><span class='trend new'>● new</span></td></tr>
       </tbody>
     </table>
     </div>
@@ -885,8 +921,8 @@
     <table>
       <thead><tr><th>Date</th><th>Weight</th><th>Sets×Reps</th><th>Volume</th><th>Δ</th></tr></thead>
       <tbody>
-<tr><td>2026-10-07</td><td>BW</td><td>3×8</td><td>24 reps</td><td><span class='trend flat'>— same</span></td></tr>
-<tr><td>2026-09-21</td><td>BW</td><td>3×8</td><td>24 reps</td><td><span class='trend new'>● new</span></td></tr>
+<tr><td data-label='Date'>2026-10-07</td><td data-label='Weight'>BW</td><td data-label='Sets×Reps'>3×8</td><td data-label='Volume'>24 reps</td><td data-label='Δ'><span class='trend flat'>— same</span></td></tr>
+<tr><td data-label='Date'>2026-09-21</td><td data-label='Weight'>BW</td><td data-label='Sets×Reps'>3×8</td><td data-label='Volume'>24 reps</td><td data-label='Δ'><span class='trend new'>● new</span></td></tr>
       </tbody>
     </table>
     </div>
@@ -905,8 +941,8 @@
     <table>
       <thead><tr><th>Date</th><th>Weight</th><th>Sets×Reps</th><th>Volume</th><th>Δ</th></tr></thead>
       <tbody>
-<tr><td>2026-10-07</td><td>BW</td><td>3×8</td><td>24 reps</td><td><span class='trend flat'>— same</span></td></tr>
-<tr><td>2026-09-21</td><td>BW</td><td>3×8</td><td>24 reps</td><td><span class='trend new'>● new</span></td></tr>
+<tr><td data-label='Date'>2026-10-07</td><td data-label='Weight'>BW</td><td data-label='Sets×Reps'>3×8</td><td data-label='Volume'>24 reps</td><td data-label='Δ'><span class='trend flat'>— same</span></td></tr>
+<tr><td data-label='Date'>2026-09-21</td><td data-label='Weight'>BW</td><td data-label='Sets×Reps'>3×8</td><td data-label='Volume'>24 reps</td><td data-label='Δ'><span class='trend new'>● new</span></td></tr>
       </tbody>
     </table>
     </div>
@@ -925,8 +961,8 @@
     <table>
       <thead><tr><th>Date</th><th>Weight</th><th>Sets×Reps</th><th>Volume</th><th>Δ</th></tr></thead>
       <tbody>
-<tr><td>2026-10-07</td><td>BW</td><td>1×10</td><td>10 reps</td><td><span class='trend flat'>— same</span></td></tr>
-<tr><td>2026-09-21</td><td>BW</td><td>1×10</td><td>10 reps</td><td><span class='trend new'>● new</span></td></tr>
+<tr><td data-label='Date'>2026-10-07</td><td data-label='Weight'>BW</td><td data-label='Sets×Reps'>1×10</td><td data-label='Volume'>10 reps</td><td data-label='Δ'><span class='trend flat'>— same</span></td></tr>
+<tr><td data-label='Date'>2026-09-21</td><td data-label='Weight'>BW</td><td data-label='Sets×Reps'>1×10</td><td data-label='Volume'>10 reps</td><td data-label='Δ'><span class='trend new'>● new</span></td></tr>
       </tbody>
     </table>
     </div>
@@ -945,8 +981,8 @@
     <table>
       <thead><tr><th>Date</th><th>Weight</th><th>Sets×Reps</th><th>Volume</th><th>Δ</th></tr></thead>
       <tbody>
-<tr><td>2026-10-07</td><td><span class="wv" data-lbs="50">50 lbs</span></td><td>3×20</td><td>3000 lbs</td><td><span class='trend up'>▲ +10 lbs</span></td></tr>
-<tr><td>2026-09-21</td><td><span class="wv" data-lbs="40">40 lbs</span></td><td>3×12</td><td>1440 lbs</td><td><span class='trend new'>● new</span></td></tr>
+<tr><td data-label='Date'>2026-10-07</td><td data-label='Weight'><span class="wv" data-lbs="50">50 lbs</span></td><td data-label='Sets×Reps'>3×20</td><td data-label='Volume'>3000 lbs</td><td data-label='Δ'><span class='trend up'>▲ +10 lbs</span></td></tr>
+<tr><td data-label='Date'>2026-09-21</td><td data-label='Weight'><span class="wv" data-lbs="40">40 lbs</span></td><td data-label='Sets×Reps'>3×12</td><td data-label='Volume'>1440 lbs</td><td data-label='Δ'><span class='trend new'>● new</span></td></tr>
       </tbody>
     </table>
     </div>
@@ -965,8 +1001,8 @@
     <table>
       <thead><tr><th>Date</th><th>Weight</th><th>Sets×Reps</th><th>Volume</th><th>Δ</th></tr></thead>
       <tbody>
-<tr><td>2026-10-07</td><td>BW</td><td>3×10</td><td>30 reps</td><td><span class='trend flat'>— same</span></td></tr>
-<tr><td>2026-09-21</td><td>BW</td><td>3×10</td><td>30 reps</td><td><span class='trend new'>● new</span></td></tr>
+<tr><td data-label='Date'>2026-10-07</td><td data-label='Weight'>BW</td><td data-label='Sets×Reps'>3×10</td><td data-label='Volume'>30 reps</td><td data-label='Δ'><span class='trend flat'>— same</span></td></tr>
+<tr><td data-label='Date'>2026-09-21</td><td data-label='Weight'>BW</td><td data-label='Sets×Reps'>3×10</td><td data-label='Volume'>30 reps</td><td data-label='Δ'><span class='trend new'>● new</span></td></tr>
       </tbody>
     </table>
     </div>
@@ -985,13 +1021,13 @@
     <table>
       <thead><tr><th>Date</th><th>Weight</th><th>Sets×Reps</th><th>Volume</th><th>Δ</th></tr></thead>
       <tbody>
-<tr><td>2026-10-01</td><td><span class="wv" data-lbs="65">65 lbs</span></td><td>3×12</td><td>2340 lbs</td><td><span class='trend down'>▼ -20%</span></td></tr>
-<tr><td>2026-09-25</td><td><span class="wv" data-lbs="65">65 lbs</span></td><td>3×15</td><td>2925 lbs</td><td><span class='trend up'>▲ +12%</span></td></tr>
-<tr><td>2026-09-16</td><td><span class="wv" data-lbs="65">65 lbs</span></td><td>4×10</td><td>2600 lbs</td><td><span class='trend flat'>— same</span></td></tr>
-<tr><td>2026-09-10</td><td><span class="wv" data-lbs="65">65 lbs</span></td><td>4×10</td><td>2600 lbs</td><td><span class='trend up'>▲ +5 lbs</span></td></tr>
-<tr><td>2026-07-12</td><td><span class="wv" data-lbs="60">60 lbs</span></td><td>3×15</td><td>2700 lbs</td><td><span class='trend up'>▲ +5 lbs</span></td></tr>
-<tr><td>2026-07-03</td><td><span class="wv" data-lbs="55">55 lbs</span></td><td>3×15</td><td>2475 lbs</td><td><span class='trend flat'>— same</span></td></tr>
-<tr><td>2026-06-13</td><td><span class="wv" data-lbs="55">55 lbs</span></td><td>3×15</td><td>2475 lbs</td><td><span class='trend new'>● new</span></td></tr>
+<tr><td data-label='Date'>2026-10-01</td><td data-label='Weight'><span class="wv" data-lbs="65">65 lbs</span></td><td data-label='Sets×Reps'>3×12</td><td data-label='Volume'>2340 lbs</td><td data-label='Δ'><span class='trend down'>▼ -20%</span></td></tr>
+<tr><td data-label='Date'>2026-09-25</td><td data-label='Weight'><span class="wv" data-lbs="65">65 lbs</span></td><td data-label='Sets×Reps'>3×15</td><td data-label='Volume'>2925 lbs</td><td data-label='Δ'><span class='trend up'>▲ +12%</span></td></tr>
+<tr><td data-label='Date'>2026-09-16</td><td data-label='Weight'><span class="wv" data-lbs="65">65 lbs</span></td><td data-label='Sets×Reps'>4×10</td><td data-label='Volume'>2600 lbs</td><td data-label='Δ'><span class='trend flat'>— same</span></td></tr>
+<tr><td data-label='Date'>2026-09-10</td><td data-label='Weight'><span class="wv" data-lbs="65">65 lbs</span></td><td data-label='Sets×Reps'>4×10</td><td data-label='Volume'>2600 lbs</td><td data-label='Δ'><span class='trend up'>▲ +5 lbs</span></td></tr>
+<tr><td data-label='Date'>2026-07-12</td><td data-label='Weight'><span class="wv" data-lbs="60">60 lbs</span></td><td data-label='Sets×Reps'>3×15</td><td data-label='Volume'>2700 lbs</td><td data-label='Δ'><span class='trend up'>▲ +5 lbs</span></td></tr>
+<tr><td data-label='Date'>2026-07-03</td><td data-label='Weight'><span class="wv" data-lbs="55">55 lbs</span></td><td data-label='Sets×Reps'>3×15</td><td data-label='Volume'>2475 lbs</td><td data-label='Δ'><span class='trend flat'>— same</span></td></tr>
+<tr><td data-label='Date'>2026-06-13</td><td data-label='Weight'><span class="wv" data-lbs="55">55 lbs</span></td><td data-label='Sets×Reps'>3×15</td><td data-label='Volume'>2475 lbs</td><td data-label='Δ'><span class='trend new'>● new</span></td></tr>
       </tbody>
     </table>
     </div>
@@ -1010,8 +1046,8 @@
     <table>
       <thead><tr><th>Date</th><th>Weight</th><th>Sets×Reps</th><th>Volume</th><th>Δ</th></tr></thead>
       <tbody>
-<tr><td>2026-10-01</td><td><span class="wv" data-lbs="22">22 lbs</span></td><td>3×12</td><td>792 lbs</td><td><span class='trend down'>▼ -20%</span></td></tr>
-<tr><td>2026-09-22</td><td><span class="wv" data-lbs="22">22 lbs</span></td><td>3×15</td><td>990 lbs</td><td><span class='trend new'>● new</span></td></tr>
+<tr><td data-label='Date'>2026-10-01</td><td data-label='Weight'><span class="wv" data-lbs="22">22 lbs</span></td><td data-label='Sets×Reps'>3×12</td><td data-label='Volume'>792 lbs</td><td data-label='Δ'><span class='trend down'>▼ -20%</span></td></tr>
+<tr><td data-label='Date'>2026-09-22</td><td data-label='Weight'><span class="wv" data-lbs="22">22 lbs</span></td><td data-label='Sets×Reps'>3×15</td><td data-label='Volume'>990 lbs</td><td data-label='Δ'><span class='trend new'>● new</span></td></tr>
       </tbody>
     </table>
     </div>
@@ -1030,18 +1066,18 @@
     <table>
       <thead><tr><th>Date</th><th>Weight</th><th>Sets×Reps</th><th>Volume</th><th>Δ</th></tr></thead>
       <tbody>
-<tr><td>2026-09-25</td><td><span class="wv" data-lbs="77">77 lbs</span></td><td>4×10</td><td>3080 lbs</td><td><span class='trend up'>▲ +11 lbs</span></td></tr>
-<tr><td>2026-09-22</td><td><span class="wv" data-lbs="66">66 lbs</span></td><td>3×15</td><td>2970 lbs</td><td><span class='trend up'>▲ +12%</span></td></tr>
-<tr><td>2026-09-16</td><td><span class="wv" data-lbs="66">66 lbs</span></td><td>4×10</td><td>2640 lbs</td><td><span class='trend flat'>— same</span></td></tr>
-<tr><td>2026-09-10</td><td><span class="wv" data-lbs="66">66 lbs</span></td><td>4×10</td><td>2640 lbs</td><td><span class='trend up'>▲ +33%</span></td></tr>
-<tr><td>2026-08-27</td><td><span class="wv" data-lbs="66">66 lbs</span></td><td>3× <span class='rbs'>10/10/10</span></td><td>1980 lbs</td><td><span class='trend down'>▼ -33%</span></td></tr>
-<tr><td>2026-08-19</td><td><span class="wv" data-lbs="66">66 lbs</span></td><td>3×15</td><td>2970 lbs</td><td><span class='trend flat'>— same</span></td></tr>
-<tr><td>2026-07-30</td><td><span class="wv" data-lbs="66">66 lbs</span></td><td>3×15</td><td>2970 lbs</td><td><span class='trend flat'>— same</span></td></tr>
-<tr><td>2026-07-20</td><td><span class="wv" data-lbs="66">66 lbs</span></td><td>3×15</td><td>2970 lbs</td><td><span class='trend flat'>— same</span></td></tr>
-<tr><td>2026-07-12</td><td><span class="wv" data-lbs="66">66 lbs</span></td><td>3×15</td><td>2970 lbs</td><td><span class='trend up'>▲ +33 lbs</span></td></tr>
-<tr><td>2026-07-03</td><td><span class="wv" data-lbs="33">33 lbs</span></td><td>3×15</td><td>1485 lbs</td><td><span class='trend flat'>— same</span></td></tr>
-<tr><td>2026-06-19</td><td><span class="wv" data-lbs="33">33 lbs</span></td><td>3×15</td><td>1485 lbs</td><td><span class='trend flat'>— same</span></td></tr>
-<tr><td>2026-06-13</td><td><span class="wv" data-lbs="33">33 lbs</span></td><td>3×15</td><td>1485 lbs</td><td><span class='trend new'>● new</span></td></tr>
+<tr><td data-label='Date'>2026-09-25</td><td data-label='Weight'><span class="wv" data-lbs="77">77 lbs</span></td><td data-label='Sets×Reps'>4×10</td><td data-label='Volume'>3080 lbs</td><td data-label='Δ'><span class='trend up'>▲ +11 lbs</span></td></tr>
+<tr><td data-label='Date'>2026-09-22</td><td data-label='Weight'><span class="wv" data-lbs="66">66 lbs</span></td><td data-label='Sets×Reps'>3×15</td><td data-label='Volume'>2970 lbs</td><td data-label='Δ'><span class='trend up'>▲ +12%</span></td></tr>
+<tr><td data-label='Date'>2026-09-16</td><td data-label='Weight'><span class="wv" data-lbs="66">66 lbs</span></td><td data-label='Sets×Reps'>4×10</td><td data-label='Volume'>2640 lbs</td><td data-label='Δ'><span class='trend flat'>— same</span></td></tr>
+<tr><td data-label='Date'>2026-09-10</td><td data-label='Weight'><span class="wv" data-lbs="66">66 lbs</span></td><td data-label='Sets×Reps'>4×10</td><td data-label='Volume'>2640 lbs</td><td data-label='Δ'><span class='trend up'>▲ +33%</span></td></tr>
+<tr><td data-label='Date'>2026-08-27</td><td data-label='Weight'><span class="wv" data-lbs="66">66 lbs</span></td><td data-label='Sets×Reps'>3× <span class='rbs'>10/10/10</span></td><td data-label='Volume'>1980 lbs</td><td data-label='Δ'><span class='trend down'>▼ -33%</span></td></tr>
+<tr><td data-label='Date'>2026-08-19</td><td data-label='Weight'><span class="wv" data-lbs="66">66 lbs</span></td><td data-label='Sets×Reps'>3×15</td><td data-label='Volume'>2970 lbs</td><td data-label='Δ'><span class='trend flat'>— same</span></td></tr>
+<tr><td data-label='Date'>2026-07-30</td><td data-label='Weight'><span class="wv" data-lbs="66">66 lbs</span></td><td data-label='Sets×Reps'>3×15</td><td data-label='Volume'>2970 lbs</td><td data-label='Δ'><span class='trend flat'>— same</span></td></tr>
+<tr><td data-label='Date'>2026-07-20</td><td data-label='Weight'><span class="wv" data-lbs="66">66 lbs</span></td><td data-label='Sets×Reps'>3×15</td><td data-label='Volume'>2970 lbs</td><td data-label='Δ'><span class='trend flat'>— same</span></td></tr>
+<tr><td data-label='Date'>2026-07-12</td><td data-label='Weight'><span class="wv" data-lbs="66">66 lbs</span></td><td data-label='Sets×Reps'>3×15</td><td data-label='Volume'>2970 lbs</td><td data-label='Δ'><span class='trend up'>▲ +33 lbs</span></td></tr>
+<tr><td data-label='Date'>2026-07-03</td><td data-label='Weight'><span class="wv" data-lbs="33">33 lbs</span></td><td data-label='Sets×Reps'>3×15</td><td data-label='Volume'>1485 lbs</td><td data-label='Δ'><span class='trend flat'>— same</span></td></tr>
+<tr><td data-label='Date'>2026-06-19</td><td data-label='Weight'><span class="wv" data-lbs="33">33 lbs</span></td><td data-label='Sets×Reps'>3×15</td><td data-label='Volume'>1485 lbs</td><td data-label='Δ'><span class='trend flat'>— same</span></td></tr>
+<tr><td data-label='Date'>2026-06-13</td><td data-label='Weight'><span class="wv" data-lbs="33">33 lbs</span></td><td data-label='Sets×Reps'>3×15</td><td data-label='Volume'>1485 lbs</td><td data-label='Δ'><span class='trend new'>● new</span></td></tr>
       </tbody>
     </table>
     </div>
@@ -1060,9 +1096,9 @@
     <table>
       <thead><tr><th>Date</th><th>Weight</th><th>Sets×Reps</th><th>Volume</th><th>Δ</th></tr></thead>
       <tbody>
-<tr><td>2026-09-22</td><td><span class="wv" data-lbs="38">38 lbs</span></td><td>4×10</td><td>1520 lbs</td><td><span class='trend up'>▲ +8 lbs</span></td></tr>
-<tr><td>2026-09-16</td><td><span class="wv" data-lbs="30">30 lbs</span></td><td>3×10</td><td>900 lbs</td><td><span class='trend flat'>— same</span></td></tr>
-<tr><td>2026-07-30</td><td><span class="wv" data-lbs="30">30 lbs</span></td><td>3×10</td><td>900 lbs</td><td><span class='trend new'>● new</span></td></tr>
+<tr><td data-label='Date'>2026-09-22</td><td data-label='Weight'><span class="wv" data-lbs="38">38 lbs</span></td><td data-label='Sets×Reps'>4×10</td><td data-label='Volume'>1520 lbs</td><td data-label='Δ'><span class='trend up'>▲ +8 lbs</span></td></tr>
+<tr><td data-label='Date'>2026-09-16</td><td data-label='Weight'><span class="wv" data-lbs="30">30 lbs</span></td><td data-label='Sets×Reps'>3×10</td><td data-label='Volume'>900 lbs</td><td data-label='Δ'><span class='trend flat'>— same</span></td></tr>
+<tr><td data-label='Date'>2026-07-30</td><td data-label='Weight'><span class="wv" data-lbs="30">30 lbs</span></td><td data-label='Sets×Reps'>3×10</td><td data-label='Volume'>900 lbs</td><td data-label='Δ'><span class='trend new'>● new</span></td></tr>
       </tbody>
     </table>
     </div>
@@ -1081,7 +1117,7 @@
     <table>
       <thead><tr><th>Date</th><th>Weight</th><th>Sets×Reps</th><th>Volume</th><th>Δ</th></tr></thead>
       <tbody>
-<tr><td>2026-09-21</td><td>BW</td><td>3×8</td><td>24 reps</td><td><span class='trend new'>● new</span></td></tr>
+<tr><td data-label='Date'>2026-09-21</td><td data-label='Weight'>BW</td><td data-label='Sets×Reps'>3×8</td><td data-label='Volume'>24 reps</td><td data-label='Δ'><span class='trend new'>● new</span></td></tr>
       </tbody>
     </table>
     </div>
@@ -1100,7 +1136,7 @@
     <table>
       <thead><tr><th>Date</th><th>Weight</th><th>Sets×Reps</th><th>Volume</th><th>Δ</th></tr></thead>
       <tbody>
-<tr><td>2026-09-21</td><td>BW</td><td>3×8</td><td>24 reps</td><td><span class='trend new'>● new</span></td></tr>
+<tr><td data-label='Date'>2026-09-21</td><td data-label='Weight'>BW</td><td data-label='Sets×Reps'>3×8</td><td data-label='Volume'>24 reps</td><td data-label='Δ'><span class='trend new'>● new</span></td></tr>
       </tbody>
     </table>
     </div>
@@ -1119,7 +1155,7 @@
     <table>
       <thead><tr><th>Date</th><th>Weight</th><th>Sets×Reps</th><th>Volume</th><th>Δ</th></tr></thead>
       <tbody>
-<tr><td>2026-09-21</td><td>BW</td><td>3×10</td><td>30 reps</td><td><span class='trend new'>● new</span></td></tr>
+<tr><td data-label='Date'>2026-09-21</td><td data-label='Weight'>BW</td><td data-label='Sets×Reps'>3×10</td><td data-label='Volume'>30 reps</td><td data-label='Δ'><span class='trend new'>● new</span></td></tr>
       </tbody>
     </table>
     </div>
@@ -1138,7 +1174,7 @@
     <table>
       <thead><tr><th>Date</th><th>Weight</th><th>Sets×Reps</th><th>Volume</th><th>Δ</th></tr></thead>
       <tbody>
-<tr><td>2026-09-21</td><td>BW</td><td>3×12</td><td>36 reps</td><td><span class='trend new'>● new</span></td></tr>
+<tr><td data-label='Date'>2026-09-21</td><td data-label='Weight'>BW</td><td data-label='Sets×Reps'>3×12</td><td data-label='Volume'>36 reps</td><td data-label='Δ'><span class='trend new'>● new</span></td></tr>
       </tbody>
     </table>
     </div>
@@ -1157,7 +1193,7 @@
     <table>
       <thead><tr><th>Date</th><th>Weight</th><th>Sets×Reps</th><th>Volume</th><th>Δ</th></tr></thead>
       <tbody>
-<tr><td>2026-09-18</td><td><span class="wv" data-lbs="10">10 lbs</span></td><td>3×10</td><td>300 lbs</td><td><span class='trend new'>● new</span></td></tr>
+<tr><td data-label='Date'>2026-09-18</td><td data-label='Weight'><span class="wv" data-lbs="10">10 lbs</span></td><td data-label='Sets×Reps'>3×10</td><td data-label='Volume'>300 lbs</td><td data-label='Δ'><span class='trend new'>● new</span></td></tr>
       </tbody>
     </table>
     </div>
@@ -1176,7 +1212,7 @@
     <table>
       <thead><tr><th>Date</th><th>Weight</th><th>Sets×Reps</th><th>Volume</th><th>Δ</th></tr></thead>
       <tbody>
-<tr><td>2026-09-18</td><td><span class="wv" data-lbs="5">5 lbs</span></td><td>3×10</td><td>150 lbs</td><td><span class='trend new'>● new</span></td></tr>
+<tr><td data-label='Date'>2026-09-18</td><td data-label='Weight'><span class="wv" data-lbs="5">5 lbs</span></td><td data-label='Sets×Reps'>3×10</td><td data-label='Volume'>150 lbs</td><td data-label='Δ'><span class='trend new'>● new</span></td></tr>
       </tbody>
     </table>
     </div>
@@ -1195,14 +1231,14 @@
     <table>
       <thead><tr><th>Date</th><th>Weight</th><th>Sets×Reps</th><th>Volume</th><th>Δ</th></tr></thead>
       <tbody>
-<tr><td>2026-09-08</td><td><span class="wv" data-lbs="20">20 lbs</span></td><td>5×8</td><td>800 lbs</td><td><span class='trend up'>▲ +33%</span></td></tr>
-<tr><td>2026-08-17</td><td><span class="wv" data-lbs="20">20 lbs</span></td><td>3×10</td><td>600 lbs</td><td><span class='trend flat'>— same</span></td></tr>
-<tr><td>2026-07-28</td><td><span class="wv" data-lbs="20">20 lbs</span></td><td>3×10</td><td>600 lbs</td><td><span class='trend flat'>— same</span></td></tr>
-<tr><td>2026-07-14</td><td><span class="wv" data-lbs="20">20 lbs</span></td><td>3×10</td><td>600 lbs</td><td><span class='trend flat'>— same</span></td></tr>
-<tr><td>2026-07-07</td><td><span class="wv" data-lbs="20">20 lbs</span></td><td>3×10</td><td>600 lbs</td><td><span class='trend flat'>— same</span></td></tr>
-<tr><td>2026-06-30</td><td><span class="wv" data-lbs="20">20 lbs</span></td><td>3×10</td><td>600 lbs</td><td><span class='trend flat'>— same</span></td></tr>
-<tr><td>2026-06-23</td><td><span class="wv" data-lbs="20">20 lbs</span></td><td>3×10</td><td>600 lbs</td><td><span class='trend flat'>— same</span></td></tr>
-<tr><td>2026-06-16</td><td><span class="wv" data-lbs="20">20 lbs</span></td><td>3×10</td><td>600 lbs</td><td><span class='trend new'>● new</span></td></tr>
+<tr><td data-label='Date'>2026-09-08</td><td data-label='Weight'><span class="wv" data-lbs="20">20 lbs</span></td><td data-label='Sets×Reps'>5×8</td><td data-label='Volume'>800 lbs</td><td data-label='Δ'><span class='trend up'>▲ +33%</span></td></tr>
+<tr><td data-label='Date'>2026-08-17</td><td data-label='Weight'><span class="wv" data-lbs="20">20 lbs</span></td><td data-label='Sets×Reps'>3×10</td><td data-label='Volume'>600 lbs</td><td data-label='Δ'><span class='trend flat'>— same</span></td></tr>
+<tr><td data-label='Date'>2026-07-28</td><td data-label='Weight'><span class="wv" data-lbs="20">20 lbs</span></td><td data-label='Sets×Reps'>3×10</td><td data-label='Volume'>600 lbs</td><td data-label='Δ'><span class='trend flat'>— same</span></td></tr>
+<tr><td data-label='Date'>2026-07-14</td><td data-label='Weight'><span class="wv" data-lbs="20">20 lbs</span></td><td data-label='Sets×Reps'>3×10</td><td data-label='Volume'>600 lbs</td><td data-label='Δ'><span class='trend flat'>— same</span></td></tr>
+<tr><td data-label='Date'>2026-07-07</td><td data-label='Weight'><span class="wv" data-lbs="20">20 lbs</span></td><td data-label='Sets×Reps'>3×10</td><td data-label='Volume'>600 lbs</td><td data-label='Δ'><span class='trend flat'>— same</span></td></tr>
+<tr><td data-label='Date'>2026-06-30</td><td data-label='Weight'><span class="wv" data-lbs="20">20 lbs</span></td><td data-label='Sets×Reps'>3×10</td><td data-label='Volume'>600 lbs</td><td data-label='Δ'><span class='trend flat'>— same</span></td></tr>
+<tr><td data-label='Date'>2026-06-23</td><td data-label='Weight'><span class="wv" data-lbs="20">20 lbs</span></td><td data-label='Sets×Reps'>3×10</td><td data-label='Volume'>600 lbs</td><td data-label='Δ'><span class='trend flat'>— same</span></td></tr>
+<tr><td data-label='Date'>2026-06-16</td><td data-label='Weight'><span class="wv" data-lbs="20">20 lbs</span></td><td data-label='Sets×Reps'>3×10</td><td data-label='Volume'>600 lbs</td><td data-label='Δ'><span class='trend new'>● new</span></td></tr>
       </tbody>
     </table>
     </div>
@@ -1221,7 +1257,7 @@
     <table>
       <thead><tr><th>Date</th><th>Weight</th><th>Sets×Reps</th><th>Volume</th><th>Δ</th></tr></thead>
       <tbody>
-<tr><td>2026-09-05</td><td>BW</td><td>3×10</td><td>30 reps</td><td><span class='trend new'>● new</span></td></tr>
+<tr><td data-label='Date'>2026-09-05</td><td data-label='Weight'>BW</td><td data-label='Sets×Reps'>3×10</td><td data-label='Volume'>30 reps</td><td data-label='Δ'><span class='trend new'>● new</span></td></tr>
       </tbody>
     </table>
     </div>
@@ -1240,7 +1276,7 @@
     <table>
       <thead><tr><th>Date</th><th>Weight</th><th>Sets×Reps</th><th>Volume</th><th>Δ</th></tr></thead>
       <tbody>
-<tr><td>2026-08-21</td><td><span class="wv" data-lbs="11">11 lbs</span></td><td>3×10</td><td>330 lbs</td><td><span class='trend new'>● new</span></td></tr>
+<tr><td data-label='Date'>2026-08-21</td><td data-label='Weight'><span class="wv" data-lbs="11">11 lbs</span></td><td data-label='Sets×Reps'>3×10</td><td data-label='Volume'>330 lbs</td><td data-label='Δ'><span class='trend new'>● new</span></td></tr>
       </tbody>
     </table>
     </div>
@@ -1259,7 +1295,7 @@
     <table>
       <thead><tr><th>Date</th><th>Weight</th><th>Sets×Reps</th><th>Volume</th><th>Δ</th></tr></thead>
       <tbody>
-<tr><td>2026-08-21</td><td>BW</td><td>3× <span class='rbs'>12/10/8</span></td><td>30 reps</td><td><span class='trend new'>● new</span></td></tr>
+<tr><td data-label='Date'>2026-08-21</td><td data-label='Weight'>BW</td><td data-label='Sets×Reps'>3× <span class='rbs'>12/10/8</span></td><td data-label='Volume'>30 reps</td><td data-label='Δ'><span class='trend new'>● new</span></td></tr>
       </tbody>
     </table>
     </div>
@@ -1278,11 +1314,11 @@
     <table>
       <thead><tr><th>Date</th><th>Weight</th><th>Sets×Reps</th><th>Volume</th><th>Δ</th></tr></thead>
       <tbody>
-<tr><td>2026-08-19</td><td><span class="wv" data-lbs="33">33 lbs</span></td><td>3×8</td><td>792 lbs</td><td><span class='trend flat'>— same</span></td></tr>
-<tr><td>2026-07-20</td><td><span class="wv" data-lbs="33">33 lbs</span></td><td>3×8</td><td>792 lbs</td><td><span class='trend down'>▼ -47%</span></td></tr>
-<tr><td>2026-07-12</td><td><span class="wv" data-lbs="33">33 lbs</span></td><td>3×15</td><td>1485 lbs</td><td><span class='trend up'>▲ +28.5 lbs</span></td></tr>
-<tr><td>2026-07-03</td><td><span class="wv" data-lbs="4.5">4.5 lbs</span></td><td>3×8</td><td>108 lbs</td><td><span class='trend down'>▼ -47%</span></td></tr>
-<tr><td>2026-06-13</td><td><span class="wv" data-lbs="4.5">4.5 lbs</span></td><td>3×15</td><td>202.5 lbs</td><td><span class='trend new'>● new</span></td></tr>
+<tr><td data-label='Date'>2026-08-19</td><td data-label='Weight'><span class="wv" data-lbs="33">33 lbs</span></td><td data-label='Sets×Reps'>3×8</td><td data-label='Volume'>792 lbs</td><td data-label='Δ'><span class='trend flat'>— same</span></td></tr>
+<tr><td data-label='Date'>2026-07-20</td><td data-label='Weight'><span class="wv" data-lbs="33">33 lbs</span></td><td data-label='Sets×Reps'>3×8</td><td data-label='Volume'>792 lbs</td><td data-label='Δ'><span class='trend down'>▼ -47%</span></td></tr>
+<tr><td data-label='Date'>2026-07-12</td><td data-label='Weight'><span class="wv" data-lbs="33">33 lbs</span></td><td data-label='Sets×Reps'>3×15</td><td data-label='Volume'>1485 lbs</td><td data-label='Δ'><span class='trend up'>▲ +28.5 lbs</span></td></tr>
+<tr><td data-label='Date'>2026-07-03</td><td data-label='Weight'><span class="wv" data-lbs="4.5">4.5 lbs</span></td><td data-label='Sets×Reps'>3×8</td><td data-label='Volume'>108 lbs</td><td data-label='Δ'><span class='trend down'>▼ -47%</span></td></tr>
+<tr><td data-label='Date'>2026-06-13</td><td data-label='Weight'><span class="wv" data-lbs="4.5">4.5 lbs</span></td><td data-label='Sets×Reps'>3×15</td><td data-label='Volume'>202.5 lbs</td><td data-label='Δ'><span class='trend new'>● new</span></td></tr>
       </tbody>
     </table>
     </div>
@@ -1301,7 +1337,7 @@
     <table>
       <thead><tr><th>Date</th><th>Weight</th><th>Sets×Reps</th><th>Volume</th><th>Δ</th></tr></thead>
       <tbody>
-<tr><td>2026-08-12</td><td><span class="wv" data-lbs="66">66 lbs</span></td><td>3×10</td><td>1980 lbs</td><td><span class='trend new'>● new</span></td></tr>
+<tr><td data-label='Date'>2026-08-12</td><td data-label='Weight'><span class="wv" data-lbs="66">66 lbs</span></td><td data-label='Sets×Reps'>3×10</td><td data-label='Volume'>1980 lbs</td><td data-label='Δ'><span class='trend new'>● new</span></td></tr>
       </tbody>
     </table>
     </div>
@@ -1320,7 +1356,7 @@
     <table>
       <thead><tr><th>Date</th><th>Weight</th><th>Sets×Reps</th><th>Volume</th><th>Δ</th></tr></thead>
       <tbody>
-<tr><td>2026-07-14</td><td><span class="wv" data-lbs="60">60 lbs</span></td><td>3×15</td><td>2700 lbs</td><td><span class='trend new'>● new</span></td></tr>
+<tr><td data-label='Date'>2026-07-14</td><td data-label='Weight'><span class="wv" data-lbs="60">60 lbs</span></td><td data-label='Sets×Reps'>3×15</td><td data-label='Volume'>2700 lbs</td><td data-label='Δ'><span class='trend new'>● new</span></td></tr>
       </tbody>
     </table>
     </div>
@@ -1339,7 +1375,7 @@
     <table>
       <thead><tr><th>Date</th><th>Weight</th><th>Sets×Reps</th><th>Volume</th><th>Δ</th></tr></thead>
       <tbody>
-<tr><td>2026-06-26</td><td><span class="wv" data-lbs="66">66 lbs</span></td><td>3×15</td><td>2970 lbs</td><td><span class='trend new'>● new</span></td></tr>
+<tr><td data-label='Date'>2026-06-26</td><td data-label='Weight'><span class="wv" data-lbs="66">66 lbs</span></td><td data-label='Sets×Reps'>3×15</td><td data-label='Volume'>2970 lbs</td><td data-label='Δ'><span class='trend new'>● new</span></td></tr>
       </tbody>
     </table>
     </div>
@@ -1358,7 +1394,7 @@
     <table>
       <thead><tr><th>Date</th><th>Weight</th><th>Sets×Reps</th><th>Volume</th><th>Δ</th></tr></thead>
       <tbody>
-<tr><td>2026-06-18</td><td><span class="wv" data-lbs="16.5">16.5 lbs</span></td><td>3×15</td><td>742.5 lbs</td><td><span class='trend new'>● new</span></td></tr>
+<tr><td data-label='Date'>2026-06-18</td><td data-label='Weight'><span class="wv" data-lbs="16.5">16.5 lbs</span></td><td data-label='Sets×Reps'>3×15</td><td data-label='Volume'>742.5 lbs</td><td data-label='Δ'><span class='trend new'>● new</span></td></tr>
       </tbody>
     </table>
     </div>
@@ -1377,7 +1413,7 @@
     <table>
       <thead><tr><th>Date</th><th>Weight</th><th>Sets×Reps</th><th>Volume</th><th>Δ</th></tr></thead>
       <tbody>
-<tr><td>2026-06-18</td><td><span class="wv" data-lbs="45">45 lbs</span></td><td>3× <span class='rbs'>15/10/10</span></td><td>1575 lbs</td><td><span class='trend new'>● new</span></td></tr>
+<tr><td data-label='Date'>2026-06-18</td><td data-label='Weight'><span class="wv" data-lbs="45">45 lbs</span></td><td data-label='Sets×Reps'>3× <span class='rbs'>15/10/10</span></td><td data-label='Volume'>1575 lbs</td><td data-label='Δ'><span class='trend new'>● new</span></td></tr>
       </tbody>
     </table>
     </div>
@@ -1396,7 +1432,7 @@
     <table>
       <thead><tr><th>Date</th><th>Weight</th><th>Sets×Reps</th><th>Volume</th><th>Δ</th></tr></thead>
       <tbody>
-<tr><td>2026-06-18</td><td><span class="wv" data-lbs="11">11 lbs</span></td><td>3×15</td><td>495 lbs</td><td><span class='trend new'>● new</span></td></tr>
+<tr><td data-label='Date'>2026-06-18</td><td data-label='Weight'><span class="wv" data-lbs="11">11 lbs</span></td><td data-label='Sets×Reps'>3×15</td><td data-label='Volume'>495 lbs</td><td data-label='Δ'><span class='trend new'>● new</span></td></tr>
       </tbody>
     </table>
     </div>
@@ -1415,7 +1451,7 @@
     <table>
       <thead><tr><th>Date</th><th>Weight</th><th>Sets×Reps</th><th>Volume</th><th>Δ</th></tr></thead>
       <tbody>
-<tr><td>2026-06-12</td><td><span class="wv" data-lbs="55">55 lbs</span></td><td>3×15</td><td>2475 lbs</td><td><span class='trend new'>● new</span></td></tr>
+<tr><td data-label='Date'>2026-06-12</td><td data-label='Weight'><span class="wv" data-lbs="55">55 lbs</span></td><td data-label='Sets×Reps'>3×15</td><td data-label='Volume'>2475 lbs</td><td data-label='Δ'><span class='trend new'>● new</span></td></tr>
       </tbody>
     </table>
     </div>
@@ -1434,11 +1470,25 @@
     <table>
       <thead><tr><th>Date</th><th>Weight</th><th>Sets×Reps</th><th>Volume</th><th>Δ</th></tr></thead>
       <tbody>
-<tr><td>2026-06-12</td><td><span class="wv" data-lbs="22">22 lbs</span></td><td>3×15</td><td>990 lbs</td><td><span class='trend new'>● new</span></td></tr>
+<tr><td data-label='Date'>2026-06-12</td><td data-label='Weight'><span class="wv" data-lbs="22">22 lbs</span></td><td data-label='Sets×Reps'>3×15</td><td data-label='Volume'>990 lbs</td><td data-label='Δ'><span class='trend new'>● new</span></td></tr>
       </tbody>
     </table>
     </div>
   </details></section>
+        <section class="focus-section"><div class="section-title">Volume Heat Map (last 12 weeks)</div>
+  <div class="card heatmap-card">
+    <div class="tbl-wrap heatmap-wrap">
+    <table class="heatmap">
+      <thead><tr><th class="hm-row-label">Muscle group</th><th title='week of 2026-08-03'>Aug 3</th><th title='week of 2026-08-10'>Aug 10</th><th title='week of 2026-08-17'>Aug 17</th><th title='week of 2026-08-24'>Aug 24</th><th title='week of 2026-08-31'>Aug 31</th><th title='week of 2026-09-07'>Sep 7</th><th title='week of 2026-09-14'>Sep 14</th><th title='week of 2026-09-21'>Sep 21</th><th title='week of 2026-09-28'>Sep 28</th><th title='week of 2026-10-05'>Oct 5</th><th title='week of 2026-10-12'>Oct 12</th><th title='week of 2026-10-19'>Oct 19</th></tr></thead>
+      <tbody>
+<tr><td class='hm-row-label'>Chest</td><td style='background:rgba(94,106,210,0.25)' title='Chest: 1,350 (volume = weight_lbs×sets×reps; bodyweight = sets×reps)'>1,350</td><td style='background:rgba(94,106,210,0.46)' title='Chest: 3,075 (volume = weight_lbs×sets×reps; bodyweight = sets×reps)'>3,075</td><td style='background:rgba(94,106,210,0.21)' title='Chest: 1,062 (volume = weight_lbs×sets×reps; bodyweight = sets×reps)'>1,062</td><td style='background:rgba(94,106,210,0.13)' title='Chest: 400 (volume = weight_lbs×sets×reps; bodyweight = sets×reps)'>400</td><td style='background:rgba(94,106,210,0.23)' title='Chest: 1,200 (volume = weight_lbs×sets×reps; bodyweight = sets×reps)'>1,200</td><td style='background:rgba(94,106,210,0.18)' title='Chest: 800 (volume = weight_lbs×sets×reps; bodyweight = sets×reps)'>800</td><td style='background:rgba(94,106,210,0.26)' title='Chest: 1,440 (volume = weight_lbs×sets×reps; bodyweight = sets×reps)'>1,440</td><td style='background:rgba(94,106,210,0.58)' title='Chest: 4,000 (volume = weight_lbs×sets×reps; bodyweight = sets×reps)'>4,000</td><td style='background:rgba(94,106,210,0.68)' title='Chest: 4,790 (volume = weight_lbs×sets×reps; bodyweight = sets×reps)'>4,790</td><td style='background:rgba(94,106,210,0.47)' title='Chest: 3,110 (volume = weight_lbs×sets×reps; bodyweight = sets×reps)'>3,110</td><td style='background:rgba(94,106,210,0.80)' title='Chest: 5,760 (volume = weight_lbs×sets×reps; bodyweight = sets×reps)'>5,760</td><td style='background:rgba(94,106,210,0.56)' title='Chest: 3,805 (volume = weight_lbs×sets×reps; bodyweight = sets×reps)'>3,805</td></tr><tr><td class='hm-row-label'>Back/Lats</td><td style='background:rgba(94,106,210,0.47)' title='Back/Lats: 5,850 (volume = weight_lbs×sets×reps; bodyweight = sets×reps)'>5,850</td><td style='background:rgba(94,106,210,0.32)' title='Back/Lats: 3,600 (volume = weight_lbs×sets×reps; bodyweight = sets×reps)'>3,600</td><td style='background:rgba(94,106,210,0.58)' title='Back/Lats: 7,550 (volume = weight_lbs×sets×reps; bodyweight = sets×reps)'>7,550</td><td style='background:rgba(94,106,210,0.41)' title='Back/Lats: 5,000 (volume = weight_lbs×sets×reps; bodyweight = sets×reps)'>5,000</td><td style='background:rgba(94,106,210,0.42)' title='Back/Lats: 5,150 (volume = weight_lbs×sets×reps; bodyweight = sets×reps)'>5,150</td><td style='background:rgba(94,106,210,0.24)' title='Back/Lats: 2,400 (volume = weight_lbs×sets×reps; bodyweight = sets×reps)'>2,400</td><td style='background:rgba(94,106,210,0.40)' title='Back/Lats: 4,830 (volume = weight_lbs×sets×reps; bodyweight = sets×reps)'>4,830</td><td style='background:rgba(94,106,210,0.80)' title='Back/Lats: 10,800 (volume = weight_lbs×sets×reps; bodyweight = sets×reps)'>10,800</td><td style='background:rgba(94,106,210,0.47)' title='Back/Lats: 5,800 (volume = weight_lbs×sets×reps; bodyweight = sets×reps)'>5,800</td><td style='background:rgba(94,106,210,0.56)' title='Back/Lats: 7,250 (volume = weight_lbs×sets×reps; bodyweight = sets×reps)'>7,250</td><td style='background:rgba(94,106,210,0.68)' title='Back/Lats: 9,020 (volume = weight_lbs×sets×reps; bodyweight = sets×reps)'>9,020</td><td style='background:rgba(94,106,210,0.53)' title='Back/Lats: 6,765 (volume = weight_lbs×sets×reps; bodyweight = sets×reps)'>6,765</td></tr><tr><td class='hm-row-label'>Shoulders</td><td style='background:rgba(94,106,210,0.76)' title='Shoulders: 9,000 (volume = weight_lbs×sets×reps; bodyweight = sets×reps)'>9,000</td><td style='background:rgba(94,106,210,0.25)' title='Shoulders: 2,250 (volume = weight_lbs×sets×reps; bodyweight = sets×reps)'>2,250</td><td style='background:rgba(94,106,210,0.28)' title='Shoulders: 2,580 (volume = weight_lbs×sets×reps; bodyweight = sets×reps)'>2,580</td><td style='background:rgba(94,106,210,0.41)' title='Shoulders: 4,400 (volume = weight_lbs×sets×reps; bodyweight = sets×reps)'>4,400</td><td style='background:rgba(94,106,210,0.38)' title='Shoulders: 4,000 (volume = weight_lbs×sets×reps; bodyweight = sets×reps)'>4,000</td><td style='background:rgba(94,106,210,0.23)' title='Shoulders: 2,000 (volume = weight_lbs×sets×reps; bodyweight = sets×reps)'>2,000</td><td style='background:rgba(94,106,210,0.63)' title='Shoulders: 7,200 (volume = weight_lbs×sets×reps; bodyweight = sets×reps)'>7,200</td><td style='background:rgba(94,106,210,0.63)' title='Shoulders: 7,275 (volume = weight_lbs×sets×reps; bodyweight = sets×reps)'>7,275</td><td style='background:rgba(94,106,210,0.80)' title='Shoulders: 9,468 (volume = weight_lbs×sets×reps; bodyweight = sets×reps)'>9,468</td><td style='background:rgba(94,106,210,0.53)' title='Shoulders: 5,918 (volume = weight_lbs×sets×reps; bodyweight = sets×reps)'>5,918</td><td style='background:rgba(94,106,210,0.52)' title='Shoulders: 5,768 (volume = weight_lbs×sets×reps; bodyweight = sets×reps)'>5,768</td><td style='background:rgba(94,106,210,0.54)' title='Shoulders: 6,098 (volume = weight_lbs×sets×reps; bodyweight = sets×reps)'>6,098</td></tr><tr><td class='hm-row-label'>Biceps</td><td style='background:rgba(94,106,210,0.00)' title='Biceps: 0 (volume = weight_lbs×sets×reps; bodyweight = sets×reps)'>–</td><td style='background:rgba(94,106,210,0.00)' title='Biceps: 0 (volume = weight_lbs×sets×reps; bodyweight = sets×reps)'>–</td><td style='background:rgba(94,106,210,0.44)' title='Biceps: 360 (volume = weight_lbs×sets×reps; bodyweight = sets×reps)'>360</td><td style='background:rgba(94,106,210,0.48)' title='Biceps: 400 (volume = weight_lbs×sets×reps; bodyweight = sets×reps)'>400</td><td style='background:rgba(94,106,210,0.00)' title='Biceps: 0 (volume = weight_lbs×sets×reps; bodyweight = sets×reps)'>–</td><td style='background:rgba(94,106,210,0.38)' title='Biceps: 300 (volume = weight_lbs×sets×reps; bodyweight = sets×reps)'>300</td><td style='background:rgba(94,106,210,0.74)' title='Biceps: 660 (volume = weight_lbs×sets×reps; bodyweight = sets×reps)'>660</td><td style='background:rgba(94,106,210,0.80)' title='Biceps: 720 (volume = weight_lbs×sets×reps; bodyweight = sets×reps)'>720</td><td style='background:rgba(94,106,210,0.44)' title='Biceps: 360 (volume = weight_lbs×sets×reps; bodyweight = sets×reps)'>360</td><td style='background:rgba(94,106,210,0.44)' title='Biceps: 360 (volume = weight_lbs×sets×reps; bodyweight = sets×reps)'>360</td><td style='background:rgba(94,106,210,0.56)' title='Biceps: 480 (volume = weight_lbs×sets×reps; bodyweight = sets×reps)'>480</td><td style='background:rgba(94,106,210,0.44)' title='Biceps: 360 (volume = weight_lbs×sets×reps; bodyweight = sets×reps)'>360</td></tr><tr><td class='hm-row-label'>Triceps</td><td style='background:rgba(94,106,210,0.00)' title='Triceps: 0 (volume = weight_lbs×sets×reps; bodyweight = sets×reps)'>–</td><td style='background:rgba(94,106,210,0.00)' title='Triceps: 0 (volume = weight_lbs×sets×reps; bodyweight = sets×reps)'>–</td><td style='background:rgba(94,106,210,0.33)' title='Triceps: 1,200 (volume = weight_lbs×sets×reps; bodyweight = sets×reps)'>1,200</td><td style='background:rgba(94,106,210,0.00)' title='Triceps: 0 (volume = weight_lbs×sets×reps; bodyweight = sets×reps)'>–</td><td style='background:rgba(94,106,210,0.00)' title='Triceps: 0 (volume = weight_lbs×sets×reps; bodyweight = sets×reps)'>–</td><td style='background:rgba(94,106,210,0.00)' title='Triceps: 0 (volume = weight_lbs×sets×reps; bodyweight = sets×reps)'>–</td><td style='background:rgba(94,106,210,0.39)' title='Triceps: 1,500 (volume = weight_lbs×sets×reps; bodyweight = sets×reps)'>1,500</td><td style='background:rgba(94,106,210,0.00)' title='Triceps: 0 (volume = weight_lbs×sets×reps; bodyweight = sets×reps)'>–</td><td style='background:rgba(94,106,210,0.80)' title='Triceps: 3,485 (volume = weight_lbs×sets×reps; bodyweight = sets×reps)'>3,485</td><td style='background:rgba(94,106,210,0.39)' title='Triceps: 1,485 (volume = weight_lbs×sets×reps; bodyweight = sets×reps)'>1,485</td><td style='background:rgba(94,106,210,0.39)' title='Triceps: 1,485 (volume = weight_lbs×sets×reps; bodyweight = sets×reps)'>1,485</td><td style='background:rgba(94,106,210,0.00)' title='Triceps: 0 (volume = weight_lbs×sets×reps; bodyweight = sets×reps)'>–</td></tr><tr><td class='hm-row-label'>Quads</td><td style='background:rgba(94,106,210,0.00)' title='Quads: 0 (volume = weight_lbs×sets×reps; bodyweight = sets×reps)'>–</td><td style='background:rgba(94,106,210,0.24)' title='Quads: 1,320 (volume = weight_lbs×sets×reps; bodyweight = sets×reps)'>1,320</td><td style='background:rgba(94,106,210,0.24)' title='Quads: 1,320 (volume = weight_lbs×sets×reps; bodyweight = sets×reps)'>1,320</td><td style='background:rgba(94,106,210,0.18)' title='Quads: 880 (volume = weight_lbs×sets×reps; bodyweight = sets×reps)'>880</td><td style='background:rgba(94,106,210,0.35)' title='Quads: 2,320 (volume = weight_lbs×sets×reps; bodyweight = sets×reps)'>2,320</td><td style='background:rgba(94,106,210,0.60)' title='Quads: 4,360 (volume = weight_lbs×sets×reps; bodyweight = sets×reps)'>4,360</td><td style='background:rgba(94,106,210,0.49)' title='Quads: 3,500 (volume = weight_lbs×sets×reps; bodyweight = sets×reps)'>3,500</td><td style='background:rgba(94,106,210,0.80)' title='Quads: 6,095 (volume = weight_lbs×sets×reps; bodyweight = sets×reps)'>6,095</td><td style='background:rgba(94,106,210,0.62)' title='Quads: 4,580 (volume = weight_lbs×sets×reps; bodyweight = sets×reps)'>4,580</td><td style='background:rgba(94,106,210,0.00)' title='Quads: 0 (volume = weight_lbs×sets×reps; bodyweight = sets×reps)'>–</td><td style='background:rgba(94,106,210,0.30)' title='Quads: 1,866 (volume = weight_lbs×sets×reps; bodyweight = sets×reps)'>1,866</td><td style='background:rgba(94,106,210,0.00)' title='Quads: 0 (volume = weight_lbs×sets×reps; bodyweight = sets×reps)'>–</td></tr><tr><td class='hm-row-label'>Hamstrings/Glutes</td><td style='background:rgba(94,106,210,0.00)' title='Hamstrings/Glutes: 0 (volume = weight_lbs×sets×reps; bodyweight = sets×reps)'>–</td><td style='background:rgba(94,106,210,0.28)' title='Hamstrings/Glutes: 1,980 (volume = weight_lbs×sets×reps; bodyweight = sets×reps)'>1,980</td><td style='background:rgba(94,106,210,0.38)' title='Hamstrings/Glutes: 2,970 (volume = weight_lbs×sets×reps; bodyweight = sets×reps)'>2,970</td><td style='background:rgba(94,106,210,0.28)' title='Hamstrings/Glutes: 1,980 (volume = weight_lbs×sets×reps; bodyweight = sets×reps)'>1,980</td><td style='background:rgba(94,106,210,0.08)' title='Hamstrings/Glutes: 30 (volume = weight_lbs×sets×reps; bodyweight = sets×reps)'>30</td><td style='background:rgba(94,106,210,0.35)' title='Hamstrings/Glutes: 2,640 (volume = weight_lbs×sets×reps; bodyweight = sets×reps)'>2,640</td><td style='background:rgba(94,106,210,0.35)' title='Hamstrings/Glutes: 2,640 (volume = weight_lbs×sets×reps; bodyweight = sets×reps)'>2,640</td><td style='background:rgba(94,106,210,0.80)' title='Hamstrings/Glutes: 7,040 (volume = weight_lbs×sets×reps; bodyweight = sets×reps)'>7,040</td><td style='background:rgba(94,106,210,0.16)' title='Hamstrings/Glutes: 792 (volume = weight_lbs×sets×reps; bodyweight = sets×reps)'>792</td><td style='background:rgba(94,106,210,0.00)' title='Hamstrings/Glutes: 0 (volume = weight_lbs×sets×reps; bodyweight = sets×reps)'>–</td><td style='background:rgba(94,106,210,0.09)' title='Hamstrings/Glutes: 69 (volume = weight_lbs×sets×reps; bodyweight = sets×reps)'>69</td><td style='background:rgba(94,106,210,0.00)' title='Hamstrings/Glutes: 0 (volume = weight_lbs×sets×reps; bodyweight = sets×reps)'>–</td></tr><tr><td class='hm-row-label'>Calves</td><td style='background:rgba(94,106,210,0.00)' title='Calves: 0 (volume = weight_lbs×sets×reps; bodyweight = sets×reps)'>–</td><td style='background:rgba(94,106,210,0.00)' title='Calves: 0 (volume = weight_lbs×sets×reps; bodyweight = sets×reps)'>–</td><td style='background:rgba(94,106,210,0.72)' title='Calves: 816 (volume = weight_lbs×sets×reps; bodyweight = sets×reps)'>816</td><td style='background:rgba(94,106,210,0.60)' title='Calves: 660 (volume = weight_lbs×sets×reps; bodyweight = sets×reps)'>660</td><td style='background:rgba(94,106,210,0.60)' title='Calves: 660 (volume = weight_lbs×sets×reps; bodyweight = sets×reps)'>660</td><td style='background:rgba(94,106,210,0.50)' title='Calves: 528 (volume = weight_lbs×sets×reps; bodyweight = sets×reps)'>528</td><td style='background:rgba(94,106,210,0.60)' title='Calves: 660 (volume = weight_lbs×sets×reps; bodyweight = sets×reps)'>660</td><td style='background:rgba(94,106,210,0.77)' title='Calves: 880 (volume = weight_lbs×sets×reps; bodyweight = sets×reps)'>880</td><td style='background:rgba(94,106,210,0.00)' title='Calves: 0 (volume = weight_lbs×sets×reps; bodyweight = sets×reps)'>–</td><td style='background:rgba(94,106,210,0.00)' title='Calves: 0 (volume = weight_lbs×sets×reps; bodyweight = sets×reps)'>–</td><td style='background:rgba(94,106,210,0.80)' title='Calves: 916 (volume = weight_lbs×sets×reps; bodyweight = sets×reps)'>916</td><td style='background:rgba(94,106,210,0.00)' title='Calves: 0 (volume = weight_lbs×sets×reps; bodyweight = sets×reps)'>–</td></tr><tr><td class='hm-row-label'>Core</td><td style='background:rgba(94,106,210,0.00)' title='Core: 0 (volume = weight_lbs×sets×reps; bodyweight = sets×reps)'>–</td><td style='background:rgba(94,106,210,0.00)' title='Core: 0 (volume = weight_lbs×sets×reps; bodyweight = sets×reps)'>–</td><td style='background:rgba(94,106,210,0.09)' title='Core: 30 (volume = weight_lbs×sets×reps; bodyweight = sets×reps)'>30</td><td style='background:rgba(94,106,210,0.00)' title='Core: 0 (volume = weight_lbs×sets×reps; bodyweight = sets×reps)'>–</td><td style='background:rgba(94,106,210,0.00)' title='Core: 0 (volume = weight_lbs×sets×reps; bodyweight = sets×reps)'>–</td><td style='background:rgba(94,106,210,0.00)' title='Core: 0 (volume = weight_lbs×sets×reps; bodyweight = sets×reps)'>–</td><td style='background:rgba(94,106,210,0.00)' title='Core: 0 (volume = weight_lbs×sets×reps; bodyweight = sets×reps)'>–</td><td style='background:rgba(94,106,210,0.46)' title='Core: 1,642 (volume = weight_lbs×sets×reps; bodyweight = sets×reps)'>1,642</td><td style='background:rgba(94,106,210,0.00)' title='Core: 0 (volume = weight_lbs×sets×reps; bodyweight = sets×reps)'>–</td><td style='background:rgba(94,106,210,0.80)' title='Core: 3,088 (volume = weight_lbs×sets×reps; bodyweight = sets×reps)'>3,088</td><td style='background:rgba(94,106,210,0.00)' title='Core: 0 (volume = weight_lbs×sets×reps; bodyweight = sets×reps)'>–</td><td style='background:rgba(94,106,210,0.00)' title='Core: 0 (volume = weight_lbs×sets×reps; bodyweight = sets×reps)'>–</td></tr><tr><td class='hm-row-label'>Other</td><td style='background:rgba(94,106,210,0.00)' title='Other: 0 (volume = weight_lbs×sets×reps; bodyweight = sets×reps)'>–</td><td style='background:rgba(94,106,210,0.00)' title='Other: 0 (volume = weight_lbs×sets×reps; bodyweight = sets×reps)'>–</td><td style='background:rgba(94,106,210,0.51)' title='Other: 45 (volume = weight_lbs×sets×reps; bodyweight = sets×reps)'>45</td><td style='background:rgba(94,106,210,0.00)' title='Other: 0 (volume = weight_lbs×sets×reps; bodyweight = sets×reps)'>–</td><td style='background:rgba(94,106,210,0.51)' title='Other: 45 (volume = weight_lbs×sets×reps; bodyweight = sets×reps)'>45</td><td style='background:rgba(94,106,210,0.51)' title='Other: 45 (volume = weight_lbs×sets×reps; bodyweight = sets×reps)'>45</td><td style='background:rgba(94,106,210,0.51)' title='Other: 45 (volume = weight_lbs×sets×reps; bodyweight = sets×reps)'>45</td><td style='background:rgba(94,106,210,0.51)' title='Other: 45 (volume = weight_lbs×sets×reps; bodyweight = sets×reps)'>45</td><td style='background:rgba(94,106,210,0.00)' title='Other: 0 (volume = weight_lbs×sets×reps; bodyweight = sets×reps)'>–</td><td style='background:rgba(94,106,210,0.00)' title='Other: 0 (volume = weight_lbs×sets×reps; bodyweight = sets×reps)'>–</td><td style='background:rgba(94,106,210,0.80)' title='Other: 75 (volume = weight_lbs×sets×reps; bodyweight = sets×reps)'>75</td><td style='background:rgba(94,106,210,0.00)' title='Other: 0 (volume = weight_lbs×sets×reps; bodyweight = sets×reps)'>–</td></tr>
+      </tbody>
+    </table>
+    </div>
+    <p class="hm-note">Volume = weight (lbs) × sets × reps per completed set; bodyweight exercises
+      (no logged load) count as sets × reps. Each row's shading is scaled to that
+      muscle group's own busiest week, not a global max.</p>
+  </div></section>
         <section class="focus-section"><div class="section-title">Recent sessions</div>
   <details class="card">
     <summary>
@@ -3246,7 +3296,7 @@
         <div style="height:9rem"></div>
       </div>
 
-      <footer>Updated 2026-10-20 16:41 (Bangkok)</footer>
+      <footer>Updated 2026-10-22 11:41 (Bangkok)</footer>
     </div>
   </div>
 
