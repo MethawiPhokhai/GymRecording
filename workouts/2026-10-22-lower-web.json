@@ -1,0 +1,53 @@
+{
+  "date": "2026-10-22",
+  "day": "Thursday",
+  "type": "Lower",
+  "exercises": [
+    {
+      "name": "* Jump squat",
+      "completed": true,
+      "sets": 3,
+      "reps": 6
+    },
+    {
+      "name": "Squat",
+      "completed": true,
+      "weight_lbs": 44,
+      "sets": 4,
+      "reps": 8
+    },
+    {
+      "name": "* Single-leg RDL",
+      "completed": true,
+      "weight_lbs": 22,
+      "sets": 3,
+      "reps": 8
+    },
+    {
+      "name": "* Bulgarian split squat",
+      "completed": true,
+      "weight_lbs": 22,
+      "sets": 3,
+      "reps": 8
+    },
+    {
+      "name": "* Single-leg glute bridge",
+      "completed": true,
+      "sets": 3,
+      "reps": 15
+    },
+    {
+      "name": "* Bent-knee single-leg calf raise",
+      "completed": true,
+      "weight_lbs": 22,
+      "sets": 3,
+      "reps": 10
+    },
+    {
+      "name": "* Tibialis raise",
+      "completed": true,
+      "sets": 3,
+      "reps": 15
+    }
+  ]
+}
