@@ -1921,9 +1921,9 @@ def build_html(entries, templates, raw_entries):
 
       <div id="view-weight" class="view on">
         <div class="page-intro"><h2>Weight Training</h2><p>Strength sessions, exercise progress, and recent training logs.</p></div>
+        {f'<section class="focus-section"><div class="section-title">Volume Heat Map (last 12 weeks)</div>{volume_heatmap}</section>' if volume_heatmap else ''}
         {build_focus_statgrid(entries, raw_entries, templates, "weight")}
         <section class="focus-section"><div class="section-title">Progress</div>{progress_view}</section>
-        {f'<section class="focus-section"><div class="section-title">Volume Heat Map (last 12 weeks)</div>{volume_heatmap}</section>' if volume_heatmap else ''}
         <section class="focus-section"><div class="section-title">Recent sessions</div>{weight_cards}{weight_more}</section>
       </div>
 
