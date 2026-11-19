@@ -1,0 +1,35 @@
+{
+  "date": "2026-11-19",
+  "day": "Thursday",
+  "type": "Pull B",
+  "exercises": [
+    {
+      "name": "Deadlift",
+      "completed": true,
+      "weight_lbs": 77,
+      "sets": 3,
+      "reps": 8
+    },
+    {
+      "name": "Lat pulldown",
+      "completed": true,
+      "weight_lbs": 55,
+      "sets": 3,
+      "reps": 15
+    },
+    {
+      "name": "Back cable rowing",
+      "completed": true,
+      "weight_lbs": 55,
+      "sets": 3,
+      "reps": 15
+    },
+    {
+      "name": "Face pull",
+      "completed": true,
+      "weight_lbs": 50,
+      "sets": 3,
+      "reps": 15
+    }
+  ]
+}
