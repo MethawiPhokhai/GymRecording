@@ -1,0 +1,21 @@
+{
+  "date": "2026-11-26",
+  "day": "Thursday",
+  "type": "Push A",
+  "exercises": [
+    {
+      "name": "Incline bench press",
+      "completed": true,
+      "weight_lbs": 22,
+      "sets": 3,
+      "reps": 8
+    },
+    {
+      "name": "Shoulder press",
+      "completed": true,
+      "weight_lbs": 39.5,
+      "sets": 3,
+      "reps": 15
+    }
+  ]
+}
