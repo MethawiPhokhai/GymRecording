@@ -1,0 +1,14 @@
+{
+  "date": "2026-11-26",
+  "day": "Thursday",
+  "type": "Pull B",
+  "exercises": [
+    {
+      "name": "Deadlift",
+      "completed": true,
+      "weight_lbs": 77,
+      "sets": 3,
+      "reps": 8
+    }
+  ]
+}
