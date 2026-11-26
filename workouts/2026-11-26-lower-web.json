@@ -1,0 +1,14 @@
+{
+  "date": "2026-11-26",
+  "day": "Thursday",
+  "type": "Lower",
+  "exercises": [
+    {
+      "name": "* Bulgarian split squat",
+      "completed": true,
+      "weight_lbs": 22,
+      "sets": 3,
+      "reps": 8
+    }
+  ]
+}
